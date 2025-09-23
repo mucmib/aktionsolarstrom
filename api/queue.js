@@ -1,5 +1,7 @@
 // /api/queue.js – Vercel Serverless Function (ESM, sib-api-v3-sdk)
-import * as SibApiV3Sdk from "sib-api-v3-sdk";
+- import * as SibApiV3Sdk from "sib-api-v3-sdk";
++ import SibApiV3Sdk from "sib-api-v3-sdk";
+
 
 // CORS erlauben (damit es auch klappt, wenn die Seite woanders liegt)
 const allowCors = (fn) => async (req, res) => {
