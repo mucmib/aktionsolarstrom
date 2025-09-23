@@ -1,5 +1,9 @@
 // /api/queue.js – Vercel Serverless Function (ESM)
-import SibApiV3Sdk from "@sendinblue/client";
+// alt:
+// import SibApiV3Sdk from "@sendinblue/client";
+// neu:
+import * as SibApiV3Sdk from "sib-api-v3-sdk";
+
 
 const allowCors = (fn) => async (req, res) => {
   res.setHeader("Access-Control-Allow-Credentials", "true");
