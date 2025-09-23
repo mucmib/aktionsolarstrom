@@ -2,6 +2,6 @@
   "type": "module",
   "private": true,
   "dependencies": {
-    "@sendinblue/client": "3.6.5"
+    "sib-api-v3-sdk": "^8.5.0"
   }
 }
