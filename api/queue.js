@@ -43,11 +43,9 @@ export default allowCors(async function handler(req, res) {
   `;
 
   try {
-    // Brevo-Client initialisieren
     const api = new Brevo.TransactionalEmailsApi();
     api.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
-    // Mail an Team
     await api.sendTransacEmail({
       to: [{ email: process.env.TEAM_INBOX }],
       sender: { email: process.env.FROM_EMAIL || "no-reply@deinedomain.de", name: "Kampagnen-Formular" },
@@ -55,7 +53,6 @@ export default allowCors(async function handler(req, res) {
       htmlContent: teamHtml
     });
 
-    // Kopie an Absender:in
     if (body.copy_to_self) {
       await api.sendTransacEmail({
         to: [{ email: body.email }],
@@ -65,9 +62,11 @@ export default allowCors(async function handler(req, res) {
       });
     }
 
+    res.setHeader("Cache-Control", "no-store");
     return res.status(200).json({ ok: true, queueId });
   } catch (err) {
     const msg = err?.response?.text || err?.message || String(err);
     return res.status(500).json({ error: "send_failed", message: msg });
   }
 });
+
