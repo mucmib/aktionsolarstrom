@@ -1,4 +1,4 @@
-// /api/queue.js – Produktion mit @getbrevo/brevo
+// /api/queue.js – Produktionsversion mit @getbrevo/brevo
 import Brevo from "@getbrevo/brevo";
 
 const allowCors = (fn) => async (req, res) => {
@@ -22,18 +22,25 @@ export default allowCors(async function handler(req, res) {
   }
 
   // Body robust parsen
-  const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
+  const body =
+    typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
 
   // Pflichtfelder prüfen
-  const required = ["first_name","last_name","email","street","sender_zip","sender_city","subject","message"];
-  const missing = required.filter(k => !must(body[k]));
+  const required = [
+    "first_name","last_name","email",
+    "street","sender_zip","sender_city",
+    "subject","message"
+  ];
+  const missing = required.filter((k) => !must(body[k]));
   if (missing.length) {
-    return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
+    return res.status(400).json({ ok: false, error: "missing_fields", fields: missing });
   }
 
+  // ENV prüfen
   if (!process.env.BREVO_API_KEY || !process.env.FROM_EMAIL || !process.env.TEAM_INBOX) {
     return res.status(500).json({
-      ok:false, error:"env_missing",
+      ok: false,
+      error: "env_missing",
       envState: {
         BREVO_API_KEY: !!process.env.BREVO_API_KEY,
         FROM_EMAIL: !!process.env.FROM_EMAIL,
@@ -43,9 +50,9 @@ export default allowCors(async function handler(req, res) {
   }
 
   const queueId = Math.random().toString(36).slice(2, 8).toUpperCase();
-  const today = new Date().toISOString().slice(0,10);
+  const today = new Date().toISOString().slice(0, 10);
 
-  // Mail an euer Team (von FROM_EMAIL, reply-to = Nutzer:in)
+  // Mail an euer Team (Reply-To = Nutzer:in)
   const teamHtml = `
     <h2>Neue Einreichung – ${esc(queueId)}</h2>
     <p><b>Datum:</b> ${esc(today)}</p>
@@ -58,23 +65,28 @@ export default allowCors(async function handler(req, res) {
     <p><b>PLZ/Ort für MdB-Ermittlung:</b> ${esc(body.zip || "")} ${esc(body.city || "")}</p>
     <p><b>Optionaler MdB-Name:</b> ${esc(body.mp_name || "")}</p>
     <p><b>Betreff:</b> ${esc(body.subject)}</p>
-    <p><b>Brieftext:</b><br>${esc(body.message).replace(/\n/g,"<br>")}</p>
+    <p><b>Brieftext:</b><br>${esc(body.message).replace(/\n/g, "<br>")}</p>
   `;
 
-  // Mail an die/den Absender:in (immer von FROM_EMAIL – verifiziert!)
+  // Mail an die/den Absender:in (immer von FROM_EMAIL)
   const userHtml = `
     <p>Danke für deine Einreichung! Wir haben deinen Brief übernommen.</p>
     <p><b>Vorgangs-ID:</b> ${esc(queueId)}</p>
     <hr>
     <p><b>Betreff:</b> ${esc(body.subject)}</p>
-    <p><b>Brieftext:</b><br>${esc(body.message).replace(/\n/g,"<br>")}</p>
+    <p><b>Brieftext:</b><br>${esc(body.message).replace(/\n/g, "<br>")}</p>
   `;
+
+  // Checkbox robust auswerten: true bei "true", "on", "1", true
+  const wantsCopy = ["true", "on", "1", "yes"].includes(
+    String(body.copy_to_self).toLowerCase()
+  );
 
   try {
     const api = new Brevo.TransactionalEmailsApi();
     api.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
-    // 1) An Team senden (replyTo = Nutzer:in, damit Antworten einfach sind)
+    // 1) Team-Mail (Reply-To = Absender:in, damit Antworten direkt an die Person gehen)
     await api.sendTransacEmail({
       to: [{ email: process.env.TEAM_INBOX }],
       sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Formular" },
@@ -83,8 +95,7 @@ export default allowCors(async function handler(req, res) {
       htmlContent: teamHtml
     });
 
-    // 2) Optional Kopie an Nutzer:in – immer von FROM_EMAIL
-    const wantsCopy = String(body.copy_to_self).toLowerCase() === "true" || body.copy_to_self === true;
+    // 2) Optional Kopie an Absender:in – immer vom verifizierten FROM_EMAIL
     if (wantsCopy) {
       await api.sendTransacEmail({
         to: [{ email: body.email }],
@@ -95,16 +106,15 @@ export default allowCors(async function handler(req, res) {
     }
 
     res.setHeader("Cache-Control", "no-store");
-    return res.status(200).json({ ok:true, queueId, copySent: !!wantsCopy });
+    return res.status(200).json({ ok: true, queueId, copySent: wantsCopy });
   } catch (err) {
-    // Mehr Details aus Brevo herausziehen
+    // Detailierte Fehler zurückgeben
     const status = err?.response?.status;
     let detail = err?.response?.text || err?.message || String(err);
-    if (err?.response?.body) { try { detail = JSON.stringify(err.response.body); } catch {} }
-
-    // optional ins Log (Vercel Runtime Logs)
+    if (err?.response?.body) {
+      try { detail = JSON.stringify(err.response.body); } catch {}
+    }
     console.error("Brevo send failed:", status, detail);
-
-    return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
+    return res.status(502).json({ ok: false, error: "brevo_send_failed", status, detail });
   }
 });
