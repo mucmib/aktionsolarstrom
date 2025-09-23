@@ -1,4 +1,4 @@
-// /api/queue.js – Vercel Serverless Function mit @getbrevo/brevo
+// /api/queue.js – Diagnose-Version (liefert klare Fehlertexte zurück)
 import Brevo from "@getbrevo/brevo";
 
 const allowCors = (fn) => async (req, res) => {
@@ -10,63 +10,56 @@ const allowCors = (fn) => async (req, res) => {
   return await fn(req, res);
 };
 
-function escapeHtml(s = "") {
-  return String(s)
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-}
+function must(v){ return v && String(v).trim() !== ""; }
 
 export default allowCors(async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).send("Method not allowed");
-  const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
-
-  const required = ["first_name","last_name","email","street","sender_zip","sender_city","subject","message"];
-  const missing = required.filter(k => !body[k] || String(body[k]).trim()==="");
-  if (missing.length) return res.status(400).json({ error: "missing_fields", fields: missing });
-
-  const queueId = Math.random().toString(36).slice(2, 8).toUpperCase();
-  const now = new Date().toISOString().slice(0,10);
-
-  const teamHtml = `
-    <h3>Neue Einreichung – ${queueId}</h3>
-    <p><b>Datum:</b> ${now}</p>
-    <p><b>Absender:in</b><br>
-      ${escapeHtml(body.first_name)} ${escapeHtml(body.last_name)}<br>
-      ${escapeHtml(body.street)}<br>
-      ${escapeHtml(body.sender_zip)} ${escapeHtml(body.sender_city)}<br>
-      E-Mail: ${escapeHtml(body.email)}
-    </p>
-    <p><b>PLZ/Ort für MdB-Ermittlung:</b> ${escapeHtml(body.zip||"")} ${escapeHtml(body.city||"")}</p>
-    <p><b>Optionaler MdB-Name:</b> ${escapeHtml(body.mp_name||"")}</p>
-    <p><b>Betreff:</b> ${escapeHtml(body.subject)}</p>
-    <p><b>Nachricht:</b><br>${escapeHtml(body.message).replace(/\n/g,"<br>")}</p>
-  `;
-
   try {
+    if (req.method === "GET") {
+      // einfacher Ping zum Test
+      return res.status(405).json({ ok:false, error:"method_not_allowed", msg:"Bitte POST verwenden." });
+    }
+
+    // Body robust parsen
+    const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
+    const required = ["first_name","last_name","email","street","sender_zip","sender_city","subject","message"];
+    const missing = required.filter(k => !must(body[k]));
+    if (missing.length) {
+      return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
+    }
+
+    // ENV-Check (ohne Werte zu verraten)
+    const envState = {
+      BREVO_API_KEY: !!process.env.BREVO_API_KEY,
+      TEAM_INBOX: !!process.env.TEAM_INBOX,
+      FROM_EMAIL: !!process.env.FROM_EMAIL
+    };
+    if (!envState.BREVO_API_KEY || !envState.TEAM_INBOX || !envState.FROM_EMAIL) {
+      return res.status(500).json({ ok:false, error:"env_missing", envState });
+    }
+
+    // Brevo vorbereiten
     const api = new Brevo.TransactionalEmailsApi();
     api.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
-    await api.sendTransacEmail({
-      to: [{ email: process.env.TEAM_INBOX }],
-      sender: { email: process.env.FROM_EMAIL || "no-reply@deinedomain.de", name: "Kampagnen-Formular" },
-      subject: `Vorgang ${queueId}: Brief an MdB`,
-      htmlContent: teamHtml
-    });
+    const queueId = Math.random().toString(36).slice(2,8).toUpperCase();
+    const html = `<p><b>Testlauf</b> Vorgang ${queueId}</p>`;
 
-    if (body.copy_to_self) {
+    // Nur EINE Testmail ans Team schicken (copy_to_self lassen wir weg)
+    try {
       await api.sendTransacEmail({
-        to: [{ email: body.email }],
-        sender: { email: process.env.FROM_EMAIL || "no-reply@deinedomain.de", name: "Kampagnen-Formular" },
-        subject: `Kopie – Vorgang ${queueId}`,
-        htmlContent: `<p>Danke! Wir versenden deinen Brief per Post.</p><p>Vorgangs-ID: <b>${queueId}</b></p>`
+        to: [{ email: process.env.TEAM_INBOX }],
+        sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Formular" },
+        subject: `Diagnose – Vorgang ${queueId}`,
+        htmlContent: html
       });
+    } catch (mailErr) {
+      const text = mailErr?.response?.text || mailErr?.message || String(mailErr);
+      return res.status(502).json({ ok:false, error:"brevo_send_failed", message: text });
     }
 
-    res.setHeader("Cache-Control", "no-store");
-    return res.status(200).json({ ok: true, queueId });
-  } catch (err) {
-    const msg = err?.response?.text || err?.message || String(err);
-    return res.status(500).json({ error: "send_failed", message: msg });
+    return res.status(200).json({ ok:true, queueId, note:"Diagnose-Version: 1 Mail an TEAM_INBOX gesendet" });
+  } catch (e) {
+    const msg = e?.message || String(e);
+    return res.status(500).json({ ok:false, error:"server_crash", message: msg });
   }
 });
-
