@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Solarstrom statt Erdgas-Strom – Wir drucken & versenden deinen Brief</title>
+  <meta name="description" content="Reiche deinen Brief an uns ein – wir drucken, kuvertieren und versenden physisch an die zuständige Bundestagsabgeordnete.">
+
+  <!-- relativer Pfad zur CSS-Datei -->
+  <link rel="stylesheet" href="assets/styles.css">
+
+  <!-- Zusatz-CSS: 3-Spalten-Grid -->
+  <style>
+    .page {
+      display: grid;
+      grid-template-columns: 1fr minmax(0, 920px) 1fr;
+      min-height: 100dvh;
+    }
+    .middle { grid-column: 2; width: 100%; }
+    .hero {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; flex-wrap: wrap; text-align: center;
+    }
+    /* Logo jetzt größer */
+    .hero img { max-height: 200px; width: auto; }
+    .hero .cta { display: inline-block; margin-top: 8px; }
+    main.middle > section { margin: 20px 0; }
+    footer .legal { text-align: center; display: block; }
+    .notice{padding:12px;border-radius:8px;margin-top:12px;display:none}
+    .notice.ok{background:#e6ffed;color:#07401c;border:1px solid #b2f5c1}
+    .notice.err{background:#ffe9e9;color:#611a15;border:1px solid #ffd0d0}
+  </style>
+</head>
+<body>
+
+  <div class="page"><!-- 3-Spalten-Raster -->
+
+    <header class="site-header middle">
+      <div class="hero">
+        <img src="assets/NeuSolarstromstattErdgasstrom - weiss.png"
+             alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+        <div>
+          <p class="tagline">Du schreibst den Brief – wir übernehmen Ausdruck und Postversand an die Abgeordneten.</p>
+          <a class="cta" href="#brief">Brief einreichen</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="middle">
+      <section class="explainer">
+        <h2>So funktioniert’s</h2>
+        <ol>
+          <li>Du verfasst deinen Brief (Vorlagen vorhanden) und gibst deine <strong>Absenderadresse</strong> an.</li>
+          <li>Der Brief geht <strong>an uns</strong> und landet in der Druck-&amp;Post-Warteschlange.</li>
+          <li>Wir drucken, kuvertieren und versenden physisch an die zuständige/n MdB.</li>
+        </ol>
+        <p>Wir verarbeiten deine Daten ausschließlich zur Durchführung des Postversands (Details in der Datenschutzerklärung).</p>
+      </section>
+
+      <section id="brief" class="form-section">
+        <h2>Brief einreichen</h2>
+        <!-- Achtung: action für Vercel-Serverless-Funktion auf /api/queue stellen -->
+        <form id="campaign-form" method="post" action="/api/queue">
+          <fieldset>
+            <legend>Ziel-Abgeordnete:r</legend>
+            <p>Standard: Wir ermitteln die Postanschrift anhand deiner PLZ und unseres Adressverzeichnisses.</p>
+            <div class="grid">
+              <div>
+                <label for="zip">Deine PLZ *</label>
+                <input id="zip" name="zip" pattern="\d{5}" required placeholder="z. B. 10969">
+              </div>
+              <div>
+                <label for="city">Ort *</label>
+                <input id="city" name="city" required>
+              </div>
+            </div>
+            <label for="mp_name">Name der/s Abgeordneten (optional)</label>
+            <input id="mp_name" name="mp_name" placeholder="z. B. Max Mustermann, MdB">
+          </fieldset>
+
+          <fieldset>
+            <legend>Deine Angaben (Absender:in)</legend>
+            <div class="grid">
+              <div>
+                <label for="first_name">Vorname *</label>
+                <input id="first_name" name="first_name" required>
+              </div>
+              <div>
+                <label for="last_name">Nachname *</label>
+                <input id="last_name" name="last_name" required>
+              </div>
+            </div>
+
+            <label for="email">E-Mail für Rückfragen/Kopie *</label>
+            <input id="email" name="email" type="email" required>
+
+            <label for="street">Straße &amp; Nr. *</label>
+            <input id="street" name="street" required>
+
+            <div class="grid">
+              <div>
+                <label for="sender_zip">PLZ (Absender:in) *</label>
+                <input id="sender_zip" name="sender_zip" pattern="\d{5}" required>
+              </div>
+              <div>
+                <label for="sender_city">Ort (Absender:in) *</label>
+                <input id="sender_city" name="sender_city" required>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Brief</legend>
+            <div class="grid">
+              <div>
+                <label for="subject">Betreff *</label>
+                <input id="subject" name="subject" required value="Solarstrom vor Erdgas-Strom – bitte setzen Sie klare Prioritäten">
+              </div>
+              <div>
+                <label for="letter_style">Stil-Vorlage</label>
+                <select id="letter_style" name="letter_style">
+                  <option value="neutral">Neutral / sachlich</option>
+                  <option value="sozial">Sozial-ökologisch</option>
+                  <option value="wirtschaft">Wirtschaft &amp; Mittelstand</option>
+                </select>
+              </div>
+            </div>
+
+            <label for="message">Brieftext *</label>
+            <textarea id="message" name="message" rows="12" required>Sehr geehrte:r {Anrede_Name},
+
+bitte setzen Sie sich dafür ein, dass Solar-Direktstrom in Deutschland eindeutig Vorrang vor Erdgas-Strom hat – rechtlich wie praktisch. Es braucht:
+• klare Prioritäten in Gesetzen und Verordnungen,
+• Netz- und Marktdesign, das flexible Direktnutzung fördert,
+• weniger Hürden für Prosumer, Kommunen und KMU.
+
+Das stärkt Versorgungssicherheit, senkt Kosten und schützt unsere Lebensgrundlagen.
+
+Mit freundlichen Grüßen
+{Vorname} {Nachname}
+{Straße} {PLZ} {Ort}</textarea>
+
+            <label class="checkbox-inline">
+              <input id="consent_print" name="consent_print" type="checkbox" required>
+              Ich willige ein, dass mein Brief an das Kampagnenteam übermittelt, für den <strong>Postversand</strong> aufbereitet
+              und in meinem Namen mit meiner <strong>Absenderadresse</strong> physisch versendet wird.
+            </label>
+
+            <label class="checkbox-inline">
+              <input id="copy_to_self" name="copy_to_self" type="checkbox" checked> Kopie an mich per E-Mail senden
+            </label>
+          </fieldset>
+
+          <div class="actions">
+            <button type="submit">In Druckwarteschlange einreichen</button>
+          </div>
+          <p class="disclaimer">Hinweis: Du erhältst eine Bestätigung mit Vorgangs-ID.</p>
+        </form>
+
+        <div id="ok" class="notice ok">Danke! Wir haben deinen Brief erhalten. Vorgangs-ID: <span id="qid"></span></div>
+        <div id="err" class="notice err">Uups – das hat nicht geklappt. Bitte versuch es später noch einmal.</div>
+      </section>
+
+      <section class="faq">
+        <h2>FAQ</h2>
+        <details><summary>Welche Absenderdaten werden aufgedruckt?</summary><p>Standardmäßig Name, Straße, PLZ/Ort wie angegeben – notwendig für postalische Kommunikation.</p></details>
+        <details><summary>Wie wählt ihr die MdB-Adresse?</summary><p>Über unser Adressverzeichnis (Bundestag/Wahlkreis). Standard ist die Bundestagsadresse.</p></details>
+        <details><summary>Welche Daten speichert ihr?</summary><p>Nur das Notwendige für Nachweis, Druck &amp; Versand (Löschkonzept siehe Datenschutz).</p></details>
+      </section>
+    </main>
+
+    <footer class="site-footer middle">
+      <nav class="legal">
+        <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+      </nav>
+      <p style="text-align:center">© Kampagne „Solarstrom statt Erdgas-Strom“</p>
+    </footer>
+
+  </div><!-- /page -->
+
+  <script>
+    // JSON-Submit an /api/queue (Vercel)
+    const form = document.getElementById('campaign-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.copy_to_self = form.querySelector('#copy_to_self').checked;
+      document.getElementById('ok').style.display = 'none';
+      document.getElementById('err').style.display = 'none';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if(!res.ok) throw new Error('bad status');
+        const json = await res.json();
+        document.getElementById('qid').textContent = json.queueId || json.queue_id || '–';
+        document.getElementById('ok').style.display = 'block';
+        form.reset();
+      } catch (err) {
+        document.getElementById('err').style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

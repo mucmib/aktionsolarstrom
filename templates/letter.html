@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><title>Brief an MdB – {mp_name}</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;font-size:12pt;line-height:1.4;margin:30mm 20mm}
+  header{margin-bottom:16mm}
+  .from,.to{white-space:pre-line}
+  .date{text-align:right;margin-top:6mm}
+  .subject{font-weight:bold;margin:10mm 0 6mm}
+  footer{margin-top:20mm;font-size:10pt;color:#555}
+</style>
+</head>
+<body>
+<header>
+  <div class="from">{first_name} {last_name}
+{street}
+{sender_zip} {sender_city}</div>
+  <div class="date">{date}</div>
+  <div class="to">{mp_name}
+{mp_address_line1}
+{mp_address_line2}
+{mp_postcode} {mp_city}</div>
+</header>
+
+<div class="subject">{subject}</div>
+
+<p>Sehr geehrte:r {anrede_name},</p>
+
+{message_html}
+
+<p>Mit freundlichen Grüßen<br><br>{first_name} {last_name}</p>
+
+<footer>Vorgangs-ID: {queue_id} · Kampagne „Solarstrom statt Erdgas-Strom“</footer>
+</body></html>
