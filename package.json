@@ -1,5 +1,7 @@
 {
   "type": "module",
   "private": true,
-  "dependencies": { "sib-api-v3-sdk": "^8.5.0" }
+  "dependencies": {
+    "@getbrevo/brevo": "^2.0.0"
+  }
 }
