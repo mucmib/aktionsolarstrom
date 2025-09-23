@@ -32,13 +32,12 @@ export default allowCors(async function handler(req, res) {
 
   // --- Brevo AUTH für sib-api-v3-sdk ---
   const defaultClient = SibApiV3Sdk.ApiClient.instance;
-  // API-Key
-  defaultClient.authentications["api-key"].apiKey = process.env.BREVO_API_KEY;
-  // (optional) Partner-Key, falls vorhanden:
-  if (defaultClient.authentications["partner-key"]) {
-    defaultClient.authentications["partner-key"].apiKey = process.env.BREVO_API_KEY;
-  }
-  const emailApi = new SibApiV3Sdk.TransactionalEmailsApi();
+defaultClient.authentications["api-key"].apiKey = process.env.BREVO_API_KEY;
+// optional:
+if (defaultClient.authentications["partner-key"]) {
+  defaultClient.authentications["partner-key"].apiKey = process.env.BREVO_API_KEY;
+}
+const emailApi = new SibApiV3Sdk.TransactionalEmailsApi();
   // --------------------------------------
 
   const queueId = Math.random().toString(36).slice(2, 8).toUpperCase();
