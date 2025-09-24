@@ -8,10 +8,10 @@
   <style>
     body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }
     header { background: #000; color: #fff; padding: 20px; text-align: center; }
-    header img { max-height: 360px; }
+    header img { max-height: 60px; }
     main { max-width: 800px; margin: 20px auto; padding: 20px; }
     form label { display: block; margin-top: 15px; font-weight: bold; }
-    form input, form textarea, form select {
+    form input, form textarea {
       width: 100%; padding: 10px; margin-top: 5px;
       border: 1px solid #ccc; border-radius: 4px;
     }
@@ -81,7 +81,7 @@
 
       <label for="message">Brieftext</label>
       <textarea id="message" name="message">
-Sehr geehrte/r {Anrede_Name},
+Sehr geehrte Damen und Herren,
 
 bitte setzen Sie sich dafür ein, dass Solar-Direktstrom in Deutschland eindeutig Vorrang vor Erdgas-Strom hat – rechtlich wie praktisch. Es braucht:
 - klare Prioritäten in Gesetzen und Verordnungen,
@@ -114,19 +114,36 @@ Mit freundlichen Grüßen
 
   <script>
     const form = document.getElementById('letterForm');
+    const successBox = document.getElementById('successMessage');
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(form);
-      const res = await fetch(form.action, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (data.ok) {
-        document.getElementById('successMessage').style.display = 'block';
-        document.getElementById('successMessage').innerText = 
-          "Danke! Wir haben Ihren Brief erhalten. Vorgangs-ID: " + data.queueId;
+
+      // Form -> Plain Object
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      // Checkboxen sauber in Boolean umwandeln
+      data.postversand = !!form.querySelector('input[name="postversand"]')?.checked;
+      data.copy        = !!form.querySelector('input[name="copy"]')?.checked;
+
+      // JSON senden
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      let json;
+      try { json = await res.json(); } catch { json = {}; }
+
+      if (res.ok && json.queueId) {
+        successBox.style.display = 'block';
+        successBox.textContent = 'Danke! Wir haben Ihren Brief erhalten. Vorgangs-ID: ' + json.queueId;
         form.reset();
+      } else {
+        alert('Fehler: ' + (json.error || json.detail || ('HTTP ' + res.status)));
       }
     });
   </script>
 </body>
 </html>
-
