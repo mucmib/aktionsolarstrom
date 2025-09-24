@@ -47,36 +47,36 @@
     <form id="letterForm" method="post" action="/api/queue">
       <!-- Empfänger -->
       <label for="plz">Ihre PLZ *</label>
-      <input type="text" id="plz" name="plz" required>
+      <input type="text" id="plz" name="zip" required>
 
       <label for="ort">Ort *</label>
-      <input type="text" id="ort" name="ort" required>
+      <input type="text" id="ort" name="city" required>
 
       <label for="abgeordneter">Name der/s Abgeordneten (optional)</label>
-      <input type="text" id="abgeordneter" name="abgeordneter">
+      <input type="text" id="abgeordneter" name="mp_name">
 
       <!-- Absender -->
       <label for="vorname">Vorname *</label>
-      <input type="text" id="vorname" name="vorname" required>
+      <input type="text" id="vorname" name="first_name" required>
 
       <label for="nachname">Nachname *</label>
-      <input type="text" id="nachname" name="nachname" required>
+      <input type="text" id="nachname" name="last_name" required>
 
       <label for="email">E-Mail *</label>
       <input type="email" id="email" name="email" required>
 
       <label for="strasse">Straße & Nr. *</label>
-      <input type="text" id="strasse" name="strasse" required>
+      <input type="text" id="strasse" name="street" required>
 
       <label for="plz_abs">PLZ (Absender:in) *</label>
-      <input type="text" id="plz_abs" name="plz_abs" required>
+      <input type="text" id="plz_abs" name="sender_zip" required>
 
       <label for="ort_abs">Ort (Absender:in) *</label>
-      <input type="text" id="ort_abs" name="ort_abs" required>
+      <input type="text" id="ort_abs" name="sender_city" required>
 
       <!-- Brief -->
       <label for="subject">Betreff *</label>
-      <input type="text" id="subject" name="subject" 
+      <input type="text" id="subject" name="subject"
              value="Solarstrom vor Erdgas-Strom – bitte setzen Sie klare Prioritäten" required>
 
       <label for="message">Brieftext</label>
@@ -97,10 +97,10 @@ Mit freundlichen Grüßen
 
       <!-- Optionen -->
       <div class="checkboxes">
-        <label><input type="checkbox" name="postversand" required> 
+        <label><input type="checkbox" id="consent_print" name="consent_print" required>
           Ich willige ein, dass mein Brief an das Kampagnenteam übermittelt, für den Postversand aufbereitet und in meinem Namen mit meiner Absenderadresse physisch versendet wird.
         </label>
-        <label><input type="checkbox" name="copy"> 
+        <label><input type="checkbox" id="copy_to_self" name="copy_to_self">
           Kopie an mich per E-Mail senden
         </label>
       </div>
@@ -122,19 +122,17 @@ Mit freundlichen Grüßen
       // Form -> Plain Object
       const data = Object.fromEntries(new FormData(form).entries());
 
-      // Checkboxen sauber in Boolean umwandeln
-      data.postversand = !!form.querySelector('input[name="postversand"]')?.checked;
-      data.copy        = !!form.querySelector('input[name="copy"]')?.checked;
+      // Checkboxen als Boolean
+      data.consent_print = !!document.getElementById('consent_print').checked;
+      data.copy_to_self  = !!document.getElementById('copy_to_self').checked;
 
-      // JSON senden
       const res = await fetch(form.action, {
         method: 'POST',
         headers: { 'Content-Type':'application/json' },
         body: JSON.stringify(data)
       });
 
-      let json;
-      try { json = await res.json(); } catch { json = {}; }
+      let json; try { json = await res.json(); } catch { json = {}; }
 
       if (res.ok && json.queueId) {
         successBox.style.display = 'block';
