@@ -5,79 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aktionsolarstrom</title>
   <style>
-    <script>
-/**
- * Lädt PLZ→WK und WK→MdB und befüllt das Formular.
- * Erwartet folgende Feld-IDs in deiner bestehenden Seite:
- *  - PLZ:           #plz
- *  - MdB-Name:      #abgeordneter
- *  - Brieftext:     #message
- * JSON-Dateien:
- *  - /assets/data/plz_to_wk.json
- *  - /assets/data/wk_to_mdb.json   (liegt schon vor – 276 WK)
- */
-
-async function findMdBByPLZ(plz) {
-  try {
-    const [plzMap, wkMap] = await Promise.all([
-      fetch('/assets/data/plz_to_wk.json').then(r => r.ok ? r.json() : null),
-      fetch('/assets/data/wk_to_mdb.json').then(r => r.ok ? r.json() : null),
-    ]);
-    if (!plzMap || !wkMap) return null;
-
-    const wks = plzMap[plz];
-    if (!wks || !wks.length) return null;
-
-    // MVP: nimm den ersten Wahlkreis; (bei Mehrtreffern später Auswahl-UI)
-    const wk = String(wks[0]);
-    return wkMap[wk] || null;
-  } catch {
-    return null;
-  }
-}
-
-function ensureIntroOnce(textarea, anredeZeile) {
-  const current = textarea.value || '';
-  // Nur dann voranstellen, wenn noch keine Anrede am Anfang steht
-  if (!/^\s*Sehr\s/i.test(current)) {
-    textarea.value = anredeZeile + "\n\n" + current.trimStart();
-  }
-}
-
-document.getElementById('plz')?.addEventListener('change', async (e) => {
-  const plz = (e.target.value || '').trim();
-  if (!/^\d{5}$/.test(plz)) return;
-
-  const mpInput = document.getElementById('abgeordneter');
-  const msg = document.getElementById('message');
-  if (!msg) return;
-
-  const mdb = await findMdBByPLZ(plz);
-
-  if (mdb) {
-    if (mpInput) mpInput.value = mdb.mdb_name || '';
-    // Anrede aus JSON verwenden
-    const anrede = (mdb.anrede && mdb.anrede.trim()) ? mdb.anrede.trim() : "Sehr geehrte Damen und Herren";
-    ensureIntroOnce(msg, anrede);
-    // Optional: versteckte Adresse mitschicken (falls gewünscht)
-    let addr = document.getElementById('mp_address');
-    if (!addr) {
-      addr = document.createElement('input');
-      addr.type = 'hidden';
-      addr.id = 'mp_address';
-      addr.name = 'mp_address';
-      msg.form?.appendChild(addr);
-    }
-    addr.value = mdb.bundestag_address || '';
-  } else {
-    // Fallback für fehlende/noch nicht abgedeckte WK
-    if (mpInput) mpInput.value = '';
-    ensureIntroOnce(msg, "Sehr geehrte Damen und Herren");
-  }
-});
-</script>
-
-    body {
+      body {
       margin: 0;
       padding: 0;
       background-color: #000000; /* Schwarzer Hintergrund */
@@ -110,6 +38,7 @@ document.getElementById('plz')?.addEventListener('change', async (e) => {
   <img src="assets/logo.png" alt="Kampagnenlogo">
 </body>
 </html>
+
 
 
 
