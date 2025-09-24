@@ -251,77 +251,92 @@ Mit freundlichen Grüßen
 
   <!-- Auto-MdB: PLZ → Wahlkreis → MdB (mit Fallback „Sehr geehrte Damen und Herren“) -->
   <script>
-  (async function () {
-    const $ = (sel) => document.querySelector(sel);
-    const tryAll = (sels) => sels.map($).find(Boolean);
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const tryAll = (sels) => sels.map($).find(Boolean);
 
-    const elPLZ = tryAll(['#plz', '#zip', 'input[name="plz"]', 'input[name="zip"]']);
-    const elMP  = tryAll(['#abgeordneter', '#mp_name', 'input[name="abgeordneter"]', 'input[name="mp_name"]']);
-    const elMSG = tryAll(['#message', 'textarea[name="message"]']);
+  const elPLZ = tryAll(['#plz', '#zip', 'input[name="plz"]', 'input[name="zip"]']);
+  const elMP  = tryAll(['#abgeordneter', '#mp_name', 'input[name="abgeordneter"]', 'input[name="mp_name"]']);
+  const elMSG = tryAll(['#message', 'textarea[name="message"]']);
 
-    if (!elPLZ || !elMSG) return; // ohne PLZ/Message kein Autofill
+  // kleiner Debug-Hinweis unten am Button
+  const info = document.createElement('div');
+  info.style.fontSize = '12px';
+  info.style.color = '#666';
+  info.style.marginTop = '8px';
+  const actions = document.querySelector('.actions');
+  if (actions) actions.appendChild(info);
 
-    async function loadJson(url) {
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) throw new Error(url + ' -> ' + res.status);
-      return res.json();
+  if (!elPLZ || !elMSG) {
+    info.textContent = 'Auto-MdB deaktiviert: PLZ- oder Brieftext-Feld nicht gefunden.';
+    return;
+  }
+
+  async function loadJson(url) {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(url + ' → HTTP ' + res.status);
+    return res.json();
+  }
+
+  async function findMdBByPLZ(plz) {
+    // ACHTUNG: relative Pfade ohne führenden Slash
+    const [plzMap, wkMap] = await Promise.all([
+      loadJson('assets/data/plz_to_wk.json'),
+      loadJson('assets/data/wk_to_mdb.json'),
+    ]);
+    const wks = plzMap[plz];
+    if (!wks || !wks.length) return null;
+    const wk = String(wks[0]);
+    return wkMap[wk] || null;
+  }
+
+  function ensureIntroOnce(textarea, anredeZeile) {
+    const current = textarea.value || '';
+    if (!/^\s*Sehr\s/i.test(current)) {
+      textarea.value = (anredeZeile + "\n\n" + current.trimStart()).trim();
     }
+  }
 
-    async function findMdBByPLZ(plz) {
-      const [plzMap, wkMap] = await Promise.all([
-        loadJson('/assets/data/plz_to_wk.json'),
-        loadJson('/assets/data/wk_to_mdb.json'),
-      ]);
-      const wks = plzMap[plz];
-      if (!wks || !wks.length) return null;
-      const wk = String(wks[0]); // MVP: ersten nehmen
-      return wkMap[wk] || null;
+  async function handlePLZChange() {
+    const plz = (elPLZ.value || '').trim();
+    if (!/^\d{5}$/.test(plz)) {
+      info.textContent = 'Bitte 5-stellige PLZ eingeben.';
+      return;
     }
-
-    function ensureIntroOnce(textarea, anredeZeile) {
-      const current = textarea.value || '';
-      if (!/^\s*Sehr\s/i.test(current)) {
-        textarea.value = (anredeZeile + "\n\n" + current.trimStart()).trim();
-      }
-    }
-
-    async function handlePLZChange() {
-      const plz = (elPLZ.value || '').trim();
-      if (!/^\d{5}$/.test(plz)) return;
-
-      try {
-        const mdb = await findMdBByPLZ(plz);
-        if (mdb) {
-          if (elMP) elMP.value = mdb.mdb_name || '';
-          const anrede = (mdb.anrede && mdb.anrede.trim()) ? mdb.anrede.trim() : "Sehr geehrte Damen und Herren";
-          ensureIntroOnce(elMSG, anrede);
-
-          // versteckte Adresse mitsenden (optional)
-          let addr = document.getElementById('mp_address');
-          if (!addr) {
-            addr = document.createElement('input');
-            addr.type = 'hidden';
-            addr.id = 'mp_address';
-            addr.name = 'mp_address';
-            elMSG.form && elMSG.form.appendChild(addr);
-          }
-          addr.value = mdb.bundestag_address || '';
-          console.log('Auto-MdB:', plz, '→', mdb.mdb_name);
-        } else {
-          if (elMP) elMP.value = '';
-          ensureIntroOnce(elMSG, "Sehr geehrte Damen und Herren");
-          console.warn('Auto-MdB:', plz, '→ kein WK/MdB gefunden (Fallback gesetzt).');
+    info.textContent = 'Suche MdB für PLZ ' + plz + ' …';
+    try {
+      const mdb = await findMdBByPLZ(plz);
+      if (mdb) {
+        if (elMP) elMP.value = mdb.mdb_name || '';
+        const anrede = (mdb.anrede && mdb.anrede.trim()) ? mdb.anrede.trim() : 'Sehr geehrte Damen und Herren';
+        ensureIntroOnce(elMSG, anrede);
+        let addr = document.getElementById('mp_address');
+        if (!addr) {
+          addr = document.createElement('input');
+          addr.type = 'hidden';
+          addr.id = 'mp_address';
+          addr.name = 'mp_address';
+          elMSG.form && elMSG.form.appendChild(addr);
         }
-      } catch (err) {
-        console.error('Auto-MdB Fehler:', err);
-        ensureIntroOnce(elMSG, "Sehr geehrte Damen und Herren");
+        addr.value = mdb.bundestag_address || '';
+        info.textContent = 'Treffer: ' + mdb.mdb_name;
+      } else {
+        if (elMP) elMP.value = '';
+        ensureIntroOnce(elMSG, 'Sehr geehrte Damen und Herren');
+        info.textContent = 'Kein Treffer für diese PLZ (Fallback gesetzt).';
       }
+    } catch (e) {
+      info.textContent = 'Fehler: ' + e.message;
+      ensureIntroOnce(elMSG, 'Sehr geehrte Damen und Herren');
     }
+  }
 
-    ['change','blur'].forEach(evt => elPLZ.addEventListener(evt, handlePLZChange));
-    if (elPLZ.value && /^\d{5}$/.test(elPLZ.value.trim())) handlePLZChange();
-  })();
-  </script>
+  ['change','blur'].forEach(evt => elPLZ.addEventListener(evt, handlePLZChange));
+  if (elPLZ.value && /^\d{5}$/.test(elPLZ.value.trim())) handlePLZChange();
+})();
+</script>
+
 
 </body>
 </html>
+
