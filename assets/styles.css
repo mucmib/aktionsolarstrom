@@ -14,4 +14,9 @@ button:hover { filter: brightness(0.95); }
 .site-header a.cta { background:var(--brand); color:#222; padding:8px 12px; border-radius:999px; text-decoration:none; font-weight:700; }
 .site-footer { margin:40px 0; color:#555; }
 .site-footer a { color:inherit; }
+/* Zusatz: Tagline in Weiß */
+.tagline {
+  color: #ffffff;
+}
+
 
