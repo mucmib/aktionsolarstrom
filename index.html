@@ -47,9 +47,95 @@
       <section id="brief" class="form-section">
         <h2>Brief einreichen</h2>
         <form id="campaign-form" method="post" action="/api/queue">
+          <fieldset>
+            <legend>Ziel-Abgeordnete:r</legend>
+            <p>Standard: Wir ermitteln die Postanschrift anhand Ihrer PLZ und unseres Adressverzeichnisses.</p>
+            <div class="grid">
+              <div>
+                <label for="zip">Ihre PLZ *</label>
+                <input id="zip" name="zip" pattern="\d{5}" required placeholder="z. B. 10969">
+              </div>
+              <div>
+                <label for="city">Ort *</label>
+                <input id="city" name="city" required>
+              </div>
+            </div>
+            <label for="mp_name">Name der/s Abgeordneten (optional)</label>
+            <input id="mp_name" name="mp_name" placeholder="z. B. Max Mustermann, MdB">
+          </fieldset>
 
-          <!-- Formularelemente bleiben unverändert -->
-          <!-- … -->
+          <fieldset>
+            <legend>Ihre Angaben (Absender:in)</legend>
+            <div class="grid">
+              <div>
+                <label for="first_name">Vorname *</label>
+                <input id="first_name" name="first_name" required>
+              </div>
+              <div>
+                <label for="last_name">Nachname *</label>
+                <input id="last_name" name="last_name" required>
+              </div>
+            </div>
+
+            <label for="email">E-Mail für Rückfragen/Kopie *</label>
+            <input id="email" name="email" type="email" required>
+
+            <label for="street">Straße &amp; Nr. *</label>
+            <input id="street" name="street" required>
+
+            <div class="grid">
+              <div>
+                <label for="sender_zip">PLZ (Absender:in) *</label>
+                <input id="sender_zip" name="sender_zip" pattern="\d{5}" required>
+              </div>
+              <div>
+                <label for="sender_city">Ort (Absender:in) *</label>
+                <input id="sender_city" name="sender_city" required>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Brief</legend>
+            <div class="grid">
+              <div>
+                <label for="subject">Betreff *</label>
+                <input id="subject" name="subject" required value="Solarstrom vor Erdgas-Strom – bitte setzen Sie klare Prioritäten">
+              </div>
+              <div>
+                <label for="letter_style">Stil-Vorlage</label>
+                <select id="letter_style" name="letter_style">
+                  <option value="neutral">Neutral / sachlich</option>
+                  <option value="sozial">Sozial-ökologisch</option>
+                  <option value="wirtschaft">Wirtschaft &amp; Mittelstand</option>
+                </select>
+              </div>
+            </div>
+
+            <label for="message">Brieftext *</label>
+            <textarea id="message" name="message" rows="12" required>Sehr geehrte:r {Anrede_Name},
+
+bitte setzen Sie sich dafür ein, dass Solar-Direktstrom in Deutschland eindeutig Vorrang vor Erdgas-Strom hat – rechtlich wie praktisch. Es braucht:
+• klare Prioritäten in Gesetzen und Verordnungen,
+• Netz- und Marktdesign, das flexible Direktnutzung fördert,
+• weniger Hürden für Prosumer, Kommunen und KMU.
+
+Das stärkt Versorgungssicherheit, senkt Kosten und schützt unsere Lebensgrundlagen.
+
+Mit freundlichen Grüßen
+{Vorname} {Nachname}
+{Straße} {PLZ} {Ort}</textarea>
+
+            <label class="checkbox-inline">
+              <input id="consent_print" name="consent_print" type="checkbox" required>
+              Ich willige ein, dass mein Brief an das Kampagnenteam übermittelt, für den <strong>Postversand</strong> aufbereitet
+              und in meinem Namen mit meiner <strong>Absenderadresse</strong> physisch versendet wird.
+            </label>
+
+            <label class="checkbox-inline">
+              <input id="copy_to_self" name="copy_to_self" type="checkbox" checked> Kopie an mich per E-Mail senden
+            </label>
+          </fieldset>
 
           <div class="actions">
             <button type="submit">In Druckwarteschlange einreichen</button>
@@ -59,6 +145,7 @@
             Hinweis: Sie erhalten eine Bestätigung mit Vorgangs-ID.
           </p>
 
+          <!-- Bestätigungsausgabe -->
           <div id="confirmation"></div>
         </form>
       </section>
@@ -96,6 +183,7 @@
 
       if (data.queueId) {
         conf.innerText = `Danke! Wir haben Ihren Brief erhalten. Vorgangs-ID: ${data.queueId}`;
+        conf.style.color = "green";
       } else {
         conf.innerText = "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.";
         conf.style.color = "red";
@@ -104,4 +192,3 @@
   </script>
 </body>
 </html>
-
