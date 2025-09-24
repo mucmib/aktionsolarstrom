@@ -1,9 +1,10 @@
+<meta charset="utf-8">
 <!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Solarstrom statt Erdgas-Strom – Brief einreichen</title>
+  <title>Solarstrom statt Erdgas-Strom â€“ Brief einreichen</title>
   <link rel="stylesheet" href="assets/styles.css">
   <style>
     .page{display:grid;grid-template-columns:1fr minmax(0,920px) 1fr;min-height:100dvh}
@@ -25,7 +26,7 @@
         <img src="assets/logo.png" alt="Kampagnenlogo">
         <div>
           <h1>Solarstrom statt Erdgas-Strom</h1>
-          <p class="tagline">Du schreibst den Brief – wir übernehmen Ausdruck & Postversand an die Abgeordneten.</p>
+          <p class="tagline">Du schreibst den Brief â€“ wir Ã¼bernehmen Ausdruck & Postversand an die Abgeordneten.</p>
           <a class="cta" href="#brief">Brief einreichen</a>
         </div>
       </div>
@@ -33,18 +34,18 @@
 
     <main class="middle">
       <section class="explainer">
-        <h2>So funktioniert’s</h2>
+        <h2>So funktioniertâ€™s</h2>
         <ol>
           <li>Brieftext verfassen und <strong>Absenderadresse</strong> angeben.</li>
           <li>Der Brief geht an unser Kampagnenteam in die Druck-&-Post-Warteschlange.</li>
-          <li>Wir drucken, kuvertieren und versenden physisch an die zuständige/n MdB.</li>
+          <li>Wir drucken, kuvertieren und versenden physisch an die zustÃ¤ndige/n MdB.</li>
         </ol>
       </section>
 
       <section id="brief" class="form-section">
         <h2>Brief einreichen</h2>
 
-        <div id="ok" class="notice ok">Danke! Wir haben deinen Brief erhalten. Vorgangs-ID: <b id="qid">–</b></div>
+        <div id="ok" class="notice ok">Danke! Wir haben deinen Brief erhalten. Vorgangs-ID: <b id="qid">â€“</b></div>
         <div id="err" class="notice err"></div>
 
         <form id="campaign-form" method="post" action="/api/queue">
@@ -71,7 +72,7 @@
               <div><label for="last_name">Nachname *</label><input id="last_name" name="last_name" required></div>
             </div>
             <label for="email">E-Mail *</label><input id="email" name="email" type="email" required>
-            <label for="street">Straße & Nr. *</label><input id="street" name="street" required>
+            <label for="street">StraÃŸe & Nr. *</label><input id="street" name="street" required>
             <div class="grid">
               <div><label for="sender_zip">PLZ *</label><input id="sender_zip" name="sender_zip" pattern="\d{5}" required></div>
               <div><label for="sender_city">Ort *</label><input id="sender_city" name="sender_city" required></div>
@@ -81,12 +82,12 @@
           <fieldset>
             <legend>Brief</legend>
             <div class="grid">
-              <div><label for="subject">Betreff *</label><input id="subject" name="subject" required value="Solarstrom vor Erdgas-Strom – bitte setzen Sie klare Prioritäten"></div>
+              <div><label for="subject">Betreff *</label><input id="subject" name="subject" required value="Solarstrom vor Erdgas-Strom â€“ bitte setzen Sie klare PrioritÃ¤ten"></div>
               <div>
                 <label for="letter_style">Stil-Vorlage</label>
                 <select id="letter_style" name="letter_style">
                   <option value="neutral">Neutral / sachlich</option>
-                  <option value="sozial">Sozial-ökologisch</option>
+                  <option value="sozial">Sozial-Ã¶kologisch</option>
                   <option value="wirtschaft">Wirtschaft & Mittelstand</option>
                 </select>
               </div>
@@ -94,18 +95,18 @@
             <label for="message">Brieftext *</label>
             <textarea id="message" name="message" rows="10" required>Sehr geehrte:r {Anrede_Name},
 
-bitte setzen Sie sich dafür ein, dass Solar-Direktstrom in Deutschland eindeutig Vorrang vor Erdgas-Strom hat – rechtlich wie praktisch. Es braucht:
-• klare Prioritäten in Gesetzen und Verordnungen,
-• Netz- und Marktdesign, das flexible Direktnutzung fördert,
-• weniger Hürden für Prosumer, Kommunen und KMU.
+bitte setzen Sie sich dafÃ¼r ein, dass Solar-Direktstrom in Deutschland eindeutig Vorrang vor Erdgas-Strom hat â€“ rechtlich wie praktisch. Es braucht:
+â€¢ klare PrioritÃ¤ten in Gesetzen und Verordnungen,
+â€¢ Netz- und Marktdesign, das flexible Direktnutzung fÃ¶rdert,
+â€¢ weniger HÃ¼rden fÃ¼r Prosumer, Kommunen und KMU.
 
-Mit freundlichen Grüßen
+Mit freundlichen GrÃ¼ÃŸen
 {Vorname} {Nachname}
-{Straße} {PLZ} {Ort}</textarea>
+{StraÃŸe} {PLZ} {Ort}</textarea>
 
             <label class="checkbox-inline">
               <input id="consent_print" name="consent_print" type="checkbox" required>
-              Ich willige ein, dass mein Brief für den Postversand verarbeitet und in meinem Namen mit meiner Absenderadresse physisch versendet wird.
+              Ich willige ein, dass mein Brief fÃ¼r den Postversand verarbeitet und in meinem Namen mit meiner Absenderadresse physisch versendet wird.
             </label>
 
             <label class="checkbox-inline">
@@ -115,21 +116,21 @@ Mit freundlichen Grüßen
           </fieldset>
 
           <div class="actions"><button type="submit">In Druckwarteschlange einreichen</button></div>
-          <p class="disclaimer">Hinweis: Du erhältst eine Bestätigung mit Vorgangs-ID.</p>
+          <p class="disclaimer">Hinweis: Du erhÃ¤ltst eine BestÃ¤tigung mit Vorgangs-ID.</p>
         </form>
       </section>
 
       <section class="faq">
         <h2>FAQ</h2>
-        <details><summary>Welche Absenderdaten werden aufgedruckt?</summary><p>Name, Straße, PLZ/Ort wie angegeben – notwendig für postalische Kommunikation.</p></details>
-        <details><summary>Wie wählt ihr die MdB-Adresse?</summary><p>Über unser Adressverzeichnis (Bundestag/Wahlkreis). Standard ist die Bundestagsadresse.</p></details>
-        <details><summary>Welche Daten speichert ihr?</summary><p>Nur das Nötige für Nachweis, Druck & Versand (Löschkonzept siehe Datenschutz).</p></details>
+        <details><summary>Welche Absenderdaten werden aufgedruckt?</summary><p>Name, StraÃŸe, PLZ/Ort wie angegeben â€“ notwendig fÃ¼r postalische Kommunikation.</p></details>
+        <details><summary>Wie wÃ¤hlt ihr die MdB-Adresse?</summary><p>Ãœber unser Adressverzeichnis (Bundestag/Wahlkreis). Standard ist die Bundestagsadresse.</p></details>
+        <details><summary>Welche Daten speichert ihr?</summary><p>Nur das NÃ¶tige fÃ¼r Nachweis, Druck & Versand (LÃ¶schkonzept siehe Datenschutz).</p></details>
       </section>
     </main>
 
     <footer class="site-footer middle">
-      <nav class="legal"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></nav>
-      <p style="text-align:center">© Kampagne „Solarstrom statt Erdgas-Strom“</p>
+      <nav class="legal"><a href="impressum.html">Impressum</a> Â· <a href="datenschutz.html">Datenschutz</a></nav>
+      <p style="text-align:center">Â© Kampagne â€Solarstrom statt Erdgas-Stromâ€œ</p>
     </footer>
   </div>
 
@@ -158,7 +159,7 @@ Mit freundlichen Grüßen
           err.style.display = 'block';
           return;
         }
-        qid.textContent = json.queueId || '–';
+        qid.textContent = json.queueId || 'â€“';
         ok.style.display = 'block';
         form.reset();
       } catch (e2) {
@@ -169,4 +170,5 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
 
