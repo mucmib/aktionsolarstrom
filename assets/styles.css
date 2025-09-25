@@ -15,8 +15,9 @@ button:hover { filter: brightness(0.95); }
 .site-footer { margin:40px 0; color:#555; }
 .site-footer a { color:inherit; }
 /* Zusatz: Tagline in Weiß */
-.tagline {
-  color: #ffffff;
+.site-header  .tagline {
+  color: #ffffff; important;
 }
+
 
 
