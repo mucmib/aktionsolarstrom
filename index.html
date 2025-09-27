@@ -1,44 +1,189 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aktionsolarstrom</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Solarstrom statt Erdgas-Strom – Info & Mitmachen</title>
+  <meta name="description" content="Alle Infos zur Kampagne Solarstrom statt Erdgas-Strom: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
+  <link rel="stylesheet" href="assets/styles.css">
+
   <style>
-      body {
-      margin: 0;
-      padding: 0;
-      background-color: #000000; /* Schwarzer Hintergrund */
-      color: #ffffff; /* Standard: weißer Text */
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      text-align: center;
+    /* 3-Spalten Layout mit mittlerer Content-Spalte */
+    .page { display:grid; grid-template-columns: 1fr minmax(0, 920px) 1fr; min-height:100dvh; }
+    .middle { grid-column:2; width:100%; }
+
+    /* Hero */
+    .hero {
+      display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap;
+      text-align:center; padding:32px 0;
     }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
+    .hero img { max-height: 220px; width:auto; }
+    .tagline { margin:6px 0 0; font-size:1.05rem; }
+
+    /* Sektionen */
+    main.middle > section { margin: 32px 0; }
+    .lead { font-size:1.15rem; line-height:1.6; }
+    .grid2 { display:grid; gap:18px; grid-template-columns: 1fr; }
+    @media (min-width: 780px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+
+    /* Karten */
+    .card {
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 12px; padding:18px;
+      background:#fff; box-shadow: 0 2px 10px rgba(0,0,0,.04);
     }
-    h2 {
-      font-size: 1.8em;
-      margin-bottom: 30px;
+    .card h3 { margin-top:0 }
+
+    /* Callouts */
+    .callout {
+      border-left: 4px solid #f6b10a; background:#fff8e1; padding:14px 16px; border-radius:8px;
     }
-    img {
-      max-width: 300px;
-      height: auto;
-    }
+
+    /* CTA-Buttons */
+    .cta { display:inline-block; padding:12px 16px; border-radius:10px; text-decoration:none; }
+    .cta.primary { background:#0a7c5b; color:#fff; }
+    .cta.secondary { background:#e9f5f1; color:#0a7c5b; }
+
+    /* Downloadleiste */
+    .downloads a { display:inline-block; margin-right:12px; margin-bottom:8px; }
+
+    /* Footer */
+    footer .legal { text-align:center; display:block; }
   </style>
 </head>
 <body>
-  <h1>In Kürze geht’s los</h1>
-  <h2>Aktion</h2>
-  <img src="assets/logo.png" alt="Kampagnenlogo">
+
+  <div class="page">
+
+    <header class="site-header middle">
+      <div class="hero">
+        <img src="assets/NeuSolarstromstattErdgasstrom - weiss.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+        <div>
+          <h1>Solarstrom statt Erdgas-Strom</h1>
+          <p class="tagline">Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken & versenden physisch.</p>
+          <div style="margin-top:10px">
+            <a class="cta primary" href="#mitmachen">Jetzt mitmachen</a>
+            <a class="cta secondary" href="#material">Materialien</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="middle">
+
+      <!-- Einleitung / aus der hochgeladenen Datei -->
+      <section id="intro">
+        <p class="lead">
+          <!-- TODO: Kurzer einleitender Absatz aus deiner Datei (2–4 Sätze). -->
+          Unsere Kampagne setzt sich dafür ein, dass Solar-Direktstrom in Deutschland klaren Vorrang vor Erdgas-Strom erhält – rechtlich wie praktisch.
+        </p>
+        <div class="callout">
+          <!-- TODO: 1 Kernaussage oder Zahl hervorheben -->
+          <strong>Kernaussage:</strong> Solarstrom senkt Kosten, erhöht Versorgungssicherheit und schützt Klima & Gesundheit.
+        </div>
+      </section>
+
+      <!-- Ziele / Forderungen -->
+      <section id="ziele">
+        <h2>Ziele der Kampagne</h2>
+        <div class="grid2">
+          <div class="card">
+            <h3><!-- TODO: Ziel 1 Titel -->Klare Priorität für Solar-Direktstrom</h3>
+            <p><!-- TODO: Ziel 1 Text -->Gesetzliche Verankerung von Vorrangregeln und Abbau bürokratischer Hürden.</p>
+          </div>
+          <div class="card">
+            <h3><!-- TODO: Ziel 2 Titel -->Netz- & Marktdesign reformieren</h3>
+            <p><!-- TODO: Ziel 2 Text -->Flexibilität belohnen, Eigenverbrauch & Direktnutzung vereinfachen.</p>
+          </div>
+          <div class="card">
+            <h3><!-- TODO: Ziel 3 Titel -->Prosumer & Kommunen stärken</h3>
+            <p><!-- TODO: Ziel 3 Text -->Beteiligungsmodelle, Sharing & kommunale Projekte erleichtern.</p>
+          </div>
+          <div class="card">
+            <h3><!-- TODO: Ziel 4 Titel -->Mittelstand entlasten</h3>
+            <p><!-- TODO: Ziel 4 Text -->Planbare Regeln, fairer Netzzugang, weniger Fixkosten.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hintergrund / aus Dokument -->
+      <section id="hintergrund">
+        <h2>Hintergrund & Argumente</h2>
+        <p>
+          <!-- TODO: 1–3 Absätze aus deiner Datei übernehmen. -->
+          <!-- Tipp: Verwende Zwischenüberschriften <h3> für Lesbarkeit. -->
+        </p>
+        <h3><!-- TODO: Subheadline -->Kosten, Klima & Sicherheit</h3>
+        <ul>
+          <li><!-- TODO: Bullet 1 -->Solarstrom senkt Stromgestehungskosten und Risiken fossiler Preise.</li>
+          <li><!-- TODO: Bullet 2 -->Direktnutzung reduziert Netzbelastung und Verluste.</li>
+          <li><!-- TODO: Bullet 3 -->Dezentrale Anlagen erhöhen die Resilienz.</li>
+        </ul>
+      </section>
+
+      <!-- Materialien / Downloads -->
+      <section id="material">
+        <h2>Materialien & Downloads</h2>
+        <p>Hier finden Sie zentrale Dokumente zur Kampagne – zum Nachlesen und Weitergeben.</p>
+        <div class="downloads">
+          <!-- TODO: PDF/Dateien verlinken (Dateien in /assets/ ablegen) -->
+          <a class="cta secondary" href="assets/DEIN-DOKUMENT.pdf" download>📄 Kampagnenpapier (PDF)</a>
+          <a class="cta secondary" href="assets/Positionspapier.pdf" download>📄 Positionspapier</a>
+          <a class="cta secondary" href="assets/Faktenblatt.pdf" download>📄 Faktenblatt</a>
+        </div>
+      </section>
+
+      <!-- Mitmachen / CTA zur Briefaktion -->
+      <section id="mitmachen">
+        <h2>Mitmachen</h2>
+        <div class="grid2">
+          <div class="card">
+            <h3>Brief an Abgeordnete</h3>
+            <p>
+              Schreiben Sie Ihren Brief – wir übernehmen Ausdruck und Postversand an die zuständige Bundestagsabgeordnete/den zuständigen Abgeordneten.
+            </p>
+            <a class="cta primary" href="index.html#brief">Brief einreichen</a>
+            <!-- Falls diese Seite die neue Startseite wird: den Anker anpassen -->
+          </div>
+          <div class="card">
+            <h3>Aktion teilen</h3>
+            <p>Unterstützen Sie die Kampagne, indem Sie Materialien teilen und Mitstreiter:innen informieren.</p>
+            <a class="cta" href="#material">Materialien ansehen</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ (optional aus Dokument) -->
+      <section id="faq">
+        <h2>FAQ</h2>
+        <details>
+          <summary><!-- TODO -->Warum Vorrang für Solar-Direktstrom?</summary>
+          <p><!-- TODO: Kurzantwort aus Datei -->Weil er Kosten senkt, Netze entlastet und schnell ausbaubar ist.</p>
+        </details>
+        <details>
+          <summary><!-- TODO -->Wie funktioniert der Postversand?</summary>
+          <p>Sie reichen Ihren Brief online ein; wir drucken, kuvertieren und versenden physisch. Details in der Datenschutzerklärung.</p>
+        </details>
+      </section>
+
+    </main>
+
+    <footer class="site-footer middle">
+      <nav class="legal">
+        <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+      </nav>
+      <p style="text-align:center">© Kampagne „Solarstrom statt Erdgas-Strom“</p>
+    </footer>
+
+  </div>
+
+  <!-- Optional: weiches Scrollen zu Ankern -->
+  <script>
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#"]'); if(!a) return;
+      const el = document.querySelector(a.getAttribute('href'));
+      if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+    });
+  </script>
 </body>
 </html>
-
-
-
-
