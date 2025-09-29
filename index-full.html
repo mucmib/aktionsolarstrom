@@ -9,27 +9,38 @@
 
   <style>
     :root { --accent:#0a7c5b; }
+    /* 3-Spalten: Mitte Content */
     .page { display:grid; grid-template-columns:1fr minmax(0, 920px) 1fr; min-height:100dvh; }
     .middle { grid-column:2; width:100%; }
+
+    /* Hero */
     .hero { display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; text-align:center; padding:24px 0; }
     .hero img { max-height:220px; width:auto; }
     .hero .cta { display:inline-block; margin-top:8px; }
     .tagline { color:#fff; }
+
+    /* Layout */
     main.middle > section { margin: 24px 0; }
     .grid { display:grid; gap:12px; grid-template-columns:1fr; }
     @media(min-width:700px){ .grid{ grid-template-columns:1fr 1fr; } }
+
+    /* Form UI */
     .checkbox-inline { display:flex; gap:.6rem; align-items:flex-start; margin:.4rem 0; }
+    textarea#message { white-space:pre-wrap; }
+
+    /* Actions */
     .actions { margin-top: 16px; }
     .actions button { background:var(--accent); color:#fff; border:0; padding:12px 16px; border-radius:10px; cursor:pointer; }
     .actions button[disabled]{ opacity:.6; cursor:not-allowed; }
+
     .disclaimer { color:#666; font-size:.95rem; }
     .notice { background:#f4fff8; border:1px solid #cfeede; padding:10px 12px; border-radius:8px; margin-top:8px; }
     .hidden { display:none !important; }
-    textarea#message { white-space:pre-wrap; }
+
+    footer .legal { text-align:center; display:block; }
   </style>
 </head>
 <body>
-
   <div class="page">
     <header class="site-header middle">
       <div class="hero">
@@ -46,7 +57,7 @@
       <section class="explainer">
         <h2>So funktioniert’s</h2>
         <ol>
-          <li>Sie verfassen Ihren Brief (Vorlage ist unten vorbefüllt) und geben Ihre <strong>Absenderadresse</strong> an.</li>
+          <li>Sie verfassen Ihren Brief (Vorlage unten) und geben Ihre <strong>Absenderadresse</strong> an.</li>
           <li>Der Brief geht <strong>an uns</strong> und landet in der Druck- &amp; Post-Warteschlange.</li>
           <li>Wir drucken, kuvertieren und versenden physisch an die zuständige/n MdB.</li>
         </ol>
@@ -57,6 +68,7 @@
         <h2>Brief einreichen</h2>
 
         <form id="campaign-form" method="post" action="/api/queue" novalidate>
+          <!-- Ziel-Abgeordnete:r -->
           <fieldset>
             <legend>Ziel-Abgeordnete:r</legend>
             <p>Standard: Wir ermitteln die Postanschrift anhand Ihrer PLZ und unseres Adressverzeichnisses.</p>
@@ -74,6 +86,7 @@
             <input id="mp_name" name="mp_name" placeholder="z. B. Max Mustermann, MdB">
           </fieldset>
 
+          <!-- Absender -->
           <fieldset>
             <legend>Ihre Angaben (Absender:in)</legend>
             <div class="grid">
@@ -105,9 +118,10 @@
             </div>
           </fieldset>
 
+          <!-- Brief (ein einziges, bearbeitbares Feld) -->
           <fieldset>
             <legend>Brief</legend>
-            <div class="notice">Im Brieftext werden automatisch Ihre Angaben eingesetzt (Name/Adresse). Sie können den Text bei Bedarf noch anpassen.</div>
+            <div class="notice">Im Brieftext werden automatisch Ihre Angaben eingesetzt (Name/Adresse). Sie können den Text bei Bedarf anpassen.</div>
 
             <label for="subject">Betreff *</label>
             <input id="subject" name="subject" required value="Solarstrom vor Erdgas-Strom – bitte setzen Sie klare Prioritäten">
@@ -117,9 +131,7 @@
 Sehr geehrte:r {Anrede_Name},
 
 heute möchte ich mich an Sie wenden, um ihre Aufmerksamkeit auf ein Thema zu lenken das für sehr viele Bürgerinnen, Bürger und Unternehmen in Ihrem Wahlkreis sehr relevant ist: Die Fortsetzung der Energiewende.
-
 Bürgerinnen, Bürger und Unternehmen investieren mit Photovoltaik und Speicher in die Energiewende und den Klimaschutz. Die eigene produzierte Energie wird direkt und über den Stromspeicher selber genutzt. Das ist ökonomisch und ökologisch sinnvoll.
-
 Möglich wurde dies durch das EEG (Erneuerbare Energien Gesetz). Doch jetzt steht diese erfolgreiche Entwicklung vor dem Abbruch. Bundesministerin Reiche möchte die Energiewende drosseln, neue Erdgaskraftwerke bauen und die feste Einspeisevergütung abschaffen. Außerdem plant die Bundesnetzagentur mit ihrem Diskussionspapier AgNes eine massive Verschlechterung der Wirtschaftlichkeit für Produzenten von regenerativer Energie. Dagegen möchte ich mich mit diesem Brief an Sie wenden und die Forderungen der Initiative „Sonnenstrom statt Erdgasstrom“ unterstützen. Die Forderungen sind:
 
 1. Keine neuen Erdgaskraftwerke. Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.
@@ -135,9 +147,9 @@ Dieser Brief entstand im Zusammenhang der Aktion „Eigenstrom statt Kohlestrom�
 Vielen Dank für ihre Aufmerksamkeit und Mühe. Es würde mich sehr freuen von Ihnen zu hören.
 
 Mit freundlichen Grüßen
-  
-{Vorname} {Nachname}  
-{Straße}  
+
+{Vorname} {Nachname}
+{Straße}
 {PLZ} {Ort}
             </textarea>
 
@@ -170,12 +182,75 @@ Mit freundlichen Grüßen
 
     <footer class="site-footer middle">
       <nav class="legal">
-        <a href="Impressum.html">Impressum</a> · <a href="Datenschutz.html">Datenschutz</a>
+        <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
       </nav>
       <p style="text-align:center">© Kampagne „Solarstrom statt Erdgas-Strom“</p>
     </footer>
   </div>
 
+  <!-- MdB-Autoauswahl: PLZ -> Wahlkreis -> MdB (Pfade ggf. anpassen) -->
+  <script>
+  (() => {
+    const PLZ_WK_URL = 'assets/data/plz_to_wk.json';
+    const WK_MDB_URL = 'assets/data/wk_to_mdb.json';
+
+    const zipEl = document.getElementById('zip');
+    const cityEl = document.getElementById('city');
+    const mpEl  = document.getElementById('mp_name');
+    const msgEl = document.getElementById('message');
+
+    let plzToWk = null;
+    let wkToMdb = null;
+
+    async function loadData() {
+      if (!plzToWk) plzToWk = await fetch(PLZ_WK_URL).then(r => r.json());
+      if (!wkToMdb) wkToMdb = await fetch(WK_MDB_URL).then(r => r.json());
+    }
+
+    function normalizePLZ(v) {
+      return (v || '').toString().trim().replace(/\D/g,'').slice(0,5);
+    }
+
+    function setMdbInfo(mdb) {
+      if (!mdb) return;
+      if (mpEl && !mpEl.value.trim()) mpEl.value = mdb.name || '';
+      // {MdB_Adresse} im Brief ersetzen (falls Platzhalter vorhanden)
+      if (msgEl && mdb.adresse && msgEl.value.includes('{MdB_Adresse}')) {
+        msgEl.value = msgEl.value.replace('{MdB_Adresse}', mdb.adresse);
+      }
+    }
+
+    async function resolveMdbByPLZ() {
+      const plz = normalizePLZ(zipEl.value);
+      if (plz.length !== 5) return;
+
+      try {
+        await loadData();
+        const wk = plzToWk[plz];
+        if (!wk) return;
+
+        const mdb = wkToMdb[wk] || wkToMdb[String(wk)] || null;
+        setMdbInfo(mdb);
+      } catch (e) {
+        console.warn('MdB-Autofill fehlgeschlagen:', e);
+      }
+    }
+
+    if (zipEl) {
+      zipEl.addEventListener('change', resolveMdbByPLZ);
+      zipEl.addEventListener('blur', resolveMdbByPLZ);
+      zipEl.addEventListener('input', (e) => {
+        const v = normalizePLZ(e.target.value);
+        if (e.target.value !== v) e.target.value = v;
+      });
+    }
+    if (cityEl) cityEl.addEventListener('blur', resolveMdbByPLZ);
+
+    document.addEventListener('DOMContentLoaded', resolveMdbByPLZ);
+  })();
+  </script>
+
+  <!-- Submit: Platzhalter einsetzen, POST senden, Bestätigungs-ID zeigen -->
   <script>
   (function () {
     const form = document.getElementById('campaign-form');
@@ -256,5 +331,7 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
