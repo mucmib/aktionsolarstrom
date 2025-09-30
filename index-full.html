@@ -167,6 +167,11 @@ Mit freundlichen Grüßen
           ensureIntroAndAddress(anrede, addrWithName);
         }
       } catch(e){}
+      // ⬇️ Immer danach Live-Ersetzung triggern
+      document.querySelector('#sender_zip')?.dispatchEvent(new Event('input'));
+      document.querySelector('#sender_city')?.dispatchEvent(new Event('input'));
+      document.querySelector('#city')?.dispatchEvent(new Event('input'));
+      document.querySelector('#plz')?.dispatchEvent(new Event('input'));
     }
 
     elPLZ.addEventListener('change', handlePLZ);
@@ -217,12 +222,11 @@ Mit freundlichen Grüßen
     [...Object.values(F), '#plz', '#city'].forEach(sel=>$(sel)?.addEventListener('input',update));
     update();
 
-    // ----- NEUER SUBMIT-HANDLER (AJAX) -----
+    // ----- SUBMIT-HANDLER (AJAX) -----
     form?.addEventListener('submit', async (e) => {
-      e.preventDefault();          // Seite nicht verlassen
-      update();                    // Tokens final ersetzen
+      e.preventDefault();
+      update();
 
-      // minimale Validierung wie gehabt
       if (/\{Vorname\}|\{Nachname\}|\{Straße\}/.test(msg.value)) {
         alert('Bitte füllen Sie Vorname, Nachname und Straße & Nr. aus.');
         return;
@@ -231,11 +235,10 @@ Mit freundlichen Grüßen
       const btn = form.querySelector('button[type="submit"]');
       btn?.setAttribute('disabled','');
 
-      // FormData -> JSON
       const fd = new FormData(form);
       const body = {};
       fd.forEach((v,k)=>body[k]=v);
-      body.copy_to_self  = fd.has('copy_to_self'); // Checkbox zu Boolean
+      body.copy_to_self  = fd.has('copy_to_self');
       body.consent_print = fd.has('consent_print');
 
       try{
@@ -251,8 +254,7 @@ Mit freundlichen Grüßen
           box.textContent = 'Danke! Ihr Brief wurde erfolgreich eingereicht. Vorgangs-ID: ' + (data.queueId||'');
           box.style.display = 'block';
           form.reset();
-          // Vorlage nach Reset erneut setzen, damit Live-Replace weiter funktioniert
-          msg.dataset.tpl = msg.value = msg.value; 
+          msg.dataset.tpl = msg.value = msg.value;
         } else {
           alert('Fehler: ' + (data.error || 'Unbekannt'));
         }
@@ -262,10 +264,11 @@ Mit freundlichen Grüßen
         btn?.removeAttribute('disabled');
       }
     });
-    // ----- ENDE NEUER SUBMIT-HANDLER -----
   })();
   </script>
 </body>
 </html>
+
+
 
 
