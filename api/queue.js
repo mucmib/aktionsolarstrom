@@ -1,5 +1,7 @@
-// /api/queue.js – Vercel Serverless Function (Brevo HTTP API + PDF-Erzeugung)
+// /api/queue.js – Vercel Serverless Function (Brevo HTTP API + PDFKit)
 import Brevo from "@getbrevo/brevo";
+import PDFDocument from "pdfkit";
+import getStream from "get-stream";
 
 /** CORS erlauben */
 const allowCors = (fn) => async (req, res) => {
@@ -11,27 +13,12 @@ const allowCors = (fn) => async (req, res) => {
   return await fn(req, res);
 };
 
-/** kleine Helfer */
+/** Helfer */
 const must = (v) => v && String(v).trim() !== "";
 const esc = (s = "") =>
   String(s)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;")
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-const toBool = (v) => ["true", "on", "1", "yes"].includes(String(v).toLowerCase());
-const stripHtml = (h = "") => String(h).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-
-// prüft, ob im Fließtext schon eine Grußformel enthalten ist
-const hasClosing = (t = "") => /mit\s+freundlichen\s+gr(ü|u)(ß|ss)en/i.test(t);
-
-// prüft, ob im Fließtext bereits der Absenderblock vorkommt (Name + PLZ)
-function hasSignature(t = "", body = {}) {
-  const name = `${(body.first_name||"").trim()} ${(body.last_name||"").trim()}`.trim();
-  const zip  = String(body.sender_zip||"").trim();
-  if (!name || !zip) return false;
-  return t.includes(name) && t.includes(zip);
-}
-
-/** Body robust lesen */
 function readBody(req) {
   if (!req.body) return {};
   if (typeof req.body === "string") {
@@ -39,167 +26,92 @@ function readBody(req) {
   }
   return req.body;
 }
+const toBool = (v) => ["true", "on", "1", "yes"].includes(String(v).toLowerCase());
 
-/** finalMessage in Empfängerblock und Rest splitten */
-function splitRecipientAndBody(finalMessage) {
-  const parts = String(finalMessage || "").split(/\n{2,}/);
-  const recipientBlock = (parts[0] || "").trim();
-  const bodyBlocks = parts.slice(1).join("\n\n").trim();
-  return { recipientBlock, bodyText: bodyBlocks };
-}
+/** PDF Generator */
+async function generatePdf(body, finalMessage, queueId, today) {
+  const doc = new PDFDocument({ margin: 72 });
+  let buffers = [];
+  doc.on("data", buffers.push.bind(buffers));
+  doc.on("end", () => {});
 
-/** PDF erzeugen (DIN 5008-ish) */
-async function generatePdf({ body, finalMessage, queueId }) {
-  const PDFDocument = (await import("pdfkit")).default;
-
-  // Maße
-  const A4 = { w: 595.28, h: 841.89 };
-  const cm = (x) => x * 28.346;
-  const marginL = cm(2.5), marginR = cm(2.5);
-  const marginT = cm(2.5), marginB = cm(2.0);
-
-  // Adressfenster
-  const addrTop = cm(4.5);
-  const contentWidth = A4.w - marginL - marginR;
-
-  const { recipientBlock, bodyText } = splitRecipientAndBody(finalMessage);
-  const today = new Date().toLocaleDateString("de-DE");
-  const absenderBlock = [
-    `${body.first_name} ${body.last_name}`.trim(),
-    String(body.street || "").trim(),
-    `${body.sender_zip || ""} ${body.sender_city || ""}`.trim()
-  ].filter(Boolean).join("\n");
-
-  const doc = new PDFDocument({
-    size: "A4",
-    margins: { top: marginT, left: marginL, right: marginR, bottom: marginB }
-  });
-
-  const chunks = [];
-  doc.on("data", (d) => chunks.push(d));
-  const done = new Promise((resolve) => doc.on("end", () => resolve(Buffer.concat(chunks))));
-
-  doc.font("Helvetica").fontSize(11);
-
-  // Absender (klein, rechts oben)
-  doc.fillColor("#555").fontSize(9)
-     .text(absenderBlock, marginL, marginT - cm(1.0), { width: contentWidth, align: "right" });
-
-  // Empfänger in Fenster
-  doc.fillColor("#000").fontSize(11)
-     .text(recipientBlock, marginL, addrTop, { width: contentWidth });
+  // Adresse MdB
+  doc.fontSize(11).text(body.mp_name || "", { align: "left" });
+  doc.text(body.bundestag_address || "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin", { align: "left" });
 
   // Datum
   doc.moveDown(1.2).text(today, { align: "right" });
 
-  // Betreff
-  doc.moveDown(1);
-  doc.font("Helvetica-Bold").text(body.subject || "Ihr Schreiben", { width: contentWidth });
-  doc.font("Helvetica");
-  doc.moveDown(0.8);
+  // Vorgangs-ID klein direkt unter dem Datum
+  doc.moveDown(0.2).fontSize(9).fillColor("#666")
+    .text(`Vorgangs-ID: ${queueId}`, { align: "right" })
+    .fillColor("#000").fontSize(11);
 
-  // Fließtext
-  doc.text(bodyText, { width: contentWidth });
+  // Brieftext
+  doc.moveDown(2).fontSize(11).text(finalMessage, {
+    align: "left",
+    lineGap: 4
+  });
 
-  // Gruß & Signatur NUR anhängen, wenn im Text nicht bereits vorhanden
-  const needClosing   = !hasClosing(bodyText);
-  const needSignature = !hasSignature(bodyText, body);
-
-  if (needClosing || needSignature) {
-    doc.moveDown(2);
-    if (needClosing) doc.text("Mit freundlichen Grüßen");
-    if (needSignature) {
-      doc.moveDown(1);
-      doc.text(absenderBlock);
-    }
-  }
-
-  // Vorgangs-ID
-  doc.moveDown(2).fontSize(9).fillColor("#666").text(`Vorgangs-ID: ${queueId}`);
+  // Absender
+  doc.moveDown(2).text("Mit freundlichen Grüßen");
+  doc.moveDown().text(`${body.first_name} ${body.last_name}`);
+  doc.text(body.street);
+  doc.text(`${body.sender_zip} ${body.sender_city}`);
 
   doc.end();
-  const pdfBuffer = await done;
-  const fileName = `Brief_${queueId}.pdf`;
-  return { buffer: pdfBuffer, name: fileName };
+  const pdfBuffer = Buffer.concat(buffers);
+  return pdfBuffer;
 }
 
 export default allowCors(async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ ok:false, error:"method_not_allowed" });
+    return res.status(405).json({ ok: false, error: "method_not_allowed" });
   }
 
-  // Body lesen & normalisieren
   const raw = readBody(req);
   const body = {
-    zip:            raw.zip ?? raw.plz ?? "",
-    city:           raw.city ?? raw.ort ?? "",
-    mp_name:        raw.mp_name ?? raw.abgeordneter ?? "",
-
-    first_name:     raw.first_name ?? raw.vorname ?? "",
-    last_name:      raw.last_name ?? raw.nachname ?? "",
-    email:          raw.email ?? "",
-    street:         raw.street ?? raw.strasse ?? "",
-    sender_zip:     raw.sender_zip ?? raw.plz_abs ?? "",
-    sender_city:    raw.sender_city ?? raw.ort_abs ?? "",
-
-    subject:        raw.subject ?? "",
-    message:        raw.message ?? "",
-
-    consent_print:  toBool(raw.consent_print ?? raw.postversand ?? false),
-    copy_to_self:   toBool(raw.copy_to_self ?? raw.copy ?? false),
+    zip: raw.zip ?? raw.plz ?? "",
+    city: raw.city ?? raw.ort ?? "",
+    mp_name: raw.mp_name ?? raw.abgeordneter ?? "",
+    first_name: raw.first_name ?? raw.vorname ?? "",
+    last_name: raw.last_name ?? raw.nachname ?? "",
+    email: raw.email ?? "",
+    street: raw.street ?? raw.strasse ?? "",
+    sender_zip: raw.sender_zip ?? raw.plz_abs ?? "",
+    sender_city: raw.sender_city ?? raw.ort_abs ?? "",
+    subject: raw.subject ?? "",
+    message: raw.message ?? "",
+    consent_print: toBool(raw.consent_print ?? raw.postversand ?? false),
+    copy_to_self: toBool(raw.copy_to_self ?? raw.copy ?? false),
+    bundestag_address: raw.bundestag_address ?? "",
   };
-
-  // Fallbacks Absender
-  body.sender_zip  = body.sender_zip  || body.zip;
+  body.sender_zip = body.sender_zip || body.zip;
   body.sender_city = body.sender_city || body.city;
 
-  // Pflichtfelder
   const required = ["first_name","last_name","email","street","sender_zip","sender_city","subject","message"];
   const missing = required.filter(k => !must(body[k]));
   if (missing.length) {
     return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
   }
 
-  // ENV prüfen
   if (!process.env.BREVO_API_KEY || !process.env.FROM_EMAIL || !process.env.TEAM_INBOX) {
-    return res.status(500).json({
-      ok:false, error:"env_missing",
-      envState:{
-        BREVO_API_KEY: !!process.env.BREVO_API_KEY,
-        FROM_EMAIL:    !!process.env.FROM_EMAIL,
-        TEAM_INBOX:    !!process.env.TEAM_INBOX
-      }
-    });
+    return res.status(500).json({ ok:false, error:"env_missing" });
   }
 
-  // Platzhalter ersetzen (serverseitig)
-  const anredeName = must(body.mp_name) ? body.mp_name : "Sehr geehrte Damen und Herren";
-
-  let finalMessage = body.message;
-  finalMessage = finalMessage.replace("{Anrede_Name}", anredeName)
-                             .replace("{Anrede}", anredeName)
-                             .replace("{Vorname}", body.first_name)
-                             .replace("{Nachname}", body.last_name)
-                             .replace("{Straße}", body.street)
-                             .replace("{PLZ}", body.sender_zip)
-                             .replace("{Ort}", body.sender_city);
+  let finalMessage = body.message
+    .replace("{Anrede}", body.mp_name ? `Sehr geehrte/r ${body.mp_name}` : "Sehr geehrte Damen und Herren")
+    .replace("{Vorname}", body.first_name)
+    .replace("{Nachname}", body.last_name)
+    .replace("{Straße}", body.street)
+    .replace("{PLZ}", body.sender_zip)
+    .replace("{Ort}", body.sender_city);
 
   const queueId = Math.random().toString(36).slice(2, 8).toUpperCase();
-  const today   = new Date().toISOString().slice(0,10);
+  const today = new Date().toLocaleDateString("de-DE");
 
-  // PDF erzeugen
-  let pdfAttachment = null;
-  try {
-    const { buffer, name } = await generatePdf({ body, finalMessage, queueId });
-    pdfAttachment = {
-      name,
-      content: buffer.toString("base64")
-    };
-  } catch (e) {
-    console.error("PDF generation failed:", e);
-  }
+  const pdfBuffer = await generatePdf(body, finalMessage, queueId, today);
 
-  // E-Mail-Inhalte
   const teamHtml = `
     <h2>Neue Einreichung – ${esc(queueId)}</h2>
     <p><b>Datum:</b> ${esc(today)}</p>
@@ -209,60 +121,52 @@ export default allowCors(async function handler(req, res) {
       ${esc(body.sender_zip)} ${esc(body.sender_city)}<br>
       E-Mail: ${esc(body.email)}
     </p>
-    <p><b>PLZ/Ort für MdB-Ermittlung:</b> ${esc(body.zip)} ${esc(body.city)}</p>
-    <p><b>Optionaler MdB-Name:</b> ${esc(body.mp_name)}</p>
-    <p><b>Betreff:</b> ${esc(body.subject)}</p>
-    <p><b>Brieftext (ersetzte Platzhalter):</b><br>${esc(finalMessage).replace(/\n/g,"<br>")}</p>
-    ${pdfAttachment ? '<p><i>PDF im Anhang (druckfertig)</i></p>' : '<p><i>PDF konnte nicht erzeugt werden</i></p>'}
-  `;
-
-  const userHtml = `
-    <p>Danke – wir haben Ihren Brief übernommen und bereiten den Postversand vor.</p>
-    <p><b>Vorgangs-ID:</b> ${esc(queueId)}</p>
-    <hr>
     <p><b>Betreff:</b> ${esc(body.subject)}</p>
     <p><b>Brieftext:</b><br>${esc(finalMessage).replace(/\n/g,"<br>")}</p>
-    ${pdfAttachment ? '<p><i>PDF-Kopie im Anhang</i></p>' : ''}
   `;
 
   try {
     const api = new Brevo.TransactionalEmailsApi();
     api.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
-    // 1) Mail an euer Team (Reply-To = Absender:in)
     await api.sendTransacEmail({
-      to:     [{ email: process.env.TEAM_INBOX }],
+      to: [{ email: process.env.TEAM_INBOX }],
       sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Formular" },
-      replyTo:{ email: body.email, name: `${body.first_name} ${body.last_name}` },
-      subject:`Vorgang ${queueId}: Brief an MdB`,
+      replyTo: { email: body.email, name: `${body.first_name} ${body.last_name}` },
+      subject: `Vorgang ${queueId}: Brief an MdB`,
       htmlContent: teamHtml,
-      textContent: stripHtml(teamHtml),
-      attachment: pdfAttachment ? [{ name: pdfAttachment.name, content: pdfAttachment.content }] : []
+      attachment: [
+        {
+          content: pdfBuffer.toString("base64"),
+          name: `Brief_${queueId}.pdf`
+        }
+      ]
     });
 
-    // 2) Optional Kopie an Absender:in (mit List-Unsubscribe-Header)
     if (body.copy_to_self) {
       await api.sendTransacEmail({
-        to:     [{ email: body.email }],
+        to: [{ email: body.email }],
         sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Team" },
-        subject:`Kopie Ihrer Einreichung – Vorgang ${queueId}`,
-        htmlContent: userHtml,
-        textContent: stripHtml(userHtml),
-        headers: { "List-Unsubscribe": `<mailto:${process.env.FROM_EMAIL}>` },
-        attachment: pdfAttachment ? [{ name: pdfAttachment.name, content: pdfAttachment.content }] : []
+        subject: `Kopie Ihrer Einreichung – Vorgang ${queueId}`,
+        htmlContent: teamHtml,
+        attachment: [
+          {
+            content: pdfBuffer.toString("base64"),
+            name: `Brief_${queueId}.pdf`
+          }
+        ]
       });
     }
 
     res.setHeader("Cache-Control", "no-store");
-    return res.status(200).json({ ok:true, queueId, copySent: body.copy_to_self, pdf: !!pdfAttachment });
+    return res.status(200).json({ ok:true, queueId, copySent: body.copy_to_self });
   } catch (err) {
-    const status = err?.response?.status;
-    let detail   = err?.response?.text || err?.message || String(err);
-    if (err?.response?.body) { try { detail = JSON.stringify(err.response.body); } catch {} }
-    console.error("Brevo send failed:", status, detail);
-    return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
+    console.error("Brevo send failed:", err);
+    return res.status(502).json({ ok:false, error:"brevo_send_failed" });
   }
 });
+
+
 
 
 
