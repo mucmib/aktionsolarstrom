@@ -270,25 +270,43 @@ Mit freundlichen Grüßen
   }
 
   // setzt Kopfzeilen in den Brieftext (Name+Adresse oben, Anrede darunter – jeweils nur einmal)
+
+<script>
+  // ... (alles unverändert darüber)
+
+  // KORRIGIERT: setzt Kopf korrekt
+  // Reihenfolge: (1) "An Frau/Herr {Name}"  (2) Adresse  (3) Anrede  (4) restlicher Text
   function ensureIntroAndAddress(textarea, anrede, addrML, nameLine) {
     let body = (textarea.value || '').trimStart();
 
-    // Platzhalter für Adresse?
-    if (addrML && body.includes('{MdB_Adresse}')) {
-      body = body.replace('{MdB_Adresse}', (nameLine ? nameLine + '\n' : '') + addrML);
-    } else {
-      const alreadyHasName = nameLine && body.includes(nameLine);
-      const alreadyHasAddr = addrML && body.includes(addrML);
+    // 1) vorhandene Anrede am Anfang entfernen
+    body = body.replace(/^\s*Sehr[^\n]\n+\s/i, '');
 
-      const headerParts = [];
-      if (nameLine && !alreadyHasName) headerParts.push(nameLine);
-      if (addrML && !alreadyHasAddr)   headerParts.push(addrML);
-
-      if (headerParts.length) {
-        body = headerParts.join('\n') + '\n\n' + body;
-      }
+    // 2) vorhandene Name-/Adressblöcke entfernen (falls schon eingefügt)
+    if (nameLine) {
+      const reName = new RegExp('^\\s*' + nameLine.replace(/[.+?^${}()|[\]\\]/g,'\\$&') + '\\s\\n+', 'i');
+      body = body.replace(reName, '');
+    }
+    if (addrML) {
+      const reAddr = new RegExp('^\\s*' + addrML
+        .split('\n').map(l => l.replace(/[.+?^${}()|[\]\\]/g,'\\$&')).join('\\s\\n+')
+        + '\\s*\\n+', 'i');
+      body = body.replace(reAddr, '');
     }
 
+    // 3) Kopf neu zusammensetzen
+    let header = '';
+    if (nameLine) header += nameLine + '\n';
+    if (addrML)   header += addrML + '\n\n';
+    if (anrede)   header += anrede + '\n\n';
+
+    // 4) neuen Text schreiben
+    textarea.value = (header + body).trimEnd();
+  }
+
+  // ... (alles unverändert darunter)
+
+  
     // Anrede nur einsetzen, wenn nicht vorhanden (beginnt mit „Sehr “)
     if (!/^\s*Sehr\s/i.test(body)) {
       body = anrede + '\n\n' + body;
@@ -343,6 +361,7 @@ Mit freundlichen Grüßen
 
 </body>
 </html>
+
 
 
 
