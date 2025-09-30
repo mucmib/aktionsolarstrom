@@ -224,15 +224,32 @@ Mit freundlichen Grüßen
   }
 
   function ensureIntroOnBase(anrede, addr, name) {
-    const base = elMSG.dataset.base || elMSG.value || '';
-    const addrLine = (addr || 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
-    const addrBlock = ((name ? name : '') + '\n' + addrLine).trim();
+    const base = document.querySelector('#message').dataset.base || document.querySelector('#message').value || '';
+    const msg  = document.querySelector('#message');
+
+    // Address normalisieren und "Deutscher Bundestag" einschieben
+    const addrLine = String(addr || 'Platz der Republik 1\n11011 Berlin')
+      .replace(/\s*\n\s*/g,'\n').trim();
+
+    const lines = [];
+    if (name) lines.push(name);
+    if (!/Deutscher Bundestag/i.test(addrLine)) {
+      lines.push('Deutscher Bundestag');
+    }
+    lines.push(...addrLine.split('\n'));
+    const addrBlock = lines.join('\n');
+
     const tpl = base
       .replace('{MdB_Name_und_Adresse}', addrBlock)
       .replace('{MdB_Adresse}', addrBlock)
       .replace('{Anrede}', anrede || 'Sehr geehrte Damen und Herren');
-    elMSG.dataset.tpl = tpl;
-    ['#sender_zip','#sender_city'].forEach(sel => document.querySelector(sel)?.dispatchEvent(new Event('input')));
+
+    msg.dataset.tpl = tpl;
+
+    // direkt Tokens (PLZ/Ort/…) neu berechnen
+    ['#sender_zip','#sender_city','#plz','#city'].forEach(sel =>
+      document.querySelector(sel)?.dispatchEvent(new Event('input'))
+    );
   }
 
   function hideSelect(){
@@ -383,6 +400,7 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
 
 
 
