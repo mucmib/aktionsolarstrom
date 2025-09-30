@@ -361,15 +361,17 @@ Mit freundlichen Grüßen
     // ----- SUBMIT-HANDLER (AJAX) -----
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      update();
 
-      if (/\{Vorname\}|\{Nachname\}|\{Straße\}/.test(msg.value)) {
-        alert('Bitte füllen Sie Vorname, Nachname und Straße & Nr. aus.');
+      const btn = form.querySelector('button[type="submit"]');
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        btn?.removeAttribute('disabled');
         return;
       }
 
-      const btn = form.querySelector('button[type="submit"]');
       btn?.setAttribute('disabled','');
+      update();
 
       const fd = new FormData(form);
       const body = {};
@@ -404,6 +406,7 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
 
 
 
