@@ -323,11 +323,14 @@ Mit freundlichen Grüßen
     if (!elMSG.dataset.base) elMSG.dataset.base = elMSG.value;
 
     // Live bei PLZ & Ort
-    ['input','change','blur'].forEach(ev=>{
-      elPLZ?.addEventListener(ev, runLookup);
-      elCity?.addEventListener(ev, runLookup);
-    });
-  })();
+    ['change','blur'].forEach(ev=>{
+  elPLZ?.addEventListener(ev, runLookup);
+});
+
+// Ort → nur bei Verlassen prüfen, nicht bei jedem Tastendruck
+['change','blur'].forEach(ev=>{
+  elCity?.addEventListener(ev, runLookup);
+});
   </script>
 
   <!-- Token-Ersetzung live -->
@@ -424,6 +427,7 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
 
 
 
