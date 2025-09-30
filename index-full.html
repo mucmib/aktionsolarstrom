@@ -32,8 +32,6 @@
     .success { display:none; margin-top:14px; padding:12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:6px; color:#145214; }
     footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
     footer a { color: #333; }
-
-    /* Mini-Hinweis-Style für das Dropdown */
     .hint { font-size:.9rem; color:#555; margin:6px 0 0; }
   </style>
 </head>
@@ -71,7 +69,6 @@
             <label for="abgeordneter">Name der/s Abgeordneten (optional)</label>
             <input id="abgeordneter" name="mp_name">
 
-            <!-- erscheint nur bei Mehrfach-Treffern -->
             <div id="mpSelectWrap" style="display:none; margin-top:8px;">
               <label for="mp_select">Treffer in Ihrem Ort</label>
               <select id="mp_select"></select>
@@ -145,6 +142,35 @@ Mit freundlichen Grüßen
     </footer>
   </div>
 
+  <!-- ==== DEBUG-HOOK (aktiv mit ?debug=1) ==== -->
+  <script>
+  (function(){
+    const DEBUG = /[?&]debug=1/.test(location.search);
+    const badge = document.createElement('div');
+    function show(msg, ok=false){
+      if(!DEBUG) return;
+      badge.textContent = 'MDB: ' + msg;
+      badge.style.cssText = 'position:fixed;right:8px;bottom:8px;z-index:99999;padding:6px 8px;border-radius:6px;font:12px/1.2 system-ui;background:'+(ok?'#e8f7ec':'#fff3cd')+';border:1px solid '+(ok?'#7ad08d':'#e6c45c')+';color:#222';
+      document.body.appendChild(badge);
+      console.log('[MDB]', msg);
+    }
+    window._mdblog = { show, DEBUG };
+    window._fetchJson = async function(url){
+      const bust = url + (url.includes('?')?'&':'?') + 'v=' + Date.now();
+      try{
+        const res = await fetch(bust, { cache:'no-store' });
+        if(!res.ok){ show('Fetch FAIL '+url+' ('+res.status+')'); throw new Error(url+' '+res.status); }
+        const j = await res.json();
+        show('Fetch OK '+url, true);
+        return j;
+      }catch(e){
+        show('Fetch ERR '+url+': '+e);
+        throw e;
+      }
+    };
+  })();
+  </script>
+
   <!-- Auto-MdB -->
   <script>
   (function () {
@@ -155,17 +181,14 @@ Mit freundlichen Grüßen
 
     const clean = (s) => String(s||'').replace(/^\s*nan\s+/i,'').trim();
     const norm = (t) => String(t||'')
-      .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // Diakritika raus
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
       .replace(/[^\w\s]/g,'').replace(/\s+/g,' ')
       .trim().toLowerCase();
 
-    async function loadJson(url) {
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) throw new Error(url);
-      return res.json();
-    }
+    async function loadJson(url){ return _fetchJson(url); }
 
     async function findCandidates(plz, cityRaw) {
+      _mdblog.show('Start Lookup PLZ='+plz+' Ort='+cityRaw);
       const [plzMap, wkMap, ortMap] = await Promise.all([
         loadJson('assets/data/plz_to_wk.json'),
         loadJson('assets/data/wk_to_mdb.json'),
@@ -173,27 +196,23 @@ Mit freundlichen Grüßen
       ]);
 
       let wks = plzMap[plz] || [];
+      _mdblog.show('PLZ→WK: '+JSON.stringify(wks));
+
       const cityKey = norm(cityRaw);
 
-      // Fallback, wenn kein WK über PLZ
       if ((!wks || !wks.length) && cityKey) {
-        const hits = Object.entries(ortMap)
-          .filter(([k]) => k.startsWith(cityKey))
-          .map(([, arr]) => arr);
+        const hits = Object.entries(ortMap).filter(([k]) => k.startsWith(cityKey)).map(([, arr]) => arr);
         wks = [...new Set(hits.flat())];
+        _mdblog.show('Fallback ORT→WK: '+JSON.stringify(wks));
       }
 
-      // Eingrenzen, wenn mehrere
       if (wks.length > 1 && cityKey) {
-        const hits = Object.entries(ortMap)
-          .filter(([k]) => k.startsWith(cityKey))
-          .map(([, arr]) => arr);
+        const hits = Object.entries(ortMap).filter(([k]) => k.startsWith(cityKey)).map(([, arr]) => arr);
         const byCity = new Set([].concat(...hits));
         const narrowed = wks.filter(w => byCity.has(String(w)));
-        if (narrowed.length) wks = narrowed;
+        if (narrowed.length) { wks = narrowed; _mdblog.show('Eingrenzung via Ort: '+JSON.stringify(wks), true); }
       }
 
-      // Baue Kandidatenliste aus wk_to_mdb (AfD dort bereits entfernt)
       const candidates = (wks||[])
         .map(wk => wkMap[String(wk)])
         .filter(Boolean)
@@ -204,22 +223,29 @@ Mit freundlichen Grüßen
           address: (m.bundestag_address || 'Platz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim()
         }));
 
+      _mdblog.show('Kandidaten: '+candidates.length, true);
       return { wks: [...new Set((wks||[]).map(String))], candidates };
     }
 
-    function ensureIntro(anrede, addr, name) {
-      let txt = elMSG.value || '';
-      const addrWithName = (name ? name + '\n' : '') + (addr || 'Platz der Republik 1\n11011 Berlin');
-      txt = txt.replace('{MdB_Name_und_Adresse}', addrWithName)
-               .replace('{MdB_Adresse}', addrWithName)
-               .replace('{Anrede}', anrede || 'Sehr geehrte Damen und Herren');
-      elMSG.value = txt.trimEnd();
-      elMSG.dataset.tpl = elMSG.value;
+    // MdB in die BASIS-Vorlage einsetzen → neue tpl bauen (mit "Deutscher Bundestag" vor der Straße)
+    function ensureIntroOnBase(anrede, addr, name) {
+      const base = elMSG.dataset.base || elMSG.value || '';
+      const addrLine = (addr || 'Platz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
+      const addrBlock = ((name ? name : '') + '\nDeutscher Bundestag\n' + addrLine).trim();
+      const tpl = base
+        .replace('{MdB_Name_und_Adresse}', addrBlock)
+        .replace('{MdB_Adresse}', addrBlock)
+        .replace('{Anrede}', anrede || 'Sehr geehrte Damen und Herren');
+      elMSG.dataset.tpl = tpl;    // value nicht direkt überschreiben
+      // unten Token-Update anstoßen (ohne #plz/#city zu triggern)
+      ['#sender_zip','#sender_city'].forEach(sel =>
+        document.querySelector(sel)?.dispatchEvent(new Event('input'))
+      );
     }
 
     function hideSelect() {
       if (selWrap) selWrap.style.display = 'none';
-      if (elSel) { elSel.innerHTML = ''; elSel.blur(); }
+      if (elSel) { elSel.innerHTML = ''; }
       if (elHint) elHint.textContent = '';
     }
 
@@ -242,42 +268,63 @@ Mit freundlichen Grüßen
 
       elHint.textContent = 'Mehrere Wahlkreise (' + wks.join(', ') + ').';
       selWrap.style.display = 'block';
-      elSel.focus();
+      // kein Autofokus auf das Select
     }
 
     function chooseCandidateByName(name) {
       if (!name) return;
-      // Suche in aktuellem Select nach passendem Eintrag
       const opt = [...elSel.options].find(o => o.value === name);
       const anrede = opt?.dataset?.anrede || ('Sehr geehrte/r ' + name);
       const address = opt?.dataset?.address || 'Platz der Republik 1\n11011 Berlin';
       elMP.value = name;
-      ensureIntro(anrede, address, name);
-
-      // Tokens im Brief unten sofort neu berechnen
-      ['#sender_zip','#sender_city','#city','#plz'].forEach(sel =>
-        document.querySelector(sel)?.dispatchEvent(new Event('input'))
-      );
+      ensureIntroOnBase(anrede, address, name);
     }
 
-    // Wenn im Select gewählt wird → Textfeld, Anrede & Adresse setzen
     elSel?.addEventListener('change', () => {
       const name = elSel.value;
       if (!name) return;
+      _mdblog.show('Auswahl: '+name, true);
       chooseCandidateByName(name);
     });
 
-    // Wenn man manuell ins Textfeld tippt → versuchen zu matchen (optional)
     elMP?.addEventListener('blur', () => {
-      const name = clean(elMP.value);
+      const name = (elMP.value||'').trim();
       if (name) chooseCandidateByName(name);
+    });
+
+    // --- Debounce Steuerung ---
+    let lookupTimer = null;
+    function scheduleLookup(delay = 350) {
+      clearTimeout(lookupTimer);
+      lookupTimer = setTimeout(runLookup, delay);
+    }
+
+    // Basisvorlage einmalig sichern
+    if (!elMSG.dataset.base) elMSG.dataset.base = elMSG.value;
+
+    // PLZ: sobald 5 Ziffern → sofort lookup
+    elPLZ?.addEventListener('input', () => {
+      const v = (elPLZ.value || '').trim();
+      if (/^\d{5}$/.test(v)) scheduleLookup(0);
+    });
+
+    // Ort: ab 3 Zeichen → debounce 350ms
+    elCity?.addEventListener('input', () => {
+      const v = (elCity.value || '').trim();
+      if (v.length >= 3) scheduleLookup(350);
+    });
+
+    // Fallback: change/blur
+    ['change','blur'].forEach(ev=>{
+      elPLZ?.addEventListener(ev, runLookup);
+      elCity?.addEventListener(ev, runLookup);
     });
 
     async function runLookup() {
       hideSelect();
       const plz  = (elPLZ?.value||'').trim();
       const city = (elCity?.value||'').trim();
-      if (!/^\d{5}$/.test(plz)) return;
+      if (!/^\d{5}$/.test(plz)) { _mdblog.show('PLZ ungültig'); return; }
 
       try {
         const { wks, candidates } = await findCandidates(plz, city);
@@ -285,33 +332,21 @@ Mit freundlichen Grüßen
         if (candidates.length === 1) {
           const c = candidates[0];
           elMP.value = c.name;
-          ensureIntro(c.anrede, c.address, c.name);
+          ensureIntroOnBase(c.anrede, c.address, c.name);
         } else if (candidates.length > 1) {
-          // mehrere → Dropdown anzeigen
           elMP.value = '';
-          ensureIntro('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin', '');
+          ensureIntroOnBase('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin', '');
           showSelect(candidates, wks);
         } else {
-          // gar nichts → neutral
           elMP.value = '';
-          ensureIntro('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin', '');
+          ensureIntroOnBase('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin', '');
         }
-      } catch {
+      } catch (e) {
+        _mdblog.show('Lookup ERROR: '+e);
         elMP.value = '';
-        ensureIntro('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin', '');
+        ensureIntroOnBase('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin', '');
       }
-
-      // Tokens unten sofort neu berechnen
-      ['#sender_zip','#sender_city','#city','#plz'].forEach(sel =>
-        document.querySelector(sel)?.dispatchEvent(new Event('input'))
-      );
     }
-
-    // Live bei PLZ & Ort
-    ['input','change','blur'].forEach(ev=>{
-      elPLZ?.addEventListener(ev, runLookup);
-      elCity?.addEventListener(ev, runLookup);
-    });
   })();
   </script>
 
@@ -328,6 +363,8 @@ Mit freundlichen Grüßen
     const topCity = () => ($('#city')?.value||'').trim();
 
     const cleanStreet = (v) => String(v||'').replace(/\s*,\s*(?=\d)/g,' ').replace(/\s{2,}/g,' ').trim();
+
+    function getTpl(){ return msg.dataset.tpl || msg.dataset.base || msg.value || ''; }
 
     function vals(){
       const m={};
@@ -351,27 +388,25 @@ Mit freundlichen Grüßen
 
     function update(){
       if(!msg)return;
-      if(!msg.dataset.tpl) msg.dataset.tpl = msg.value;
-      msg.value = apply(msg.dataset.tpl, vals());
+      if(!msg.dataset.base) msg.dataset.base = msg.value;  // Basis sichern
+      if(!msg.dataset.tpl)  msg.dataset.tpl  = msg.dataset.base; // Starttpl
+      msg.value = apply(getTpl(), vals());
     }
 
-    [...Object.values(F), '#plz', '#city'].forEach(sel=>$(sel)?.addEventListener('input',update));
+    [...Object.values(F), '#plz', '#city', '#sender_zip', '#sender_city'].forEach(sel=>$(sel)?.addEventListener('input',update));
     update();
 
-    // ----- SUBMIT-HANDLER (AJAX) -----
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
+      update();
 
-      const btn = form.querySelector('button[type="submit"]');
-
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        btn?.removeAttribute('disabled');
+      if (/\{Vorname\}|\{Nachname\}|\{Straße\}|\{PLZ\}|\{Ort\}/.test(msg.value)) {
+        alert('Bitte füllen Sie alle Absenderfelder aus.');
         return;
       }
 
+      const btn = form.querySelector('button[type="submit"]');
       btn?.setAttribute('disabled','');
-      update();
 
       const fd = new FormData(form);
       const body = {};
@@ -392,7 +427,10 @@ Mit freundlichen Grüßen
           box.textContent = 'Danke! Ihr Brief wurde erfolgreich eingereicht. Vorgangs-ID: ' + (data.queueId||'');
           box.style.display = 'block';
           form.reset();
-          msg.dataset.tpl = msg.value = msg.value;
+          // Vorlage zurücksetzen
+          msg.value = msg.dataset.base;
+          msg.dataset.tpl = msg.dataset.base;
+          update();
         } else {
           alert('Fehler: ' + (data.error || 'Unbekannt'));
         }
@@ -406,6 +444,7 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
 
 
 
