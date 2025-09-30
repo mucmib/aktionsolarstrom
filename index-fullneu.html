@@ -6,61 +6,43 @@
   <title>Solarstrom statt Erdgas-Strom – Brief einreichen</title>
   <meta name="description" content="Reichen Sie Ihren Brief ein – wir drucken, kuvertieren und versenden physisch an die zuständige Bundestagsabgeordnete.">
   <link rel="stylesheet" href="assets/styles.css">
-
   <style>
-    :root { --maxw: 960px; --brand: #0a7d32; }
-    body { margin:0; font: 16px/1.5 system-ui, Arial, sans-serif; color:#111; background:#fff; }
+    :root { --maxw: 960px; --brand:#0a7d32; --muted:#6b7280; }
+    body { margin:0; font:16px/1.5 system-ui, Arial, sans-serif; color:#111; background:#fff; }
     .page { display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr; }
-    .middle { grid-column: 2; width:100%; padding: 16px; }
-    .hero { display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; padding: 28px 0 10px; text-align:center; }
-    .hero img { width:min(95vw, 620px); height:auto; display:block; cursor:pointer; }
-    .tagline { margin: 8px 0 0; font-size: 1.1rem; color:#333; }
-    .cta { display:inline-block; margin-top:10px; padding:10px 16px; background:var(--brand); color:#fff; text-decoration:none; border-radius:6px; }
-    main.middle > section { margin: 22px 0; }
-    .form-section h2 { margin-top:0; }
-    fieldset { border:1px solid #e6e6e6; border-radius:8px; padding:16px; margin:18px 0; }
-    legend { padding: 0 6px; font-weight:600; }
+    .middle { grid-column:2; padding:16px; }
+    .hero { display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; padding:28px 0 10px; text-align:center; background:linear-gradient(180deg,#0a7d32,#065f26); color:#fff; border-radius:0 0 16px 16px; }
+    .hero a.logo { display:inline-block }
+    .hero img { width:min(95vw, 540px); height:auto; display:block; filter:drop-shadow(0 6px 18px rgba(0,0,0,.25)); }
+    .tagline { margin:8px 0 0; font-size:1.1rem; opacity:.95; }
+    .cta { display:inline-block; margin-top:10px; padding:10px 16px; background:#fff; color:#0a7d32; text-decoration:none; border-radius:10px; font-weight:700; }
+    main.middle > section { margin:22px 0; }
+    fieldset { border:1px solid #e6e6e6; border-radius:12px; padding:16px; margin:18px 0; }
+    legend { padding:0 6px; font-weight:700; color:#0b4d25; }
     label { display:block; font-weight:600; margin:12px 0 6px; }
-    input[type="text"], input[type="email"], select, textarea { width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid #cfcfcf; border-radius:6px; font:inherit; }
-    textarea { min-height: 240px; }
+    input[type="text"], input[type="email"], select, textarea { width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid #cfcfcf; border-radius:8px; font:inherit; background:#fff; }
+    textarea { min-height: 260px; }
     .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
     @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
-
-    .actions { margin-top: 16px; text-align:center; }
-    button[type="submit"]{
-      padding: 12px 18px;
-      border:0; border-radius:8px;
-      background:var(--brand); color:#fff; font-weight:700;
-      cursor:pointer; display:inline-flex; align-items:center; gap:8px;
-    }
-    button[type="submit"]::after{ content:"✈️"; font-size:1.15em; }
-    .success{ display:none; margin-top:14px; padding:12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:6px; color:#145214; }
-
+    .actions { margin-top:16px; display:flex; gap:12px; align-items:center; }
+    button[type="submit"]{ padding:12px 18px; border:0; border-radius:10px; background:#0a7d32; color:#fff; font-weight:800; cursor:pointer; }
+    .success { display:none; margin-top:10px; padding:10px 12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:8px; color:#145214; }
+    .notice { font-size:.92rem; color:var(--muted); }
     footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
     footer a { color: #333; }
-    .hint { font-size:.9rem; color:#555; margin:6px 0 0; }
 
-    /* Consent-Block (Card) */
-    .consent-card{
-      border:1px solid #e8efe9; border-left:4px solid var(--brand);
-      border-radius:12px; padding:14px 16px; background:#f6fbf8;
-      box-shadow:0 1px 6px rgba(0,0,0,.04); margin-top:16px;
-    }
-    .consent-card h4{ margin:0 0 10px; font-size:1.05rem; font-weight:800; display:flex; align-items:center; gap:8px; }
-    .consent-card h4::before{ content:"📬"; font-size:1.1em; line-height:1; }
-    .consent-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px 18px; align-items:start; }
-    @media (max-width:640px){ .consent-grid{ grid-template-columns:1fr; } .actions button[type="submit"]{ width:100%; } }
-    .checkbox-inline{ display:flex; align-items:flex-start; gap:10px; margin:0; padding:12px 14px; background:#fff; border:1px solid #e6e6e6; border-radius:10px; font-weight:500; }
-    .checkbox-inline input{ margin-top:2px; transform:scale(1.15); }
-    .checkbox-inline strong{ font-weight:800; }
-    .consent-card .sub{ margin:8px 2px 0; font-size:.9rem; color:#666; }
+    /* Versand-Box */
+    .shipbox { display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; background:#f9fafb; border:1px dashed #cbd5e1; border-radius:12px; padding:12px; }
+    .shipbox .opt { display:flex; align-items:center; gap:10px; }
+    .shipbox strong { font-weight:800; }
+    .hint { font-size:.85rem; color:var(--muted); }
   </style>
 </head>
 <body>
   <div class="page">
     <header class="site-header middle">
       <div class="hero">
-        <a href="https://www.aktionsolarstrom.de/">
+        <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
           <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
         </a>
         <div style="flex-basis:100%"></div>
@@ -81,6 +63,7 @@
 
       <section id="brief" class="form-section">
         <h2>Brief einreichen</h2>
+
         <form id="letterForm" method="post" action="/api/queue" novalidate>
           <fieldset>
             <legend>Ziel-Abgeordnete:r</legend>
@@ -149,21 +132,20 @@ Mit freundlichen Grüßen
 {Straße}
 {PLZ} {Ort}
             </textarea>
+          </fieldset>
 
-            <!-- Consent-Block -->
-            <div class="consent-card" aria-labelledby="consentTitle">
-              <h4 id="consentTitle">Versand &amp; Benachrichtigung</h4>
-              <div class="consent-grid">
-                <label class="checkbox-inline">
-                  <input id="consent_print" name="consent_print" type="checkbox" required>
-                  <span><strong>Ich willige ein</strong>, dass mein Brief physisch versendet wird.</span>
-                </label>
-                <label class="checkbox-inline">
-                  <input id="copy_to_self" name="copy_to_self" type="checkbox" checked>
-                  <span>Kopie an mich per <strong>E-Mail</strong> senden</span>
-                </label>
-              </div>
-              <p class="sub">Wir verwenden Ihre Angaben ausschließlich zur Zustellung des Briefes. Details siehe <a href="datenschutz.html">Datenschutz</a>.</p>
+          <fieldset>
+            <legend>Versand & Benachrichtigung</legend>
+            <div class="shipbox">
+              <label class="opt">
+                <input id="consent_print" name="consent_print" type="checkbox" required>
+                <span><strong>Ich willige ein,</strong> dass mein Brief <strong>physisch versendet</strong> wird.</span>
+              </label>
+              <label class="opt">
+                <input id="copy_to_self" name="copy_to_self" type="checkbox" checked>
+                <span><strong>Kopie an mich</strong> per E-Mail senden</span>
+              </label>
+              <div class="hint" style="grid-column:1 / -1">Wir verwenden Ihre Angaben ausschließlich zur Zustellung des Briefes. Details siehe <a href="datenschutz.html">Datenschutz</a>.</div>
             </div>
           </fieldset>
 
@@ -177,60 +159,24 @@ Mit freundlichen Grüßen
 
     <footer class="site-footer middle">
       <nav class="legal">
-        <a href="https://www.aktionsolarstrom.de/">Zur Startseite</a> · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+        <a href="https://www.aktionsolarstrom.de/">Zur Startseite</a> ·
+        <a href="impressum.html">Impressum</a> ·
+        <a href="datenschutz.html">Datenschutz</a>
       </nav>
     </footer>
   </div>
 
-  <!-- ==== DEBUG-HOOK (aktiv per ?debug=1) ==== -->
-  <script>
-  (function(){
-    const DEBUG = /[?&]debug=1/.test(location.search);
-    const badge = document.createElement('div');
-    function show(msg, ok=false){
-      if(!DEBUG) return;
-      badge.textContent = 'MDB: ' + msg;
-      badge.style.cssText = 'position:fixed;right:8px;bottom:8px;z-index:99999;padding:6px 8px;border-radius:6px;font:12px/1.2 system-ui;background:'+(ok?'#e8f7ec':'#fff3cd')+';border:1px solid '+(ok?'#7ad08d':'#e6c45c')+';color:#222';
-      if(!badge.parentNode) document.body.appendChild(badge);
-      console.log('[MDB]', msg);
-    }
-    window._mdblog = { show, DEBUG };
-    window._fetchJson = async function(url){
-      const bust = url + (url.includes('?')?'&':'?') + 'v=' + Date.now();
-      try{
-        const res = await fetch(bust, { cache:'no-store' });
-        if(!res.ok){ show('Fetch FAIL '+url+' ('+res.status+')'); throw new Error(url+' '+res.status); }
-        const j = await res.json();
-        show('Fetch OK '+url, true);
-        return j;
-      }catch(e){
-        show('Fetch ERR '+url+': '+e);
-        throw e;
-      }
-    };
-  })();
-  </script>
-
-  <!-- ==== Auto-MdB Lookup (PLZ/Ort → WK → MdB) ==== -->
+  <!-- MdB-Lookup & Live-Platzhalter -->
   <script>
   (function () {
     const $ = (s) => document.querySelector(s);
-    const elPLZ = $('#plz'), elCity = $('#city');
-    const elMP = $('#abgeordneter'), elMSG = $('#message');
+    const elPLZ = $('#plz'), elCity = $('#city'), elMP = $('#abgeordneter'), elMSG = $('#message');
     const selWrap = $('#mpSelectWrap'), elSel = $('#mp_select'), elHint = $('#mp_hint');
 
     const clean = (s) => String(s||'').replace(/^\s*nan\s+/i,'').trim();
-    const norm = (t) => String(t||'')
-      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-      .replace(/[^\w\s]/g,'').replace(/\s+/g,' ')
-      .trim().toLowerCase();
+    const norm = (t) => String(t||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^\w\\s]/g,'').replace(/\\s+/g,' ').trim().toLowerCase();
 
-    async function loadJson(url){ return _fetchJson(url); }
-
-    // Laufende Anfrage-ID → nur neueste Antwort anwenden
-    let requestId = 0;
-    let lastKey = '';
-    let lastNamesKey = '';
+    async function loadJson(url){ const r=await fetch(url,{cache:'no-store'}); if(!r.ok) throw new Error(url); return r.json(); }
 
     async function findCandidates(plz, cityRaw) {
       const [plzMap, wkMap, ortMap] = await Promise.all([
@@ -262,7 +208,7 @@ Mit freundlichen Grüßen
           name: clean(m.mdb_name),
           party: clean(m.fraktion || m.party || ''),
           anrede: clean(m.anrede) || ('Sehr geehrte/r ' + clean(m.mdb_name)),
-          address: (m.bundestag_address || 'Platz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim()
+          address: (m.bundestag_address || 'Deutscher Bundestag\\nPlatz der Republik 1\\n11011 Berlin').replace(/\\s*\\n\\s*/g,'\\n').trim()
         }));
 
       return { wks: [...new Set((wks||[]).map(String))], candidates };
@@ -270,139 +216,66 @@ Mit freundlichen Grüßen
 
     function ensureIntroOnBase(anrede, addr, name) {
       const base = elMSG.dataset.base || elMSG.value || '';
-      const addrLine = (addr || 'Platz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
-      const addrBlock = ((name ? name + '\n' : '') + 'Deutscher Bundestag\n' + addrLine).trim();
+      const addrLine = (addr || 'Deutscher Bundestag\\nPlatz der Republik 1\\n11011 Berlin').replace(/\\s*\\n\\s*/g,'\\n').trim();
+      const addrBlock = ((name ? name : '') + '\\n' + addrLine).trim();
       const tpl = base
         .replace('{MdB_Name_und_Adresse}', addrBlock)
         .replace('{MdB_Adresse}', addrBlock)
         .replace('{Anrede}', anrede || 'Sehr geehrte Damen und Herren');
       elMSG.dataset.tpl = tpl;
-      // kein künstliches input-Event → das Live-Token-Script aktualisiert den Text
+      ['#sender_zip','#sender_city'].forEach(sel => document.querySelector(sel)?.dispatchEvent(new Event('input')));
     }
 
-    function hideSelect(){
-      if (selWrap) selWrap.style.display='none';
-      if (elSel) elSel.innerHTML = '';
-      if (elHint) elHint.textContent = '';
-      lastNamesKey = '';
-    }
-
+    function hideSelect(){ selWrap.style.display='none'; elSel.innerHTML=''; elHint.textContent=''; }
     function showSelect(cands, wks){
-      if (!selWrap || !elSel) return;
-
-      const namesKey = JSON.stringify(cands.map(c=>c.name+'|'+c.party));
-      if (selWrap.style.display==='block' && namesKey===lastNamesKey) return; // unverändert
-
-      elSel.innerHTML = '';
-      const opt0 = document.createElement('option');
-      opt0.value = ''; opt0.textContent = 'Bitte Abgeordnete:n auswählen …';
-      elSel.appendChild(opt0);
-
-      cands.forEach(c=>{
-        const opt = document.createElement('option');
-        opt.value = c.name;
-        opt.textContent = c.name + (c.party ? ' – ' + c.party : '');
-        opt.dataset.anrede = c.anrede;
-        opt.dataset.address = c.address;
-        elSel.appendChild(opt);
-      });
-
-      elHint.textContent = 'Mehrere Wahlkreise ('+wks.join(', ')+').';
-      selWrap.style.display='block';
-      lastNamesKey = namesKey;
+      elSel.innerHTML='';
+      const opt0=document.createElement('option'); opt0.value=''; opt0.textContent='Bitte Abgeordnete:n auswählen …'; elSel.appendChild(opt0);
+      cands.forEach(c=>{ const o=document.createElement('option'); o.value=c.name; o.textContent=c.name+(c.party?' – '+c.party:''); o.dataset.anrede=c.anrede; o.dataset.address=c.address; elSel.appendChild(o); });
+      elHint.textContent='Mehrere Wahlkreise (' + wks.join(', ') + ').'; selWrap.style.display='block';
     }
-
-    function chooseCandidateByName(name){
-      if (!name) return;
-      const opt = [...elSel.options].find(o => o.value === name);
-      const anrede = opt?.dataset?.anrede || ('Sehr geehrte/r ' + name);
-      const address = opt?.dataset?.address || 'Platz der Republik 1\n11011 Berlin';
-      elMP.value = name;
-      ensureIntroOnBase(anrede, address, name);
-    }
-
-    elSel?.addEventListener('change', ()=>{
-      const name = elSel.value;
+    function chooseByName(name){
       if(!name) return;
-      chooseCandidateByName(name);
-    });
-
-    elMP?.addEventListener('blur', ()=>{
-      const name=(elMP.value||'').trim();
-      if(name) chooseCandidateByName(name);
-    });
-
-    // Debounce nur, wenn PLZ schon gültig ist
-    let lookupTimer=null;
-    function scheduleLookup(delay){
-      clearTimeout(lookupTimer);
-      if (!/^\d{5}$/.test((elPLZ?.value||'').trim())) return;
-      lookupTimer=setTimeout(runLookup, delay);
+      const opt=[...elSel.options].find(o=>o.value===name);
+      const anrede = opt?.dataset?.anrede || ('Sehr geehrte/r '+name);
+      const address= opt?.dataset?.address|| 'Deutscher Bundestag\\nPlatz der Republik 1\\n11011 Berlin';
+      elMP.value=name; ensureIntroOnBase(anrede,address,name);
     }
+    elSel.addEventListener('change',()=>{ if(elSel.value) chooseByName(elSel.value); });
+    elMP.addEventListener('blur',()=>{ const n=(elMP.value||'').trim(); if(n) chooseByName(n); });
 
+    let t=null; function scheduleLookup(ms=350){ clearTimeout(t); t=setTimeout(runLookup,ms); }
     if(!elMSG.dataset.base) elMSG.dataset.base = elMSG.value;
 
-    elPLZ?.addEventListener('input', ()=>{
-      const v=(elPLZ.value||'').trim();
-      if(/^\d{5}$/.test(v)) runLookup(); // sofort
-    });
-    elCity?.addEventListener('input', ()=>{
-      const city=(elCity.value||'').trim();
-      if(city.length>=3) scheduleLookup(600);
-    });
+    elPLZ.addEventListener('input',()=>{ const v=(elPLZ.value||'').trim(); if(/^\\d{5}$/.test(v)) scheduleLookup(0); });
+    elCity.addEventListener('input',()=>{ const v=(elCity.value||'').trim(); if(v.length>=3) scheduleLookup(350); });
+    ['change','blur'].forEach(ev=>{ elPLZ.addEventListener(ev,runLookup); elCity.addEventListener(ev,runLookup); });
 
     async function runLookup(){
-      const plz=(elPLZ?.value||'').trim();
-      const city=(elCity?.value||'').trim();
-      if(!/^\d{5}$/.test(plz)) return;
-
-      const key = plz + '|' + norm(city);
-      if (key === lastKey && selWrap.style.display==='block') return;
-
-      const myId = ++requestId; // ich bin die neueste Anfrage
+      hideSelect();
+      const plz=(elPLZ.value||'').trim(), city=(elCity.value||'').trim();
+      if(!/^\\d{5}$/.test(plz)) return;
       try{
         const { wks, candidates } = await findCandidates(plz, city);
-        if (myId !== requestId) return; // spätere Antwort hat übernommen
-
-        if(candidates.length===1){
-          hideSelect();
-          const c=candidates[0];
-          elMP.value=c.name;
-          ensureIntroOnBase(c.anrede, c.address, c.name);
-        }else if(candidates.length>1){
-          elMP.value='';
-          ensureIntroOnBase('Sehr geehrte Damen und Herren','Platz der Republik 1\n11011 Berlin','');
-          showSelect(candidates, wks);
-        }else{
-          hideSelect();
-          elMP.value='';
-          ensureIntroOnBase('Sehr geehrte Damen und Herren','Platz der Republik 1\n11011 Berlin','');
-        }
-        lastKey = key;
-      }catch(e){
-        hideSelect();
-        elMP.value='';
-        ensureIntroOnBase('Sehr geehrte Damen und Herren','Platz der Republik 1\n11011 Berlin','');
-      }
+        if(candidates.length===1){ const c=candidates[0]; elMP.value=c.name; ensureIntroOnBase(c.anrede,c.address,c.name); }
+        else if(candidates.length>1){ elMP.value=''; ensureIntroOnBase('Sehr geehrte Damen und Herren','Deutscher Bundestag\\nPlatz der Republik 1\\n11011 Berlin',''); showSelect(candidates,wks); }
+        else { elMP.value=''; ensureIntroOnBase('Sehr geehrte Damen und Herren','Deutscher Bundestag\\nPlatz der Republik 1\\n11011 Berlin',''); }
+      }catch(e){ elMP.value=''; ensureIntroOnBase('Sehr geehrte Damen und Herren','Deutscher Bundestag\\nPlatz der Republik 1\\n11011 Berlin',''); }
+      ['#sender_zip','#sender_city','#plz','#city'].forEach(sel=>document.querySelector(sel)?.dispatchEvent(new Event('input')));
     }
   })();
   </script>
 
-  <!-- ==== Live-Tokenersetzung + robuster AJAX-Submit ==== -->
   <script>
   (function(){
     const $ = (s) => document.querySelector(s);
     const form=$('#letterForm'), msg=$('#message');
-
     const F={'{Vorname}':'#first_name','{Nachname}':'#last_name','{Straße}':'#street','{PLZ}':'#sender_zip','{Ort}':'#sender_city'};
-    const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-
+    const esc=s=>s.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\\\$&');
     const topPLZ  = () => ($('#plz')?.value||'').trim();
     const topCity = () => ($('#city')?.value||'').trim();
-    const cleanStreet = (v) => String(v||'').replace(/\s*,\s*(?=\d)/g,' ').replace(/\s{2,}/g,' ').trim();
+    const cleanStreet = (v) => String(v||'').replace(/\\s*,\\s*(?=\\d)/g,' ').replace(/\\s{2,}/g,' ').trim();
 
     function getTpl(){ return msg.dataset.tpl || msg.dataset.base || msg.value || ''; }
-
     function vals(){
       const m={};
       for (const [tok,sel] of Object.entries(F)) {
@@ -414,85 +287,49 @@ Mit freundlichen Grüßen
       }
       return m;
     }
-
     function apply(base,map){
       let out=base;
-      for(const[t,v] of Object.entries(map)){
-        out=out.replace(new RegExp(esc(t),'g'),v);
-      }
-      return out.replace(/\n{3,}/g,'\n\n').trimEnd();
+      for(const[t,v] of Object.entries(map)){ out=out.replace(new RegExp(esc(t),'g'),v); }
+      return out.replace(/\\n{3,}/g,'\\n\\n').trimEnd();
     }
-
     function update(){
-      if(!msg)return;
-      if(!msg.dataset.base) msg.dataset.base = msg.value;  // Basis sichern
-      if(!msg.dataset.tpl)  msg.dataset.tpl  = msg.dataset.base; // Starttpl
+      if(!msg) return;
+      if(!msg.dataset.base) msg.dataset.base = msg.value;
+      if(!msg.dataset.tpl)  msg.dataset.tpl  = msg.dataset.base;
       msg.value = apply(getTpl(), vals());
     }
-
     [...Object.values(F), '#plz', '#city', '#sender_zip', '#sender_city'].forEach(sel=>$(sel)?.addEventListener('input',update));
     update();
 
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
       update();
-
-      if (/\{Vorname\}|\{Nachname\}|\{Straße\}|\{PLZ\}|\{Ort\}/.test(msg.value)) {
-        alert('Bitte füllen Sie alle Absenderfelder aus.');
-        return;
+      if (/\\{Vorname\\}|\\{Nachname\\}|\\{Straße\\}|\\{PLZ\\}|\\{Ort\\}/.test(msg.value)) {
+        alert('Bitte füllen Sie alle Absenderfelder aus.'); return;
       }
-
       const btn = form.querySelector('button[type="submit"]');
       btn?.setAttribute('disabled','');
-
-      const fd = new FormData(form);
-      const body = {};
-      fd.forEach((v,k)=>body[k]=v);
-      body.copy_to_self  = fd.has('copy_to_self');
-      body.consent_print = fd.has('consent_print');
-
+      const fd = new FormData(form); const payload={}; fd.forEach((v,k)=>payload[k]=v);
+      payload.copy_to_self  = fd.has('copy_to_self'); payload.consent_print = fd.has('consent_print');
       try{
-        const res = await fetch(form.action, {
-          method: 'POST',
-          headers: { 'Content-Type':'application/json' },
-          body: JSON.stringify(body)
-        });
-
-        // robustes Parsen
-        const ct = res.headers.get('content-type') || '';
-        let data = null;
-        if (ct.includes('application/json')) {
-          data = await res.json();
-        } else {
-          const text = await res.text();
-          throw new Error(`Serverantwort kein JSON (Status ${res.status}). ${text.slice(0,200)}`);
-        }
-
-        if (res.ok && data?.ok){
-          const box = document.getElementById('successMessage');
+        const res = await fetch(form.action, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+        const data = await res.json();
+        if (data.ok){
+          const box = $('#successMessage');
           box.textContent = 'Danke! Ihr Brief wurde erfolgreich eingereicht. Vorgangs-ID: ' + (data.queueId||'');
           box.style.display = 'block';
           form.reset();
-          // Vorlage zurücksetzen
-          msg.value = msg.dataset.base;
-          msg.dataset.tpl = msg.dataset.base;
-          update();
-          // Auswahl zurücksetzen
-          const wrap = document.getElementById('mpSelectWrap');
-          if (wrap){ wrap.style.display='none'; document.getElementById('mp_select').innerHTML=''; document.getElementById('mp_hint').textContent=''; }
-        } else {
-          alert('Fehler: ' + (data?.error || `Status ${res.status}`));
-        }
-      } catch(err){
-        alert('Verbindungsfehler: ' + (err?.message || err));
-      } finally {
-        btn?.removeAttribute('disabled');
-      }
+          msg.value = msg.dataset.base; msg.dataset.tpl = msg.dataset.base; update();
+        } else { alert('Fehler: ' + (data.error || 'Unbekannt')); }
+      }catch(err){ alert('Verbindungsfehler: ' + err.message); }
+      finally { btn?.removeAttribute('disabled'); }
     });
   })();
   </script>
 </body>
 </html>
+
+
 
 
 
