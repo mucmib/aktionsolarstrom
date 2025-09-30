@@ -63,9 +63,9 @@ export default allowCors(async function handler(req, res) {
     copy_to_self:   toBool(raw.copy_to_self ?? raw.copy ?? false),
   };
 
-  // ➕ NEU: Fallbacks für Absender-PLZ/-Ort, falls leer (nimmt obere Felder)
-  body.sender_zip  = body.sender_zip  || body.zip;      // <-- Ergänzung
-  body.sender_city = body.sender_city || body.city;     // <-- Ergänzung
+  // ➕ Fallbacks für Absender-PLZ/-Ort, falls leer (nimmt obere Felder)
+  body.sender_zip  = body.sender_zip  || body.zip;
+  body.sender_city = body.sender_city || body.city;
 
   // Pflichtfelder prüfen
   const required = ["first_name","last_name","email","street","sender_zip","sender_city","subject","message"];
@@ -92,7 +92,7 @@ export default allowCors(async function handler(req, res) {
   // Brieftext mit Platzhaltern → ersetzen (erst ersetzen, dann escapen & Zeilenumbrüche zu <br>)
   let finalMessage = body.message;
   finalMessage = finalMessage.replace("{Anrede_Name}", anredeName);
-  finalMessage = finalMessage.replace("{Anrede}", anredeName); // <-- Ergänzung
+  finalMessage = finalMessage.replace("{Anrede}", anredeName);
   finalMessage = finalMessage.replace("{Vorname}", body.first_name);
   finalMessage = finalMessage.replace("{Nachname}", body.last_name);
   finalMessage = finalMessage.replace("{Straße}", body.street);
@@ -116,7 +116,13 @@ export default allowCors(async function handler(req, res) {
     <p><b>Optionaler MdB-Name:</b> ${esc(body.mp_name)}</p>
     <p><b>Betreff:</b> ${esc(body.subject)}</p>
     <p><b>Brieftext (ersetzte Platzhalter):</b><br>${esc(finalMessage).replace(/\n/g,"<br>")}</p>
+    <hr>
+    <p><b>Druckfassung (nur Brief):</b></p>
+    <pre style="white-space:pre-wrap;font-family:inherit;margin:0;">${esc(finalMessage)}</pre>
   `;
+
+  // Nur der reine Brief (für Plain-Text bzw. Copy&Paste)
+  const letterPlain = `${finalMessage}`;
 
   const userHtml = `
     <p>Danke – wir haben Ihren Brief übernommen und bereiten den Postversand vor.</p>
@@ -130,13 +136,14 @@ export default allowCors(async function handler(req, res) {
     const api = new Brevo.TransactionalEmailsApi();
     api.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
-    // 1) Mail an euer Team (Reply-To = Absender:in, damit Antworten direkt an sie gehen)
+    // 1) Mail an euer Team (Reply-To = Absender:in)
     await api.sendTransacEmail({
       to:     [{ email: process.env.TEAM_INBOX }],
       sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Formular" },
       replyTo:{ email: body.email, name: `${body.first_name} ${body.last_name}` },
       subject:`Vorgang ${queueId}: Brief an MdB`,
-      htmlContent: teamHtml
+      htmlContent: teamHtml,
+      textContent: letterPlain   // <- Nur der Brief als Plain-Text (Druck/Copy&Paste)
     });
 
     // 2) Optional Kopie an Absender:in – immer vom verifizierten FROM_EMAIL
@@ -145,7 +152,8 @@ export default allowCors(async function handler(req, res) {
         to:     [{ email: body.email }],
         sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Team" },
         subject:`Kopie Ihrer Einreichung – Vorgang ${queueId}`,
-        htmlContent: userHtml
+        htmlContent: userHtml,
+        textContent: letterPlain  // <- Nur der Brief als Plain-Text
       });
     }
 
@@ -160,5 +168,7 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
+
 
 
