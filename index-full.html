@@ -89,7 +89,7 @@
 
             <label for="message">Brieftext *</label>
             <textarea id="message" name="message" required>
-{MdB_Adresse}
+{MdB_Name_und_Adresse}
 
 {Anrede}
 
@@ -136,11 +136,32 @@ Mit freundlichen Grüßen
       const wk = plzMap[plz]?.[0]; return wkMap[wk] || null;
     }
 
-    function ensureIntroAndAddress(anrede, addr) {
-      let txt = elMSG.value;
-      txt = txt.replace('{MdB_Adresse}', addr||'').replace('{Anrede}', anrede||'');
-      elMSG.value = txt;
-      elMSG.dataset.tpl = elMSG.value; // Vorlage sichern
+    function ensureIntroAndAddress(anrede, addrWithName) {
+      // setzt Anrede und Name+Adresse nur einmal vorn ein
+      let txt = elMSG.value || '';
+
+      // Anrede einfügen, falls nicht vorhanden
+      if (!/^\s*Sehr\s/i.test(txt)) {
+        txt = anrede + '\n\n' + txt.trimStart();
+      }
+
+      // Platzhalter {MdB_Name_und_Adresse} ersetzen oder nach Anrede einsetzen
+      if (addrWithName) {
+        if (txt.includes('{MdB_Name_und_Adresse}')) {
+          txt = txt.replace('{MdB_Name_und_Adresse}', addrWithName);
+        } else if (!txt.includes(addrWithName)) {
+          const parts = txt.split(/\n\s*\n/);
+          if (parts.length > 1) {
+            txt = parts[0] + '\n' + addrWithName + '\n\n' + parts.slice(1).join('\n\n');
+          } else {
+            txt = addrWithName + '\n\n' + txt;
+          }
+        }
+      }
+
+      elMSG.value = txt.trimEnd();
+      // Vorlage sichern (mit Tokens für Absenderdaten)
+      elMSG.dataset.tpl = elMSG.value;
     }
 
     async function handlePLZ() {
@@ -149,8 +170,14 @@ Mit freundlichen Grüßen
       try {
         const mdb = await findMdBByPLZ(plz);
         if (mdb) {
-          elMP.value = clean(mdb.mdb_name);
-          ensureIntroAndAddress(clean(mdb.anrede), mdb.bundestag_address);
+          const name = clean(mdb.mdb_name) || [mdb.vorname, mdb.nachname].filter(Boolean).join(' ');
+          if (elMP) elMP.value = name;
+
+          const anrede = clean(mdb.anrede) || 'Sehr geehrte Damen und Herren';
+          const addrML  = String(mdb.bundestag_address||'').replace(/\s*\n\s*/g,'\n').trim();
+          const addrWithName = (name ? name + '\n' : '') + addrML; // <- MdB über der Bundestagsadresse
+
+          ensureIntroAndAddress(anrede, addrWithName);
         }
       } catch(e){}
     }
@@ -160,19 +187,56 @@ Mit freundlichen Grüßen
   })();
   </script>
 
-  <!-- Token-Ersetzung live -->
+  <!-- Token-Ersetzung live (mit Straßen-Kommafix) -->
   <script>
   (function(){
     const $ = (s) => document.querySelector(s);
     const form=$('#letterForm'), msg=$('#message');
+
+    // Tokens -> Felder
     const F={'{Vorname}':'#first_name','{Nachname}':'#last_name','{Straße}':'#street','{PLZ}':'#sender_zip','{Ort}':'#sender_city'};
+
     const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-    function vals(){const m={};for(const[tok,sel] of Object.entries(F)){m[tok]=($(sel)?.value||'').trim();}return m;}
-    function apply(base,map){let out=base;for(const[t,v] of Object.entries(map)){out=out.replace(new RegExp(esc(t),'g'),v);}return out.replace(/\n{3,}/g,'\n\n').trimEnd();}
-    function update(){if(!msg)return;if(!msg.dataset.tpl)msg.dataset.tpl=msg.value;msg.value=apply(msg.dataset.tpl,vals());}
+
+    // Sanitizer: entfernt Komma vor Hausnummer (z.B. "Musterstrasse, 2b" -> "Musterstrasse 2b")
+    const cleanStreet = (v) => String(v||'').replace(/\s*,\s*(?=\d)/g,' ').replace(/\s{2,}/g,' ').trim();
+
+    function vals(){
+      const m={};
+      for (const [tok,sel] of Object.entries(F)) {
+        let v = ($(sel)?.value||'').trim();
+        if (tok === '{Straße}') v = cleanStreet(v);
+        m[tok]=v;
+      }
+      return m;
+    }
+
+    function apply(base,map){
+      let out=base;
+      for(const[t,v] of Object.entries(map)){
+        out=out.replace(new RegExp(esc(t),'g'),v);
+      }
+      return out.replace(/\n{3,}/g,'\n\n').trimEnd();
+    }
+
+    function update(){
+      if(!msg)return;
+      if(!msg.dataset.tpl) msg.dataset.tpl = msg.value; // Vorlage mit Tokens sichern
+      msg.value = apply(msg.dataset.tpl, vals());
+    }
+
+    // Live-Updates
     Object.values(F).forEach(sel=>$(sel)?.addEventListener('input',update));
     update();
-    form?.addEventListener('submit',e=>{update();if(/\{Vorname\}|\{Nachname\}|\{Straße\}|\{PLZ\}|\{Ort\}/.test(msg.value)){e.preventDefault();alert('Bitte füllen Sie alle Absenderfelder aus.');}});
+
+    // Check vorm Senden: keine Token übrig
+    form?.addEventListener('submit',e=>{
+      update();
+      if(/\{Vorname\}|\{Nachname\}|\{Straße\}|\{PLZ\}|\{Ort\}/.test(msg.value)){
+        e.preventDefault();
+        alert('Bitte füllen Sie alle Absenderfelder aus.');
+      }
+    });
   })();
   </script>
 </body>
