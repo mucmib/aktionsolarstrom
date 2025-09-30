@@ -227,10 +227,11 @@ Mit freundlichen Grüßen
       return { wks: [...new Set((wks||[]).map(String))], candidates };
     }
 
-    // MdB in die BASIS-Vorlage einsetzen → neue tpl bauen (ohne Absender-Platzhalter anzutasten)
+    // MdB in die BASIS-Vorlage einsetzen → neue tpl bauen (mit "Deutscher Bundestag" vor der Straße)
     function ensureIntroOnBase(anrede, addr, name) {
       const base = elMSG.dataset.base || elMSG.value || '';
-      const addrBlock = ((name ? name : '') + (name && addr ? '\n' : '') + (addr || 'Platz der Republik 1\n11011 Berlin')).trim();
+      const addrLine = (addr || 'Platz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
+      const addrBlock = ((name ? name : '') + '\nDeutscher Bundestag\n' + addrLine).trim();
       const tpl = base
         .replace('{MdB_Name_und_Adresse}', addrBlock)
         .replace('{MdB_Adresse}', addrBlock)
@@ -244,7 +245,7 @@ Mit freundlichen Grüßen
 
     function hideSelect() {
       if (selWrap) selWrap.style.display = 'none';
-      if (elSel) { elSel.innerHTML = ''; /* kein Focus-Steal */ }
+      if (elSel) { elSel.innerHTML = ''; }
       if (elHint) elHint.textContent = '';
     }
 
@@ -443,6 +444,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
