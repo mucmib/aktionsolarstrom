@@ -31,7 +31,6 @@
     footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
     footer a { color: #333; }
 
-    /* Versand-Box */
     .shipbox { display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; background:#f9fafb; border:1px dashed #cbd5e1; border-radius:12px; padding:12px; }
     .shipbox .opt { display:flex; align-items:center; gap:10px; }
     .shipbox strong { font-weight:800; }
@@ -145,7 +144,7 @@ Mit freundlichen Grüßen
                 <input id="copy_to_self" name="copy_to_self" type="checkbox" checked>
                 <span><strong>Kopie an mich</strong> per E-Mail senden</span>
               </label>
-              <div class="hint" style="grid-column:1 / -1">Wir verwenden Ihre Angaben ausschließlich zur Zustellung des Briefes. Details siehe <a href="datenschutz.html">Datenschutz</a>.</div>
+              <div class="hint" style="grid-column:1 / -1">Wir verwenden Ihre Angaben ausschließlich zur Zustellung des Briefes. Details siehe <a href="Datenschutz.html">Datenschutz</a>.</div>
             </div>
           </fieldset>
 
@@ -166,7 +165,7 @@ Mit freundlichen Grüßen
     </footer>
   </div>
 
-  <!-- MdB-Lookup (ohne Event-Schleifen) -->
+  <!-- MdB-Lookup mit geschlechtsspezifischer Anrede -->
   <script>
   (function () {
     const $ = (s) => document.querySelector(s);
@@ -175,6 +174,33 @@ Mit freundlichen Grüßen
 
     const clean = (s) => String(s||'').replace(/^\s*nan\s+/i,'').trim();
     const norm  = (t) => String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+
+    // --- einfache Heuristik für Geschlecht anhand des Vornamens ---
+    const female = new Set(['anna','sabine','ursula','katrin','katrina','claudia','renate','petra','britta','heike','steffi','stefanie','julia','juliane','christine','christina','lisa','marie','maria','sandra','nicole','monika','angelika','andrea','anja','martina','eva','kerstin','marlene','leonie','sarah','saskia','tina','nadja','ilse','gabriele','gudrun','carolin','caroline','carola','jasmin','helga','ingrid','gerda','bettina','kathrin','karin','svenja','ricarda','serap','elisabeth']);
+    const male   = new Set(['hans','peter','wolfgang','thomas','michael','stefan','stephan','knut','david','timon','frank','martin','jürgen','juergen','andreas','markus','georg','friedrich','karl','carsten','robert','ralf','ralph','rainer','dirk','heiko','heinrich','paul','max','alexander','christian','christoph','lars','jan','tobias','sebastian','oliver','uwe','ulrich','volker','klaus','siegfried','nils']);
+
+    function splitName(full) {
+      let s = full.replace(/\b(Dr\.?|Prof\.?|MdB)\b/gi,'').replace(/\s+/g,' ').trim();
+      const parts = s.split(' ');
+      return { first: parts[0]||'', last: parts[parts.length-1]||'', raw: s };
+    }
+    function guessGender(first) {
+      const f = first.toLowerCase();
+      if (female.has(f)) return 'f';
+      if (male.has(f))   return 'm';
+      return null;
+    }
+    function buildPoliteSalutation(name, fallback) {
+      // Wenn JSON schon „Frau/Herr“ enthält, übernehmen
+      if (/Sehr geehrte\s+(Frau|Herr)\b/i.test(fallback||'')) return fallback;
+      const { first, last } = splitName(name||'');
+      const g = guessGender(first);
+      if (g === 'm') return 'Sehr geehrter Herr ' + last;
+      if (g === 'f') return 'Sehr geehrte Frau ' + last;
+      // unknown → generisch
+      if (fallback && /geehrte\/r/i.test(fallback)) return 'Sehr geehrte Damen und Herren';
+      return fallback || 'Sehr geehrte Damen und Herren';
+    }
 
     async function loadJson(url){ const r=await fetch(url,{cache:'no-store'}); if(!r.ok) throw new Error(url); return r.json(); }
 
@@ -205,14 +231,17 @@ Mit freundlichen Grüßen
         if (!m) continue;
         const name = clean(m.mdb_name);
         if (!name) continue;
+
+        const computedAnrede = buildPoliteSalutation(name, clean(m.anrede));
+        const address = (m.bundestag_address || 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin')
+                          .replace(/\s*\n\s*/g,'\n').trim();
         if (!byName.has(name)) {
           byName.set(name, {
             wk: String(m.wk_nr || m.wk || ''),
             name,
             party: clean(m.fraktion || m.party || ''),
-            anrede: clean(m.anrede) || ('Sehr geehrte/r ' + name),
-            address: (m.bundestag_address || 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin')
-                       .replace(/\s*\n\s*/g,'\n').trim()
+            anrede: computedAnrede,
+            address
           });
         }
       }
@@ -234,8 +263,6 @@ Mit freundlichen Grüßen
         .replace('{MdB_Adresse}', addrBlock)
         .replace('{Anrede}', anrede || 'Sehr geehrte Damen und Herren');
 
-      // WICHTIG: keine künstlichen input-Events auf #plz/#city -> sonst Lookup-Schleife!
-      // Das tatsächliche Einsetzen der Absenderdaten erledigt der Token-Block unten automatisch.
       if (typeof window._applyTokens === 'function') window._applyTokens();
     }
 
@@ -259,7 +286,7 @@ Mit freundlichen Grüßen
     function chooseByName(name){
       if(!name) return;
       const opt=[...elSel.options].find(o=>o.value===name);
-      const anrede = opt?.dataset?.anrede || ('Sehr geehrte/r '+name);
+      const anrede = opt?.dataset?.anrede;
       const address= opt?.dataset?.address|| 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin';
       elMP.value=name;
       ensureIntroOnBase(anrede,address,name);
@@ -267,7 +294,6 @@ Mit freundlichen Grüßen
     elSel.addEventListener('change',()=>{ if(elSel.value) chooseByName(elSel.value); });
     elMP.addEventListener('blur',()=>{ const n=(elMP.value||'').trim(); if(n) chooseByName(n); });
 
-    // Debounce & Trigger — ohne künstliche Events
     let t=null; const scheduleLookup=(ms=300)=>{ clearTimeout(t); t=setTimeout(runLookup,ms); };
     if(!elMSG.dataset.base) elMSG.dataset.base = elMSG.value;
     elPLZ.addEventListener('input',()=>{ const v=(elPLZ.value||'').trim(); if(/^\d{5}$/.test(v)) scheduleLookup(0); });
@@ -344,7 +370,6 @@ Mit freundlichen Grüßen
       msg.value = apply(getTpl(), vals());
     }
 
-    // globaler Hook, damit der Lookup nach dem Einsetzen nicht an #plz/#city „rütteln“ muss
     window._applyTokens = update;
 
     [...Object.values(F), '#plz', '#city', '#sender_zip', '#sender_city'].forEach(sel=>$(sel)?.addEventListener('input',update));
@@ -362,7 +387,6 @@ Mit freundlichen Grüßen
       payload.copy_to_self  = fd.has('copy_to_self'); payload.consent_print = fd.has('consent_print');
       try{
         const res = await fetch(form.action, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-        // Falls der Server (z. B. durch Fehlerseite) kein JSON liefert:
         const text = await res.text();
         let data; try { data = JSON.parse(text); } catch { throw new Error(text.slice(0,120) || 'Serverantwort kein JSON'); }
         if (data.ok){
@@ -379,6 +403,7 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
 
 
 
