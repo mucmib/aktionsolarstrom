@@ -27,13 +27,14 @@ function readBody(req) {
   return req.body;
 }
 
-/** PDF schöner setzen: Absätze, Listen-Einzug, Adressblock-Luft, Fußzeile */
-function buildPdf({ queueId, message }) {
+/** PDF mit Briefkopf: Absender rechts oben, darunter Datum & Vorgangs-ID.
+ *  Absätze und nummerierte Listen werden lesbar gesetzt. */
+function buildPdf({ queueId, message, sender, dateDe }) {
   return new Promise((resolve, reject) => {
     try {
       const doc = new PDFDocument({
         size: "A4",
-        margins: { top: 72, left: 56, right: 56, bottom: 72 }
+        margins: { top: 72, left: 56, right: 56, bottom: 72 } // 2.5cm / 2cm
       });
 
       const chunks = [];
@@ -41,44 +42,49 @@ function buildPdf({ queueId, message }) {
       doc.on("end", () => resolve(Buffer.concat(chunks)));
       doc.on("error", reject);
 
-      const pageWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+      const usableWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
 
-      doc.fontSize(11);
-      // Grund-Zeilenabstand
-      doc.lineGap(2);
+      // ===== Briefkopf rechts oben =====
+      const headerWidth = 220; // Breite der rechten Spalte
+      const headerX = doc.page.width - doc.page.margins.right - headerWidth;
+      const headerY = doc.page.margins.top;
+
+      const headerLines = [
+        `${sender.name}`,
+        `${sender.street}`,
+        `${sender.zip} ${sender.city}`,
+        "", // Leerzeile
+        `${dateDe}`,
+        `Vorgangs-ID: ${queueId}`
+      ].filter(Boolean).join("\n");
+
+      doc.fontSize(10).fillColor("#000");
+      doc.text(headerLines, headerX, headerY, { width: headerWidth, align: "right" });
+
+      // Y-Position unterhalb des Headers bestimmen
+      const headerHeight = doc.heightOfString(headerLines, { width: headerWidth, align: "right" });
+      const startY = Math.max(doc.page.margins.top + headerHeight + 28, doc.page.margins.top + 110);
+
+      // ===== Fließtext links =====
+      doc.fontSize(11).lineGap(2).fillColor("#000");
+      doc.y = startY;
 
       const text = String(message || "").trim();
-
-      // Absätze an Leerzeilen erkennen
       const paragraphs = text.split(/\r?\n\r?\n/);
 
       paragraphs.forEach((p, idx) => {
         const pTrim = p.trim();
 
-        // Heuristik: erster Absatz enthält Empfängeradresse → etwas mehr Luft danach
-        const isAddressBlock =
-          idx === 0 && /deutscher bundestag/i.test(pTrim);
-
         // Einzug für nummerierte Listen
         const isList = /^\d+\.\s/.test(pTrim);
+        const options = { width: usableWidth, align: "left" };
+        if (isList) options.indent = 12;
 
-        const opts = { width: pageWidth, align: "left" };
-        if (isList) opts.indent = 12;
-
-        doc.text(pTrim, opts);
-
-        // Absatzabstände
-        if (isAddressBlock) {
-          doc.moveDown(0.8);
-        } else {
-          doc.moveDown(0.5);
-        }
+        // Erste Box nach Adressblock etwas mehr Luft
+        const isFirst = idx === 0;
+        doc.text(pTrim, options);
+        doc.moveDown(isFirst ? 0.8 : 0.5);
       });
-
-      // Fußzeile (Seite 1)
-      const footer = `Vorgangs-ID: ${queueId}`;
-      const y = doc.page.height - doc.page.margins.bottom + 20;
-      doc.fontSize(9).fillColor("#666").text(footer, doc.page.margins.left, y, { align: "left", width: pageWidth });
 
       doc.end();
     } catch (e) { reject(e); }
@@ -95,29 +101,39 @@ export default allowCors(async function handler(req, res) {
     // Body & Normalisierung
     const raw = readBody(req);
     const body = {
+      // Empfänger/MdB-Ermittlung
       zip:            raw.zip ?? raw.plz ?? "",
       city:           raw.city ?? raw.ort ?? "",
       mp_name:        raw.mp_name ?? raw.abgeordneter ?? "",
+
+      // Absender
       first_name:     raw.first_name ?? raw.vorname ?? "",
       last_name:      raw.last_name ?? raw.nachname ?? "",
       email:          raw.email ?? "",
       street:         raw.street ?? raw.strasse ?? "",
       sender_zip:     raw.sender_zip ?? raw.plz_abs ?? "",
       sender_city:    raw.sender_city ?? raw.ort_abs ?? "",
+
+      // Brief
       subject:        raw.subject ?? "",
       message:        raw.message ?? "",
+
+      // Optionen
       consent_print:  toBool(raw.consent_print ?? raw.postversand ?? false),
       copy_to_self:   toBool(raw.copy_to_self ?? raw.copy ?? false),
     };
+    // Fallbacks
     body.sender_zip  = body.sender_zip  || body.zip;
     body.sender_city = body.sender_city || body.city;
 
+    // Pflichtfelder
     const required = ["first_name","last_name","email","street","sender_zip","sender_city","subject","message"];
     const missing = required.filter(k => !must(body[k]));
     if (missing.length) {
       return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
     }
 
+    // Env
     if (!process.env.BREVO_API_KEY || !process.env.FROM_EMAIL || !process.env.TEAM_INBOX) {
       return res.status(500).json({
         ok:false, error:"env_missing",
@@ -141,17 +157,28 @@ export default allowCors(async function handler(req, res) {
       .replace("{Ort}", body.sender_city);
 
     const queueId = Math.random().toString(36).slice(2, 8).toUpperCase();
-    const today   = new Date().toISOString().slice(0,10);
+    const dateDe  = new Date().toLocaleDateString("de-DE", { day:"2-digit", month:"long", year:"numeric" });
 
-    // PDF bauen (schönere Formatierung)
-    const pdfBuffer = await buildPdf({ queueId, message: finalMessage });
+    // PDF erzeugen (mit Briefkopf rechts)
+    const pdfBuffer = await buildPdf({
+      queueId,
+      message: finalMessage,
+      dateDe,
+      sender: {
+        name: `${body.first_name} ${body.last_name}`.trim(),
+        street: body.street,
+        zip: body.sender_zip,
+        city: body.sender_city
+      }
+    });
     const pdfBase64 = pdfBuffer.toString("base64");
     const pdfName = `Brief_${queueId}.pdf`;
 
     // E-Mail-Inhalte
+    const todayISO = new Date().toISOString().slice(0,10);
     const teamHtml = `
       <h2>Neue Einreichung – ${esc(queueId)}</h2>
-      <p><b>Datum:</b> ${esc(today)}</p>
+      <p><b>Datum:</b> ${esc(todayISO)} (${esc(dateDe)})</p>
       <p><b>Absender:in</b><br>
         ${esc(body.first_name)} ${esc(body.last_name)}<br>
         ${esc(body.street)}<br>
@@ -175,7 +202,7 @@ export default allowCors(async function handler(req, res) {
     const api = new Brevo.TransactionalEmailsApi();
     api.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
-    // Team
+    // 1) Team-Mail mit PDF
     await api.sendTransacEmail({
       to:     [{ email: process.env.TEAM_INBOX }],
       sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Formular" },
@@ -185,7 +212,7 @@ export default allowCors(async function handler(req, res) {
       attachment: [{ name: pdfName, content: pdfBase64 }]
     });
 
-    // Kopie an Absender:in (optional)
+    // 2) Optional Kopie an Absender:in
     if (body.copy_to_self) {
       await api.sendTransacEmail({
         to:     [{ email: body.email }],
@@ -198,7 +225,6 @@ export default allowCors(async function handler(req, res) {
 
     res.setHeader("Cache-Control", "no-store");
     return res.status(200).json({ ok:true, queueId, copySent: body.copy_to_self });
-
   } catch (err) {
     const status = err?.response?.status || 500;
     let detail   = err?.response?.text || err?.message || String(err);
@@ -207,3 +233,5 @@ export default allowCors(async function handler(req, res) {
     return res.status(status >= 400 ? status : 500).json({ ok:false, error:"server_error", status, detail });
   }
 });
+
+
