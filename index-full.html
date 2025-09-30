@@ -6,89 +6,138 @@
   <title>Solarstrom statt Erdgas-Strom – Brief einreichen</title>
   <meta name="description" content="Reichen Sie Ihren Brief ein – wir drucken, kuvertieren und versenden physisch an die zuständige Bundestagsabgeordnete.">
   <link rel="stylesheet" href="assets/styles.css">
-
   <style>
-    :root { --maxw: 960px; --brand: #0a7d32; }
-    body { margin:0; font: 16px/1.5 system-ui, Arial, sans-serif; color:#111; background:#fff; }
-    .page { display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr; }
-    .middle { grid-column: 2; width:100%; padding: 16px; }
-    .hero { display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; padding: 28px 0 10px; text-align:center; }
-    .hero img { width:min(95vw, 620px); height:auto; display:block; }
-    .tagline { margin: 8px 0 0; font-size: 1.1rem; color:#333; }
+    :root { --maxw: 960px; --brand:#0a7d32; }
+    body { margin:0; font:16px/1.5 system-ui, Arial, sans-serif; color:#111; background:#fff; }
+    .page { display:grid; grid-template-columns:1fr minmax(0,var(--maxw)) 1fr; }
+    .middle { grid-column:2; width:100%; padding:16px; }
+    .hero { display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; padding:28px 0 10px; text-align:center; }
+    .hero img { width:min(95vw,620px); height:auto; display:block; }
+    .tagline { margin:8px 0 0; font-size:1.1rem; color:#333; }
     .cta { display:inline-block; margin-top:10px; padding:10px 16px; background:var(--brand); color:#fff; text-decoration:none; border-radius:6px; }
-    main.middle > section { margin: 22px 0; }
-    .form-section h2 { margin-top:0; }
+    main.middle>section { margin:22px 0; }
     fieldset { border:1px solid #e6e6e6; border-radius:8px; padding:16px; margin:18px 0; }
-    legend { padding: 0 6px; font-weight:600; }
+    legend { padding:0 6px; font-weight:600; }
     label { display:block; font-weight:600; margin:12px 0 6px; }
     input[type="text"], input[type="email"], select, textarea { width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid #cfcfcf; border-radius:6px; font:inherit; }
-    textarea { min-height: 240px; }
-    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+    textarea { min-height:240px; white-space:pre-wrap; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
     @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
-    .checkbox-inline { display:block; margin: 10px 0; font-weight:400; }
-    .actions { margin-top: 16px; }
-    button[type="submit"] { padding: 12px 18px; border:0; border-radius:8px; background:var(--brand); color:#fff; font-weight:700; cursor:pointer; }
-    .notice, .disclaimer { font-size: .92rem; color:#555; }
+    .checkbox-inline { display:block; margin:10px 0; font-weight:400; }
+    .row-inline { display:flex; align-items:center; gap:10px; margin:10px 0; }
+    .row-inline input[type="checkbox"]{ transform: translateY(1px); }
+    .actions { margin-top:16px; }
+    button[type="submit"]{ padding:12px 18px; border:0; border-radius:8px; background:var(--brand); color:#fff; font-weight:700; cursor:pointer; }
+    .disclaimer { font-size:.92rem; color:#555; }
     .success { display:none; margin-top:14px; padding:12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:6px; color:#145214; }
-    footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
-    footer a { color: #333; }
+    footer .legal{ text-align:center; display:block; margin:24px 0 10px; }
+    footer a{ color:#333; }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header class="site-header middle">
-      <div class="hero">
-        <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
-        <div style="flex-basis:100%"></div>
-        <p class="tagline">Sie schreiben den Brief – wir übernehmen Ausdruck und Postversand an die Abgeordneten.</p>
-        <a class="cta" href="#brief">Brief einreichen</a>
-      </div>
-    </header>
+<div class="page">
 
-    <main class="middle">
-      <section class="explainer">
-        <h2>So funktioniert’s</h2>
-        <ol>
-          <li>Sie verfassen Ihren Brief und geben Ihre <strong>Absenderadresse</strong> an.</li>
-          <li>Der Brief geht <strong>an uns</strong> und landet in der Druck-&amp;-Post-Warteschlange.</li>
-          <li>Wir drucken, kuvertieren und versenden physisch an die zuständige/n MdB.</li>
-        </ol>
-      </section>
+  <header class="site-header middle">
+    <div class="hero">
+      <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+      <div style="flex-basis:100%"></div>
+      <p class="tagline">Sie schreiben den Brief – wir übernehmen Ausdruck und Postversand an die Abgeordneten.</p>
+      <a class="cta" href="#brief">Brief einreichen</a>
+    </div>
+  </header>
 
-      <section id="brief" class="form-section">
-        <h2>Brief einreichen</h2>
-        <form id="letterForm" method="post" action="/api/queue" novalidate>
-          <fieldset>
-            <legend>Ziel-Abgeordnete:r</legend>
-            <div class="grid">
-              <div><label for="plz">Ihre PLZ *</label><input id="plz" name="zip" inputmode="numeric" pattern="\d{5}" required></div>
-              <div><label for="city">Ort *</label><input id="city" name="city" required></div>
+  <main class="middle">
+    <section class="explainer">
+      <h2>So funktioniert’s</h2>
+      <ol>
+        <li>Sie verfassen Ihren Brief (Vorlage unten) und geben Ihre <strong>Absenderadresse</strong> an.</li>
+        <li>Der Brief geht <strong>an uns</strong> und landet in der Druck-&amp;-Post-Warteschlange.</li>
+        <li>Wir drucken, kuvertieren und versenden physisch an die zuständige/n MdB.</li>
+      </ol>
+      <p>Wir verarbeiten Ihre Daten ausschließlich zur Durchführung des Postversands (Details in der Datenschutzerklärung).</p>
+    </section>
+
+    <section id="brief" class="form-section">
+      <h2>Brief einreichen</h2>
+
+      <form id="letterForm" method="post" action="/api/queue" novalidate>
+        <!-- Ziel -->
+        <fieldset>
+          <legend>Ziel-Abgeordnete:r</legend>
+          <p>Wir ermitteln die Postanschrift anhand Ihrer PLZ (Auto-Vorschlag) und unseres Adressverzeichnisses. Optional können Sie einen Namen vorgeben.</p>
+          <div class="grid">
+            <div>
+              <label for="plz">Ihre PLZ *</label>
+              <input id="plz" name="zip" inputmode="numeric" pattern="\d{5}" required placeholder="z. B. 80937">
             </div>
-            <label for="abgeordneter">Name der/s Abgeordneten (optional)</label>
-            <input id="abgeordneter" name="mp_name">
-          </fieldset>
-
-          <fieldset>
-            <legend>Ihre Angaben</legend>
-            <div class="grid">
-              <div><label for="first_name">Vorname *</label><input id="first_name" name="first_name" required></div>
-              <div><label for="last_name">Nachname *</label><input id="last_name" name="last_name" required></div>
+            <div>
+              <label for="city">Ort *</label>
+              <input id="city" name="city" required>
             </div>
-            <label for="email">E-Mail *</label><input id="email" name="email" type="email" required>
-            <label for="street">Straße &amp; Nr. *</label><input id="street" name="street" required>
-            <div class="grid">
-              <div><label for="sender_zip">PLZ *</label><input id="sender_zip" name="sender_zip" required></div>
-              <div><label for="sender_city">Ort *</label><input id="sender_city" name="sender_city" required></div>
+          </div>
+          <label for="abgeordneter">Name der/s Abgeordneten (optional)</label>
+          <input id="abgeordneter" name="mp_name" placeholder="z. B. Max Mustermann, MdB">
+        </fieldset>
+
+        <!-- Absender -->
+        <fieldset>
+          <legend>Ihre Angaben (Absender:in)</legend>
+          <div class="grid">
+            <div>
+              <label for="first_name">Vorname *</label>
+              <input id="first_name" name="first_name" required>
             </div>
-          </fieldset>
+            <div>
+              <label for="last_name">Nachname *</label>
+              <input id="last_name" name="last_name" required>
+            </div>
+          </div>
 
-          <fieldset>
-            <legend>Brief</legend>
-            <label for="subject">Betreff *</label>
-            <input id="subject" name="subject" required value="Solarstrom vor Erdgas-Strom – bitte setzen Sie klare Prioritäten">
+          <label for="email">E-Mail für Rückfragen/Kopie *</label>
+          <input id="email" name="email" type="email" required>
 
-            <label for="message">Brieftext *</label>
-            <textarea id="message" name="message" required>
+          <label for="street">Straße &amp; Nr. *</label>
+          <input id="street" name="street" required placeholder="z. B. Heisenbergstraße 2b">
+
+          <div class="grid">
+            <div>
+              <label for="sender_zip">PLZ (Absender:in) *</label>
+              <input id="sender_zip" name="sender_zip" inputmode="numeric" pattern="\d{5}" required>
+            </div>
+            <div>
+              <label for="sender_city">Ort (Absender:in) *</label>
+              <input id="sender_city" name="sender_city" required>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Brief -->
+        <fieldset>
+          <legend>Brief</legend>
+          <div class="grid">
+            <div>
+              <label for="subject">Betreff *</label>
+              <input id="subject" name="subject" required
+                     value="Solarstrom vor Erdgas-Strom – bitte setzen Sie klare Prioritäten">
+            </div>
+            <div>
+              <label for="letter_style">Stil-Vorlage</label>
+              <select id="letter_style" name="letter_style">
+                <option value="neutral">Neutral / sachlich</option>
+                <option value="sozial">Sozial-ökologisch</option>
+                <option value="wirtschaft">Wirtschaft &amp; Mittelstand</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row-inline">
+            <input type="checkbox" id="auto_render" checked>
+            <label for="auto_render" style="font-weight:400; margin:0;">Auto-Aktualisierung (MdB &amp; Absenderdaten automatisch in den Text einfügen)</label>
+          </div>
+
+          <label for="message">Brieftext *</label>
+          <!-- Vorlage mit Platzhaltern: {MdB_Adresse}, {Anrede}, {Vorname}, {Nachname}, {Straße}, {PLZ}, {Ort} -->
+          <textarea id="message" name="message" required>
 {MdB_Adresse}
 
 {Anrede}
@@ -104,77 +153,234 @@ Mit freundlichen Grüßen
 {Vorname} {Nachname}
 {Straße}
 {PLZ} {Ort}
-            </textarea>
+          </textarea>
 
-            <label class="checkbox-inline"><input id="consent_print" name="consent_print" type="checkbox" required> Ich willige ein, dass mein Brief physisch versendet wird.</label>
-            <label class="checkbox-inline"><input id="copy_to_self" name="copy_to_self" type="checkbox" checked> Kopie an mich per E-Mail senden</label>
-          </fieldset>
+          <label class="checkbox-inline">
+            <input id="consent_print" name="consent_print" type="checkbox" required>
+            Ich willige ein, dass mein Brief an das Kampagnenteam übermittelt, für den <strong>Postversand</strong> aufbereitet
+            und in meinem Namen mit meiner <strong>Absenderadresse</strong> physisch versendet wird.
+          </label>
 
-          <div class="actions"><button type="submit">In Druckwarteschlange einreichen</button><div id="successMessage" class="success"></div></div>
-        </form>
-      </section>
-    </main>
+          <label class="checkbox-inline">
+            <input id="copy_to_self" name="copy_to_self" type="checkbox" checked>
+            Kopie an mich per E-Mail senden
+          </label>
+        </fieldset>
 
-    <footer class="site-footer middle">
-      <nav class="legal"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></nav>
-    </footer>
-  </div>
+        <div class="actions">
+          <button type="submit">In Druckwarteschlange einreichen</button>
+          <div id="successMessage" class="success"></div>
+        </div>
 
-  <!-- Auto-MdB -->
-  <script>
-  (function () {
-    const $ = (s) => document.querySelector(s);
-    const elPLZ = $('#plz'), elMP = $('#abgeordneter'), elMSG = $('#message');
+        <p class="disclaimer">Hinweis: Sie erhalten nach dem Absenden eine Bestätigung mit Vorgangs-ID.</p>
+      </form>
+    </section>
 
-    const clean = (s) => String(s||'').replace(/^\s*nan\s+/i,'').trim();
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details>
+        <summary>Welche Absenderdaten werden aufgedruckt?</summary>
+        <p>Standardmäßig Name, Straße, PLZ/Ort wie angegeben – notwendig für postalische Kommunikation.</p>
+      </details>
+      <details>
+        <summary>Wie wählt ihr die MdB-Adresse?</summary>
+        <p>Über unser Adressverzeichnis (Bundestag/Wahlkreis). Standard ist die Bundestagsadresse.</p>
+      </details>
+      <details>
+        <summary>Welche Daten speichert ihr?</summary>
+        <p>Nur das Notwendige für Nachweis, Druck &amp; Versand (Löschkonzept siehe Datenschutz).</p>
+      </details>
+    </section>
+  </main>
 
-    async function loadJson(url) {
-      const res = await fetch(url); if (!res.ok) throw new Error(url); return res.json();
+  <footer class="site-footer middle">
+    <nav class="legal">
+      <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+    </nav>
+    <p style="text-align:center">© Kampagne „Solarstrom statt Erdgas-Strom“</p>
+  </footer>
+
+</div><!-- /page -->
+
+<!-- JSON-Submit -->
+<script>
+(function(){
+  const form = document.getElementById('letterForm');
+  const successBox = document.getElementById('successMessage');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(form).entries());
+    data.consent_print = !!document.getElementById('consent_print').checked;
+    data.copy_to_self  = !!document.getElementById('copy_to_self').checked;
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      let json = {};
+      try { json = await res.json(); } catch {}
+
+      if (res.ok && json.queueId) {
+        successBox.style.display = 'block';
+        successBox.textContent = 'Danke! Ihr Brief wurde übernommen. Vorgangs-ID: ' + json.queueId;
+        form.reset();
+      } else {
+        alert('Fehler: ' + (json.error || json.detail || ('HTTP ' + res.status)));
+      }
+    } catch (err) {
+      alert('Netzwerkfehler: ' + err.message);
     }
-    async function findMdBByPLZ(plz) {
-      const [plzMap,wkMap] = await Promise.all([loadJson('assets/data/plz_to_wk.json'), loadJson('assets/data/wk_to_mdb.json')]);
-      const wk = plzMap[plz]?.[0]; return wkMap[wk] || null;
+  });
+})();
+</script>
+
+<!-- Auto-MdB + Live-Rendering -->
+<script>
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const tryAll = (ss) => ss.map($).find(Boolean);
+
+  // Elemente
+  const elPLZ         = tryAll(['#plz','input[name="zip"]']);
+  const elMP          = tryAll(['#abgeordneter','input[name="mp_name"]']);
+  const elMSG         = tryAll(['#message','textarea[name="message"]']);
+  const elAuto        = $('#auto_render');
+
+  const elFirst       = $('#first_name');
+  const elLast        = $('#last_name');
+  const elStreet      = $('#street');
+  const elSZip        = $('#sender_zip');
+  const elSCity       = $('#sender_city');
+
+  if (!elPLZ || !elMSG) return;
+
+  // Vorlage sichern (Master mit Platzhaltern)
+  const BASE_TEMPLATE = (elMSG.value || '').replace(/\r\n/g, '\n');
+
+  // Kleine Helfer
+  const cleanName = (name) => String(name || '').replace(/^\s*nan\s+/i,'').replace(/\s+/g,' ').trim();
+  const cleanAnrede = (anrede) => {
+    const a = String(anrede || '').replace(/^\s*nan\s+/i,'').trim();
+    return a || 'Sehr geehrte Damen und Herren';
+  };
+  const addrOneLine  = (addr) => String(addr||'').replace(/\s*\n\s*/g, ', ').replace(/\s+/g,' ').trim();
+  const addrMultiLine= (addr) => String(addr||'').replace(/\s*\n\s*/g, '\n').trim();
+
+  async function loadJson(url) {
+    const res = await fetch(url, { cache:'no-store' });
+    if (!res.ok) throw new Error(url + ' → HTTP ' + res.status);
+    return res.json();
+  }
+
+  async function findMdBByPLZ(plz) {
+    const [plzMap, wkMap] = await Promise.all([
+      loadJson('assets/data/plz_to_wk.json'),
+      loadJson('assets/data/wk_to_mdb.json'),
+    ]);
+    const wks = plzMap[plz];
+    if (!wks || !wks.length) return null;
+    return wkMap[String(wks[0])] || null;
+  }
+
+  // Live-Renderer
+  window.renderLetter = function renderLetter() {
+    if (!elAuto.checked) return; // Benutzer möchte frei editieren
+
+    let base = BASE_TEMPLATE;
+
+    // MdB-Block
+    if (window._mdbTpl) {
+      const a    = window._mdbTpl.anrede || '';
+      const adr  = window._mdbTpl.addr   || '';
+      const name = window._mdbTpl.name   || '';
+
+      // Anrede
+      base = base.replaceAll('{Anrede}', a);
+
+      // Name + Adresse
+      if (base.includes('{MdB_Adresse}')) {
+        const needsNameLine = !base.includes('{MdB_Name}') && !!name;
+        const block = needsNameLine ? An ${name}\n${adr} : adr;
+        base = base.replace('{MdB_Adresse}', block);
+      } else if (adr) {
+        const nameLine = name ? An ${name}\n : '';
+        base = ${nameLine}${adr}\n\n${base}.trimStart();
+      }
+      base = base.replaceAll('{MdB_Name}', name);
     }
 
-    function ensureIntroAndAddress(anrede, addr) {
-      let txt = elMSG.value;
-      txt = txt.replace('{MdB_Adresse}', addr||'').replace('{Anrede}', anrede||'');
-      elMSG.value = txt;
-      elMSG.dataset.tpl = elMSG.value; // Vorlage sichern
-    }
+    // Absenderblock
+    const first = (elFirst.value || '').trim();
+    const last  = (elLast.value  || '').trim();
+    const street= (elStreet.value|| '').trim();
+    const pz    = (elSZip.value  || '').trim();
+    const oc    = (elSCity.value || '').trim();
 
-    async function handlePLZ() {
-      const plz = (elPLZ.value||'').trim();
-      if (!/^\d{5}$/.test(plz)) return;
-      try {
-        const mdb = await findMdBByPLZ(plz);
-        if (mdb) {
-          elMP.value = clean(mdb.mdb_name);
-          ensureIntroAndAddress(clean(mdb.anrede), mdb.bundestag_address);
+    const repl = (str, key, val) => str.replaceAll(new RegExp('\\{'+key+'\\}','g'), val);
+
+    base = repl(base,'Vorname', first);
+    base = repl(base,'Nachname', last);
+    base = repl(base,'Straße', street);
+    base = repl(base,'PLZ', pz);
+    base = repl(base,'Ort', oc);
+
+    elMSG.value = base;
+  }
+
+  // Wenn PLZ vollständig → MdB laden
+  async function handlePLZChange() {
+    const plz = (elPLZ.value || '').trim();
+    if (!/^\d{5}$/.test(plz)) return;
+
+    try {
+      const mdb = await findMdBByPLZ(plz);
+      if (mdb) {
+        const name   = cleanName(mdb.mdb_name) || [mdb.vorname, mdb.nachname].filter(Boolean).join(' ');
+        const anrede = cleanAnrede(mdb.anrede);
+        const addrML = addrMultiLine(mdb.bundestag_address);
+        if (elMP) elMP.value = name;
+
+        // Exponiere für Renderer
+        window._mdbTpl = { name, anrede, addr: addrML };
+
+        // Hidden-Feld (einzeilig) fürs Backend
+        let addr = document.getElementById('mp_address');
+        if (!addr) {
+          addr = document.createElement('input');
+          addr.type = 'hidden';
+          addr.id = 'mp_address';
+          addr.name = 'mp_address';
+          elMSG.form && elMSG.form.appendChild(addr);
         }
-      } catch(e){}
+        addr.value = addrOneLine(mdb.bundestag_address);
+      } else {
+        window._mdbTpl = { name:'', anrede:'Sehr geehrte Damen und Herren', addr:'' };
+        if (elMP) elMP.value = '';
+      }
+    } catch(e) {
+      window._mdbTpl = { name:'', anrede:'Sehr geehrte Damen und Herren', addr:'' };
+      console.warn(e);
     }
+    renderLetter();
+  }
 
-    elPLZ.addEventListener('change', handlePLZ);
-    elPLZ.addEventListener('blur', handlePLZ);
-  })();
-  </script>
+  // Events für Live-Rendering
+  ['change','blur','keyup'].forEach(ev=>{
+    [elFirst, elLast, elStreet, elSZip, elSCity].forEach(el=> el && el.addEventListener(ev, renderLetter));
+  });
+  ['change','blur','keyup'].forEach(ev=> elPLZ.addEventListener(ev, handlePLZChange));
+  elAuto.addEventListener('change', ()=> elAuto.checked && renderLetter());
 
-  <!-- Token-Ersetzung live -->
-  <script>
-  (function(){
-    const $ = (s) => document.querySelector(s);
-    const form=$('#letterForm'), msg=$('#message');
-    const F={'{Vorname}':'#first_name','{Nachname}':'#last_name','{Straße}':'#street','{PLZ}':'#sender_zip','{Ort}':'#sender_city'};
-    const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-    function vals(){const m={};for(const[tok,sel] of Object.entries(F)){m[tok]=($(sel)?.value||'').trim();}return m;}
-    function apply(base,map){let out=base;for(const[t,v] of Object.entries(map)){out=out.replace(new RegExp(esc(t),'g'),v);}return out.replace(/\n{3,}/g,'\n\n').trimEnd();}
-    function update(){if(!msg)return;if(!msg.dataset.tpl)msg.dataset.tpl=msg.value;msg.value=apply(msg.dataset.tpl,vals());}
-    Object.values(F).forEach(sel=>$(sel)?.addEventListener('input',update));
-    update();
-    form?.addEventListener('submit',e=>{update();if(/\{Vorname\}|\{Nachname\}|\{Straße\}|\{PLZ\}|\{Ort\}/.test(msg.value)){e.preventDefault();alert('Bitte füllen Sie alle Absenderfelder aus.');}});
-  })();
-  </script>
+  // Initial: falls PLZ schon da
+  if (elPLZ.value && /^\d{5}$/.test(elPLZ.value.trim())) handlePLZChange();
+})();
+</script>
+
 </body>
 </html>
 
