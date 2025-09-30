@@ -135,125 +135,119 @@ Mit freundlichen Grüßen
   </div>
 
   <!-- Auto-MdB -->
-<script>
-(function () {
-  const $ = (s) => document.querySelector(s);
-  const elPLZ = $('#plz'), elCity = $('#city'), elMP = $('#abgeordneter'), elMSG = $('#message');
+  <script>
+  (function () {
+    const $ = (s) => document.querySelector(s);
+    const elPLZ = $('#plz'), elCity = $('#city'), elMP = $('#abgeordneter'), elMSG = $('#message');
 
-  const clean = (s) => String(s||'').replace(/^\s*nan\s+/i,'').trim();
+    const clean = (s) => String(s||'').replace(/^\s*nan\s+/i,'').trim();
 
-  async function loadJson(url) {
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) throw new Error(url);
-    return res.json();
-  }
-
-  // 1) PLZ->WK, 2) Fallback Ort->WK auch bei "kein Treffer"
-  async function findMdB(plz, cityRaw) {
-    const [plzMap, wkMap, ortMap] = await Promise.all([
-      loadJson('assets/data/plz_to_wk.json'),
-      loadJson('assets/data/wk_to_mdb.json'),
-      loadJson('assets/data/ort_to_wk.json'),
-    ]);
-
-    let wks = plzMap[plz] || [];
-
-    const norm = (t) => String(t||'')
-      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-      .replace(/[^\w\s]/g,'').replace(/\s+/g,' ')
-      .trim().toLowerCase();
-
-    // Fallback, wenn gar kein WK über PLZ
-    if ((!wks || !wks.length) && cityRaw) {
-      const key = norm(cityRaw);
-      if (key) {
-        const hits = Object.entries(ortMap)
-          .filter(([k]) => k.startsWith(key))
-          .map(([, arr]) => arr);
-        wks = [...new Set(hits.flat())];
-      }
+    async function loadJson(url) {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error(url);
+      return res.json();
     }
 
-    // Eingrenzen, falls mehrere und Ort vorhanden
-    if (wks && wks.length > 1 && cityRaw) {
-      const key = norm(cityRaw);
-      if (key) {
-        const hits = Object.entries(ortMap)
-          .filter(([k]) => k.startsWith(key))
-          .map(([, arr]) => arr);
-        const byCity = new Set(hits.flat());
-        const narrowed = wks.filter(w => byCity.has(String(w)));
-        if (narrowed.length) wks = narrowed;
+    async function findMdB(plz, cityRaw) {
+      const [plzMap, wkMap, ortMap] = await Promise.all([
+        loadJson('assets/data/plz_to_wk.json'),
+        loadJson('assets/data/wk_to_mdb.json'),
+        loadJson('assets/data/ort_to_wk.json'),
+      ]);
+
+      let wks = plzMap[plz] || [];
+
+      const norm = (t) => String(t||'')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+        .replace(/[^\w\s]/g,'').replace(/\s+/g,' ')
+        .trim().toLowerCase();
+
+      // Fallback, wenn gar kein WK über PLZ
+      if ((!wks || !wks.length) && cityRaw) {
+        const key = norm(cityRaw);
+        if (key) {
+          const hits = Object.entries(ortMap)
+            .filter(([k]) => k.startsWith(key))
+            .map(([, arr]) => arr);
+          wks = [...new Set(hits.flat())];
+        }
       }
+
+      // Eingrenzen, falls mehrere und Ort vorhanden
+      if (wks && wks.length > 1 && cityRaw) {
+        const key = norm(cityRaw);
+        if (key) {
+          const hits = Object.entries(ortMap)
+            .filter(([k]) => k.startsWith(key))
+            .map(([, arr]) => arr);
+          const byCity = new Set(hits.flat());
+          const narrowed = wks.filter(w => byCity.has(String(w)));
+          if (narrowed.length) wks = narrowed;
+        }
+      }
+
+      if (!wks || !wks.length) return { mdb:null, wks:[] };
+      if (wks.length === 1)  return { mdb: wkMap[String(wks[0])] || null, wks };
+      return { mdb:null, wks };
     }
 
-    if (!wks || !wks.length) return { mdb:null, wks:[] };
-    if (wks.length === 1)  return { mdb: (await loadJson('assets/data/wk_to_mdb.json'))[String(wks[0])] || null, wks };
-    return { mdb:null, wks }; // mehrere WK
-  }
+    function ensureIntroAndAddress(anrede, addrWithName) {
+      let txt = elMSG.value || '';
+      txt = txt.replace('{MdB_Name_und_Adresse}', addrWithName || '')
+               .replace('{MdB_Adresse}', addrWithName || '')
+               .replace('{Anrede}', anrede || '');
+      elMSG.value = txt.trimEnd();
+      elMSG.dataset.tpl = elMSG.value;
+    }
 
-  function ensureIntroAndAddress(anrede, addrWithName) {
-    let txt = elMSG.value || '';
-    txt = txt.replace('{MdB_Name_und_Adresse}', addrWithName || '')
-             .replace('{MdB_Adresse}', addrWithName || '')
-             .replace('{Anrede}', anrede || '');
-    elMSG.value = txt.trimEnd();
-    elMSG.dataset.tpl = elMSG.value;
-  }
+    function makeMpFieldEditable(placeholderText) {
+      if (!elMP) return;
+      elMP.removeAttribute('disabled');
+      elMP.removeAttribute('readonly');
+      elMP.removeAttribute('aria-disabled');
+      elMP.style.pointerEvents = 'auto';
+      elMP.placeholder = placeholderText || '';
+      elMP.focus();
+    }
 
-  // Hilfsfunktion: MP-Feld wirklich editierbar machen
-  function makeMpFieldEditable(placeholderText) {
-    if (!elMP) return;
-    elMP.removeAttribute('disabled');
-    elMP.removeAttribute('readonly');
-    elMP.removeAttribute('aria-disabled');
-    elMP.style.pointerEvents = 'auto';
-    elMP.placeholder = placeholderText || '';
-    // Cursor rein, damit Tippen sofort geht
-    elMP.focus();
-  }
+    async function runLookup() {
+      const plz  = (elPLZ?.value||'').trim();
+      const city = (elCity?.value||'').trim();
+      if (!/^\d{5}$/.test(plz)) return;
 
-  async function runLookup() {
-    const plz  = (elPLZ?.value||'').trim();
-    const city = (elCity?.value||'').trim();
-    if (!/^\d{5}$/.test(plz)) return;
-
-    try {
-      const { mdb, wks } = await findMdB(plz, city);
-      if (mdb) {
-        const name = clean(mdb.mdb_name);
-        if (elMP) elMP.value = name;
-        const anrede = clean(mdb.anrede) || 'Sehr geehrte Damen und Herren';
-        const addrML  = String(mdb.bundestag_address||'').replace(/\s*\n\s*/g,'\n').trim();
-        const addrWithName = (name ? name + '\n' : '') + addrML;
-        ensureIntroAndAddress(anrede, addrWithName);
-      } else if (wks.length > 1) {
-        makeMpFieldEditable(`Mehrere Wahlkreise (${wks.join(', ')}). Optional Namen eintragen.`);
-        ensureIntroAndAddress('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin');
-      } else {
+      try {
+        const { mdb, wks } = await findMdB(plz, city);
+        if (mdb) {
+          const name = clean(mdb.mdb_name);
+          if (elMP) elMP.value = name;
+          const anrede = clean(mdb.anrede) || 'Sehr geehrte Damen und Herren';
+          const addrML  = String(mdb.bundestag_address||'').replace(/\s*\n\s*/g,'\n').trim();
+          const addrWithName = (name ? name + '\n' : '') + addrML;
+          ensureIntroAndAddress(anrede, addrWithName);
+        } else if (wks.length > 1) {
+          makeMpFieldEditable(`Mehrere Wahlkreise (${wks.join(', ')}). Optional Namen eintragen.`);
+          ensureIntroAndAddress('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin');
+        } else {
+          makeMpFieldEditable('');
+          if (elMP) elMP.value = '';
+          ensureIntroAndAddress('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin');
+        }
+      } catch(e){
         makeMpFieldEditable('');
-        if (elMP) elMP.value = '';
         ensureIntroAndAddress('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin');
       }
-    } catch(e){
-      makeMpFieldEditable('');
-      ensureIntroAndAddress('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin');
+
+      ['#sender_zip','#sender_city','#city','#plz'].forEach(sel =>
+        document.querySelector(sel)?.dispatchEvent(new Event('input'))
+      );
     }
 
-    // Tokens im Brief unten sofort neu berechnen
-    ['#sender_zip','#sender_city','#city','#plz'].forEach(sel =>
-      document.querySelector(sel)?.dispatchEvent(new Event('input'))
-    );
-  }
-
-  // Events: sofortiger Lookup bei PLZ- & Ort-Eingabe
-  ['input','change','blur'].forEach(ev=>{
-    elPLZ?.addEventListener(ev, runLookup);
-    elCity?.addEventListener(ev, runLookup);
-  });
-})();
-</script>
-
+    ['input','change','blur'].forEach(ev=>{
+      elPLZ?.addEventListener(ev, runLookup);
+      elCity?.addEventListener(ev, runLookup);
+    });
+  })();
+  </script>
 
   <!-- Token-Ersetzung live -->
   <script>
@@ -298,7 +292,6 @@ Mit freundlichen Grüßen
     [...Object.values(F), '#plz', '#city'].forEach(sel=>$(sel)?.addEventListener('input',update));
     update();
 
-    // ----- SUBMIT-HANDLER (AJAX) -----
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
       update();
@@ -344,6 +337,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
