@@ -20,6 +20,17 @@ const esc = (s = "") =>
 const toBool = (v) => ["true", "on", "1", "yes"].includes(String(v).toLowerCase());
 const stripHtml = (h = "") => String(h).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
+// prüft, ob im Fließtext schon eine Grußformel enthalten ist
+const hasClosing = (t = "") => /mit\s+freundlichen\s+gr(ü|u)(ß|ss)en/i.test(t);
+
+// prüft, ob im Fließtext bereits der Absenderblock vorkommt (Name + PLZ)
+function hasSignature(t = "", body = {}) {
+  const name = `${(body.first_name||"").trim()} ${(body.last_name||"").trim()}`.trim();
+  const zip  = String(body.sender_zip||"").trim();
+  if (!name || !zip) return false;
+  return t.includes(name) && t.includes(zip);
+}
+
 /** Body robust lesen */
 function readBody(req) {
   if (!req.body) return {};
@@ -90,9 +101,18 @@ async function generatePdf({ body, finalMessage, queueId }) {
   // Fließtext
   doc.text(bodyText, { width: contentWidth });
 
-  // Gruß & Signatur
-  doc.moveDown(2).text("Mit freundlichen Grüßen");
-  doc.moveDown(1).text(absenderBlock);
+  // Gruß & Signatur NUR anhängen, wenn im Text nicht bereits vorhanden
+  const needClosing   = !hasClosing(bodyText);
+  const needSignature = !hasSignature(bodyText, body);
+
+  if (needClosing || needSignature) {
+    doc.moveDown(2);
+    if (needClosing) doc.text("Mit freundlichen Grüßen");
+    if (needSignature) {
+      doc.moveDown(1);
+      doc.text(absenderBlock);
+    }
+  }
 
   // Vorgangs-ID
   doc.moveDown(2).fontSize(9).fillColor("#666").text(`Vorgangs-ID: ${queueId}`);
@@ -220,7 +240,7 @@ export default allowCors(async function handler(req, res) {
       attachment: pdfAttachment ? [{ name: pdfAttachment.name, content: pdfAttachment.content }] : []
     });
 
-    // 2) Optional Kopie an Absender:in
+    // 2) Optional Kopie an Absender:in (mit List-Unsubscribe-Header)
     if (body.copy_to_self) {
       await api.sendTransacEmail({
         to:     [{ email: body.email }],
@@ -228,6 +248,7 @@ export default allowCors(async function handler(req, res) {
         subject:`Kopie Ihrer Einreichung – Vorgang ${queueId}`,
         htmlContent: userHtml,
         textContent: stripHtml(userHtml),
+        headers: { "List-Unsubscribe": `<mailto:${process.env.FROM_EMAIL}>` },
         attachment: pdfAttachment ? [{ name: pdfAttachment.name, content: pdfAttachment.content }] : []
       });
     }
@@ -242,6 +263,7 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
 
 
 
