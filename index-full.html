@@ -93,22 +93,28 @@
 
 {Anrede}
 
-heute möchte ich mich an Sie wenden, um Ihre Aufmerksamkeit auf ein Thema zu lenken, das für sehr viele Bürgerinnen, Bürger und Unternehmen in Ihrem Wahlkreis sehr relevant ist: die Fortsetzung der Energiewende.
+heute wende ich mich an Sie mit einem Thema, das für viele Bürgerinnen, Bürger und Unternehmen in Ihrem Wahlkreis sehr relevant ist: Die Fortsetzung der Energiewende.
 
-Bürgerinnen, Bürger und Unternehmen investieren mit Photovoltaik und Speicher in die Energiewende und den Klimaschutz. Die selbst produzierte Energie wird direkt und über den Stromspeicher genutzt. Das ist ökonomisch und ökologisch sinnvoll.
+Bürgerinnen und Bürger, Unternehmen und Kommunen investieren mit Photovoltaik und Speicher in die Energiewende und den Klimaschutz. Die so produzierte Energie nutzen sie zu einem guten Teil selbst. Sie sparen damit Stromkosten und tragen zu unseren Klimazielen bei. 
 
-Möglich wurde dies durch das EEG (Erneuerbare-Energien-Gesetz). Doch jetzt steht diese erfolgreiche Entwicklung vor dem Abbruch. Bundesministerin Reiche möchte die Energiewende drosseln, neue Erdgaskraftwerke bauen und die feste Einspeisevergütung abschaffen. Außerdem plant die Bundesnetzagentur mit ihrem Diskussionspapier AgNes eine massive Verschlechterung der Wirtschaftlichkeit für Produzenten von regenerativer Energie. Dagegen möchte ich mich mit diesem Brief an Sie wenden und die Forderungen der Initiative „Sonnenstrom statt Erdgasstrom“ unterstützen. Die Forderungen sind:
+Doch jetzt ist diese erfolgreiche Entwicklung bedroht. Bundesministerin Reiche möchte die Energiewende drosseln, die feste Einspeisevergütung abschaffen und neue Erdgaskraftwerke bauen. Außerdem bereitet die Bundesnetzagentur mit ihrem Diskussionspapier AgNes eine massive Verschlechterung der Wirtschaftlichkeit für Produzenten von erneuerbarem Strom vor. 
 
-1. Keine neuen Erdgaskraftwerke – Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.
+Deshalb möchte ich Sie für die Forderungen der Initiative „Sonnenstrom statt Erdgasstrom“ gewinnen, die die deutschen Stromkunden und das Klima entlasten: 
+
+1. Keine neuen Erdgaskraftwerke. Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.
+
 2. Ausbau Erneuerbarer beschleunigen – und netzdienliche Erzeugung belohnen.
-3. Feste Einspeisevergütung beibehalten, bis Smart Meter flächendeckend eine einfache, flexible Vergütung erlauben.
+
+3. Feste Einspeisevergütung beibehalten bis Smart Meter flächendeckend eine einfache, flexible Vergütung erlauben.
+
 4. Bestandsschutz und keine Zusatzbelastung für erneuerbare Stromerzeugung.
 
-Dieser Brief entstand im Zusammenhang der Aktion „Eigenstrom statt Kohlestrom“. Weitere Informationen zu den Plänen von Frau Reiche und der BNetzA finden Sie auf https://www.aktionsolarstrom.de.
+Dieser Brief entstand mit der Aktion „Sonnenstrom statt Erdgasstrom“. Weitere Informationen zu den Plänen von Frau Reiche und der BNetzA finden Sie auf https://www.aktionsolarstrom.de.
 
-Vielen Dank für Ihre Aufmerksamkeit und Mühe. Es würde mich sehr freuen, von Ihnen zu hören.
+Vielen Dank für ihre Aufmerksamkeit. Es würde mich sehr freuen von Ihnen zu hören.
 
 Mit freundlichen Grüßen
+
 {Vorname} {Nachname}
 {Straße}
 {PLZ} {Ort}
@@ -135,30 +141,34 @@ Mit freundlichen Grüßen
     const elPLZ = $('#plz'), elMP = $('#abgeordneter'), elMSG = $('#message');
 
     const clean = (s) => String(s||'').replace(/^\s*nan\s+/i,'').trim();
-    const norm = (s) => String(s||'').normalize('NFKD').replace(/[^\w\s]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
 
     async function loadJson(url) {
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) throw new Error(url);
-      return res.json();
+      const res = await fetch(url); if (!res.ok) throw new Error(url); return res.json();
     }
 
-    // Erweiterter Lookup: 1) PLZ→WK, 2) Fallback Ort→WK (über ort_to_wk.json)
-    async function findMdB(plz, city) {
+    // Erweiterter Lookup: PLZ → WK (assets/data/plz_to_wk.json),
+    // optional Ort-Präfix (assets/data/ort_to_wk.json) bei Mehrdeutigkeiten.
+    async function findMdB(plz, cityRaw) {
       const [plzMap, wkMap, ortMap] = await Promise.all([
         loadJson('assets/data/plz_to_wk.json'),
         loadJson('assets/data/wk_to_mdb.json'),
-        loadJson('assets/data/ort_to_wk.json')
+        loadJson('assets/data/ort_to_wk.json'),
       ]);
 
-      let wks = plzMap[plz] || [];
+      let wks = plzMap[plz];
 
-      if ((!wks || !wks.length) && city) {
-        const key = norm(city); // z. B. "muenchen"
-        const hits = Object.entries(ortMap)
-          .filter(([k]) => k.startsWith(key)) // Keys wie "muenchen bayern"
-          .map(([, arr]) => arr);
-        wks = [...new Set(hits.flat())];
+      if (!wks || !wks.length) return { mdb: null, wks: [] };
+
+      if (wks.length > 1) {
+        const key = String(cityRaw||'').toLowerCase()
+          .normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/\s+/g,' ').trim();
+        if (key) {
+          const hits = Object.entries(ortMap)
+            .filter(([k]) => k.startsWith(key))
+            .map(([, arr]) => arr);
+          // ✅ Bugfix: Spread korrekt
+          wks = [...new Set(hits.flat())];
+        }
       }
 
       if (!wks || !wks.length) return { mdb: null, wks: [] };
@@ -166,7 +176,8 @@ Mit freundlichen Grüßen
         const wk = String(wks[0]);
         return { mdb: wkMap[wk] || null, wks };
       }
-      return { mdb: null, wks }; // mehrere WKs → keine Auto-Auswahl
+      // mehrere WK (z. B. München) → keine Auto-Auswahl
+      return { mdb: null, wks };
     }
 
     function ensureIntroAndAddress(anrede, addrWithName) {
@@ -180,10 +191,8 @@ Mit freundlichen Grüßen
 
     async function handlePLZ() {
       const plz  = (elPLZ.value||'').trim();
-      // NEU: Fallback nutzt Ort oben ODER unten
-      const city = ($('#city')?.value||$('#sender_city')?.value||'').trim();
+      const city = ($('#city')?.value||'').trim();
       if (!/^\d{5}$/.test(plz)) return;
-
       try {
         const { mdb, wks } = await findMdB(plz, city);
         if (mdb) {
@@ -196,7 +205,7 @@ Mit freundlichen Grüßen
         } else if (wks.length > 1) {
           if (elMP) {
             elMP.value = '';
-            elMP.placeholder = Mehrere Wahlkreise (${wks.join(', ')}). Optional Namen eintragen.;
+            elMP.placeholder = `Mehrere Wahlkreise (${wks.join(', ')}). Optional Namen eintragen.`;
           }
           ensureIntroAndAddress('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin');
         } else {
@@ -206,8 +215,7 @@ Mit freundlichen Grüßen
       } catch(e){
         ensureIntroAndAddress('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin');
       }
-
-      // Tokens im Brief unten sofort ersetzen
+      // Tokens unten sofort neu berechnen
       document.querySelector('#sender_zip')?.dispatchEvent(new Event('input'));
       document.querySelector('#sender_city')?.dispatchEvent(new Event('input'));
       document.querySelector('#city')?.dispatchEvent(new Event('input'));
@@ -216,10 +224,6 @@ Mit freundlichen Grüßen
 
     elPLZ.addEventListener('change', handlePLZ);
     elPLZ.addEventListener('blur', handlePLZ);
-    // NEU: wenn der Ort später eingetragen/geändert wird, Lookup erneut versuchen
-    ['input','change','blur'].forEach(ev=>{
-      document.querySelector('#city')?.addEventListener(ev, handlePLZ);
-    });
   })();
   </script>
 
@@ -312,6 +316,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
