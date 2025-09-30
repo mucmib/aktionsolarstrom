@@ -25,7 +25,8 @@
     textarea { min-height: 240px; }
     .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
     @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
-    .checkbox-inline { display:block; margin: 10px 0; font-weight:400; }
+    .checkbox-inline { display:flex; align-items:flex-start; gap:8px; margin: 8px 0; font-weight:500; }
+    .checkbox-inline input{ margin-top:3px; }
     .actions { margin-top: 16px; }
     button[type="submit"] { padding: 12px 18px; border:0; border-radius:8px; background:var(--brand); color:#fff; font-weight:700; cursor:pointer; }
     .notice, .disclaimer { font-size: .92rem; color:#555; }
@@ -33,13 +34,28 @@
     footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
     footer a { color: #333; }
     .hint { font-size:.9rem; color:#555; margin:6px 0 0; }
+
+    /* hübscher Consent-Block */
+    .consent-card{
+      border:1px solid #e6e6e6; border-radius:10px; padding:12px 14px; background:#fafafa;
+      margin-top:14px;
+    }
+    .consent-card h4{
+      margin:0 0 8px; font-size:1rem; font-weight:700;
+    }
+    .consent-card .sub{
+      margin:4px 0 0; font-size:.9rem; color:#666; font-weight:400;
+    }
   </style>
 </head>
 <body>
   <div class="page">
     <header class="site-header middle">
       <div class="hero">
-        <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+        <!-- Logo klickbar zur Homepage -->
+        <a href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
+          <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+        </a>
         <div style="flex-basis:100%"></div>
         <p class="tagline">Sie schreiben den Brief – wir übernehmen Ausdruck und Postversand an die Abgeordneten.</p>
         <a class="cta" href="#brief">Brief einreichen</a>
@@ -127,17 +143,35 @@ Mit freundlichen Grüßen
 {PLZ} {Ort}
             </textarea>
 
-            <label class="checkbox-inline"><input id="consent_print" name="consent_print" type="checkbox" required> Ich willige ein, dass mein Brief physisch versendet wird.</label>
-            <label class="checkbox-inline"><input id="copy_to_self" name="copy_to_self" type="checkbox" checked> Kopie an mich per E-Mail senden</label>
+            <!-- Hübscher Consent-Block -->
+            <div class="consent-card" aria-labelledby="consentTitle">
+              <h4 id="consentTitle">Versand & Benachrichtigung</h4>
+              <label class="checkbox-inline">
+                <input id="consent_print" name="consent_print" type="checkbox" required>
+                <span>Ich willige ein, dass mein Brief <strong>physisch versendet</strong> wird.</span>
+              </label>
+              <label class="checkbox-inline">
+                <input id="copy_to_self" name="copy_to_self" type="checkbox" checked>
+                <span>Kopie an mich per E-Mail senden</span>
+              </label>
+              <p class="sub">Wir verwenden Ihre Angaben ausschließlich zur Zustellung des Briefes. Details siehe Datenschutz.</p>
+            </div>
           </fieldset>
 
-          <div class="actions"><button type="submit">In Druckwarteschlange einreichen</button><div id="successMessage" class="success"></div></div>
+          <div class="actions">
+            <button type="submit">In Druckwarteschlange einreichen</button>
+            <div id="successMessage" class="success"></div>
+          </div>
         </form>
       </section>
     </main>
 
     <footer class="site-footer middle">
-      <nav class="legal"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></nav>
+      <nav class="legal">
+        <a href="https://www.aktionsolarstrom.de/">Zur Startseite</a> ·
+        <a href="impressum.html">Impressum</a> ·
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
     </footer>
   </div>
 
@@ -442,6 +476,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
