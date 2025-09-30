@@ -227,7 +227,7 @@ Mit freundlichen Grüßen
       return { wks: [...new Set((wks||[]).map(String))], candidates };
     }
 
-    /** MdB in die BASIS-Vorlage einsetzen → neue tpl bauen (ohne Absender-Platzhalter anzutasten) */
+    // MdB in die BASIS-Vorlage einsetzen → neue tpl bauen (ohne Absender-Platzhalter anzutasten)
     function ensureIntroOnBase(anrede, addr, name) {
       const base = elMSG.dataset.base || elMSG.value || '';
       const addrBlock = ((name ? name : '') + (name && addr ? '\n' : '') + (addr || 'Platz der Republik 1\n11011 Berlin')).trim();
@@ -235,8 +235,8 @@ Mit freundlichen Grüßen
         .replace('{MdB_Name_und_Adresse}', addrBlock)
         .replace('{MdB_Adresse}', addrBlock)
         .replace('{Anrede}', anrede || 'Sehr geehrte Damen und Herren');
-      elMSG.dataset.tpl = tpl;    // 👉 Nur tpl setzen, value nicht direkt überschreiben
-      // Trigger Token-Update unten (Straße/PLZ/Ort) – kein Re-Trigger auf #plz/#city
+      elMSG.dataset.tpl = tpl;    // value nicht direkt überschreiben
+      // unten Token-Update anstoßen (ohne #plz/#city zu triggern)
       ['#sender_zip','#sender_city'].forEach(sel =>
         document.querySelector(sel)?.dispatchEvent(new Event('input'))
       );
@@ -244,7 +244,7 @@ Mit freundlichen Grüßen
 
     function hideSelect() {
       if (selWrap) selWrap.style.display = 'none';
-      if (elSel) { elSel.innerHTML = ''; elSel.blur(); }
+      if (elSel) { elSel.innerHTML = ''; /* kein Focus-Steal */ }
       if (elHint) elHint.textContent = '';
     }
 
@@ -267,7 +267,7 @@ Mit freundlichen Grüßen
 
       elHint.textContent = 'Mehrere Wahlkreise (' + wks.join(', ') + ').';
       selWrap.style.display = 'block';
-      elSel.focus();
+      // kein Autofokus auf das Select
     }
 
     function chooseCandidateByName(name) {
@@ -289,6 +289,34 @@ Mit freundlichen Grüßen
     elMP?.addEventListener('blur', () => {
       const name = (elMP.value||'').trim();
       if (name) chooseCandidateByName(name);
+    });
+
+    // --- Debounce Steuerung ---
+    let lookupTimer = null;
+    function scheduleLookup(delay = 350) {
+      clearTimeout(lookupTimer);
+      lookupTimer = setTimeout(runLookup, delay);
+    }
+
+    // Basisvorlage einmalig sichern
+    if (!elMSG.dataset.base) elMSG.dataset.base = elMSG.value;
+
+    // PLZ: sobald 5 Ziffern → sofort lookup
+    elPLZ?.addEventListener('input', () => {
+      const v = (elPLZ.value || '').trim();
+      if (/^\d{5}$/.test(v)) scheduleLookup(0);
+    });
+
+    // Ort: ab 3 Zeichen → debounce 350ms
+    elCity?.addEventListener('input', () => {
+      const v = (elCity.value || '').trim();
+      if (v.length >= 3) scheduleLookup(350);
+    });
+
+    // Fallback: change/blur
+    ['change','blur'].forEach(ev=>{
+      elPLZ?.addEventListener(ev, runLookup);
+      elCity?.addEventListener(ev, runLookup);
     });
 
     async function runLookup() {
@@ -318,19 +346,7 @@ Mit freundlichen Grüßen
         ensureIntroOnBase('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin', '');
       }
     }
-
-    // Basisvorlage einmalig sichern
-    if (!elMSG.dataset.base) elMSG.dataset.base = elMSG.value;
-
-    // Live bei PLZ & Ort
-    ['change','blur'].forEach(ev=>{
-  elPLZ?.addEventListener(ev, runLookup);
-});
-
-// Ort → nur bei Verlassen prüfen, nicht bei jedem Tastendruck
-['change','blur'].forEach(ev=>{
-  elCity?.addEventListener(ev, runLookup);
-});
+  })();
   </script>
 
   <!-- Token-Ersetzung live -->
@@ -427,6 +443,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
