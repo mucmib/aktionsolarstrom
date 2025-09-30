@@ -32,7 +32,6 @@
     .success { display:none; margin-top:14px; padding:12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:6px; color:#145214; }
     footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
     footer a { color: #333; }
-
     .hint { font-size:.9rem; color:#555; margin:6px 0 0; }
   </style>
 </head>
@@ -274,7 +273,8 @@ Mit freundlichen Grüßen
       elMP.value = name;
       ensureIntro(anrede, address, name);
 
-      ['#sender_zip','#sender_city','#city','#plz'].forEach(sel =>
+      // ✅ nur Tokens unten aktualisieren – kein Re-Trigger auf #plz/#city
+      ['#sender_zip','#sender_city'].forEach(sel =>
         document.querySelector(sel)?.dispatchEvent(new Event('input'))
       );
     }
@@ -318,7 +318,8 @@ Mit freundlichen Grüßen
         ensureIntro('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin', '');
       }
 
-      ['#sender_zip','#sender_city','#city','#plz'].forEach(sel =>
+      // ✅ nur sender_* Felder triggern, NICHT #plz/#city → kein Loop
+      ['#sender_zip','#sender_city'].forEach(sel =>
         document.querySelector(sel)?.dispatchEvent(new Event('input'))
       );
     }
