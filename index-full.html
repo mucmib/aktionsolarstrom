@@ -229,7 +229,7 @@ Mit freundlichen Grüßen
   })();
   </script>
 
-  <!-- Auto-MdB: PLZ → WK → MdB, Kopf strikt: Name+Adresse, dann Anrede -->
+  <!-- Auto-MdB: idempotente Kopf-Erzeugung (Name+Adresse, dann Anrede) -->
   <script>
 (function () {
   const $ = (s) => document.querySelector(s);
@@ -240,16 +240,71 @@ Mit freundlichen Grüßen
   const elMSG = tryAll(['#message', 'textarea[name="message"]']);
   if (!elPLZ || !elMSG) return;
 
-  const cleanName = (name) =>
-    String(name || '').replace(/^\s*nan\s+/i,'').replace(/\s+/g,' ').trim();
-
+  // --- Utils ---
+  const clean = (s) => String(s||'').replace(/\r/g,'').trim();
+  const cleanName = (name) => clean(name).replace(/^\s*nan\s+/i,'').replace(/\s+/g,' ');
   const cleanAnrede = (anrede) => {
-    const a = String(anrede || '').replace(/^\s*nan\s+/i,'').trim();
+    const a = clean(anrede).replace(/^\s*nan\s+/i,'');
     return a || 'Sehr geehrte Damen und Herren';
   };
+  const addrOneLine   = (addr) => clean(addr).replace(/\s*\n\s*/g, ', ').replace(/\s+/g,' ');
+  const addrMultiLine = (addr) => clean(addr).replace(/\s*\n\s*/g, '\n');
 
-  const addrOneLine  = (addr) => String(addr || '').replace(/\s*\n\s*/g, ', ').replace(/\s+/g,' ').trim();
-  const addrMultiLine= (addr) => String(addr || '').replace(/\s*\n\s*/g, '\n').trim();
+  const escapeRx = (s)=>s.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&');
+
+  // Header-Erzeugung + Signatur
+  function genderFromAnrede(anrede){
+    const m = /Sehr\s+geehrt(?:e|er)\s+(Frau|Herr)/i.exec(anrede||'');
+    return m ? m[1] : '';
+  }
+  function buildHeaderParts(fullName, addrML, anrede){
+    const g = genderFromAnrede(anrede);
+    const nameLine = (fullName ? ('An ' + (g ? g+' ' : '') + fullName) : '').trim();
+    const parts = [ nameLine, addrML, anrede ].filter(Boolean);
+    return parts;
+  }
+  function headerText(parts){
+    return parts.join('\n\n'); // NameLine\n\nAdresse\n\nAnrede
+  }
+  function headerSig(parts){
+    return btoa(unescape(encodeURIComponent(headerText(parts)))).slice(0,32);
+  }
+
+  // Entfernt existierende Duplikate des Headers am Anfang robust
+  function stripExistingHeader(body, parts){
+    let t = clean(body).replace(/\{MdB_Adresse\}/g,''); // Body-Platzhalter wird nicht mehr benutzt
+    const rxes = parts
+      .filter(Boolean)
+      .map(p => new RegExp('^\\s*'+escapeRx(p)+'\\s*(\\n+|$)','i')); // Zeile am Anfang
+
+    // bis nichts mehr zu entfernen ist (falls es doppelt drin war)
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (const rx of rxes) {
+        const before = t;
+        t = t.replace(rx,'');
+        if (t !== before) changed = true;
+      }
+      // Entferne führende Leerzeilen
+      t = t.replace(/^\s*\n+/,'');
+    }
+    return t.trimStart();
+  }
+
+  // Setzt den Header nur, wenn er noch nicht (in gleicher Form) gesetzt wurde
+  function ensureHeaderIdempotent(textarea, parts){
+    const sig = headerSig(parts);
+    if (textarea.dataset.headerSig === sig) return; // bereits gesetzt
+
+    // vorhandenen (auch doppelten) Header entfernen
+    let body = stripExistingHeader(textarea.value, parts);
+
+    // neuen Header einsetzen
+    const header = headerText(parts);
+    textarea.value = (header + '\n\n' + body).trimEnd();
+    textarea.dataset.headerSig = sig;
+  }
 
   async function loadJson(url) {
     const res = await fetch(url, { cache:'no-store' });
@@ -266,51 +321,25 @@ Mit freundlichen Grüßen
     return wkMap[String(wks[0])] || null;
   }
 
-  // Hilfsfunktionen für Kopf
-  function extractGeschlecht(anrede) {
-    const m = /Sehr\s+geehrt(?:e|er)\s+(Frau|Herr)/i.exec(anrede || '');
-    return m ? m[1] : '';
-  }
-  function buildNameLine(anrede, fullName) {
-    const geschl = extractGeschlecht(anrede);
-    const name = cleanName(fullName);
-    return 'An ' + (geschl ? geschl + ' ' : '') + name;
-  }
-  function stripExistingHeader(text) {
-    let t = String(text || '').trimStart();
-    t = t.replace(/\{MdB_Adresse\}/g,''); // wir setzen die Adresse im Kopf
-    const paras = t.split(/\n\s*\n/); // Absätze
-    if (paras[0] && /^An\s/i.test(paras[0])) paras.shift();
-    if (paras[0] && /^Sehr\s/i.test(paras[0])) paras.shift();
-    return paras.join('\n\n').trimStart();
-  }
-  function ensureHeader(textarea, nameLine, addrML, anrede) {
-    const body = stripExistingHeader(textarea.value);
-    const header = [
-      nameLine,
-      addrML,
-      anrede
-    ].filter(Boolean).join('\n\n');
-    textarea.value = (header + '\n\n' + body).trimEnd();
-  }
+  // leichte Entprellung
+  let tmr;
+  function schedule(fn){ clearTimeout(tmr); tmr = setTimeout(fn, 60); }
 
-  async function handlePLZChange() {
-    const plz = (elPLZ.value || '').trim();
+  async function updateFromPLZ() {
+    const plz = clean(elPLZ.value);
     if (!/^\d{5}$/.test(plz)) return;
 
     try {
       const mdb = await findMdBByPLZ(plz);
       if (mdb) {
-        const fallbackName = [mdb.vorname, mdb.nachname].filter(Boolean).join(' ');
-        const fullName = cleanName(mdb.mdb_name) || fallbackName;
+        const fallback = [mdb.vorname, mdb.nachname].filter(Boolean).join(' ');
+        const fullName = cleanName(mdb.mdb_name) || fallback;
+        const anrede   = cleanAnrede(mdb.anrede);
+        const addrML   = addrMultiLine(mdb.bundestag_address);
+
         if (elMP) elMP.value = fullName;
 
-        const anrede = cleanAnrede(mdb.anrede);
-        const addrML = addrMultiLine(mdb.bundestag_address);
-        const nameLine = buildNameLine(anrede, fullName);
-
-        ensureHeader(elMSG, nameLine, addrML, anrede);
-
+        // Hidden einzeilig fürs Backend
         let addr = document.getElementById('mp_address');
         if (!addr) {
           addr = document.createElement('input');
@@ -320,22 +349,27 @@ Mit freundlichen Grüßen
           elMSG.form && elMSG.form.appendChild(addr);
         }
         addr.value = addrOneLine(mdb.bundestag_address);
+
+        const parts = buildHeaderParts(fullName, addrML, anrede);
+        ensureHeaderIdempotent(elMSG, parts);
       } else {
         if (elMP) elMP.value = '';
-        ensureHeader(elMSG, '', '', 'Sehr geehrte Damen und Herren');
+        const parts = buildHeaderParts('', '', 'Sehr geehrte Damen und Herren');
+        ensureHeaderIdempotent(elMSG, parts);
       }
     } catch (e) {
-      console.warn('Auto-MdB Fehler:', e);
-      ensureHeader(elMSG, '', '', 'Sehr geehrte Damen und Herren');
+      const parts = buildHeaderParts('', '', 'Sehr geehrte Damen und Herren');
+      ensureHeaderIdempotent(elMSG, parts);
     }
   }
 
-  ['change','blur'].forEach(evt => elPLZ.addEventListener(evt, handlePLZChange));
-  if (elPLZ.value && /^\d{5}$/.test(elPLZ.value.trim())) handlePLZChange();
+  ['change','blur','input'].forEach(evt => elPLZ.addEventListener(evt, () => schedule(updateFromPLZ())));
+  if (elPLZ.value && /^\d{5}$/.test(elPLZ.value.trim())) updateFromPLZ();
 })();
   </script>
 </body>
 </html>
+
 
 
 
