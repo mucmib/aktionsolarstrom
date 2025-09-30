@@ -143,11 +143,12 @@ Mit freundlichen Grüßen
     const clean = (s) => String(s||'').replace(/^\s*nan\s+/i,'').trim();
 
     async function loadJson(url) {
-      const res = await fetch(url); if (!res.ok) throw new Error(url); return res.json();
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error(url);
+      return res.json();
     }
 
-    // Erweiterter Lookup: PLZ → WK (assets/data/plz_to_wk.json),
-    // optional Ort-Präfix (assets/data/ort_to_wk.json) bei Mehrdeutigkeiten.
+    // Erweiterter Lookup: 1) PLZ→WK, 2) Fallback Ort→WK auch bei "kein Treffer"
     async function findMdB(plz, cityRaw) {
       const [plzMap, wkMap, ortMap] = await Promise.all([
         loadJson('assets/data/plz_to_wk.json'),
@@ -155,19 +156,35 @@ Mit freundlichen Grüßen
         loadJson('assets/data/ort_to_wk.json'),
       ]);
 
-      let wks = plzMap[plz];
+      let wks = plzMap[plz] || [];
 
-      if (!wks || !wks.length) return { mdb: null, wks: [] };
+      // --- Fallback, wenn KEIN Treffer über PLZ ---
+      if ((!wks || !wks.length) && cityRaw) {
+        const key = String(cityRaw || '')
+          .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // Diakritika entfernen
+          .replace(/[^\w\s]/g,'').replace(/\s+/g,' ')
+          .trim().toLowerCase();
+        if (key) {
+          const hits = Object.entries(ortMap)
+            .filter(([k]) => k.startsWith(key)) // Keys wie "munchen bayern|..."
+            .map(([, arr]) => arr);
+          wks = [...new Set(hits.flat())];
+        }
+      }
 
-      if (wks.length > 1) {
-        const key = String(cityRaw||'').toLowerCase()
-          .normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/\s+/g,' ').trim();
+      // --- Wenn mehrere WK via PLZ, versuche mit Ort einzugrenzen ---
+      if (wks && wks.length > 1 && cityRaw) {
+        const key = String(cityRaw || '')
+          .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+          .replace(/[^\w\s]/g,'').replace(/\s+/g,' ')
+          .trim().toLowerCase();
         if (key) {
           const hits = Object.entries(ortMap)
             .filter(([k]) => k.startsWith(key))
             .map(([, arr]) => arr);
-          // ✅ Bugfix: Spread korrekt
-          wks = [...new Set(hits.flat())];
+          const byCity = new Set(hits.flat());
+          const narrowed = wks.filter(w => byCity.has(String(w)));
+          if (narrowed.length) wks = narrowed;
         }
       }
 
@@ -176,7 +193,7 @@ Mit freundlichen Grüßen
         const wk = String(wks[0]);
         return { mdb: wkMap[wk] || null, wks };
       }
-      // mehrere WK (z. B. München) → keine Auto-Auswahl
+      // mehrere WK → keine Auto-Auswahl
       return { mdb: null, wks };
     }
 
@@ -190,9 +207,10 @@ Mit freundlichen Grüßen
     }
 
     async function handlePLZ() {
-      const plz  = (elPLZ.value||'').trim();
+      const plz  = ($('#plz')?.value||'').trim();
       const city = ($('#city')?.value||'').trim();
       if (!/^\d{5}$/.test(plz)) return;
+
       try {
         const { mdb, wks } = await findMdB(plz, city);
         if (mdb) {
@@ -215,7 +233,8 @@ Mit freundlichen Grüßen
       } catch(e){
         ensureIntroAndAddress('Sehr geehrte Damen und Herren', 'Platz der Republik 1\n11011 Berlin');
       }
-      // Tokens unten sofort neu berechnen
+
+      // Tokens im Brief unten sofort neu berechnen
       document.querySelector('#sender_zip')?.dispatchEvent(new Event('input'));
       document.querySelector('#sender_city')?.dispatchEvent(new Event('input'));
       document.querySelector('#city')?.dispatchEvent(new Event('input'));
@@ -224,6 +243,10 @@ Mit freundlichen Grüßen
 
     elPLZ.addEventListener('change', handlePLZ);
     elPLZ.addEventListener('blur', handlePLZ);
+    // Wichtig: Wenn Ort nachträglich eingetippt wird → erneut versuchen
+    ['input','change','blur'].forEach(ev=>{
+      document.querySelector('#city')?.addEventListener(ev, handlePLZ);
+    });
   })();
   </script>
 
@@ -316,6 +339,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
