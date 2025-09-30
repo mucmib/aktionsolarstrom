@@ -65,7 +65,6 @@
               <div><label for="plz">Ihre PLZ *</label><input id="plz" name="zip" inputmode="numeric" pattern="\d{5}" required></div>
               <div><label for="city">Ort *</label><input id="city" name="city" required></div>
             </div>
-
             <label for="abgeordneter">Name der/s Abgeordneten (optional)</label>
             <input id="abgeordneter" name="mp_name">
 
@@ -219,6 +218,7 @@ Mit freundlichen Grüßen
         .map(m => ({
           wk: String((m.wk_nr || m.wk || '')),
           name: clean(m.mdb_name),
+          party: clean(m.fraktion || m.party || ''),
           anrede: clean(m.anrede) || ('Sehr geehrte/r ' + clean(m.mdb_name)),
           address: (m.bundestag_address || 'Platz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim()
         }));
@@ -236,8 +236,7 @@ Mit freundlichen Grüßen
         .replace('{MdB_Name_und_Adresse}', addrBlock)
         .replace('{MdB_Adresse}', addrBlock)
         .replace('{Anrede}', anrede || 'Sehr geehrte Damen und Herren');
-      elMSG.dataset.tpl = tpl;    // value nicht direkt überschreiben
-      // unten Token-Update anstoßen (ohne #plz/#city zu triggern)
+      elMSG.dataset.tpl = tpl;
       ['#sender_zip','#sender_city'].forEach(sel =>
         document.querySelector(sel)?.dispatchEvent(new Event('input'))
       );
@@ -249,7 +248,7 @@ Mit freundlichen Grüßen
       if (elHint) elHint.textContent = '';
     }
 
-    function showSelect(candidates, wks) {
+    function showSelect(cands, wks) {
       if (!selWrap || !elSel) return;
       elSel.innerHTML = '';
       const opt0 = document.createElement('option');
@@ -257,10 +256,10 @@ Mit freundlichen Grüßen
       opt0.textContent = 'Bitte Abgeordnete:n auswählen …';
       elSel.appendChild(opt0);
 
-      candidates.forEach(c => {
+      cands.forEach(c => {
         const opt = document.createElement('option');
-        opt.value = c.name;
-        opt.textContent = c.name;
+        opt.value = c.name; // Value bleibt nur der Name
+        opt.textContent = c.name + (c.party ? ' – ' + c.party : '');
         opt.dataset.anrede = c.anrede;
         opt.dataset.address = c.address;
         elSel.appendChild(opt);
@@ -268,7 +267,6 @@ Mit freundlichen Grüßen
 
       elHint.textContent = 'Mehrere Wahlkreise (' + wks.join(', ') + ').';
       selWrap.style.display = 'block';
-      // kein Autofokus auf das Select
     }
 
     function chooseCandidateByName(name) {
@@ -444,6 +442,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
