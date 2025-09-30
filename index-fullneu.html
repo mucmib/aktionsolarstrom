@@ -161,7 +161,7 @@ Mit freundlichen Grüßen
                   <span>Kopie an mich per <strong>E-Mail</strong> senden</span>
                 </label>
               </div>
-              <p class="sub">Wir verwenden Ihre Angaben ausschließlich zur Zustellung des Briefes. Details siehe <a href="Datenschutz.html">Datenschutz</a>.</p>
+              <p class="sub">Wir verwenden Ihre Angaben ausschließlich zur Zustellung des Briefes. Details siehe <a href="datenschutz.html">Datenschutz</a>.</p>
             </div>
           </fieldset>
 
@@ -175,7 +175,7 @@ Mit freundlichen Grüßen
 
     <footer class="site-footer middle">
       <nav class="legal">
-        <a href="https://www.aktionsolarstrom.de/">Zur Startseite</a> · <a href="Impressum.html">Impressum</a> · <a href="Datenschutz.html">Datenschutz</a>
+        <a href="https://www.aktionsolarstrom.de/">Zur Startseite</a> · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
       </nav>
     </footer>
   </div>
@@ -238,20 +238,14 @@ Mit freundlichen Grüßen
 
       const cityKey = norm(cityRaw);
 
-      // Fallback über Ort
       if ((!wks || !wks.length) && cityKey) {
-        const hits = Object.entries(ortMap)
-          .filter(([k]) => k.startsWith(cityKey))
-          .map(([, arr]) => arr);
+        const hits = Object.entries(ortMap).filter(([k]) => k.startsWith(cityKey)).map(([, arr]) => arr);
         wks = [...new Set(hits.flat())];
         _mdblog.show('Fallback ORT→WK: '+JSON.stringify(wks));
       }
 
-      // Eingrenzung über Ort falls mehrere WK
       if (wks.length > 1 && cityKey) {
-        const hits = Object.entries(ortMap)
-          .filter(([k]) => k.startsWith(cityKey))
-          .map(([, arr]) => arr);
+        const hits = Object.entries(ortMap).filter(([k]) => k.startsWith(cityKey)).map(([, arr]) => arr);
         const byCity = new Set([].concat(...hits));
         const narrowed = wks.filter(w => byCity.has(String(w)));
         if (narrowed.length) { wks = narrowed; _mdblog.show('Eingrenzung via Ort: '+JSON.stringify(wks), true); }
@@ -283,8 +277,8 @@ Mit freundlichen Grüßen
         .replace('{Anrede}', anrede || 'Sehr geehrte Damen und Herren');
       elMSG.dataset.tpl = tpl;
 
-      // Tokens unten sofort neu berechnen (anderes Script hört auf input)
-      ['#sender_zip','#sender_city','#city','#plz'].forEach(sel =>
+      // ⚠️ Nur Token-Ersetzung anstoßen – NICHT PLZ/Ort erneut triggern (vermeidet Loop/Flimmern)
+      ['#sender_zip','#sender_city'].forEach(sel =>
         document.querySelector(sel)?.dispatchEvent(new Event('input'))
       );
     }
@@ -340,6 +334,9 @@ Mit freundlichen Grüßen
     let lookupTimer=null;
     function scheduleLookup(delay=350){ clearTimeout(lookupTimer); lookupTimer=setTimeout(runLookup, delay); }
 
+    // Reentrancy-Lock gegen Flimmern
+    let LOOKUP_LOCK = false;
+
     // Basisvorlage einmalig sichern
     if(!elMSG.dataset.base) elMSG.dataset.base = elMSG.value;
 
@@ -359,10 +356,13 @@ Mit freundlichen Grüßen
     });
 
     async function runLookup(){
+      if (LOOKUP_LOCK) return;
+      LOOKUP_LOCK = true;
+
       hideSelect();
       const plz=(elPLZ?.value||'').trim();
       const city=(elCity?.value||'').trim();
-      if(!/^\d{5}$/.test(plz)){ _mdblog.show('PLZ ungültig'); return; }
+      if(!/^\d{5}$/.test(plz)){ _mdblog.show('PLZ ungültig'); LOOKUP_LOCK=false; return; }
 
       try{
         const { wks, candidates } = await findCandidates(plz, city);
@@ -383,6 +383,8 @@ Mit freundlichen Grüßen
         _mdblog.show('Lookup ERROR: '+e);
         elMP.value='';
         ensureIntroOnBase('Sehr geehrte Damen und Herren','Platz der Republik 1\n11011 Berlin','');
+      } finally {
+        LOOKUP_LOCK = false;
       }
     }
   })();
@@ -486,6 +488,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
