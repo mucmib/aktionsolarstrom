@@ -1,7 +1,7 @@
-// /api/queue.js – Vercel Serverless Function (Brevo HTTP API)
+// /api/queue.js – Vercel Serverless Function (Brevo HTTP API + PDF-Erzeugung)
 import Brevo from "@getbrevo/brevo";
 
-/** CORS erlauben (optional, aber praktisch) */
+/** CORS erlauben */
 const allowCors = (fn) => async (req, res) => {
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
@@ -17,31 +17,111 @@ const esc = (s = "") =>
   String(s)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;")
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+const toBool = (v) => ["true", "on", "1", "yes"].includes(String(v).toLowerCase());
 
-/** Body möglichst robust lesen (JSON erwartet; multipart wird von Vercel NICHT automatisch geparst) */
+/** Body robust lesen */
 function readBody(req) {
   if (!req.body) return {};
   if (typeof req.body === "string") {
     try { return JSON.parse(req.body || "{}"); } catch { return {}; }
   }
-  // Wenn bereits als Objekt vorliegt (z. B. durch Middleware)
   return req.body;
 }
 
-/** Strings 'true'/'on'/'1'/'yes' in boolean wandeln */
-const toBool = (v) => ["true", "on", "1", "yes"].includes(String(v).toLowerCase());
+/** finalMessage in Adresse (Block 1) und Rest (ab Block 2) splitten */
+function splitRecipientAndBody(finalMessage) {
+  const parts = String(finalMessage || "").split(/\n{2,}/); // Blöcke durch Leerzeilen
+  const recipientBlock = (parts[0] || "").trim(); // {MdB_Name_und_Adresse} inkl. "Deutscher Bundestag"
+  const bodyBlocks = parts.slice(1).join("\n\n").trim(); // Anrede + Text
+  return { recipientBlock, bodyText: bodyBlocks };
+}
+
+/** PDF erzeugen (DIN 5008-ish) */
+async function generatePdf({ body, finalMessage, queueId }) {
+  // pdfkit dynamisch laden (ESM-kompatibel auf Vercel)
+  const PDFDocument = (await import("pdfkit")).default;
+
+  // Maße
+  const A4 = { w: 595.28, h: 841.89 };         // pt
+  const cm = (x) => x * 28.346;                // 1 cm in pt
+  const marginL = cm(2.5), marginR = cm(2.5);  // 2,5 cm
+  const marginT = cm(2.5), marginB = cm(2.0);
+
+  // Adressfenster: Oberkante ~4,5 cm von oben (DIN 5008), linke Kante = linker Rand
+  const addrTop = cm(4.5);
+  const contentWidth = A4.w - marginL - marginR;
+
+  // Inhalte aufbereiten
+  const { recipientBlock, bodyText } = splitRecipientAndBody(finalMessage);
+  const today = new Date().toLocaleDateString("de-DE");
+  const absenderBlock = [
+    `${body.first_name} ${body.last_name}`.trim(),
+    String(body.street || "").trim(),
+    `${body.sender_zip || ""} ${body.sender_city || ""}`.trim()
+  ].filter(Boolean).join("\n");
+
+  // PDF erstellen & in Buffer sammeln
+  const doc = new PDFDocument({
+    size: "A4",
+    margins: { top: marginT, left: marginL, right: marginR, bottom: marginB }
+  });
+
+  const chunks = [];
+  doc.on("data", (d) => chunks.push(d));
+  const done = new Promise((resolve) => doc.on("end", () => resolve(Buffer.concat(chunks))));
+
+  // Schriften
+  doc.font("Helvetica").fontSize(11);
+
+  // Kopfzeile (klein, Grau): Absender rechts oben
+  doc.fillColor("#555")
+     .fontSize(9)
+     .text(absenderBlock, marginL, marginT - cm(1.0), { width: contentWidth, align: "right" });
+
+  // Empfängeradresse im Fensterbereich
+  doc.fillColor("#000").fontSize(11);
+  doc.text(recipientBlock, marginL, addrTop, { width: contentWidth });
+
+  // Datum rechtsbündig unter Adresse
+  doc.moveDown(1.2);
+  doc.text(today, { align: "right" });
+
+  // Betreff
+  doc.moveDown(1);
+  doc.font("Helvetica-Bold").text(body.subject || "Ihr Schreiben", { width: contentWidth });
+  doc.font("Helvetica");
+
+  // Leerraum vor Fließtext
+  doc.moveDown(0.8);
+
+  // Haupttext (Anrede + Inhalt)
+  doc.text(bodyText, { width: contentWidth });
+
+  // Grußformel + Unterschriftsblock
+  doc.moveDown(2);
+  doc.text("Mit freundlichen Grüßen");
+  doc.moveDown(1);
+  doc.text(absenderBlock);
+
+  // Fuß: Vorgangs-ID
+  doc.moveDown(2);
+  doc.fontSize(9).fillColor("#666").text(`Vorgangs-ID: ${queueId}`);
+
+  doc.end();
+  const pdfBuffer = await done;
+  const fileName = `Brief_${queueId}.pdf`;
+  return { buffer: pdfBuffer, name: fileName, mime: "application/pdf" };
+}
 
 export default allowCors(async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ ok:false, error:"method_not_allowed" });
   }
 
-  // 🔹 Body lesen & Felder auf gemeinsame Namen normalisieren
+  // 🔹 Body lesen & Felder normalisieren
   const raw = readBody(req);
-
-  // Unterstütze beide Varianten deiner Formulare:
   const body = {
-    // Empfänger/MdB-Ermittlung
+    // Empfänger/MdB-Ermittlung (nur info; Briefkopf kommt aus message-Block 1)
     zip:            raw.zip ?? raw.plz ?? "",
     city:           raw.city ?? raw.ort ?? "",
     mp_name:        raw.mp_name ?? raw.abgeordneter ?? "",
@@ -63,14 +143,18 @@ export default allowCors(async function handler(req, res) {
     copy_to_self:   toBool(raw.copy_to_self ?? raw.copy ?? false),
   };
 
-  // Pflichtfelder prüfen
+  // Fallbacks für Absender-PLZ/-Ort aus oberen Feldern
+  body.sender_zip  = body.sender_zip  || body.zip;
+  body.sender_city = body.sender_city || body.city;
+
+  // Pflichtfelder
   const required = ["first_name","last_name","email","street","sender_zip","sender_city","subject","message"];
   const missing = required.filter(k => !must(body[k]));
   if (missing.length) {
     return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
   }
 
-  // Environment prüfen
+  // ENV prüfen
   if (!process.env.BREVO_API_KEY || !process.env.FROM_EMAIL || !process.env.TEAM_INBOX) {
     return res.status(500).json({
       ok:false, error:"env_missing",
@@ -82,20 +166,34 @@ export default allowCors(async function handler(req, res) {
     });
   }
 
-  // 🔹 Platzhalter vorbereiten
+  // 🔹 Platzhalter in message serverseitig sicher ersetzen
   const anredeName = must(body.mp_name) ? body.mp_name : "Sehr geehrte Damen und Herren";
 
-  // Brieftext mit Platzhaltern → ersetzen (erst ersetzen, dann escapen & Zeilenumbrüche zu <br>)
   let finalMessage = body.message;
-  finalMessage = finalMessage.replace("{Anrede_Name}", anredeName);
-  finalMessage = finalMessage.replace("{Vorname}", body.first_name);
-  finalMessage = finalMessage.replace("{Nachname}", body.last_name);
-  finalMessage = finalMessage.replace("{Straße}", body.street);
-  finalMessage = finalMessage.replace("{PLZ}", body.sender_zip);
-  finalMessage = finalMessage.replace("{Ort}", body.sender_city);
+  finalMessage = finalMessage.replace("{Anrede_Name}", anredeName)
+                             .replace("{Anrede}", anredeName)
+                             .replace("{Vorname}", body.first_name)
+                             .replace("{Nachname}", body.last_name)
+                             .replace("{Straße}", body.street)
+                             .replace("{PLZ}", body.sender_zip)
+                             .replace("{Ort}", body.sender_city);
 
   const queueId = Math.random().toString(36).slice(2, 8).toUpperCase();
   const today   = new Date().toISOString().slice(0,10);
+
+  // 🔹 PDF erzeugen
+  let pdfAttachment = null;
+  try {
+    const { buffer, name, mime } = await generatePdf({ body, finalMessage, queueId });
+    pdfAttachment = {
+      name,
+      content: buffer.toString("base64"),
+      type: mime
+    };
+  } catch (e) {
+    // PDF ist "nice-to-have": wir lassen Mail trotzdem raus, loggen aber den Fehler
+    console.error("PDF generation failed:", e);
+  }
 
   // 🔹 E-Mail-Inhalte
   const teamHtml = `
@@ -111,6 +209,7 @@ export default allowCors(async function handler(req, res) {
     <p><b>Optionaler MdB-Name:</b> ${esc(body.mp_name)}</p>
     <p><b>Betreff:</b> ${esc(body.subject)}</p>
     <p><b>Brieftext (ersetzte Platzhalter):</b><br>${esc(finalMessage).replace(/\n/g,"<br>")}</p>
+    ${pdfAttachment ? '<p><i>PDF im Anhang (druckfertig)</i></p>' : '<p><i>PDF konnte nicht erzeugt werden</i></p>'}
   `;
 
   const userHtml = `
@@ -119,35 +218,37 @@ export default allowCors(async function handler(req, res) {
     <hr>
     <p><b>Betreff:</b> ${esc(body.subject)}</p>
     <p><b>Brieftext:</b><br>${esc(finalMessage).replace(/\n/g,"<br>")}</p>
+    ${pdfAttachment ? '<p><i>PDF-Kopie im Anhang</i></p>' : ''}
   `;
 
   try {
     const api = new Brevo.TransactionalEmailsApi();
     api.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
-    // 1) Mail an euer Team (Reply-To = Absender:in, damit Antworten direkt an sie gehen)
+    // 1) Mail an euer Team (Reply-To = Absender:in)
     await api.sendTransacEmail({
       to:     [{ email: process.env.TEAM_INBOX }],
       sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Formular" },
       replyTo:{ email: body.email, name: `${body.first_name} ${body.last_name}` },
       subject:`Vorgang ${queueId}: Brief an MdB`,
-      htmlContent: teamHtml
+      htmlContent: teamHtml,
+      attachments: pdfAttachment ? [pdfAttachment] : []
     });
 
-    // 2) Optional Kopie an Absender:in – immer vom verifizierten FROM_EMAIL
+    // 2) Optional Kopie an Absender:in
     if (body.copy_to_self) {
       await api.sendTransacEmail({
         to:     [{ email: body.email }],
         sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Team" },
         subject:`Kopie Ihrer Einreichung – Vorgang ${queueId}`,
-        htmlContent: userHtml
+        htmlContent: userHtml,
+        attachments: pdfAttachment ? [pdfAttachment] : []
       });
     }
 
     res.setHeader("Cache-Control", "no-store");
-    return res.status(200).json({ ok:true, queueId, copySent: body.copy_to_self });
+    return res.status(200).json({ ok:true, queueId, copySent: body.copy_to_self, pdf: !!pdfAttachment });
   } catch (err) {
-    // detaillierte Fehlerausgabe
     const status = err?.response?.status;
     let detail   = err?.response?.text || err?.message || String(err);
     if (err?.response?.body) { try { detail = JSON.stringify(err.response.body); } catch {} }
@@ -155,3 +256,4 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
