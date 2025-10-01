@@ -4,79 +4,106 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Impressum – Solarstrom statt Erdgas-Strom</title>
-  <meta name="description" content="Impressum der Kampagne Solarstrom statt Erdgas-Strom (Media International Bader).">
+  <meta name="description" content="Impressum der Kampagne Solarstrom statt Erdgas-Strom – getragen von Leben mit der Energiewende, VEEG und Energy Watch Group. Diensteanbieter: Media International Bader.">
   <style>
-    :root{ --maxw: 920px; --brand:#0a7c5b; --ink:#111; --muted:#6b7280; }
+    :root{ --maxw: 920px; --brand:#0a7c5b; --ink:#111; --muted:#6b7280; --border:#e5e7eb; }
     html,body{margin:0;padding:0}
-    body{font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--ink); background:#fff;}
-    .page{display:grid;grid-template-columns:1fr minmax(0,var(--maxw)) 1fr; min-height:100dvh}
+    body{font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:#fff}
+    .page{display:grid;grid-template-columns:1fr minmax(0,var(--maxw)) 1fr;min-height:100dvh}
     .middle{grid-column:2;padding:20px}
 
-    /* Header schwarz/weiß */
-    header{padding:28px 0 20px; text-align:center; background:#000; color:#fff;}
+    header{padding:28px 0 20px;text-align:center;background:#000;color:#fff}
     header a.logo{display:inline-block}
-    header img{width:min(90vw,320px); height:auto; margin-bottom:12px}
-    header h1{margin:0; font-size:2rem; font-weight:700; color:#fff;}
+    header img{width:min(90vw,320px);height:auto;margin-bottom:12px}
+    header h1{margin:0;font-size:2rem;font-weight:700;color:#fff}
 
-    h2{margin:28px 0 8px; font-size:1.2rem}
-    .card{border:1px solid #e5e7eb; border-radius:12px; padding:18px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.04)}
+    h2{margin:28px 0 10px;font-size:1.175rem}
+    .card{border:1px solid var(--border);border-radius:12px;padding:18px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.04)}
     .muted{color:var(--muted)}
-    footer{margin:36px 0 16px; text-align:center; color:var(--muted); font-size:.95rem}
-    footer a{color:inherit; text-decoration:none}
+    .partners{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+    .partners img{height:42px;width:auto}
+    .list-clean{margin:8px 0 0 0;padding:0;list-style:none}
+    .list-clean li{margin:2px 0}
+    .sep{height:1px;background:var(--border);margin:22px 0}
+    footer{margin:36px 0 16px;text-align:center;color:var(--muted);font-size:.95rem}
+    footer a{color:inherit;text-decoration:none}
     footer a:hover{text-decoration:underline}
+    .small{font-size:.95rem}
   </style>
 </head>
 <body>
   <div class="page">
     <header class="middle">
       <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
-        <img src="assets/logo.png" alt="Solarstrom statt Erdgas-Strom – Logo">
+        <img src="assets/logo.png" alt="Solarstrom statt Erdgas-Strom – Logo" loading="lazy" decoding="async">
       </a>
       <h1>Impressum</h1>
     </header>
 
     <main class="middle">
-      <section class="card">
-        <p><strong>Media International Bader – Impressum</strong></p>
+      <section class="card" aria-labelledby="getragen-von">
+        <h2 id="getragen-von">Diese Kampagne wird getragen von</h2>
+        <ul class="list-clean">
+          <li><strong>Leben mit der Energiewende</strong></li>
+          <li><strong>VEEG – Verein Energie Erzeugende Gebäude e. V.</strong></li>
+          <li><strong>Energy Watch Group</strong></li>
+        </ul>
 
-        <p>
-          <strong>Anbieter:</strong><br>
-          M.I.B. – Hans Leo Bader
-        </p>
+        <div class="partners" aria-label="Logoleiste der Partnerorganisationen">
+          <img src="assets/LEWLOGOKLEIN.png" alt="Logo: Leben mit der Energiewende" loading="lazy" decoding="async">
+          <img src="assets/veeglogo.svg" alt="Logo: VEEG – Verein Energie Erzeugende Gebäude e. V." loading="lazy" decoding="async">
+          <img src="assets/energywatchgroup.png" alt="Logo: Energy Watch Group" loading="lazy" decoding="async">
+        </div>
 
-        <p>
-          <strong>Geschäftsführer:</strong><br>
-          Hans Leo Bader
-        </p>
+        <div class="sep"></div>
 
-        <p>
-          <strong>Verantwortlich für diese Seiten und deren Inhalt im Sinne des § 6 TDG / § 6 MDStV:</strong><br>
-          Hans Leo Bader<br>
+        <h2>Diensteanbieter gemäß § 5 TMG / Verantwortlich i. S. d. § 18 Abs. 2 MStV</h2>
+        <p class="small">
+          <strong>Media International Bader (M.I.B.) – Hans Leo Bader</strong><br>
           Heisenbergstr. 2b<br>
           80937 München<br>
           Telefon: +49 (89) 33 04 05 06<br>
-          Telefon: +49 (177) 76 06 66 0<br>
-          E-Mail: webmaster(at)muc-mib.de
+          Mobil: +49 (177) 76 06 66 0<br>
+          E-Mail: webmaster(at)muc-mib.de<br>
+          Vertretungsberechtigt: Hans Leo Bader
         </p>
 
+        <div class="sep"></div>
+
+        <h2>Gestaltung & Umsetzung</h2>
+        <p class="small">
+          <strong>Konzeption &amp; Design:</strong> Frank Farenski<br>
+          <strong>Technische Infrastruktur &amp; Betrieb:</strong> Media International Bader (M.I.B.)
+        </p>
+
+        <div class="sep"></div>
+
         <h2>Haftung für Inhalte</h2>
-        <p>
-          Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und
-          Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. [...]
+        <p class="small">
+          Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für Richtigkeit, Vollständigkeit und
+          Aktualität übernehmen wir keine Gewähr. Nach § 7 Abs. 1 TMG sind wir für eigene Inhalte verantwortlich;
+          nach den §§ 8–10 TMG jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu
+          überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen
+          zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben davon unberührt.
         </p>
 
         <h2>Haftung für Links</h2>
-        <p>
-          Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. [...]
+        <p class="small">
+          Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben.
+          Deshalb können wir für diese fremden Inhalte keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten
+          ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Rechtswidrige Inhalte waren zum Zeitpunkt
+          der Verlinkung nicht erkennbar.
         </p>
       </section>
     </main>
 
     <footer class="middle">
       <p>
-        <a href="https://www.aktionsolarstrom.de/">Zur Startseite</a>
+        <a href="https://www.aktionsolarstrom.de/">Startseite</a>
         · <a href="Datenschutz.html">Datenschutz</a>
+        · <a href="Impressum.html" aria-current="page">Impressum</a>
       </p>
+      <p class="muted">Eine Kampagne von Leben mit der Energiewende, VEEG und Energy Watch Group · Diensteanbieter: Media International Bader</p>
       <p class="muted">© Media International Bader</p>
     </footer>
   </div>
