@@ -11,10 +11,13 @@
     body{font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--ink); background:#fff;}
     .page{display:grid;grid-template-columns:1fr minmax(0,var(--maxw)) 1fr; min-height:100dvh}
     .middle{grid-column:2;padding:20px}
-    header{padding:28px 0 10px; text-align:center}
+
+    /* Header schwarz/weiß */
+    header{padding:28px 0 20px; text-align:center; background:#000; color:#fff;}
     header a.logo{display:inline-block}
-    header img{width:min(90vw,320px); height:auto}
-    h1{margin:10px 0 8px; font-size:1.8rem}
+    header img{width:min(90vw,320px); height:auto; margin-bottom:12px}
+    header h1{margin:0; font-size:2rem; font-weight:700; color:#fff;}
+
     h2{margin:28px 0 8px; font-size:1.2rem}
     .card{border:1px solid #e5e7eb; border-radius:12px; padding:18px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.04)}
     .muted{color:var(--muted)}
@@ -59,25 +62,12 @@
         <h2>Haftung für Inhalte</h2>
         <p>
           Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und
-          Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 6 Abs. 1
-          MDStV und § 8 Abs. 1 TDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
-          Diensteanbieter sind jedoch nicht verpflichtet, die von ihnen übermittelten oder gespeicherten fremden
-          Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
-          Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben
-          hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten
-          Rechtsverletzung möglich. Bei Bekanntwerden entsprechender Rechtsverletzungen werden wir diese Inhalte umgehend
-          entfernen.
+          Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. [...]
         </p>
 
         <h2>Haftung für Links</h2>
         <p>
-          Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben.
-          Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten
-          ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum
-          Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft; rechtswidrige Inhalte waren zu diesem Zeitpunkt
-          nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte
-          einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links
-          umgehend entfernen.
+          Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. [...]
         </p>
       </section>
     </main>
@@ -92,10 +82,3 @@
   </div>
 </body>
 </html>
-
-
-
-
-
-
-
