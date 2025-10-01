@@ -3,82 +3,249 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Impressum – Solarstrom statt Erdgas-Strom</title>
-  <meta name="description" content="Impressum der Kampagne Solarstrom statt Erdgas-Strom (Media International Bader).">
+  <title>Solarstrom statt Erdgas-Strom – Info & Mitmachen</title>
+  <meta name="description" content="Alle Infos zur Kampagne Solarstrom statt Erdgas-Strom: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
+  <link rel="stylesheet" href="assets/styles.css">
+
   <style>
-    :root{ --maxw: 920px; --brand:#0a7c5b; --ink:#111; --muted:#6b7280; }
-    html,body{margin:0;padding:0}
-    body{font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--ink); background:#fff;}
-    .page{display:grid;grid-template-columns:1fr minmax(0,var(--maxw)) 1fr; min-height:100dvh}
-    .middle{grid-column:2;padding:20px}
+    /* 3-Spalten Layout mit mittlerer Content-Spalte */
+    .page { display:grid; grid-template-columns: 1fr minmax(0, 920px) 1fr; min-height:100dvh; }
+    .middle { grid-column:2; width:100%; }
 
-    /* Header schwarz/weiß */
-    header{padding:28px 0 20px; text-align:center; background:#000; color:#fff;}
-    header a.logo{display:inline-block}
-    header img{width:min(90vw,320px); height:auto; margin-bottom:12px}
-    header h1{margin:0; font-size:2rem; font-weight:700; color:#fff;}
+    /* Hero */
+    .hero {
+      display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap;
+      text-align:center; padding:32px 0;
+    }
+    .hero img { max-height: 220px; width:auto; }
+    .tagline { margin:6px 0 0; font-size:1.05rem; }
 
-    h2{margin:28px 0 8px; font-size:1.2rem}
-    .card{border:1px solid #e5e7eb; border-radius:12px; padding:18px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.04)}
-    .muted{color:var(--muted)}
-    footer{margin:36px 0 16px; text-align:center; color:var(--muted); font-size:.95rem}
-    footer a{color:inherit; text-decoration:none}
-    footer a:hover{text-decoration:underline}
+    /* Sektionen */
+    main.middle > section { margin: 32px 0; }
+    .lead { font-size:1.15rem; line-height:1.6; }
+    .grid2 { display:grid; gap:18px; grid-template-columns: 1fr; }
+    @media (min-width: 780px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+
+    /* Karten */
+    .card {
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 12px; padding:18px;
+      background:#fff; box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    }
+    .card h3 { margin-top:0 }
+
+    /* Callouts */
+    .callout {
+      border-left: 4px solid #f6b10a; background:#fff8e1; padding:14px 16px; border-radius:8px;
+    }
+
+    /* CTA-Buttons */
+    .cta { display:inline-block; padding:12px 16px; border-radius:10px; text-decoration:none; }
+    .cta.primary { background:#0a7c5b; color:#fff; }
+    .cta.secondary { background:#e9f5f1; color:#0a7c5b; }
+
+    /* Downloadleiste */
+    .downloads a { display:inline-block; margin-right:12px; margin-bottom:8px; }
+
+    /* Responsive Video */
+    .video-wrap { position:relative; width:100%; aspect-ratio:16 / 9; background:#000; border-radius:12px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.06); }
+    .video-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+
+    /* Partner / Träger */
+    .partner { border: 1px solid rgba(0,0,0,.08); border-radius:12px; padding:18px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.04); }
+    .partner h2 { margin-top:0; }
+    .orgs { display:grid; gap:18px; grid-template-columns: 1fr; align-items:start; }
+    @media (min-width: 780px) { .orgs { grid-template-columns: 1fr 1fr; } }
+    .org { display:grid; grid-template-columns: 80px 1fr; gap:14px; align-items:start; }
+    .org .logoBox { display:flex; align-items:center; justify-content:center; background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; padding:10px; }
+    .org img { max-width: 100%; height: auto; display:block; }
+    .org h3 { margin:0 0 6px; font-size:1.05rem; }
+    .org p { margin:0 0 10px; }
+    .org a { color:#0a7c5b; text-decoration:none; }
+    .org a:hover { text-decoration:underline; }
+
+    /* Footer */
+    footer .legal { text-align:center; display:block; }
   </style>
 </head>
 <body>
+
   <div class="page">
-    <header class="middle">
-      <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
-        <img src="assets/logo.png" alt="Solarstrom statt Erdgas-Strom – Logo">
-      </a>
-      <h1>Impressum</h1>
+
+    <header class="site-header middle">
+      <div class="hero">
+        <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+        <div>
+          <h1>Solarstrom statt Erdgas-Strom</h1>
+          <p class="tagline">Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken &amp; versenden physisch.</p>
+          <div style="margin-top:10px">
+            <a class="cta primary" href="#mitmachen">Jetzt mitmachen</a>
+            <a class="cta secondary" href="#material">Materialien</a>
+          </div>
+        </div>
+      </div>
     </header>
 
     <main class="middle">
-      <section class="card">
-        <p><strong>Media International Bader – Impressum</strong></p>
 
-        <p>
-          <strong>Anbieter:</strong><br>
-          M.I.B. – Hans Leo Bader
+      <!-- Einleitung -->
+      <section id="intro">
+        <p class="lead">
+          Wirtschaftsministerin Reiche und Bundeskanzler Friedrich Merz sprechen von Technologieoffenheit und Wirtschaftlichkeit. Mit ihren konkreten Forderungen werden aber einseitig fossile Kraftwerke begünstigt und der Ausbau günstiger Erneuerbaren gebremst. 
+          Weniger Ausbau bedeutet: Bürger und Unternehmen mit höheren Stromkosten belasten, den Wirtschaftsstandort Deutschland schwächen, die Abhängigkeit von fossilen Importen aus unzuverlässigen Staaten verlängern und das Klimaziel gefährden.
+          Weniger Ausbau steht zudem im Gegensatz zum Wahlprogramm 2025 der Union: <em>„Für uns ist klar: Energie muss bezahlbar, sicher und sauber sein“</em>.
         </p>
+        <div class="callout">
+          <strong>Kernaussage:</strong> Solarstrom senkt Kosten, erhöht Versorgungssicherheit und schützt Klima &amp; Gesundheit.
+        </div>
+      </section>
 
-        <p>
-          <strong>Geschäftsführer:</strong><br>
-          Hans Leo Bader
-        </p>
-
-        <p>
-          <strong>Verantwortlich für diese Seiten und deren Inhalt im Sinne des § 6 TDG / § 6 MDStV:</strong><br>
-          Hans Leo Bader<br>
-          Heisenbergstr. 2b<br>
-          80937 München<br>
-          Telefon: +49 (89) 33 04 05 06<br>
-          Telefon: +49 (177) 76 06 66 0<br>
-          E-Mail: webmaster(at)muc-mib.de
-        </p>
-
-        <h2>Haftung für Inhalte</h2>
-        <p>
-          Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und
-          Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. [...]
-        </p>
-
-        <h2>Haftung für Links</h2>
-        <p>
-          Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. [...]
+      <!-- Aktuelle Sendung -->
+      <section id="sendung">
+        <h2>Gestern in der Sendung</h2>
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/lzq9l2sW6Lo"
+            title="Gestern in der Sendung – Solarstrom statt Erdgas-Strom"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p style="margin-top:10px">
+          <a class="cta secondary" href="https://youtu.be/lzq9l2sW6Lo" target="_blank" rel="noopener">Auf YouTube ansehen</a>
         </p>
       </section>
+
+      <!-- Ziele / Forderungen -->
+      <section id="ziele">
+        <h2>Kernforderungen</h2>
+        <div class="grid2">
+          <div class="card">
+            <h3>1. Keine neuen Erdgaskraftwerke</h3>
+            <p>Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.</p>
+          </div>
+          <div class="card">
+            <h3>2. Ausbau Erneuerbarer beschleunigen</h3>
+            <p>und netzdienliche Erzeugung belohnen.</p>
+          </div>
+          <div class="card">
+            <h3>3. Feste Einspeisevergütung beibehalten</h3>
+            <p>bis Smart Meter flächendeckend eine einfache, flexible Vergütung erlauben.</p>
+          </div>
+          <div class="card">
+            <h3>4. Bestandsschutz</h3>
+            <p>und keine Zusatzbelastung für erneuerbare Stromerzeugung.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hintergrund -->
+      <section id="hintergrund">
+        <h2>Hintergrund &amp; Argumente</h2>
+        <p></p>
+        <h3>Kosten, Klima &amp; Sicherheit</h3>
+        <ul>
+          <li>Solarstrom senkt Stromgestehungskosten und Risiken fossiler Preise.</li>
+          <li>Direktnutzung reduziert Netzbelastung und Verluste.</li>
+          <li>Dezentrale Anlagen erhöhen die Resilienz.</li>
+        </ul>
+      </section>
+
+      <!-- Materialien -->
+      <section id="material">
+        <h2>Materialien</h2>
+        <p>Hier finden Sie die Begründung für unsere Forderungen – zum Nachlesen und Weitergeben.</p>
+        <div class="downloads">
+          <a class="cta secondary" href="Solarstrom statt Erdgasstrom - Die Argumente.pdf" download>📄 Positionspapier</a>
+        </div>
+      </section>
+
+      <!-- Mitmachen -->
+      <section id="mitmachen">
+        <h2>Mitmachen</h2>
+        <div class="grid2">
+          <div class="card">
+            <h3>Brief an Abgeordnete</h3>
+            <p>Schreiben Sie Ihren Brief – wir übernehmen Ausdruck und Postversand an die zuständige Bundestagsabgeordnete/den zuständigen Abgeordneten.</p>
+            <a class="cta primary" href="index-full.html">Brief einreichen</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Träger der Kampagne -->
+      <section id="partner" class="partner">
+        <h2>Träger der Kampagne</h2>
+        <p>Die Kampagne wird von dem VEEG e.V. und der EWG durchgeführt.</p>
+
+        <div class="orgs">
+          <!-- VEEG -->
+          <article class="org">
+            <div class="logoBox">
+              <img src="assets/veeglogo.svg" alt="VEEG e. V. – Verband EnergieErzeugende Gebäude">
+            </div>
+            <div>
+              <h3>VEEG e. V. – Verband EnergieErzeugende Gebäude</h3>
+              <p>
+                Der VEEG e. V. ist der „Verband EnergieErzeugende Gebäude“. Er hat das Ziel,
+                Gebäude als aktive Energieproduzenten zu fördern – also solche, die ihren
+                Energiebedarf selbst erzeugen, möglichst energiekostenfrei werden und
+                Klimaschutz praktisch mitdenken.
+              </p>
+              <p>
+                Der Verband informiert, vernetzt Fachleute und Eigentümer, beteiligt sich in der
+                öffentlichen Debatte (z. B. mit Live-Sendungen) und wirkt darauf hin, bürokratische
+                Hürden abzubauen, damit Energiewende und Klimaschutz in Gebäuden schneller
+                umgesetzt werden können.
+              </p>
+              <p><a href="https://ve-eg.de/" target="_blank" rel="noopener">ve-eg.de</a></p>
+            </div>
+          </article>
+
+          <!-- EWG -->
+          <article class="org">
+            <div class="logoBox">
+              <img src="assets/energywatchgroup.png" alt="Energy Watch Group (EWG)">
+            </div>
+            <div>
+              <h3>Energy Watch Group (EWG)</h3>
+              <p>
+                Die Energy Watch Group (EWG) ist ein gemeinnütziger Think Tank, der sich dem Ziel verschrieben hat,
+                die Klimakrise zu stoppen und die Erdatmosphäre wieder abzukühlen.
+              </p>
+              <p>
+                Sie arbeitet mit wissenschaftlichen Analysen, Studien und Politikempfehlungen, um die CO₂-Emissionen
+                zu senken – auf globaler, nationaler und kommunaler Ebene – und bringt diese Erkenntnisse in den Dialog
+                mit Entscheidungstragenden und in die Medien.
+              </p>
+              <p>
+                Ein Schwerpunkt ist, konsequent von dem gewünschten Ergebnis her zu denken: das Erreichen von
+                Null-Emissionen, und aufzuzeigen, wie das technisch und politisch machbar ist.
+              </p>
+              <p><a href="https://energywatchgroup.org/" target="_blank" rel="noopener">energywatchgroup.org</a></p>
+            </div>
+          </article>
+        </div>
+      </section>
+
     </main>
 
-    <footer class="middle">
-      <p>
-        <a href="https://www.aktionsolarstrom.de/">Zur Startseite</a>
-        · <a href="Datenschutz.html">Datenschutz</a>
-      </p>
-      <p class="muted">© Media International Bader</p>
+    <footer class="site-footer middle">
+      <nav class="legal">
+        <a href="Impressum.html">Impressum</a> · <a href="Datenschutz.html">Datenschutz</a>
+      </nav>
+      <p style="text-align:center">© Kampagne „Solarstrom statt Erdgas-Strom”</p>
     </footer>
+
   </div>
+
+  <!-- Optional: weiches Scrollen zu Ankern -->
+  <script>
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#"]'); if(!a) return;
+      const el = document.querySelector(a.getAttribute('href'));
+      if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+    });
+  </script>
 </body>
 </html>
