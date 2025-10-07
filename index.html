@@ -48,7 +48,7 @@
     .downloads a { display:inline-block; margin-right:12px; margin-bottom:8px; }
 
     /* Responsive Video */
-    .video-wrap { position:relative; width:100%; aspect-ratio:16 / 9; background:#000; border-radius:12px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.06); }
+    .video-wrap { position:relative; width:100%; aspect-ratio:16 / 9; background:#000; border-radius:12px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.06); margin-bottom:18px; }
     .video-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
 
     /* Partner / Träger */
@@ -103,17 +103,39 @@
       <!-- Aktuelle Sendung -->
       <section id="sendung">
         <h2>Gestern in der Sendung</h2>
+
+        <!-- Einzelvideo -->
         <div class="video-wrap">
           <iframe
-            src="https://www.youtube-nocookie.com/embed/lzq9l2sW6Lo"
-            title="Der Start unserer Aktion – Solarstrom statt Erdgas-Strom"
+            src="https://www.youtube-nocookie.com/embed/hrUNTbE8zKQ"
+            title="Solarstrom statt Erdgas-Strom – aktuelle Sendung"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
+        </div>
+
+        <p style="margin-top:10px">
+          <a class="cta secondary" href="https://youtu.be/hrUNTbE8zKQ" target="_blank" rel="noopener">
+            Auf YouTube ansehen
+          </a>
+        </p>
+
+        <!-- Playlist -->
+        <h3 style="margin-top:30px;">Weitere Beiträge der Aktion</h3>
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/videoseries?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc"
+            title="YouTube-Playlist: Aktion Solarstrom statt Erdgas-Strom"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen>
           </iframe>
         </div>
         <p style="margin-top:10px">
-          <a class="cta secondary" href="https://youtu.be/lzq9l2sW6Lo" target="_blank" rel="noopener">Auf YouTube ansehen</a>
+          <a class="cta secondary" href="https://www.youtube.com/playlist?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc" target="_blank" rel="noopener">
+            Ganze Playlist auf YouTube ansehen
+          </a>
         </p>
       </section>
 
@@ -143,7 +165,6 @@
       <!-- Hintergrund -->
       <section id="hintergrund">
         <h2>Hintergrund &amp; Argumente</h2>
-        <p></p>
         <h3>Kosten, Klima &amp; Sicherheit</h3>
         <ul>
           <li>Solarstrom senkt Stromgestehungskosten und Risiken fossiler Preise.</li>
@@ -179,49 +200,24 @@
         <p>Die Kampagne wird von dem VEEG e.V. und der EWG durchgeführt.</p>
 
         <div class="orgs">
-          <!-- VEEG -->
           <article class="org">
             <div class="logoBox">
               <img src="assets/veeglogo.svg" alt="VEEG e. V. – Verband EnergieErzeugende Gebäude">
             </div>
             <div>
               <h3>VEEG e. V. – Verband EnergieErzeugende Gebäude</h3>
-              <p>
-                Der VEEG e. V. ist der „Verband EnergieErzeugende Gebäude“. Er hat das Ziel,
-                Gebäude als aktive Energieproduzenten zu fördern – also solche, die ihren
-                Energiebedarf selbst erzeugen, möglichst energiekostenfrei werden und
-                Klimaschutz praktisch mitdenken.
-              </p>
-              <p>
-                Der Verband informiert, vernetzt Fachleute und Eigentümer, beteiligt sich in der
-                öffentlichen Debatte (z. B. mit Live-Sendungen) und wirkt darauf hin, bürokratische
-                Hürden abzubauen, damit Energiewende und Klimaschutz in Gebäuden schneller
-                umgesetzt werden können.
-              </p>
+              <p>Der VEEG e. V. fördert Gebäude als aktive Energieproduzenten – also solche, die ihren Energiebedarf selbst erzeugen, möglichst energiekostenfrei werden und Klimaschutz praktisch mitdenken.</p>
               <p><a href="https://ve-eg.de/" target="_blank" rel="noopener">ve-eg.de</a></p>
             </div>
           </article>
 
-          <!-- EWG -->
           <article class="org">
             <div class="logoBox">
               <img src="assets/energywatchgroup.png" alt="Energy Watch Group (EWG)">
             </div>
             <div>
               <h3>Energy Watch Group (EWG)</h3>
-              <p>
-                Die Energy Watch Group (EWG) ist ein gemeinnütziger Think Tank, der sich dem Ziel verschrieben hat,
-                die Klimakrise zu stoppen und die Erdatmosphäre wieder abzukühlen.
-              </p>
-              <p>
-                Sie arbeitet mit wissenschaftlichen Analysen, Studien und Politikempfehlungen, um die CO₂-Emissionen
-                zu senken – auf globaler, nationaler und kommunaler Ebene – und bringt diese Erkenntnisse in den Dialog
-                mit Entscheidungstragenden und in die Medien.
-              </p>
-              <p>
-                Ein Schwerpunkt ist, konsequent von dem gewünschten Ergebnis her zu denken: das Erreichen von
-                Null-Emissionen, und aufzuzeigen, wie das technisch und politisch machbar ist.
-              </p>
+              <p>Die Energy Watch Group (EWG) ist ein gemeinnütziger Think Tank, der sich dem Ziel verschrieben hat, die Klimakrise zu stoppen und die Erdatmosphäre wieder abzukühlen.</p>
               <p><a href="https://energywatchgroup.org/" target="_blank" rel="noopener">energywatchgroup.org</a></p>
             </div>
           </article>
@@ -239,7 +235,6 @@
 
   </div>
 
-  <!-- Optional: weiches Scrollen zu Ankern -->
   <script>
     document.addEventListener('click', (e) => {
       const a = e.target.closest('a[href^="#"]'); if(!a) return;
@@ -249,5 +244,7 @@
   </script>
 </body>
 </html>
+
+
 
 
