@@ -27,8 +27,8 @@
     .actions { margin-top:16px; display:flex; gap:12px; align-items:center; }
     button[type="submit"]{ padding:12px 18px; border:0; border-radius:10px; background:#0a7d32; color:#fff; font-weight:800; cursor:pointer; }
     .success { display:none; margin-top:10px; padding:10px 12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:8px; color:#145214; }
-    .notice, .hint { font-size:.92rem; color:var(--muted); }
-    .status { font-size:.92rem; color:#0a7d32; margin-top:6px; display:none; cursor:pointer; user-select:none; }
+    .notice, .hint, .status { font-size:.92rem; color:var(--muted); }
+    .status { color:#0a7d32; margin-top:6px; display:none; cursor:pointer; user-select:none; }
     .status strong { text-decoration: underline; }
     .status.error { color:#b91c1c; cursor:default; text-decoration:none; }
     footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
@@ -173,7 +173,6 @@ Mit freundlichen Grüßen
     </footer>
   </div>
 
-  <!-- MdB Lookup – Statuszeile mit Klick-Action -->
   <script>
   (function(){
     const $ = (s)=>document.querySelector(s);
@@ -196,7 +195,6 @@ Mit freundlichen Grüßen
       return addComma(fallback||'Sehr geehrte Damen und Herren');
     }
 
-    // Multi-Pfad Loader (wie Basis)
     async function loadTry(urls){ let err; for(const u of urls){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); err=new Error('HTTP '+r.status+' '+u);}catch(e){err=e;} } throw err; }
     const loadPLZ2WK=()=>loadTry(['assets/data/plz_to_wk.json','plz_to_wk.json']);
     const loadWK2MDB=()=>loadTry(['assets/data/wk_to_mdb.json','wk_to_mdb.json']);
@@ -206,68 +204,70 @@ Mit freundlichen Grüßen
       const [plzMap,wkMap,ortMap]=await Promise.all([loadPLZ2WK(),loadWK2MDB(),loadORT2WK()]);
       let wks=[];
       if(plzMap[plz]) wks=wks.concat([].concat(plzMap[plz]));
-      const key=norm(cityRaw||'');
-      if(key){
-        for(const [k,arr] of Object.entries(ortMap)){
-          const nk=norm(k);
-          if(nk.startsWith(key) || key.startsWith(nk)) wks=wks.concat([].concat(arr));
-        }
+      const key=norm(cityRaw);
+      if(!wks.length && key){
+        if(ortMap[key]) wks=wks.concat([].concat(ortMap[key]));
+        if(!wks.length){ for(const [k,arr] of Object.entries(ortMap)){ if(norm(k).startsWith(key)) wks=wks.concat([].concat(arr)); } }
       }
-      wks=[...new Set(wks.map(String))];
+      wks=Array.from(new Set(wks.map(String)));
 
       const byName=new Map();
       for(const wk of wks){
         const m=wkMap[String(wk)]; if(!m) continue;
         const name=clean(m.mdb_name); if(!name) continue;
         const anrede=salutation(name, clean(m.anrede));
-        const address=(m.bundestag_address||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
-        if(!byName.has(name)) byName.set(name,{name,anrede,address,party:clean(m.fraktion||m.party||''), wk:String(m.wk_nr||m.wk||'')});
+        const address=(m.bundestag_address||'Platz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
+        if(!byName.has(name)){ byName.set(name,{name,anrede,address,party:clean(m.fraktion||m.party||''), wk:String(m.wk_nr||m.wk||'')}); }
       }
       return { candidates:[...byName.values()], wks };
     }
 
-    // Intro (nachträgliche Ersetzung bleibt wie in deiner Basis)
+    // ---- FIX: "Deutscher Bundestag" stets einfügen, falls im Datensatz fehlt ----
+    function normalizeBtAddr(addr){
+      const lines=String(addr||'').split('\n').map(s=>s.trim()).filter(Boolean);
+      const hasHeader=lines.some(l=>/deutscher\s+bundestag/i.test(l));
+      const body=hasHeader ? lines : ['Deutscher Bundestag', ...lines];
+      // Duplikate vermeiden
+      const uniq=[]; for(const l of body){ if(uniq[uniq.length-1]!==l) uniq.push(l); }
+      return uniq.join('\n');
+    }
+
+    // ersetzbarer Intro-Block (mit Address-Normalisierung)
     function setIntro(anrede, addr, name){
-      const newAddr=(name?name+'\n':'')+String(addr||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
-      const newSal=/,\s*$/.test(anrede||'')?anrede:((anrede||'Sehr geehrte Damen und Herren')+',');
+      const addrNorm = normalizeBtAddr(addr || 'Platz der Republik 1\n11011 Berlin');
+      const newAddr  = (name?name+'\n':'') + addrNorm;
+      const newSal   = /,\s*$/.test(anrede||'') ? anrede : ((anrede||'Sehr geehrte Damen und Herren')+',');
+
       const hasTokens=/\{MdB_Name_und_Adresse\}|\{MdB_Adresse\}|\{Anrede\}/.test(elMSG.value||'');
       let txt=String(elMSG.value||'');
       if(hasTokens){
         txt=txt.replace('{MdB_Name_und_Adresse}',newAddr).replace('{MdB_Adresse}',newAddr).replace('{Anrede}',newSal);
       }else{
         const prevAddr=elMSG.dataset.recipientAddr||'';
-        const prevSal=elMSG.dataset.salutation||'';
+        const prevSal =elMSG.dataset.salutation||'';
         if(prevAddr && txt.includes(prevAddr)) txt=txt.replace(prevAddr,newAddr);
-        if(prevSal && txt.includes(prevSal)) txt=txt.replace(prevSal,newSal);
+        if(prevSal  && txt.includes(prevSal))  txt=txt.replace(prevSal,newSal);
       }
       elMSG.value=txt;
       elMSG.dataset.recipientAddr=newAddr;
       elMSG.dataset.salutation=newSal;
     }
 
-    // Status-UI
+    // Statusanzeige (grün)
     function setStatusMultiple(count){
-      status.classList.remove('error');
-      status.style.display='block';
-      status.innerHTML = `<strong>${count} Treffer – auswählen</strong>`;
-      status.onclick = () => {
-        selWrap.style.display='block';
-        elSel.focus();
-      };
+      const s=$('#mp_status'); s.classList.remove('error'); s.style.display='block';
+      s.innerHTML=`<strong>${count} Treffer – auswählen</strong>`;
+      s.onclick=()=>{ selWrap.style.display='block'; elSel.focus(); };
     }
     function setStatusSingle(name){
-      status.classList.remove('error');
-      status.style.display='block';
-      status.innerHTML = `<strong>1 Treffer: ${name} – übernehmen</strong>`;
-      status.onclick = () => chooseByName(name);
+      const s=$('#mp_status'); s.classList.remove('error'); s.style.display='block';
+      s.innerHTML=`<strong>1 Treffer: ${name} – übernehmen</strong>`;
+      s.onclick=()=>chooseByName(name);
     }
     function setStatusNone(text){
-      status.classList.add('error');
-      status.style.display='block';
-      status.textContent = text;
-      status.onclick = null;
+      const s=$('#mp_status'); s.classList.add('error'); s.style.display='block'; s.textContent=text; s.onclick=null;
     }
-    function clearStatus(){ status.style.display='none'; status.onclick=null; }
+    function clearStatus(){ const s=$('#mp_status'); s.style.display='none'; s.onclick=null; }
 
     function hideSelect(){ selWrap.style.display='none'; elSel.innerHTML=''; elHint.textContent=''; }
     function showSelect(cands,wks){
@@ -281,9 +281,9 @@ Mit freundlichen Grüßen
     function chooseByName(name){
       const opt=[...elSel.options].find(o=>o.value===name);
       if(!opt) return;
-      setIntro(opt.dataset.anrede || 'Sehr geehrte Damen und Herren,', opt.dataset.address || 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin', name);
+      setIntro(opt.dataset.anrede || 'Sehr geehrte Damen und Herren,', opt.dataset.address || 'Platz der Republik 1\n11011 Berlin', name);
       elMP.value=name;
-      setStatusSingle(name); // bleibt klickbar
+      setStatusSingle(name);
       hideSelect();
     }
 
@@ -300,35 +300,25 @@ Mit freundlichen Grüßen
 
     let t=null; const debounce=(fn,ms)=>{ clearTimeout(t); t=setTimeout(fn,ms); };
     async function runLookup(){
-      hideSelect();
-      clearStatus();
-      const plz=(elPLZ.value||'').trim(); const city=(elCity.value||'').trim();
+      hideSelect(); clearStatus();
+      const plz=(elPLZ.value||'').trim(), city=(elCity.value||'').trim();
       if(!/^\d{5}$/.test(plz) && city.length<2){
-        setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); 
+        setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin',''); 
         return; 
       }
       try{
         const {candidates,wks}=await findCandidates(plz,city);
         if(candidates.length>1){
-          setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
-          showSelect(candidates,wks);
-          setStatusMultiple(candidates.length);
+          setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin','');
+          showSelect(candidates,wks); setStatusMultiple(candidates.length);
         }else if(candidates.length===1){
           const c=candidates[0];
-          setIntro(c.anrede,c.address,c.name);
-          elMP.value=c.name;
-          hideSelect();
-          setStatusSingle(c.name);
+          setIntro(c.anrede,c.address,c.name); elMP.value=c.name; hideSelect(); setStatusSingle(c.name);
         }else{
-          setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
-          hideSelect();
-          setStatusNone('Keine Treffer für die eingegebenen Daten.');
+          setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin',''); hideSelect(); setStatusNone('Keine Treffer für die eingegebenen Daten.');
         }
       }catch(e){
-        setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
-        hideSelect();
-        setStatusNone('Fehler beim Laden der MdB-Daten.');
-        console.error(e);
+        setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin',''); hideSelect(); setStatusNone('Fehler beim Laden der MdB-Daten.'); console.error(e);
       }
     }
     elPLZ .addEventListener('input',()=>debounce(runLookup, (/^\d{5}$/.test(elPLZ.value||''))?0:300));
@@ -338,7 +328,7 @@ Mit freundlichen Grüßen
   })();
   </script>
 
-  <!-- Token Handling mit Live-Vorschau + finalem Submit (unverändert) -->
+  <!-- Token-Handling + Submit -->
   <script>
   (function(){
     const $=(s)=>document.querySelector(s);
@@ -350,30 +340,12 @@ Mit freundlichen Grüßen
     const topPLZ=()=>($('#plz')?.value||'').trim();
     const topCity=()=>($('#city')?.value||'').trim();
 
-    function vals(){
-      const m={};
-      for(const [t,sel] of Object.entries(F)){
-        let v=($(sel)?.value||'').trim();
-        if(t==='{Straße}') v=cleanStreet(v);
-        if(t==='{PLZ}' && !v) v=topPLZ();
-        if(t==='{Ort}' && !v) v=topCity();
-        m[t]=v;
-      }
-      return m;
-    }
-    function apply(base,map){
-      let out=String(base||'');
-      for(const [t,v] of Object.entries(map)){ out=out.replace(new RegExp(esc(t),'g'),v); }
-      return out.replace(/\n{3,}/g,'\n\n').trimEnd();
-    }
+    function vals(){ const m={}; for(const [t,sel] of Object.entries(F)){ let v=($(sel)?.value||'').trim();
+      if(t==='{Straße}') v=cleanStreet(v); if(t==='{PLZ}'&&!v) v=topPLZ(); if(t==='{Ort}'&&!v) v=topCity(); m[t]=v; } return m; }
+    function apply(base,map){ let out=String(base||''); for(const [t,v] of Object.entries(map)){ out=out.replace(new RegExp(esc(t),'g'),v); } return out.replace(/\n{3,}/g,'\n\n').trimEnd(); }
 
     const TOKENS=['{Vorname}','{Nachname}','{Straße}','{PLZ}','{Ort}'];
-    function renderSenderPreview(){
-      if(!msg) return;
-      const map=vals(); let txt=String(msg.value||'');
-      for(const t of TOKENS){ const v=map[t]&&map[t].length?map[t]:t; txt=txt.replace(new RegExp(esc(t),'g'),v); }
-      msg.value=txt;
-    }
+    function renderSenderPreview(){ if(!msg) return; const map=vals(); let txt=String(msg.value||''); for(const t of TOKENS){ const v=map[t]&&map[t].length?map[t]:t; txt=txt.replace(new RegExp(esc(t),'g'),v); } msg.value=txt; }
     ['#first_name','#last_name','#street','#sender_zip','#sender_city','#plz','#city'].forEach(sel=>$(sel)?.addEventListener('blur',renderSenderPreview));
     document.addEventListener('DOMContentLoaded',renderSenderPreview);
 
@@ -383,49 +355,29 @@ Mit freundlichen Grüßen
       const raddr= msg?.dataset?.recipientAddr || 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin';
 
       let userText = msg?.value || '';
-      userText = userText
-        .replace('{Anrede}', sal)
-        .replace('{MdB_Name_und_Adresse}', raddr)
-        .replace('{MdB_Adresse}', raddr);
+      userText = userText.replace('{Anrede}', sal).replace('{MdB_Name_und_Adresse}', raddr).replace('{MdB_Adresse}', raddr);
 
       const finalMsg = apply(userText, vals());
+      if (/\{Vorname\}|\{Nachname\}|\{Straße\}|\{PLZ\}|\{Ort\}/.test(finalMsg)) { alert('Bitte füllen Sie Absenderfelder vollständig aus.'); return; }
 
-      if (/\{Vorname\}|\{Nachname\}|\{Straße\}|\{PLZ\}|\{Ort\}/.test(finalMsg)) {
-        alert('Bitte füllen Sie Absenderfelder vollständig aus.');
-        return;
-      }
-
-      const btn=form.querySelector('button[type="submit"]');
-      btn?.setAttribute('disabled','');
-
-      const fd=new FormData(form);
-      const payload={};
-      fd.forEach((v,k)=>payload[k]=v);
-      payload.copy_to_self  = fd.has('copy_to_self');
-      payload.consent_print = fd.has('consent_print');
-      payload.message       = finalMsg;
+      const btn=form.querySelector('button[type="submit"]'); btn?.setAttribute('disabled','');
+      const fd=new FormData(form); const payload={}; fd.forEach((v,k)=>payload[k]=v);
+      payload.copy_to_self=fd.has('copy_to_self'); payload.consent_print=fd.has('consent_print'); payload.message=finalMsg;
 
       try{
         const res=await fetch(form.action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-        const text=await res.text();
-        let data; try{ data=JSON.parse(text); } catch{ throw new Error(text.slice(0,200)||'Serverantwort kein JSON'); }
-        if(data.ok){
-          const box=document.getElementById('successMessage');
-          if(box){ box.textContent='Danke! Ihr Brief wurde erfolgreich eingereicht. Vorgangs-ID: '+(data.queueId||''); box.style.display='block'; }
-          form.reset(); renderSenderPreview();
-        }else{
-          alert('Fehler: '+(data.error||'Unbekannt'));
-        }
-      }catch(err){
-        alert('Verbindungsfehler: '+err.message);
-      }finally{
-        btn?.removeAttribute('disabled');
-      }
+        const text=await res.text(); let data; try{data=JSON.parse(text);}catch{throw new Error(text.slice(0,200)||'Serverantwort kein JSON');}
+        if(data.ok){ const box=document.getElementById('successMessage'); if(box){ box.textContent='Danke! Ihr Brief wurde erfolgreich eingereicht. Vorgangs-ID: '+(data.queueId||''); box.style.display='block'; } form.reset(); renderSenderPreview(); }
+        else{ alert('Fehler: '+(data.error||'Unbekannt')); }
+      }catch(err){ alert('Verbindungsfehler: '+err.message); }
+      finally{ btn?.removeAttribute('disabled'); }
     });
   })();
   </script>
 </body>
 </html>
+
+
 
 
 
