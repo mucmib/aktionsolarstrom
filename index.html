@@ -20,6 +20,26 @@
     .hero img { max-height: 220px; width:auto; }
     .tagline { margin:6px 0 0; font-size:1.05rem; }
 
+    /* Zähler-Banner */
+    .stats-banner {
+      display:flex; align-items:center; gap:14px;
+      margin: 8px auto 0; padding:14px 18px;
+      width: fit-content; max-width: 100%;
+      background: linear-gradient(135deg, #0a7c5b 0%, #12a37d 50%, #0a7c5b 100%);
+      color:#fff; border-radius:14px;
+      box-shadow: 0 10px 24px rgba(10,124,91,.25);
+    }
+    .stats-icon { font-size:1.6rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
+    .stats-text { display:flex; flex-direction:column; line-height:1.1; }
+    .stats-label { font-size:.95rem; opacity:.95; letter-spacing:.2px; }
+    .stats-value { font-weight:800; font-size:1.9rem; }
+    .count { font-variant-numeric: tabular-nums; }
+
+    @media (max-width: 520px) {
+      .stats-banner { margin-left: auto; margin-right: auto; }
+      .stats-value { font-size:1.6rem; }
+    }
+
     /* Sektionen */
     main.middle > section { margin: 32px 0; }
     .lead { font-size:1.15rem; line-height:1.6; }
@@ -81,6 +101,17 @@
           <div style="margin-top:10px">
             <a class="cta primary" href="#mitmachen">Jetzt mitmachen</a>
             <a class="cta secondary" href="#material">Materialien</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live-Zähler: sicher versendete Briefe (E-Mail an Druck) -->
+      <div class="stats-banner" role="status" aria-live="polite">
+        <div class="stats-icon" aria-hidden="true">✉️</div>
+        <div class="stats-text">
+          <div class="stats-label">Sicher versendete Briefe</div>
+          <div class="stats-value">
+            <span id="sentCount" class="count">–</span>
           </div>
         </div>
       </div>
@@ -236,14 +267,52 @@
   </div>
 
   <script>
+    // Smooth Scrolling für In-Page-Links
     document.addEventListener('click', (e) => {
       const a = e.target.closest('a[href^="#"]'); if(!a) return;
       const el = document.querySelector(a.getAttribute('href'));
       if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
     });
+
+    // ---- Live-Zähler-Logik ----
+    // API-URL bitte bei Bedarf anpassen: Erwartet { "sent_emails": <Number> }
+    const STATS_URL = '/api/stats.json';
+
+    function countUp(el, to, duration = 1200) {
+      const start = performance.now();
+      const from = 0;
+      const fmt = new Intl.NumberFormat('de-DE');
+      function frame(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+        const val = Math.round(from + (to - from) * eased);
+        el.textContent = fmt.format(val);
+        if (t < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    async function loadCounter() {
+      const el = document.getElementById('sentCount');
+      if (!el) return;
+      try {
+        const res = await fetch(STATS_URL, { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        const raw = Number(data.sent_emails);
+        const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
+        countUp(el, value);
+      } catch (e) {
+        console.warn('Zähler konnte nicht geladen werden:', e);
+        el.textContent = '–';
+      }
+    }
+
+    loadCounter();
   </script>
 </body>
 </html>
+
 
 
 
