@@ -20,24 +20,32 @@
     .hero img { max-height: 220px; width:auto; }
     .tagline { margin:6px 0 0; font-size:1.05rem; }
 
-    /* Zähler-Banner */
+    /* Zähler-Banner – neues Design */
     .stats-banner {
       display:flex; align-items:center; gap:14px;
-      margin: 8px auto 0; padding:14px 18px;
+      margin: 10px auto 0; padding:14px 18px;
       width: fit-content; max-width: 100%;
       background: linear-gradient(135deg, #0a7c5b 0%, #12a37d 50%, #0a7c5b 100%);
-      color:#fff; border-radius:14px;
+      color:#fff; border-radius:16px;
       box-shadow: 0 10px 24px rgba(10,124,91,.25);
     }
-    .stats-icon { font-size:1.6rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
+    .stats-iconbox {
+      width:40px; height:40px; border-radius:10px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(255,255,255,.15);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+    .stats-icon { font-size:1.3rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
     .stats-text { display:flex; flex-direction:column; line-height:1.1; }
-    .stats-label { font-size:.95rem; opacity:.95; letter-spacing:.2px; }
-    .stats-value { font-weight:800; font-size:1.9rem; }
+    .stats-label { font-size:.9rem; opacity:.95; letter-spacing:.2px; }
+    .stats-value { font-weight:800; font-size:2.1rem; line-height:1; margin-top:2px; }
     .count { font-variant-numeric: tabular-nums; }
+    .stats-meta { margin-top:6px; font-size:.82rem; opacity:.9; }
+    .stats-meta .dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:#fff; opacity:.7; margin:0 8px 1px; vertical-align:middle; }
 
     @media (max-width: 520px) {
-      .stats-banner { margin-left: auto; margin-right: auto; }
-      .stats-value { font-size:1.6rem; }
+      .stats-banner { margin-left: auto; margin-right: auto; padding:12px 14px; }
+      .stats-value { font-size:1.7rem; }
     }
 
     /* Sektionen */
@@ -107,11 +115,17 @@
 
       <!-- Live-Zähler: sicher versendete Briefe (E-Mail an Druck) -->
       <div class="stats-banner" role="status" aria-live="polite">
-        <div class="stats-icon" aria-hidden="true">✉️</div>
+        <div class="stats-iconbox">
+          <div class="stats-icon" aria-hidden="true">✉️</div>
+        </div>
         <div class="stats-text">
           <div class="stats-label">In Auftrag gegebene Briefe</div>
           <div class="stats-value">
             <span id="sentCount" class="count">–</span>
+          </div>
+          <div class="stats-meta" id="statsMeta" hidden>
+            <span class="dot" aria-hidden="true"></span>
+            <span id="statsTime">Stand: –</span>
           </div>
         </div>
       </div>
@@ -275,7 +289,7 @@
     });
 
     // ---- Live-Zähler-Logik ----
-    // API-URL bitte bei Bedarf anpassen: Erwartet { "sent_emails": <Number> }
+    // Erwartet JSON: { "sent_emails": <Number>, "last_update": "<ISO-Datum>" }
     const STATS_URL = '/assets/stats.json';
 
     function countUp(el, to, duration = 1200) {
@@ -292,19 +306,43 @@
       requestAnimationFrame(frame);
     }
 
+    function formatStandText(isoString) {
+      if (!isoString) return null;
+      const d = new Date(isoString);
+      if (isNaN(d)) return null;
+      const fmtDate = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
+      const fmtTime = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
+      return `Stand: ${fmtDate}, ${fmtTime} Uhr`;
+    }
+
     async function loadCounter() {
       const el = document.getElementById('sentCount');
+      const metaWrap = document.getElementById('statsMeta');
+      const metaText = document.getElementById('statsTime');
       if (!el) return;
+
       try {
-        const res = await fetch(STATS_URL, { cache: 'no-store' });
+        const res = await fetch(STATS_URL + `?nocache=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
+
+        // Zahl
         const raw = Number(data.sent_emails);
         const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
         countUp(el, value);
+
+        // Datum/Uhrzeit
+        const stand = formatStandText(data.last_update);
+        if (stand && metaWrap && metaText) {
+          metaText.textContent = stand;
+          metaWrap.hidden = false;
+        } else if (metaWrap) {
+          metaWrap.hidden = true;
+        }
       } catch (e) {
         console.warn('Zähler konnte nicht geladen werden:', e);
         el.textContent = '–';
+        if (metaWrap) metaWrap.hidden = true;
       }
     }
 
@@ -312,6 +350,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
