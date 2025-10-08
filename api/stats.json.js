@@ -1,0 +1,23 @@
+// /api/stats.json.js
+import { kv } from '@vercel/kv';
+
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+
+  try {
+    const sent = Number(await kv.get('sent_emails')) || 0;
+    const last = (await kv.get('sent_emails_last_update')) || null;
+
+    return res.status(200).json({
+      sent_emails: sent,
+      last_update: last,
+      source: 'Solarstrom statt Erdgas-Strom – Briefaktion',
+    });
+  } catch (err) {
+    console.error('KV fetch error:', err);
+    return res.status(500).json({ error: 'Unable to read counter' });
+  }
+}
