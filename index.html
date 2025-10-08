@@ -290,7 +290,7 @@
 
     // ---- Live-Zähler-Logik ----
     // Erwartet JSON: { "sent_emails": <Number>, "last_update": "<ISO-Datum>" }
-    const STATS_URL = '/assets/stats.json';
+    const STATS_URL = '/api/stats.json';
 
     function countUp(el, to, duration = 1200) {
       const start = performance.now();
@@ -350,6 +350,7 @@
   </script>
 </body>
 </html>
+
 
 
 
