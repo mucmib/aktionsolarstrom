@@ -1,4 +1,4 @@
-// /api/queue.js – Vercel Serverless Function
+// Serverless Function
 import Brevo from "@getbrevo/brevo";
 import PDFDocument from "pdfkit";
 
@@ -32,15 +32,11 @@ const toBool = (v) => ["true", "on", "1", "yes"].includes(String(v).toLowerCase(
 /** --- Layout-Konstanten --- */
 const WINDOW = { left: mm(20), topFromTop: mm(45), width: mm(90), height: mm(45) };
 
-/** Schriftgrößen zentral:
- * - header: Größe für Absenderblock rechts oben
- * - body:   Größe für Empfängeradresse + Betreff + Fließtext (gleich wie header)
- * - senderLine: kleine graue Absenderzeile über dem Fenster (unverändert klein)
- */
+/** Schriftgrößen zentral */
 const FONT = {
-  header: 12,      // vorher 11
-  body:   12,      // Empfänger + Betreff + Text = gleich groß wie header
-  senderLine: 7.5, // kleine Zeile bleibt klein
+  header: 12,      // Absenderblock rechts oben
+  body:   12,      // Empfänger + Betreff + Fließtext (Basisgröße)
+  senderLine: 7.5, // kleine Zeile über dem Fenster
 };
 
 function drawSenderLine(doc, senderLine) {
@@ -73,6 +69,16 @@ function stripRecipientParagraph(txt = "") {
     /\b\d{5}\s+Berlin\b/i.test(p0);
   if (looksLikeAddress) parts.shift();
   return parts.join("\n\n").trim();
+}
+
+/** Text behutsam normalisieren (Absätze bleiben erhalten) */
+function normalizeLetterText(s = "") {
+  return String(s || "")
+    .replace(/\r\n?/g, "\n")    // einheitliche Zeilenenden
+    .replace(/[ \t]+\n/g, "\n") // Space vor Zeilenumbruch weg
+    .replace(/\n{3,}/g, "\n\n") // 3+ Leerzeilen -> genau 2 (Absätze!)
+    .replace(/[ \t]{2,}/g, " ") // Mehrfachspaces
+    .replace(/^\n+|\n+$/g, ""); // führende/abschließende Leerzeilen
 }
 
 /** --- Anrede-Helfer --- */
@@ -114,13 +120,12 @@ async function buildLetterPDF({
     doc.on("end", () => resolve(Buffer.concat(chunks)));
   });
 
-  // Grundschrift (wir setzen Größen später pro Block explizit)
   doc.font("Times-Roman");
 
-  const pageWidth  = doc.page.width;
-  const usableLeft = doc.page.margins.left;
-  const usableRight= pageWidth - doc.page.margins.right;
-  const usableWidth= usableRight - usableLeft;
+  const pageWidth   = doc.page.width;
+  const usableLeft  = doc.page.margins.left;
+  const usableRight = pageWidth - doc.page.margins.right;
+  const usableWidth = usableRight - usableLeft;
 
   // Header rechts oben (Absenderblock)
   const senderBlock = [
@@ -141,7 +146,7 @@ async function buildLetterPDF({
     .filter(Boolean).join(" · ");
   drawSenderLine(doc, senderLine);
 
-  // Empfängeranschrift im Fenster – jetzt in FONT.body
+  // Empfängeranschrift im Fenster
   const addrLines = [];
   if (recipient.name) addrLines.push(recipient.name);
   const addr = String(recipient.address || "").replace(/\s*\n\s*/g, "\n").trim();
@@ -151,31 +156,57 @@ async function buildLetterPDF({
   const recipientBlock = addrLines.join("\n");
 
   const addressX = usableLeft;
-  const addressY = mm(52); // Position beibehalten
+  const addressY = mm(52);
   const addressW = mm(85);
   doc.fontSize(FONT.body).text(recipientBlock, addressX, addressY, { width: addressW });
 
-  // Start Y für Text nach der Anschrift
-  const bodyStartY = addressY + doc.heightOfString(recipientBlock, { width: addressW }) + mm(10);
+  // Startposition unter der Anschrift
+  const bodyStartY =
+    addressY + doc.heightOfString(recipientBlock, { width: addressW }) + mm(10);
 
-  // Betreff (fett), ebenfalls in FONT.body
+  // Betreff-Höhe (Basis)
+  let subjectHeight = 0;
+  if (must(subject)) {
+    subjectHeight = doc.heightOfString(subject, { width: usableWidth, font: "Times-Bold", fontSize: FONT.body });
+  }
+  const yAfterSubject = must(subject) ? bodyStartY + subjectHeight + mm(2) : bodyStartY;
+
+  // Verbleibender Platz bis Unterkante
+  const availableHeight = (doc.page.height - doc.page.margins.bottom) - yAfterSubject;
+
+  // Fließtext vorbereiten (Anschriften-Absatz weg)
+  const cleanBody = stripRecipientParagraph(bodyText || "");
+
+  // --- Dynamisches „Fit to One Page“ für den Fließtext ---
+  const MIN_SIZE = 9.5;            // Lesbarkeitsuntergrenze
+  const BASE_SIZE = FONT.body;     // 12 pt
+  let bodySize = BASE_SIZE;
+  let lineGap  = 2;                // subtiler Abstand
+  let measured = doc.heightOfString(cleanBody, { width: usableWidth, lineGap, fontSize: bodySize });
+
+  // Versuche zuerst Zeilenabstand zu verringern, dann Schriftgröße
+  while (measured > availableHeight && (lineGap > 0 || bodySize > MIN_SIZE)) {
+    if (lineGap > 0) {
+      lineGap = Math.max(0, lineGap - 0.25);
+    } else {
+      bodySize = Math.max(MIN_SIZE, bodySize - 0.25);
+    }
+    measured = doc.heightOfString(cleanBody, { width: usableWidth, lineGap, fontSize: bodySize });
+  }
+
+  // Betreff mit gleicher (ggf. reduzierter) Größe setzen
   if (must(subject)) {
     doc.moveDown(0.5);
-    doc.font("Times-Bold").fontSize(FONT.body)
+    doc.font("Times-Bold").fontSize(bodySize)
        .text(subject, usableLeft, bodyStartY, { width: usableWidth });
     doc.font("Times-Roman");
   }
 
-  // Fließtext in FONT.body
-  const cleanBody = stripRecipientParagraph(bodyText || "");
-  const yAfterSubject = must(subject)
-    ? bodyStartY + doc.heightOfString(subject, { width: usableWidth }) + mm(2)
-    : bodyStartY;
-
-  doc.fontSize(FONT.body).text(cleanBody, usableLeft, yAfterSubject, {
+  // Fließtext
+  doc.fontSize(bodySize).text(cleanBody, usableLeft, yAfterSubject, {
     width: usableWidth,
     align: "left",
-    lineGap: 2,
+    lineGap,
   });
 
   doc.end();
@@ -220,7 +251,7 @@ export default allowCors(async function handler(req, res) {
     ? buildPoliteSalutation(nameForSalutation)
     : "Sehr geehrte Damen und Herren,";
 
-  // Platzhalter ersetzen
+  // Platzhalter ersetzen & Text sanft normalisieren
   let finalMessage = body.message;
   finalMessage = finalMessage.split("{Anrede}").join(politeSalutation);
   finalMessage = finalMessage.split("{Anrede_Name}").join(nameForSalutation || "");
@@ -229,6 +260,7 @@ export default allowCors(async function handler(req, res) {
   finalMessage = finalMessage.split("{Straße}").join(body.street);
   finalMessage = finalMessage.split("{PLZ}").join(body.sender_zip);
   finalMessage = finalMessage.split("{Ort}").join(body.sender_city);
+  finalMessage = normalizeLetterText(finalMessage); // ⚙️ Absätze bleiben erhalten
 
   const recipient = {
     name:    nameForSalutation || "Mitglied des Deutschen Bundestages",
@@ -309,3 +341,4 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
