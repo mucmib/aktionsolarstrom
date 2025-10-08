@@ -348,14 +348,14 @@ Mit freundlichen Grüßen
 
     // ➕ Neue Funktion: Komprimiert Text fürs PDF
     function compactForPdf(str){
-      let s = String(str||'').replace(/\r\n?/g,'\n');
-      s = s.replace(/[ \t]+\n/g,'\n');
-      s = s.replace(/\n{3,}/g,'\n\n');
-      s = s.replace(/\n\n+/g,'\n');
-      s = s.replace(/[ \t]{2,}/g,' ');
-      s = s.replace(/^\n+|\n+$/g,'');
-      return s;
-    }
+  let s = String(str||'').replace(/\r\n?/g,'\n');   // Zeilenenden normalisieren
+  s = s.replace(/[ \t]+\n/g,'\n');                  // Leerzeichen am Zeilenende weg
+  s = s.replace(/\n{3,}/g,'\n\n');                  // 3+ Leerzeilen -> GENAU 2
+  // ⚠️ Kein Reduzieren von \n\n auf \n mehr!
+  s = s.replace(/[ \t]{2,}/g,' ');                  // Mehrfachspaces im Satz reduzieren
+  s = s.replace(/^\n+|\n+$/g,'');                   // führende/abschließende Leerzeilen trimmen
+  return s;
+}
 
     const TOKENS=['{Vorname}','{Nachname}','{Straße}','{PLZ}','{Ort}'];
     function renderSenderPreview(){
@@ -485,3 +485,4 @@ Mit freundlichen Grüßen
   <!-- --- Ende Zusatz --- -->
 </body>
 </html>
+
