@@ -69,8 +69,8 @@
               <div><label for="city">Ort *</label><input id="city" name="city" required></div>
             </div>
             <label for="abgeordneter">Name der/s Abgeordneten (optional)</label>
-            <!-- Autofill verhindern -->
-            <input id="abgeordneter" name="mp_name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="(automatisch ermittelt – bei Bedarf auswählen/ergänzen)">
+            <!-- Hart gegen Autofill -->
+            <input id="abgeordneter" name="mp_name" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="(wird automatisch ermittelt – nur aus Dropdown wählen)">
             <div id="mpSelectWrap" style="display:none; margin-top:8px;">
               <label for="mp_select">Treffer in Ihrem Ort</label>
               <select id="mp_select"></select>
@@ -170,22 +170,22 @@ Mit freundlichen Grüßen
     </footer>
   </div>
 
-  <!-- MdB Lookup mit personalisierter Anrede (Dropdown + manuelle Eingabe, sicher) -->
+  <!-- MdB Lookup – NUR aus Lookup/Dropdown übernehmen (nie aus Freitext) -->
   <script>
   (function(){
     const $ = (s)=>document.querySelector(s);
     const elMSG=$('#message'), elMP=$('#abgeordneter'), elPLZ=$('#plz'), elCity=$('#city');
     const selWrap=$('#mpSelectWrap'), elSel=$('#mp_select'), elHint=$('#mp_hint');
 
-    const clean=(s)=>String(s||'').replace(/^\s*nan\s+/i,'').trim();
-    const norm=(t)=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+    const clean=s=>String(s||'').replace(/^\s*nan\s+/i,'').trim();
+    const norm=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
 
     const female=new Set(['anna','sabine','ursula','katrin','claudia','renate','petra','britta','heike','stefanie','julia','christine','lisa','marie','monika','andrea','martina','sandra','nicole','angelika','eva','kathrin','karin','bettina','svenja','ricarda']);
     const male  =new Set(['hans','peter','wolfgang','thomas','michael','stefan','andreas','markus','martin','frank','jürgen','klaus','christian','alexander','lars','tobias','sebastian','uwe','ulrich','paul','max','jan']);
 
     function splitName(full){ let s=(full||'').replace(/\b(Dr\.?|Prof\.?|MdB)\b/gi,'').replace(/\s+/g,' ').trim(); const p=s.split(' '); return {first:p[0]||'', last:p[p.length-1]||'', raw:s}; }
     function guessGender(first){ const f=(first||'').toLowerCase(); if(female.has(f))return'f'; if(male.has(f))return'm'; return null; }
-    function politeSalutation(name,fallback){
+    function salutation(name,fallback){
       const addComma=s=>/,\s*$/.test(s)?s:(s+',');
       const {first,last}=splitName(name||''); const g=guessGender(first);
       if(g==='m') return addComma('Sehr geehrter Herr '+(last||first));
@@ -193,10 +193,11 @@ Mit freundlichen Grüßen
       return addComma(fallback||'Sehr geehrte Damen und Herren');
     }
 
-    async function loadJsonTry(urls){ let last; for(const u of urls){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); last=new Error('HTTP '+r.status+' '+u);}catch(e){last=e;} } throw last; }
-    const loadPLZ2WK=()=>loadJsonTry(['assets/data/plz_to_wk.json','plz_to_wk.json']);
-    const loadWK2MDB=()=>loadJsonTry(['assets/data/wk_to_mdb.json','wk_to_mdb.json']);
-    const loadORT2WK=()=>loadJsonTry(['assets/data/ort_to_wk.json','ort_to_wk.json']);
+    // JSON mit Pfad-Fallbacks
+    async function loadTry(urls){ let err; for(const u of urls){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); err=new Error('HTTP '+r.status+' '+u);}catch(e){err=e;} } throw err; }
+    const loadPLZ2WK=()=>loadTry(['assets/data/plz_to_wk.json','plz_to_wk.json']);
+    const loadWK2MDB=()=>loadTry(['assets/data/wk_to_mdb.json','wk_to_mdb.json']);
+    const loadORT2WK=()=>loadTry(['assets/data/ort_to_wk.json','ort_to_wk.json']);
 
     async function findCandidates(plz,cityRaw){
       const [plzMap,wkMap,ortMap]=await Promise.all([loadPLZ2WK(),loadWK2MDB(),loadORT2WK()]);
@@ -213,16 +214,15 @@ Mit freundlichen Grüßen
       for(const wk of wks){
         const m=wkMap[String(wk)]; if(!m) continue;
         const name=clean(m.mdb_name); if(!name) continue;
-        const anrede=politeSalutation(name, clean(m.anrede));
+        const anrede=salutation(name, clean(m.anrede));
         const address=(m.bundestag_address||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
         if(!byName.has(name)){ byName.set(name,{name,anrede,address,party:clean(m.fraktion||m.party||''), wk:String(m.wk_nr||m.wk||'')}); }
       }
       return { candidates:[...byName.values()], wks };
     }
 
-    function ensureIntro(anrede,addr,name){
-      const addrNorm=String(addr||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
-      const addrBlock=(name?name+'\n':'') + addrNorm; // Name oberhalb der Adresse
+    function setIntro(anrede,addr,name){
+      const addrBlock=(name?name+'\n':'') + String(addr||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
       const finalSal=/,\s*$/.test(anrede||'')?anrede:( (anrede||'Sehr geehrte Damen und Herren')+',' );
       elMSG.dataset.recipientAddr=addrBlock;
       elMSG.dataset.salutation=finalSal;
@@ -244,46 +244,40 @@ Mit freundlichen Grüßen
     function chooseByName(name){
       const opt=[...elSel.options].find(o=>o.value===name);
       if(!opt) return;
-      ensureIntro(opt.dataset.anrede || 'Sehr geehrte Damen und Herren,', opt.dataset.address || 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin', name);
+      setIntro(opt.dataset.anrede || 'Sehr geehrte Damen und Herren,', opt.dataset.address || 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin', name);
       elMP.value=name;
     }
 
-    // Manuelle Eingabe zulassen (aber nicht eigener Absendername)
-    function applyManualIfValid(){
-      const name=(elMP.value||'').trim();
-      if(!name) return;
-      const senderFull=(`${($('#first_name')?.value||'').trim()} ${($('#last_name')?.value||'').trim()}`).trim();
-      const matchesDropdown=[...elSel.options].some(o=>o.value===name);
-      if(matchesDropdown) { chooseByName(name); return; }
-      if(senderFull && name.toLowerCase()===senderFull.toLowerCase()) return; // Schutz: eigener Name
-      // manuell: generische Bundestagsadresse + berechnete Anrede
-      const anrede=politeSalutation(name,'Sehr geehrte Damen und Herren');
-      ensureIntro(anrede,'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',name);
-    }
-
+    // WICHTIG: Freitext im Abgeordnetenfeld wird nie übernommen
     elSel.addEventListener('change',()=>{ if(elSel.value) chooseByName(elSel.value); });
-    elMP .addEventListener('blur', applyManualIfValid);
+    elMP .addEventListener('blur', ()=>{
+      const n=(elMP.value||'').trim();
+      const isValid=[...elSel.options].some(o=>o.value===n);
+      if(!isValid){ // zurücksetzen auf generisch
+        elMP.value='';
+        setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
+      }else{
+        chooseByName(n);
+      }
+    });
+
+    // falls Browser bereits beim Laden autofillt -> leeren
+    document.addEventListener('DOMContentLoaded', ()=>{ elMP.value=''; });
 
     let t=null; const debounce=(fn,ms)=>{ clearTimeout(t); t=setTimeout(fn,ms); };
     async function runLookup(){
       hideSelect();
-      const plz=(elPLZ.value||'').trim();
-      const city=(elCity.value||'').trim();
-      if(!/^\d{5}$/.test(plz) && city.length<2) { applyManualIfValid(); return; }
+      const plz=(elPLZ.value||'').trim(); const city=(elCity.value||'').trim();
+      if(!/^\d{5}$/.test(plz) && city.length<2){ setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); return; }
 
       try{
         const {candidates,wks}=await findCandidates(plz,city);
-        if(candidates.length>1){ ensureIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); showSelect(candidates,wks); }
-        else if(candidates.length===1){ const c=candidates[0]; ensureIntro(c.anrede,c.address,c.name); elMP.value=c.name; hideSelect(); }
-        else { // keine Treffer -> manuelle Eingabe berücksichtigen
-          ensureIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
-          applyManualIfValid();
-          hideSelect();
-        }
+        if(candidates.length>1){ setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); showSelect(candidates,wks); }
+        else if(candidates.length===1){ const c=candidates[0]; setIntro(c.anrede,c.address,c.name); elMP.value=c.name; hideSelect(); }
+        else { setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); hideSelect(); }
       }catch(e){
         console.error(e);
-        ensureIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
-        applyManualIfValid();
+        setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
         hideSelect();
       }
     }
@@ -384,6 +378,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
