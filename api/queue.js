@@ -29,6 +29,28 @@ function readBody(req) {
 const toBool = (v) => ["true", "on", "1", "yes"].includes(String(v).toLowerCase());
 const mm = (x) => (x * 72) / 25.4;
 
+/** --- NEU: Fenster-Koordinaten + Absenderzeile im Fenster --- */
+const WINDOW = {
+  left: mm(20),       // Fenster beginnt 20 mm vom linken Blattrand
+  topFromTop: mm(45), // Fenster beginnt 45 mm von oben
+  width: mm(90),      // Fensterbreite 90 mm
+  height: mm(45),     // Fensterhöhe 45 mm
+};
+function drawSenderLine(doc, senderLine) {
+  if (!senderLine) return;
+  // Wir arbeiten hier – wie im restlichen Code – mit y von oben nach unten.
+  const padX = mm(2);          // kleiner Innenabstand links/rechts
+  const padY = mm(3);          // 3 mm unter Fensteroberkante
+  const x = WINDOW.left + padX;
+  const y = WINDOW.topFromTop + padY;
+  const w = WINDOW.width - padX * 2;
+
+  doc.save();
+  doc.fontSize(8).fillColor("#555");
+  doc.text(String(senderLine), x, y, { width: w, ellipsis: true });
+  doc.restore();
+}
+
 /** Datum auf Deutsch */
 function formatDateDE(d = new Date()) {
   const m = [
@@ -94,6 +116,12 @@ async function buildLetterPDF({
     width: usableWidth, align: "right"
   });
 
+  // --- NEU: Absenderzeile im Fensterbereich (klein, grau) ---
+  const senderLine = [ sender.name, sender.street, `${sender.zip} ${sender.city}` ]
+    .filter(Boolean)
+    .join(" · ");
+  drawSenderLine(doc, senderLine);
+
   // --- Empfänger-Anschrift links, für Fensterkuvert ---
   // Address mit "Deutscher Bundestag" sicherstellen
   const addrLines = [];
@@ -105,7 +133,7 @@ async function buildLetterPDF({
   const recipientBlock = addrLines.join("\n");
 
   const addressX = usableLeft;
-  const addressY = mm(50);          // ~ 50 mm von oben
+  const addressY = mm(50);          // ~ 50 mm von oben (liegt im Fenster)
   const addressW = mm(85);          // ~ 85 mm breit (Fenster)
   doc.text(recipientBlock, addressX, addressY, { width: addressW });
 
@@ -286,6 +314,8 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
+
 
 
 
