@@ -35,7 +35,7 @@ const WINDOW = { left: mm(20), topFromTop: mm(45), width: mm(90), height: mm(45)
 /** Schriftgrößen zentral */
 const FONT = {
   header: 12,      // Absenderblock rechts oben
-  body:   12,      // Empfänger + Betreff + Fließtext (Basisgröße)
+  body:   12,      // Empfänger + Betreff + Fließtext (Basis)
   senderLine: 7.5, // kleine Zeile über dem Fenster
 };
 
@@ -82,7 +82,7 @@ function normalizeLetterText(s = "") {
 }
 
 /** --- Anrede-Helfer --- */
-const FEMALE = new Set(["anna","sabine","ursula","katrin","claudia","renate","petra","britta","heike","stefanie","julia","christine","lisa","marie","monika","andrea","martina","sandra","nicole","angelika","eva","kathrin","karin","bettina","svenja","ricarda","elisabeth","maria","linda","sarah"]);
+const FEMALE = new Set(["anna","sabine","ursula","katrin","claudia","renate","petra","britta","heike","stefanie","julia","christine","lisa","marie","monika","andrea","martina","sandra","nicole","angelika","eva","kathrin","karin","bettina","svenja","ricarda","elisabeth","maria","linda","sarah","jamila"]);
 const MALE   = new Set(["hans","peter","wolfgang","thomas","michael","stefan","andreas","markus","martin","frank","jürgen","juergen","klaus","christian","alexander","lars","tobias","sebastian","uwe","ulrich","paul","max","jan","georg","rolf","rainer","christoph","bernd"]);
 function splitName(full = "") {
   const s = String(full).replace(/\b(Dr\.?|Prof\.?|MdB)\b/gi, "").replace(/\s+/g, " ").trim();
@@ -102,6 +102,21 @@ function buildPoliteSalutation(name = "", fallback = "Sehr geehrte Damen und Her
   if (g === "m") return withComma(`Sehr geehrter Herr ${last || first}`);
   if (g === "f") return withComma(`Sehr geehrte Frau ${last || first}`);
   return withComma(fallback.replace(/,\s*$/, ""));
+}
+
+/** Anredezeilen wie „Sehr geehrte/r {Anrede_Name},“ durch korrekte Anrede ersetzen */
+function escapeRegExp(str=""){ return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+function enforcePoliteSalutation(text, polite, name) {
+  if (!text) return text;
+  let s = String(text);
+  const nameOrToken = name ? `(?:${escapeRegExp(name)}|\\{Anrede_Name\\})` : "\\{Anrede_Name\\}";
+  const variants = [
+    new RegExp(`(^|\\n)\\s*Sehr\\s+geehrte[\\/:*]r\\s+${nameOrToken}\\s*,?`, "i"), // geehrte/r, geehrte:r, geehrte*r
+    new RegExp(`(^|\\n)\\s*Sehr\\s+geehrte\\s+${nameOrToken}\\s*,?`, "i"),         // „Sehr geehrte {Name},“
+    new RegExp(`(^|\\n)\\s*Sehr\\s+geehrter\\s+${nameOrToken}\\s*,?`, "i"),        // „Sehr geehrter {Name},“
+  ];
+  for (const rx of variants) s = s.replace(rx, `$1${polite}`);
+  return s;
 }
 
 /** --- PDF-Erstellung --- */
@@ -174,27 +189,23 @@ async function buildLetterPDF({
   // Verbleibender Platz bis Unterkante
   const availableHeight = (doc.page.height - doc.page.margins.bottom) - yAfterSubject;
 
-  // Fließtext vorbereiten (Anschriften-Absatz weg)
+  // Fließtext vorbereiten
   const cleanBody = stripRecipientParagraph(bodyText || "");
 
-  // --- Dynamisches „Fit to One Page“ für den Fließtext ---
-  const MIN_SIZE = 9.5;            // Lesbarkeitsuntergrenze
-  const BASE_SIZE = FONT.body;     // 12 pt
+  // --- Dynamisches „Fit to One Page“ ---
+  const MIN_SIZE = 9.5;
+  const BASE_SIZE = FONT.body; // 12
   let bodySize = BASE_SIZE;
-  let lineGap  = 2;                // subtiler Abstand
+  let lineGap  = 2;
   let measured = doc.heightOfString(cleanBody, { width: usableWidth, lineGap, fontSize: bodySize });
 
-  // Versuche zuerst Zeilenabstand zu verringern, dann Schriftgröße
   while (measured > availableHeight && (lineGap > 0 || bodySize > MIN_SIZE)) {
-    if (lineGap > 0) {
-      lineGap = Math.max(0, lineGap - 0.25);
-    } else {
-      bodySize = Math.max(MIN_SIZE, bodySize - 0.25);
-    }
+    if (lineGap > 0) lineGap = Math.max(0, lineGap - 0.25);
+    else bodySize = Math.max(MIN_SIZE, bodySize - 0.25);
     measured = doc.heightOfString(cleanBody, { width: usableWidth, lineGap, fontSize: bodySize });
   }
 
-  // Betreff mit gleicher (ggf. reduzierter) Größe setzen
+  // Betreff
   if (must(subject)) {
     doc.moveDown(0.5);
     doc.font("Times-Bold").fontSize(bodySize)
@@ -251,7 +262,7 @@ export default allowCors(async function handler(req, res) {
     ? buildPoliteSalutation(nameForSalutation)
     : "Sehr geehrte Damen und Herren,";
 
-  // Platzhalter ersetzen & Text sanft normalisieren
+  // Platzhalter ersetzen
   let finalMessage = body.message;
   finalMessage = finalMessage.split("{Anrede}").join(politeSalutation);
   finalMessage = finalMessage.split("{Anrede_Name}").join(nameForSalutation || "");
@@ -260,7 +271,12 @@ export default allowCors(async function handler(req, res) {
   finalMessage = finalMessage.split("{Straße}").join(body.street);
   finalMessage = finalMessage.split("{PLZ}").join(body.sender_zip);
   finalMessage = finalMessage.split("{Ort}").join(body.sender_city);
-  finalMessage = normalizeLetterText(finalMessage); // ⚙️ Absätze bleiben erhalten
+
+  // ⚙️ Falls der Text eine „Sehr geehrte/r {Anrede_Name},“-Zeile enthält: korrekt überschreiben
+  finalMessage = enforcePoliteSalutation(finalMessage, politeSalutation, nameForSalutation);
+
+  // Sanft normalisieren (Absätze bleiben)
+  finalMessage = normalizeLetterText(finalMessage);
 
   const recipient = {
     name:    nameForSalutation || "Mitglied des Deutschen Bundestages",
@@ -341,4 +357,3 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
-
