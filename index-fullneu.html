@@ -69,7 +69,6 @@
               <div><label for="city">Ort *</label><input id="city" name="city" required></div>
             </div>
             <label for="abgeordneter">Name der/s Abgeordneten (optional)</label>
-            <!-- Hart gegen Autofill -->
             <input id="abgeordneter" name="mp_name" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="(wird automatisch ermittelt – nur aus Dropdown wählen)">
             <div id="mpSelectWrap" style="display:none; margin-top:8px;">
               <label for="mp_select">Treffer in Ihrem Ort</label>
@@ -85,7 +84,7 @@
               <div><label for="last_name">Nachname *</label><input id="last_name" name="last_name" required></div>
             </div>
             <label for="email">E-Mail *</label><input id="email" name="email" type="email" required>
-            <label for="street">Straße &amp; Nr. *</label><input id="street" name="street" required></div>
+            <label for="street">Straße &amp; Nr. *</label><input id="street" name="street" required>
             <div class="grid">
               <div><label for="sender_zip">PLZ *</label><input id="sender_zip" name="sender_zip" required></div>
               <div><label for="sender_city">Ort *</label><input id="sender_city" name="sender_city" required></div>
@@ -247,11 +246,11 @@ Mit freundlichen Grüßen
       elMP.value=name;
     }
 
-    // WICHTIG: Blur prüft nur, wenn Dropdown sichtbar ist (sonst würde bei Einzeltreffer fälschlich zurückgesetzt)
+    // Blur prüft nur, wenn Dropdown sichtbar ist (sonst wird ein Einzeltreffer nicht überschrieben)
     elSel.addEventListener('change',()=>{ if(elSel.value) chooseByName(elSel.value); });
     elMP .addEventListener('blur', ()=>{
       const dropdownVisible = selWrap && selWrap.style.display !== 'none' && elSel.options.length > 0;
-      if(!dropdownVisible) return; // nichts tun, wenn kein Auswahl-Dropdown sichtbar ist
+      if(!dropdownVisible) return;
       const n=(elMP.value||'').trim();
       const isValid=[...elSel.options].some(o=>o.value===n);
       if(isValid){ chooseByName(n); }
@@ -379,6 +378,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
