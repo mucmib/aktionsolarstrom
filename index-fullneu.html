@@ -25,10 +25,10 @@
     .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
     @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
     .actions { margin-top:16px; display:flex; gap:12px; align-items:center; }
-    button[type="submit"]{ padding:12px 18px; border:0; border-radius:10px; background:#0a7d32; color:#fff; font-weight:800; cursor:pointer; }
+    button[type="submit"]{ padding:12px 18px; border:0; border-radius:10px; background:#0a7d2f; color:#fff; font-weight:800; cursor:pointer; }
     .success { display:none; margin-top:10px; padding:10px 12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:8px; color:#145214; }
     .notice, .hint { font-size:.92rem; color:var(--muted); }
-    footer .legal { text-align:center; display:block; margin:24px 0 10px; }
+    footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
     footer a { color:#333; }
     .shipbox { display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; background:#f9fafb; border:1px dashed #cbd5e1; border-radius:12px; padding:12px; }
     .shipbox .opt { display:flex; align-items:center; gap:10px; }
@@ -69,7 +69,8 @@
               <div><label for="city">Ort *</label><input id="city" name="city" required></div>
             </div>
             <label for="abgeordneter">Name der/s Abgeordneten (optional)</label>
-            <input id="abgeordneter" name="mp_name">
+            <!-- Autofill verhindern -->
+            <input id="abgeordneter" name="mp_name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="(automatisch ermittelt – nur bei Bedarf auswählen)">
             <div id="mpSelectWrap" style="display:none; margin-top:8px;">
               <label for="mp_select">Treffer in Ihrem Ort</label>
               <select id="mp_select"></select>
@@ -169,18 +170,16 @@ Mit freundlichen Grüßen
     </footer>
   </div>
 
-  <!-- MdB Lookup mit personalisierter Anrede (robust + Dropdown) -->
+  <!-- MdB Lookup mit personalisierter Anrede (robust + Dropdown + Autofill-Schutz) -->
   <script>
   (function(){
     const $ = (s)=>document.querySelector(s);
     const elMSG=$('#message'), elMP=$('#abgeordneter'), elPLZ=$('#plz'), elCity=$('#city');
     const selWrap=$('#mpSelectWrap'), elSel=$('#mp_select'), elHint=$('#mp_hint');
 
-    // Hilfsfunktionen
     const clean=(s)=>String(s||'').replace(/^\s*nan\s+/i,'').trim();
     const norm=(t)=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
 
-    // rudimentäre Vornamen-Heuristik
     const female=new Set(['anna','sabine','ursula','katrin','claudia','renate','petra','britta','heike','stefanie','julia','christine','lisa','marie','monika','andrea','martina','sandra','nicole','angelika','eva','kathrin','karin','bettina','svenja','ricarda']);
     const male  =new Set(['hans','peter','wolfgang','thomas','michael','stefan','andreas','markus','martin','frank','jürgen','klaus','christian','alexander','lars','tobias','sebastian','uwe','ulrich','paul','max','jan']);
 
@@ -200,7 +199,6 @@ Mit freundlichen Grüßen
     const loadWK2MDB=()=>loadJsonTry(['assets/data/wk_to_mdb.json','wk_to_mdb.json']);
     const loadORT2WK=()=>loadJsonTry(['assets/data/ort_to_wk.json','ort_to_wk.json']);
 
-    // Kandidaten finden
     async function findCandidates(plz,cityRaw){
       const [plzMap,wkMap,ortMap]=await Promise.all([loadPLZ2WK(),loadWK2MDB(),loadORT2WK()]);
       let wks=[];
@@ -208,9 +206,7 @@ Mit freundlichen Grüßen
       const key=norm(cityRaw);
       if(!wks.length && key){
         if(ortMap[key]) wks=wks.concat([].concat(ortMap[key]));
-        if(!wks.length){
-          for(const [k,arr] of Object.entries(ortMap)){ if(k.startsWith(key)) wks=wks.concat([].concat(arr)); }
-        }
+        if(!wks.length){ for(const [k,arr] of Object.entries(ortMap)){ if(k.startsWith(key)) wks=wks.concat([].concat(arr)); } }
       }
       wks=Array.from(new Set(wks.map(String)));
 
@@ -225,7 +221,6 @@ Mit freundlichen Grüßen
       return { candidates:[...byName.values()], wks };
     }
 
-    // Sichtbar nur Kopf-Tokens ersetzen (nicht destruktiv)
     function ensureIntroVisible(anrede,addr,name){
       const addrBlock=(name?name+'\n':'') + String(addr||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin');
       const finalSal=/,\s*$/.test(anrede||'')?anrede:( (anrede||'Sehr geehrte Damen und Herren')+',' );
@@ -247,18 +242,22 @@ Mit freundlichen Grüßen
       selWrap.style.display='block';
     }
 
+    // Nur noch gültige Optionen übernehmen (Autofill-Schutz)
     function chooseByName(name){
-      if(!name) return;
       const opt=[...elSel.options].find(o=>o.value===name);
-      const anr=opt?.dataset?.anrede||'Sehr geehrte Damen und Herren,';
-      const adr=opt?.dataset?.address||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin';
+      if(!opt) return; // ungültig -> ignorieren
+      const anr=opt.dataset.anrede || 'Sehr geehrte Damen und Herren,';
+      const adr=opt.dataset.address || 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin';
       elMP.value=name; ensureIntroVisible(anr,adr,name);
     }
 
     elSel?.addEventListener('change',()=>{ if(elSel.value) chooseByName(elSel.value); });
-    elMP ?.addEventListener('blur',  ()=>{ const n=(elMP.value||'').trim(); if(n) chooseByName(n); });
+    elMP ?.addEventListener('blur',  ()=>{
+      const n=(elMP.value||'').trim();
+      const isValid=[...elSel.options].some(o=>o.value===n);
+      if(isValid) chooseByName(n); // sonst ignorieren (Autofill/Eigeneingabe)
+    });
 
-    // Lookup triggern (PLZ oder City)
     let t=null; const debounce=(fn,ms)=>{ clearTimeout(t); t=setTimeout(fn,ms); };
     async function runLookup(){
       hideSelect();
@@ -368,6 +367,7 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
 
 
 
