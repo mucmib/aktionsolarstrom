@@ -109,7 +109,7 @@
       <div class="stats-banner" role="status" aria-live="polite">
         <div class="stats-icon" aria-hidden="true">✉️</div>
         <div class="stats-text">
-          <div class="stats-label">Sicher versendete Briefe</div>
+          <div class="stats-label">In Auftrag gegebene Briefe</div>
           <div class="stats-value">
             <span id="sentCount" class="count">–</span>
           </div>
@@ -276,7 +276,7 @@
 
     // ---- Live-Zähler-Logik ----
     // API-URL bitte bei Bedarf anpassen: Erwartet { "sent_emails": <Number> }
-    const STATS_URL = '/api/stats.json';
+    const STATS_URL = '/assets/stats.json';
 
     function countUp(el, to, duration = 1200) {
       const start = performance.now();
@@ -312,6 +312,7 @@
   </script>
 </body>
 </html>
+
 
 
 
