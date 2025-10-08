@@ -15,7 +15,7 @@
     .hero a.logo { display:inline-block }
     .hero img { width:min(95vw, 540px); height:auto; display:block; filter:drop-shadow(0 6px 18px rgba(0,0,0,.25)); }
     .tagline { margin:8px 0 0; font-size:1.1rem; opacity:.95; }
-    .cta { display:inline-block; margin-top:10px; padding:10px 16px; background:#fff; color:#0a7d32; text-decoration:none; border-radius:10px; font-weight:700; }
+    .cta { display:inline-block; margin-top:10px; padding:10px 16px; background:#fff; color:#0a7d2; text-decoration:none; border-radius:10px; font-weight:700; }
     main.middle > section { margin:22px 0; }
     fieldset { border:1px solid #e6e6e6; border-radius:12px; padding:16px; margin:18px 0; }
     legend { padding:0 6px; font-weight:700; color:#0b4d25; }
@@ -28,8 +28,6 @@
     button[type="submit"]{ padding:12px 18px; border:0; border-radius:10px; background:#0a7d32; color:#fff; font-weight:800; cursor:pointer; }
     .success { display:none; margin-top:10px; padding:10px 12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:8px; color:#145214; }
     .notice, .hint { font-size:.92rem; color:var(--muted); }
-    .status { font-size:.9rem; color:#0a7d32; margin-top:6px; display:none; }
-    .status.error { color:#b91c1c; }
     footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
     footer a { color:#333; }
     .shipbox { display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; background:#f9fafb; border:1px dashed #cbd5e1; border-radius:12px; padding:12px; }
@@ -77,7 +75,6 @@
               <select id="mp_select"></select>
               <div class="hint" id="mp_hint"></div>
             </div>
-            <div id="mp_status" class="status" aria-live="polite"></div>
           </fieldset>
 
           <fieldset>
@@ -172,12 +169,12 @@ Mit freundlichen Grüßen
     </footer>
   </div>
 
-  <!-- MdB Lookup – robust mit Mehrpfad/Cachebuster + Statusanzeige -->
+  <!-- MdB Lookup – nur aus Dropdown übernehmen; Intro nachträglich aktualisierbar -->
   <script>
   (function(){
     const $ = (s)=>document.querySelector(s);
     const elMSG=$('#message'), elMP=$('#abgeordneter'), elPLZ=$('#plz'), elCity=$('#city');
-    const selWrap=$('#mpSelectWrap'), elSel=$('#mp_select'), elHint=$('#mp_hint'), status=$('#mp_status');
+    const selWrap=$('#mpSelectWrap'), elSel=$('#mp_select'), elHint=$('#mp_hint');
 
     const clean=s=>String(s||'').replace(/^\s*nan\s+/i,'').trim();
     const norm=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
@@ -195,51 +192,22 @@ Mit freundlichen Grüßen
       return addComma(fallback||'Sehr geehrte Damen und Herren');
     }
 
-    // ----- Loader mit Multi-Path + Cache-Buster
-    function urlVariants(file){
-      const v='?v=' + Date.now();
-      return [
-        'assets/data/'+file+v,
-        '/assets/data/'+file+v,
-        '../assets/data/'+file+v
-      ];
-    }
-    async function loadTry(files){
-      let lastErr;
-      for(const file of files){
-        for(const u of urlVariants(file)){
-          try{
-            const r=await fetch(u,{cache:'no-store'});
-            if(r.ok) return r.json();
-            lastErr = new Error('HTTP '+r.status+' '+u);
-          }catch(e){ lastErr=e; }
-        }
-      }
-      throw lastErr || new Error('Unbekannter Ladefehler');
-    }
-    const loadPLZ2WK=()=>loadTry(['plz_to_wk.json']);
-    const loadWK2MDB=()=>loadTry(['wk_to_mdb.json']);
-    const loadORT2WK=()=>loadTry(['ort_to_wk.json']);
-
-    function setStatus(msg, isError=false){
-      if(!status) return;
-      status.textContent = msg;
-      status.classList.toggle('error', !!isError);
-      status.style.display = 'block';
-    }
+    async function loadTry(urls){ let err; for(const u of urls){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); err=new Error('HTTP '+r.status+' '+u);}catch(e){err=e;} } throw err; }
+    const loadPLZ2WK=()=>loadTry(['assets/data/plz_to_wk.json','plz_to_wk.json']);
+    const loadWK2MDB=()=>loadTry(['assets/data/wk_to_mdb.json','wk_to_mdb.json']);
+    const loadORT2WK=()=>loadTry(['assets/data/ort_to_wk.json','ort_to_wk.json']);
 
     async function findCandidates(plz,cityRaw){
       const [plzMap,wkMap,ortMap]=await Promise.all([loadPLZ2WK(),loadWK2MDB(),loadORT2WK()]);
       let wks=[];
       if(plzMap[plz]) wks=wks.concat([].concat(plzMap[plz]));
-      const key=norm(cityRaw||'');
-      if(key){
-        for(const [k,arr] of Object.entries(ortMap)){
-          const nk = norm(k);
-          if(nk.startsWith(key) || key.startsWith(nk)){ wks=wks.concat([].concat(arr)); }
-        }
+      const key=norm(cityRaw);
+      if(!wks.length && key){
+        if(ortMap[key]) wks=wks.concat([].concat(ortMap[key]));
+        if(!wks.length){ for(const [k,arr] of Object.entries(ortMap)){ if(norm(k).startsWith(key)) wks=wks.concat([].concat(arr)); } }
       }
       wks=Array.from(new Set(wks.map(String)));
+
       const byName=new Map();
       for(const wk of wks){
         const m=wkMap[String(wk)]; if(!m) continue;
@@ -251,15 +219,30 @@ Mit freundlichen Grüßen
       return { candidates:[...byName.values()], wks };
     }
 
-    function setIntro(anrede,addr,name){
-      const addrBlock=(name?name+'\n':'') + String(addr||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
-      const finalSal=/,\s*$/.test(anrede||'')?anrede:( (anrede||'Sehr geehrte Damen und Herren')+',');
-      elMSG.dataset.recipientAddr=addrBlock;
-      elMSG.dataset.salutation=finalSal;
-      elMSG.value=(elMSG.value||'')
-        .replace('{MdB_Name_und_Adresse}',addrBlock)
-        .replace('{MdB_Adresse}',addrBlock)
-        .replace('{Anrede}',finalSal);
+    // *** NEU: Intro block ist nachträglich ersetzbar (Platzhalter ODER vorheriger Inhalt) ***
+    function setIntro(anrede, addr, name){
+      const newAddr = (name?name+'\n':'') + String(addr||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
+      const newSal  = /,\s*$/.test(anrede||'') ? anrede : ((anrede||'Sehr geehrte Damen und Herren') + ',');
+
+      const hasTokens = /\{MdB_Name_und_Adresse\}|\{MdB_Adresse\}|\{Anrede\}/.test(elMSG.value||'');
+      let txt = String(elMSG.value||'');
+
+      if (hasTokens) {
+        txt = txt
+          .replace('{MdB_Name_und_Adresse}', newAddr)
+          .replace('{MdB_Adresse}', newAddr)
+          .replace('{Anrede}', newSal);
+      } else {
+        // bereits eingefügt → ersetze den bisherigen Block durch den neuen
+        const prevAddr = elMSG.dataset.recipientAddr || '';
+        const prevSal  = elMSG.dataset.salutation || '';
+        if (prevAddr && txt.includes(prevAddr)) txt = txt.replace(prevAddr, newAddr);
+        if (prevSal  && txt.includes(prevSal))  txt = txt.replace(prevSal,  newSal);
+      }
+
+      elMSG.value = txt;
+      elMSG.dataset.recipientAddr = newAddr;
+      elMSG.dataset.salutation    = newSal;
     }
 
     function hideSelect(){ selWrap.style.display='none'; elSel.innerHTML=''; elHint.textContent=''; }
@@ -276,7 +259,6 @@ Mit freundlichen Grüßen
       if(!opt) return;
       setIntro(opt.dataset.anrede || 'Sehr geehrte Damen und Herren,', opt.dataset.address || 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin', name);
       elMP.value=name;
-      setStatus('1 Treffer: '+name);
     }
 
     elSel.addEventListener('change',()=>{ if(elSel.value) chooseByName(elSel.value); });
@@ -289,7 +271,6 @@ Mit freundlichen Grüßen
       else{
         elMP.value='';
         setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
-        setStatus('Kein gültiger Eintrag ausgewählt', true);
       }
     });
 
@@ -298,34 +279,20 @@ Mit freundlichen Grüßen
     let t=null; const debounce=(fn,ms)=>{ clearTimeout(t); t=setTimeout(fn,ms); };
     async function runLookup(){
       hideSelect();
-      status.style.display='none';
-      const plz=(elPLZ.value||'').trim(), city=(elCity.value||'').trim();
+      const plz=(elPLZ.value||'').trim(); const city=(elCity.value||'').trim();
       if(!/^\d{5}$/.test(plz) && city.length<2){
         setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); 
         return; 
       }
       try{
         const {candidates,wks}=await findCandidates(plz,city);
-        if(candidates.length>1){
-          setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
-          showSelect(candidates,wks);
-          setStatus(candidates.length+' Treffer – bitte wählen');
-        }else if(candidates.length===1){
-          const c=candidates[0];
-          setIntro(c.anrede,c.address,c.name);
-          elMP.value=c.name;
-          hideSelect();
-          setStatus('1 Treffer: '+c.name);
-        }else{
-          setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
-          hideSelect();
-          setStatus('0 Treffer für '+plz+' '+city, true);
-        }
+        if(candidates.length>1){ setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); showSelect(candidates,wks); }
+        else if(candidates.length===1){ const c=candidates[0]; setIntro(c.anrede,c.address,c.name); elMP.value=c.name; hideSelect(); }
+        else { setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); hideSelect(); }
       }catch(e){
+        console.error(e);
         setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
         hideSelect();
-        setStatus('Fehler beim Laden der MdB-Daten: '+(e&&e.message?e.message:'unbekannt'), true);
-        console.error(e);
       }
     }
     elPLZ .addEventListener('input',()=>debounce(runLookup, (/^\d{5}$/.test(elPLZ.value||''))?0:300));
@@ -425,6 +392,7 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
 
 
 
