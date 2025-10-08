@@ -1,0 +1,9 @@
+{
+  "name": "aktionsolarstrom",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@getbrevo/brevo": "^2.0.0",
+    "pdfkit": "^0.15.0"
+  }
+}
