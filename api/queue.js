@@ -34,9 +34,9 @@ const WINDOW = { left: mm(20), topFromTop: mm(45), width: mm(90), height: mm(45)
 
 /** Schriftgrößen zentral */
 const FONT = {
-  header: 12,
-  body:   12,
-  senderLine: 7.5,
+  header: 12,   // rechts oben (Absender-Block)
+  body:   11,   // << zurück auf 11 pt für Anschrift + Fließtext
+  senderLine: 7.5, // kleine Zeile im Fenster über der Empfängeradresse
 };
 
 function drawSenderLine(doc, senderLine) {
@@ -96,7 +96,7 @@ function buildPoliteSalutation(name = "", fallback = "Sehr geehrte Damen und Her
 
 /** --- PDF-Erstellung --- */
 async function buildLetterPDF({
-  queueId, sender, recipient, subject, bodyText, salutation /* <— neu übergeben */
+  queueId, sender, recipient, subject, bodyText, salutation
 }) {
   const doc = new PDFDocument({
     size: "A4",
@@ -163,8 +163,6 @@ async function buildLetterPDF({
 
   // Fließtext – mit Fallback-Anrede
   let cleanBody = stripRecipientParagraph(bodyText || "");
-
-  // <— SICHERUNG: wenn die Anrede fehlt, vorschalten
   if (!/^\s*Sehr geehrte[rsn]?/i.test(cleanBody)) {
     const sal = salutation && String(salutation).trim() ? salutation : "Sehr geehrte Damen und Herren,";
     cleanBody = `${sal}\n\n${cleanBody}`;
@@ -251,7 +249,7 @@ export default allowCors(async function handler(req, res) {
     recipient,
     subject: body.subject,
     bodyText: finalMessage,
-    salutation: politeSalutation, // <— neu: an PDF übergeben
+    salutation: politeSalutation,
   });
 
   const teamHtml = `
@@ -312,5 +310,6 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
 
 
