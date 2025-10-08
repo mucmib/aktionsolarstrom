@@ -28,8 +28,8 @@
     button[type="submit"]{ padding:12px 18px; border:0; border-radius:10px; background:#0a7d32; color:#fff; font-weight:800; cursor:pointer; }
     .success { display:none; margin-top:10px; padding:10px 12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:8px; color:#145214; }
     .notice, .hint { font-size:.92rem; color:var(--muted); }
-    footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
-    footer a { color: #333; }
+    footer .legal { text-align:center; display:block; margin:24px 0 10px; }
+    footer a { color:#333; }
     .shipbox { display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; background:#f9fafb; border:1px dashed #cbd5e1; border-radius:12px; padding:12px; }
     .shipbox .opt { display:flex; align-items:center; gap:10px; }
     .shipbox strong { font-weight:800; }
@@ -169,239 +169,112 @@ Mit freundlichen Grüßen
     </footer>
   </div>
 
-  <!-- MdB Lookup mit personalisierter Anrede -->
+  <!-- MdB Lookup mit personalisierter Anrede (robust + Dropdown) -->
   <script>
   (function(){
     const $ = (s)=>document.querySelector(s);
-    const elMSG=$('#message');
-    const elMP=$('#abgeordneter');
-    const elPLZ=$('#plz');
-    const elCity=$('#city');
-    const selWrap=$('#mpSelectWrap');
-    const elSel=$('#mp_select');
-    const elHint=$('#mp_hint');
+    const elMSG=$('#message'), elMP=$('#abgeordneter'), elPLZ=$('#plz'), elCity=$('#city');
+    const selWrap=$('#mpSelectWrap'), elSel=$('#mp_select'), elHint=$('#mp_hint');
 
-    const clean = (s)=>String(s||'').replace(/^\s*nan\s+/i,'').trim();
-    const norm  = (t)=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+    // Hilfsfunktionen
+    const clean=(s)=>String(s||'').replace(/^\s*nan\s+/i,'').trim();
+    const norm=(t)=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
 
-    const female=new Set(['anna','sabine','ursula','katrin','claudia','renate','petra','britta','heike','stefanie','julia','christine','lisa','marie','monika','andrea','martina','sandra','nicole','angelika','eva']);
-    const male=new Set(['hans','peter','wolfgang','thomas','michael','stefan','andreas','markus','martin','frank','jürgen','klaus','christian','alexander','lars','tobias','sebastian','uwe','ulrich']);
+    // rudimentäre Vornamen-Heuristik
+    const female=new Set(['anna','sabine','ursula','katrin','claudia','renate','petra','britta','heike','stefanie','julia','christine','lisa','marie','monika','andrea','martina','sandra','nicole','angelika','eva','kathrin','karin','bettina','svenja','ricarda']);
+    const male  =new Set(['hans','peter','wolfgang','thomas','michael','stefan','andreas','markus','martin','frank','jürgen','klaus','christian','alexander','lars','tobias','sebastian','uwe','ulrich','paul','max','jan']);
 
-    function splitName(full){let s=(full||'').replace(/\b(Dr\.?|Prof\.?|MdB)\b/gi,'').replace(/\s+/g,' ').trim();const p=s.split(' ');return{first:p[0]||'',last:p[p.length-1]||'',raw:s};}
-    function guessGender(first){const f=(first||'').toLowerCase();if(female.has(f))return'f';if(male.has(f))return'm';return null;}
+    function splitName(full){ let s=(full||'').replace(/\b(Dr\.?|Prof\.?|MdB)\b/gi,'').replace(/\s+/g,' ').trim(); const p=s.split(' '); return {first:p[0]||'', last:p[p.length-1]||'', raw:s}; }
+    function guessGender(first){ const f=(first||'').toLowerCase(); if(female.has(f))return'f'; if(male.has(f))return'm'; return null; }
     function buildPoliteSalutation(name,fallback){
       const addComma=s=>/,\s*$/.test(s)?s:(s+',');
-      const {first,last}=splitName(name||'');
-      const g=guessGender(first);
-      if(g==='m')return addComma('Sehr geehrter Herr '+(last||first));
-      if(g==='f')return addComma('Sehr geehrte Frau '+(last||first));
+      const {first,last}=splitName(name||''); const g=guessGender(first);
+      if(g==='m') return addComma('Sehr geehrter Herr '+(last||first));
+      if(g==='f') return addComma('Sehr geehrte Frau '+(last||first));
       return addComma(fallback||'Sehr geehrte Damen und Herren');
     }
 
-    async function loadJson(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error(url);return r.json();}
+    // JSON laden mit Fallback-Pfaden
+    async function loadJsonTry(urls){ let last; for(const u of urls){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); last=new Error('HTTP '+r.status+' '+u);}catch(e){last=e;} } throw last; }
+    const loadPLZ2WK=()=>loadJsonTry(['assets/data/plz_to_wk.json','plz_to_wk.json']);
+    const loadWK2MDB=()=>loadJsonTry(['assets/data/wk_to_mdb.json','wk_to_mdb.json']);
+    const loadORT2WK=()=>loadJsonTry(['assets/data/ort_to_wk.json','ort_to_wk.json']);
 
+    // Kandidaten finden
     async function findCandidates(plz,cityRaw){
-      const [plzMap,wkMap,ortMap]=await Promise.all([
-        loadJson('assets/data/plz_to_wk.json'),
-        loadJson('assets/data/wk_to_mdb.json'),
-        loadJson('assets/data/ort_to_wk.json'),
-      ]);
-      let wks=plzMap[plz]||[];
-      const cityKey=norm(cityRaw);
-      if((!wks||!wks.length)&&cityKey){
-        const hits=Object.entries(ortMap).filter(([k])=>k.startsWith(cityKey)).map(([,a])=>a);
-        wks=[...new Set(hits.flat())];
+      const [plzMap,wkMap,ortMap]=await Promise.all([loadPLZ2WK(),loadWK2MDB(),loadORT2WK()]);
+      let wks=[];
+      if(plzMap[plz]) wks=wks.concat([].concat(plzMap[plz]));
+      const key=norm(cityRaw);
+      if(!wks.length && key){
+        if(ortMap[key]) wks=wks.concat([].concat(ortMap[key]));
+        if(!wks.length){
+          for(const [k,arr] of Object.entries(ortMap)){ if(k.startsWith(key)) wks=wks.concat([].concat(arr)); }
+        }
       }
+      wks=Array.from(new Set(wks.map(String)));
+
       const byName=new Map();
-      for(const wk of(wks||[])){
-        const m=wkMap[String(wk)];
-        if(!m)continue;
-        const name=clean(m.mdb_name);
-        if(!name)continue;
-        const anrede=buildPoliteSalutation(name,clean(m.anrede));
-        const address=(m.bundestag_address||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').trim();
-        byName.set(name,{name,anrede,address,party:clean(m.fraktion||'')});
+      for(const wk of wks){
+        const m=wkMap[String(wk)]; if(!m) continue;
+        const name=clean(m.mdb_name); if(!name) continue;
+        const anrede=buildPoliteSalutation(name, clean(m.anrede));
+        const address=(m.bundestag_address||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
+        if(!byName.has(name)){ byName.set(name,{name,anrede,address,party:clean(m.fraktion||m.party||''), wk:String(m.wk_nr||m.wk||'')}); }
       }
-      return{candidates:[...byName.values()]};
+      return { candidates:[...byName.values()], wks };
     }
 
+    // Sichtbar nur Kopf-Tokens ersetzen (nicht destruktiv)
     function ensureIntroVisible(anrede,addr,name){
-      const addrBlock=(name?name+'\n':'')+String(addr||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin');
-      const finalSalutation=/,\s*$/.test(anrede||'')?anrede:(anrede+',');
+      const addrBlock=(name?name+'\n':'') + String(addr||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin');
+      const finalSal=/,\s*$/.test(anrede||'')?anrede:( (anrede||'Sehr geehrte Damen und Herren')+',' );
       elMSG.dataset.recipientAddr=addrBlock;
-      elMSG.dataset.salutation=finalSalutation;
+      elMSG.dataset.salutation=finalSal;
       elMSG.value=(elMSG.value||'')
         .replace('{MdB_Name_und_Adresse}',addrBlock)
         .replace('{MdB_Adresse}',addrBlock)
-        .replace('{Anrede}',finalSalutation);
+        .replace('{Anrede}',finalSal);
     }
 
-    function hideSelect(){selWrap.style.display='none';elSel.innerHTML='';elHint.textContent='';}
-    function showSelect(cands){
-      elSel.innerHTML='';const o0=document.createElement('option');
-      o0.value='';o0.textContent='Bitte Abgeordnete:n auswählen …';elSel.appendChild(o0);
-      cands.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name+(c.party?' – '+c.party:'');o.dataset.anrede=c.anrede;o.dataset.address=c.address;elSel.appendChild(o);});
-      selWrap.style.display='block';
-    }
-
-    function chooseByName(name){
-      if(!name)return;const opt=[...elSel.options].find(o=>o.value===name);
-      const anr=opt?.dataset?.anrede||'Sehr geehrte Damen und Herren,';
-      const adr=opt?.dataset?.address||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin';
-      elMP.value=name;ensureIntroVisible(anr,adr,name);
-    }
-
-    elSel.addEventListener('change',()=>{if(elSel.value)chooseByName(elSel.value);});
-    elMP.addEventListener('blur',()=>{const n=(elMP.value||'').trim();if(n)chooseByName(n);});
-
-    async function runLookup(){
-      hideSelect();
-      const plz=(elPLZ.value||'').trim(),city=(elCity.value||'').trim();
-      if(!/^\d{5}$/.test(plz))return;
-      try{
-        const{candidates}=await findCandidates(plz,city);
-        if(candidates.length>1){ensureIntroVisible('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');showSelect(candidates);}
-        else if(candidates.length===1){const c=candidates[0];elMP.value=c.name;ensureIntroVisible(c.anrede,c.address,c.name);hideSelect();}
-        else{elMP.value='';ensureIntroVisible('Sehr geehrte Damen und Herren,','Deutscher Bundestag
-  <!-- MdB Lookup mit personalisierter Anrede -->
-  <script>
-  (function(){
-    const $ = (s)=>document.querySelector(s);
-    const elMSG=$('#message');
-    const elMP=$('#abgeordneter');
-    const elPLZ=$('#plz');
-    const elCity=$('#city');
-    const selWrap=$('#mpSelectWrap');
-    const elSel=$('#mp_select');
-    const elHint=$('#mp_hint');
-
-    const clean = (s)=>String(s||'').replace(/^\s*nan\s+/i,'').trim();
-    const norm  = (t)=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
-
-    const female=new Set(['anna','sabine','ursula','katrin','claudia','renate','petra','britta','heike','stefanie','julia','christine','lisa','marie','monika','andrea','martina','sandra','nicole','angelika','eva']);
-    const male=new Set(['hans','peter','wolfgang','thomas','michael','stefan','andreas','markus','martin','frank','jürgen','klaus','christian','alexander','lars','tobias','sebastian','uwe','ulrich']);
-
-    function splitName(full){
-      let s=(full||'').replace(/\b(Dr\.?|Prof\.?|MdB)\b/gi,'').replace(/\s+/g,' ').trim();
-      const p=s.split(' ');
-      return{first:p[0]||'',last:p[p.length-1]||'',raw:s};
-    }
-    function guessGender(first){
-      const f=(first||'').toLowerCase();
-      if(female.has(f))return'f';
-      if(male.has(f))return'm';
-      return null;
-    }
-    function buildPoliteSalutation(name,fallback){
-      const addComma=s=>/,\s*$/.test(s)?s:(s+',');
-      const {first,last}=splitName(name||'');
-      const g=guessGender(first);
-      if(g==='m')return addComma('Sehr geehrter Herr '+(last||first));
-      if(g==='f')return addComma('Sehr geehrte Frau '+(last||first));
-      return addComma(fallback||'Sehr geehrte Damen und Herren');
-    }
-
-    async function loadJson(url){
-      const r=await fetch(url,{cache:'no-store'});
-      if(!r.ok)throw new Error(url);
-      return r.json();
-    }
-
-    async function findCandidates(plz,cityRaw){
-      const [plzMap,wkMap,ortMap]=await Promise.all([
-        loadJson('assets/data/plz_to_wk.json'),
-        loadJson('assets/data/wk_to_mdb.json'),
-        loadJson('assets/data/ort_to_wk.json'),
-      ]);
-      let wks=plzMap[plz]||[];
-      const cityKey=norm(cityRaw);
-      if((!wks||!wks.length)&&cityKey){
-        const hits=Object.entries(ortMap).filter(([k])=>k.startsWith(cityKey)).map(([,a])=>a);
-        wks=[...new Set(hits.flat())];
-      }
-      const byName=new Map();
-      for(const wk of(wks||[])){
-        const m=wkMap[String(wk)];
-        if(!m)continue;
-        const name=clean(m.mdb_name);
-        if(!name)continue;
-        const anrede=buildPoliteSalutation(name,clean(m.anrede));
-        const address=(m.bundestag_address||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').trim();
-        byName.set(name,{name,anrede,address,party:clean(m.fraktion||'')});
-      }
-      return{candidates:[...byName.values()]};
-    }
-
-    function ensureIntroVisible(anrede,addr,name){
-      const addrBlock=(name?name+'\n':'')+String(addr||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin');
-      const finalSalutation=/,\s*$/.test(anrede||'')?anrede:(anrede+',');
-      elMSG.dataset.recipientAddr=addrBlock;
-      elMSG.dataset.salutation=finalSalutation;
-      elMSG.value=(elMSG.value||'')
-        .replace('{MdB_Name_und_Adresse}',addrBlock)
-        .replace('{MdB_Adresse}',addrBlock)
-        .replace('{Anrede}',finalSalutation);
-    }
-
-    function hideSelect(){selWrap.style.display='none';elSel.innerHTML='';elHint.textContent='';}
-    function showSelect(cands){
+    function hideSelect(){ if(!selWrap) return; selWrap.style.display='none'; elSel.innerHTML=''; if(elHint) elHint.textContent=''; }
+    function showSelect(cands,wks){
+      if(!selWrap) return;
       elSel.innerHTML='';
-      const o0=document.createElement('option');
-      o0.value='';o0.textContent='Bitte Abgeordnete:n auswählen …';
-      elSel.appendChild(o0);
-      cands.forEach(c=>{
-        const o=document.createElement('option');
-        o.value=c.name;
-        o.textContent=c.name+(c.party?' – '+c.party:'');
-        o.dataset.anrede=c.anrede;
-        o.dataset.address=c.address;
-        elSel.appendChild(o);
-      });
+      const o0=document.createElement('option'); o0.value=''; o0.textContent='Bitte Abgeordnete:n auswählen …'; elSel.appendChild(o0);
+      cands.forEach(c=>{ const o=document.createElement('option'); o.value=c.name; o.textContent=c.name+(c.party?' – '+c.party:''); o.dataset.anrede=c.anrede; o.dataset.address=c.address; elSel.appendChild(o); });
+      if(elHint) elHint.textContent=(wks&&wks.length>1)?('Mehrere Wahlkreise erkannt: '+wks.join(', ')):'Treffer im Ort';
       selWrap.style.display='block';
     }
 
     function chooseByName(name){
-      if(!name)return;
+      if(!name) return;
       const opt=[...elSel.options].find(o=>o.value===name);
       const anr=opt?.dataset?.anrede||'Sehr geehrte Damen und Herren,';
       const adr=opt?.dataset?.address||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin';
-      elMP.value=name;
-      ensureIntroVisible(anr,adr,name);
+      elMP.value=name; ensureIntroVisible(anr,adr,name);
     }
 
-    elSel.addEventListener('change',()=>{if(elSel.value)chooseByName(elSel.value);});
-    elMP.addEventListener('blur',()=>{const n=(elMP.value||'').trim();if(n)chooseByName(n);});
+    elSel?.addEventListener('change',()=>{ if(elSel.value) chooseByName(elSel.value); });
+    elMP ?.addEventListener('blur',  ()=>{ const n=(elMP.value||'').trim(); if(n) chooseByName(n); });
 
+    // Lookup triggern (PLZ oder City)
+    let t=null; const debounce=(fn,ms)=>{ clearTimeout(t); t=setTimeout(fn,ms); };
     async function runLookup(){
       hideSelect();
-      const plz=(elPLZ.value||'').trim(),city=(elCity.value||'').trim();
-      if(!/^\d{5}$/.test(plz))return;
+      const plz=(elPLZ.value||'').trim(); const city=(elCity.value||'').trim();
+      if(!/^\d{5}$/.test(plz) && city.length<2) return;
       try{
-        const{candidates}=await findCandidates(plz,city);
-        if(candidates.length>1){
-          ensureIntroVisible('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
-          showSelect(candidates);
-        }else if(candidates.length===1){
-          const c=candidates[0];
-          elMP.value=c.name;
-          ensureIntroVisible(c.anrede,c.address,c.name);
-          hideSelect();
-        }else{
-          elMP.value='';
-          ensureIntroVisible('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
-          hideSelect();
-        }
-      }catch{
-        elMP.value='';
-        ensureIntroVisible('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
-        hideSelect();
-      }
+        const {candidates,wks}=await findCandidates(plz,city);
+        if(candidates.length>1){ ensureIntroVisible('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); showSelect(candidates,wks); }
+        else if(candidates.length===1){ const c=candidates[0]; elMP.value=c.name; ensureIntroVisible(c.anrede,c.address,c.name); hideSelect(); }
+        else { elMP.value=''; ensureIntroVisible('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); hideSelect(); }
+      }catch(e){ console.error(e); elMP.value=''; ensureIntroVisible('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); hideSelect(); }
     }
-
-    elPLZ.addEventListener('input',()=>setTimeout(runLookup,300));
-    elCity.addEventListener('input',()=>setTimeout(runLookup,300));
-    ['change','blur'].forEach(ev=>{elPLZ.addEventListener(ev,runLookup);elCity.addEventListener(ev,runLookup);});
-    document.addEventListener('DOMContentLoaded',runLookup);
+    elPLZ ?.addEventListener('input',()=>debounce(runLookup, (/^\d{5}$/.test(elPLZ.value||''))?0:300));
+    elCity?.addEventListener('input',()=>debounce(runLookup,300));
+    ['change','blur'].forEach(ev=>{ elPLZ?.addEventListener(ev,runLookup); elCity?.addEventListener(ev,runLookup); });
+    document.addEventListener('DOMContentLoaded', runLookup);
   })();
   </script>
 
@@ -419,76 +292,84 @@ Mit freundlichen Grüßen
 
     function vals(){
       const m={};
-      for(const[t,sel] of Object.entries(F)){
+      for(const [t,sel] of Object.entries(F)){
         let v=($(sel)?.value||'').trim();
-        if(t==='{Straße}')v=cleanStreet(v);
-        if(t==='{PLZ}'&&!v)v=topPLZ();
-        if(t==='{Ort}'&&!v)v=topCity();
+        if(t==='{Straße}') v=cleanStreet(v);
+        if(t==='{PLZ}' && !v) v=topPLZ();
+        if(t==='{Ort}' && !v) v=topCity();
         m[t]=v;
       }
       return m;
     }
     function apply(base,map){
       let out=String(base||'');
-      for(const[t,v]of Object.entries(map)){
-        out=out.replace(new RegExp(esc(t),'g'),v);
-      }
+      for(const [t,v] of Object.entries(map)){ out=out.replace(new RegExp(esc(t),'g'),v); }
       return out.replace(/\n{3,}/g,'\n\n').trimEnd();
     }
 
+    // Live-Vorschau NUR für Absenderblock
     const TOKENS=['{Vorname}','{Nachname}','{Straße}','{PLZ}','{Ort}'];
     function renderSenderPreview(){
-      if(!msg)return;
-      const map=vals();
-      let txt=String(msg.value||'');
-      for(const t of TOKENS){
-        const v=map[t]&&map[t].length?map[t]:t;
-        txt=txt.replace(new RegExp(esc(t),'g'),v);
-      }
+      if(!msg) return;
+      const map=vals(); let txt=String(msg.value||'');
+      for(const t of TOKENS){ const v=map[t]&&map[t].length?map[t]:t; txt=txt.replace(new RegExp(esc(t),'g'),v); }
       msg.value=txt;
     }
-    ['#first_name','#last_name','#street','#sender_zip','#sender_city','#plz','#city']
-      .forEach(sel=>$(sel)?.addEventListener('blur',renderSenderPreview));
+    ['#first_name','#last_name','#street','#sender_zip','#sender_city','#plz','#city'].forEach(sel=>$(sel)?.addEventListener('blur',renderSenderPreview));
     document.addEventListener('DOMContentLoaded',renderSenderPreview);
 
-    form?.addEventListener('submit',async e=>{
+    // Finaler Submit
+    form?.addEventListener('submit', async (e)=>{
       e.preventDefault();
-      const sal=msg?.dataset?.salutation||'Sehr geehrte Damen und Herren,';
-      const raddr=msg?.dataset?.recipientAddr||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin';
-      let userText=msg?.value||'';
-      userText=userText
-        .replace('{Anrede}',sal)
-        .replace('{MdB_Name_und_Adresse}',raddr)
-        .replace('{MdB_Adresse}',raddr);
-      const finalMsg=apply(userText,vals());
-      if(/\{Vorname\}|\{Nachname\}|\{Straße\}|\{PLZ\}|\{Ort\}/.test(finalMsg)){
+      const sal  = msg?.dataset?.salutation    || 'Sehr geehrte Damen und Herren,';
+      const raddr= msg?.dataset?.recipientAddr || 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin';
+
+      let userText = msg?.value || '';
+      userText = userText
+        .replace('{Anrede}', sal)
+        .replace('{MdB_Name_und_Adresse}', raddr)
+        .replace('{MdB_Adresse}', raddr);
+
+      const finalMsg = apply(userText, vals());
+
+      if (/\{Vorname\}|\{Nachname\}|\{Straße\}|\{PLZ\}|\{Ort\}/.test(finalMsg)) {
         alert('Bitte füllen Sie Absenderfelder vollständig aus.');
         return;
       }
+
       const btn=form.querySelector('button[type="submit"]');
       btn?.setAttribute('disabled','');
+
       const fd=new FormData(form);
       const payload={};
       fd.forEach((v,k)=>payload[k]=v);
-      payload.copy_to_self=fd.has('copy_to_self');
-      payload.consent_print=fd.has('consent_print');
-      payload.message=finalMsg;
+      payload.copy_to_self  = fd.has('copy_to_self');
+      payload.consent_print = fd.has('consent_print');
+      payload.message       = finalMsg;
+
       try{
         const res=await fetch(form.action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
         const text=await res.text();
-        let data;try{data=JSON.parse(text);}catch{throw new Error(text.slice(0,200)||'Serverantwort kein JSON');}
+        let data; try{ data=JSON.parse(text); } catch{ throw new Error(text.slice(0,200)||'Serverantwort kein JSON'); }
         if(data.ok){
           const box=document.getElementById('successMessage');
-          if(box){box.textContent='Danke! Ihr Brief wurde erfolgreich eingereicht. Vorgangs-ID: '+(data.queueId||'');box.style.display='block';}
-          form.reset();renderSenderPreview();
-        }else{alert('Fehler: '+(data.error||'Unbekannt'));}
-      }catch(err){alert('Verbindungsfehler: '+err.message);}
-      finally{btn?.removeAttribute('disabled');}
+          if(box){ box.textContent='Danke! Ihr Brief wurde erfolgreich eingereicht. Vorgangs-ID: '+(data.queueId||''); box.style.display='block'; }
+          form.reset(); renderSenderPreview();
+        }else{
+          alert('Fehler: '+(data.error||'Unbekannt'));
+        }
+      }catch(err){
+        alert('Verbindungsfehler: '+err.message);
+      }finally{
+        btn?.removeAttribute('disabled');
+      }
     });
   })();
   </script>
 </body>
 </html>
+
+
 
 
 
