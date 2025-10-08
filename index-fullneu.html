@@ -199,22 +199,35 @@ Mit freundlichen Grüßen
 
     async function findCandidates(plz,cityRaw){
       const [plzMap,wkMap,ortMap]=await Promise.all([loadPLZ2WK(),loadWK2MDB(),loadORT2WK()]);
-      let wks=[];
-      if(plzMap[plz]) wks=wks.concat([].concat(plzMap[plz]));
-      const key=norm(cityRaw);
-      if(!wks.length && key){
-        if(ortMap[key]) wks=wks.concat([].concat(ortMap[key]));
-        if(!wks.length){ for(const [k,arr] of Object.entries(ortMap)){ if(k.startsWith(key)) wks=wks.concat([].concat(arr)); } }
+
+      // 1) Wahlkreise aus PLZ
+      let wks = [];
+      if (plzMap[plz]) wks = wks.concat([].concat(plzMap[plz]));
+
+      // 2) Fallback über Ort – mit beidseitiger Normalisierung (München/muenchen/munchen)
+      const key = norm(cityRaw||'');
+      if (key) {
+        for (const [k, arr] of Object.entries(ortMap)) {
+          if (norm(k).startsWith(key) || key.startsWith(norm(k))) {
+            wks = wks.concat([].concat(arr));
+          }
+        }
       }
-      wks=Array.from(new Set(wks.map(String)));
+
+      // eindeutige WKs
+      wks = Array.from(new Set(wks.map(String)));
 
       const byName=new Map();
       for(const wk of wks){
-        const m=wkMap[String(wk)]; if(!m) continue;
-        const name=clean(m.mdb_name); if(!name) continue;
+        const m=wkMap[String(wk)];
+        if(!m) continue;
+        const name=clean(m.mdb_name);
+        if(!name) continue;
         const anrede=salutation(name, clean(m.anrede));
         const address=(m.bundestag_address||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
-        if(!byName.has(name)){ byName.set(name,{name,anrede,address,party:clean(m.fraktion||m.party||''), wk:String(m.wk_nr||m.wk||'')}); }
+        if(!byName.has(name)){
+          byName.set(name,{name,anrede,address,party:clean(m.fraktion||m.party||''), wk:String(m.wk_nr||m.wk||'')});
+        }
       }
       return { candidates:[...byName.values()], wks };
     }
@@ -246,7 +259,7 @@ Mit freundlichen Grüßen
       elMP.value=name;
     }
 
-    // Blur prüft nur, wenn Dropdown sichtbar ist (sonst wird ein Einzeltreffer nicht überschrieben)
+    // Blur prüft nur, wenn Dropdown sichtbar ist
     elSel.addEventListener('change',()=>{ if(elSel.value) chooseByName(elSel.value); });
     elMP .addEventListener('blur', ()=>{
       const dropdownVisible = selWrap && selWrap.style.display !== 'none' && elSel.options.length > 0;
@@ -267,8 +280,8 @@ Mit freundlichen Grüßen
       hideSelect();
       const plz=(elPLZ.value||'').trim(); const city=(elCity.value||'').trim();
       if(!/^\d{5}$/.test(plz) && city.length<2){
-        setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); 
-        return; 
+        setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
+        return;
       }
       try{
         const {candidates,wks}=await findCandidates(plz,city);
@@ -342,7 +355,7 @@ Mit freundlichen Grüßen
 
       const finalMsg = apply(userText, vals());
 
-      if (/\{Vorname\}|\{Nachname\}|\{Straße\}|\{PLZ\}|\{Ort\}/.test(finalMsg)) {
+      if (/\{Vorname\}|\{Nachname\}|\{Straße\}|\{PLZ}|\{Ort\}/.test(finalMsg)) {
         alert('Bitte füllen Sie Absenderfelder vollständig aus.');
         return;
       }
@@ -378,6 +391,7 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
 
 
 
