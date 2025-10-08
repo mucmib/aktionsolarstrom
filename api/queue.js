@@ -40,13 +40,13 @@ function drawSenderLine(doc, senderLine) {
   if (!senderLine) return;
   // Wir arbeiten hier – wie im restlichen Code – mit y von oben nach unten.
   const padX = mm(2);          // kleiner Innenabstand links/rechts
-  const padY = mm(3);          // 3 mm unter Fensteroberkante
+  const padY = mm(1.5);          // 1.5mm mm unter Fensteroberkante
   const x = WINDOW.left + padX;
   const y = WINDOW.topFromTop + padY;
   const w = WINDOW.width - padX * 2;
 
   doc.save();
-  doc.fontSize(8).fillColor("#555");
+  doc.fontSize(7.5).fillColor("#555");
   doc.text(String(senderLine), x, y, { width: w, ellipsis: true });
   doc.restore();
 }
@@ -133,7 +133,7 @@ async function buildLetterPDF({
   const recipientBlock = addrLines.join("\n");
 
   const addressX = usableLeft;
-  const addressY = mm(50);          // ~ 50 mm von oben (liegt im Fenster)
+  const addressY = mm(52);          // ~ 52 mm von oben (liegt im Fenster)
   const addressW = mm(85);          // ~ 85 mm breit (Fenster)
   doc.text(recipientBlock, addressX, addressY, { width: addressW });
 
@@ -314,6 +314,7 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
 
 
 
