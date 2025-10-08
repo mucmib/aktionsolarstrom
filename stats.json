@@ -1,9 +1,5 @@
 {
-  "name": "aktionsolarstrom",
-  "private": true,
-  "type": "module",
-  "dependencies": {
-    "@getbrevo/brevo": "^2.0.0",
-    "pdfkit": "^0.15.0"
-  }
+  "sent_emails": 1840,
+  "last_update": "2025-10-08T13:00:00+02:00",
+  "source": "Solarstrom statt Erdgas-Strom – Briefaktion"
 }
