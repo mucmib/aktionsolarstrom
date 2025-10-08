@@ -15,7 +15,7 @@
     .hero a.logo { display:inline-block }
     .hero img { width:min(95vw, 540px); height:auto; display:block; filter:drop-shadow(0 6px 18px rgba(0,0,0,.25)); }
     .tagline { margin:8px 0 0; font-size:1.1rem; opacity:.95; }
-    .cta { display:inline-block; margin-top:10px; padding:10px 16px; background:#fff; color:#0a7d2; text-decoration:none; border-radius:10px; font-weight:700; }
+    .cta { display:inline-block; margin-top:10px; padding:10px 16px; background:#fff; color:#0a7d32; text-decoration:none; border-radius:10px; font-weight:700; }
     main.middle > section { margin:22px 0; }
     fieldset { border:1px solid #e6e6e6; border-radius:12px; padding:16px; margin:18px 0; }
     legend { padding:0 6px; font-weight:700; color:#0b4d25; }
@@ -213,29 +213,37 @@ Mit freundlichen Grüßen
         const m=wkMap[String(wk)]; if(!m) continue;
         const name=clean(m.mdb_name); if(!name) continue;
         const anrede=salutation(name, clean(m.anrede));
-        const address=(m.bundestag_address||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
+        const address=(m.bundestag_address||'Platz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
         if(!byName.has(name)){ byName.set(name,{name,anrede,address,party:clean(m.fraktion||m.party||''), wk:String(m.wk_nr||m.wk||'')}); }
       }
       return { candidates:[...byName.values()], wks };
     }
 
-    // *** NEU: Intro block ist nachträglich ersetzbar (Platzhalter ODER vorheriger Inhalt) ***
+    // ---- Adresse normalisieren: "Deutscher Bundestag" sicher einfügen ----
+    function normalizeBtAddr(addr){
+      const lines=String(addr||'').split('\n').map(s=>s.trim()).filter(Boolean);
+      const hasHeader=lines.some(l=>/^deutscher\s+bundestag$/i.test(l));
+      const body = hasHeader ? lines : ['Deutscher Bundestag', ...lines];
+      const out=[]; for(const l of body){ if(out[out.length-1]!==l) out.push(l); }
+      return out.join('\n');
+    }
+
+    // Intro-Block setzen/aktualisieren (Platzhalter ODER vorherigen Inhalt ersetzen)
     function setIntro(anrede, addr, name){
-      const newAddr = (name?name+'\n':'') + String(addr||'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
-      const newSal  = /,\s*$/.test(anrede||'') ? anrede : ((anrede||'Sehr geehrte Damen und Herren') + ',');
+      const addrNorm = normalizeBtAddr(addr || 'Platz der Republik 1\n11011 Berlin');
+      const newAddr  = (name?name+'\n':'') + addrNorm;
+      const newSal   = /,\s*$/.test(anrede||'') ? anrede : ((anrede||'Sehr geehrte Damen und Herren')+',');
 
       const hasTokens = /\{MdB_Name_und_Adresse\}|\{MdB_Adresse\}|\{Anrede\}/.test(elMSG.value||'');
       let txt = String(elMSG.value||'');
 
       if (hasTokens) {
-        txt = txt
-          .replace('{MdB_Name_und_Adresse}', newAddr)
-          .replace('{MdB_Adresse}', newAddr)
-          .replace('{Anrede}', newSal);
+        txt = txt.replace('{MdB_Name_und_Adresse}', newAddr)
+                 .replace('{MdB_Adresse}',         newAddr)
+                 .replace('{Anrede}',              newSal);
       } else {
-        // bereits eingefügt → ersetze den bisherigen Block durch den neuen
         const prevAddr = elMSG.dataset.recipientAddr || '';
-        const prevSal  = elMSG.dataset.salutation || '';
+        const prevSal  = elMSG.dataset.salutation    || '';
         if (prevAddr && txt.includes(prevAddr)) txt = txt.replace(prevAddr, newAddr);
         if (prevSal  && txt.includes(prevSal))  txt = txt.replace(prevSal,  newSal);
       }
@@ -257,7 +265,7 @@ Mit freundlichen Grüßen
     function chooseByName(name){
       const opt=[...elSel.options].find(o=>o.value===name);
       if(!opt) return;
-      setIntro(opt.dataset.anrede || 'Sehr geehrte Damen und Herren,', opt.dataset.address || 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin', name);
+      setIntro(opt.dataset.anrede || 'Sehr geehrte Damen und Herren,', opt.dataset.address || 'Platz der Republik 1\n11011 Berlin', name);
       elMP.value=name;
     }
 
@@ -270,7 +278,7 @@ Mit freundlichen Grüßen
       if(isValid){ chooseByName(n); }
       else{
         elMP.value='';
-        setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
+        setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin','');
       }
     });
 
@@ -281,17 +289,17 @@ Mit freundlichen Grüßen
       hideSelect();
       const plz=(elPLZ.value||'').trim(); const city=(elCity.value||'').trim();
       if(!/^\d{5}$/.test(plz) && city.length<2){
-        setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); 
+        setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin',''); 
         return; 
       }
       try{
         const {candidates,wks}=await findCandidates(plz,city);
-        if(candidates.length>1){ setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); showSelect(candidates,wks); }
+        if(candidates.length>1){ setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin',''); showSelect(candidates,wks); }
         else if(candidates.length===1){ const c=candidates[0]; setIntro(c.anrede,c.address,c.name); elMP.value=c.name; hideSelect(); }
-        else { setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin',''); hideSelect(); }
+        else { setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin',''); hideSelect(); }
       }catch(e){
         console.error(e);
-        setIntro('Sehr geehrte Damen und Herren,','Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin','');
+        setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin','');
         hideSelect();
       }
     }
@@ -392,6 +400,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
