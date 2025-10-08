@@ -1,6 +1,7 @@
 // /api/queue.js – Vercel Serverless Function
 import Brevo from "@getbrevo/brevo";
 import PDFDocument from "pdfkit";
+import { kv } from "@vercel/kv"; // ← NEU
 
 /** --- CORS --- */
 const allowCors = (fn) => async (req, res) => {
@@ -182,6 +183,18 @@ async function buildLetterPDF({
   return pdfDone;
 }
 
+/** --- Statistik: Zähler erhöhen (NEU) --- */
+async function incrementCounter() {
+  try {
+    const n = await kv.incr("sent_emails"); // +1
+    await kv.set("sent_emails_last_update", new Date().toISOString());
+    return n;
+  } catch (e) {
+    console.error("KV increment failed:", e);
+    return null; // Versand nicht blockieren
+  }
+}
+
 /** --- Handler --- */
 export default allowCors(async function handler(req, res) {
   if (req.method !== "POST") {
@@ -281,6 +294,7 @@ export default allowCors(async function handler(req, res) {
     const api = new Brevo.TransactionalEmailsApi();
     api.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
+    // 1) TEAM-Mail (entscheidend für "sicher versendet")
     await api.sendTransacEmail({
       to:     [{ email: process.env.TEAM_INBOX }],
       sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Formular" },
@@ -290,6 +304,10 @@ export default allowCors(async function handler(req, res) {
       attachment: [{ name: pdfName, content: pdfBase64 }]
     });
 
+    // === GENAU HIER ZÄHLEN (nur einmal pro Vorgang) ===
+    await incrementCounter();
+
+    // 2) Optionale Kopie an Absender:in (ohne weitere Zählung)
     if (body.copy_to_self) {
       await api.sendTransacEmail({
         to:     [{ email: body.email }],
