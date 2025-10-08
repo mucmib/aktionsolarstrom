@@ -33,6 +33,15 @@
     .shipbox { display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; background:#f9fafb; border:1px dashed #cbd5e1; border-radius:12px; padding:12px; }
     .shipbox .opt { display:flex; align-items:center; gap:10px; }
     .shipbox strong { font-weight:800; }
+
+    /* --- Fit-to-one-page: nur fürs Drucken der Vorschau --- */
+    @media print {
+      @page { size: A4; margin: 18mm 18mm 18mm 22mm; }
+      .print-letter { transform-origin: top left; }
+      .print-letter, .print-letter * { break-inside: avoid; page-break-inside: avoid; }
+      .print-letter { white-space: pre-wrap; font:16px/1.5 system-ui, Arial, sans-serif; color:#000; }
+    }
+    /* --- Ende Zusatz --- */
   </style>
 </head>
 <body>
@@ -398,8 +407,82 @@ Mit freundlichen Grüßen
     });
   })();
   </script>
+
+  <!-- --- Fit-to-one-page: JS (nur für Browser-Druck/„Als PDF speichern“) --- -->
+  <script>
+  (function(){
+    // A4 nutzbare Höhe (in mm) = Seitenhöhe - obere/untere Ränder (müssen zu @page passen)
+    const mmToPx = mm => mm * (96 / 25.4);
+    const PAGE_H_MM = 297, M_TOP_MM = 18, M_BOTTOM_MM = 18;
+    const PRINTABLE_PX = mmToPx(PAGE_H_MM - M_TOP_MM - M_BOTTOM_MM);
+
+    // Erzeuge bei Bedarf eine temporäre Druck-Vorschau aus dem Textarea-Inhalt
+    function ensurePreview() {
+      let box = document.getElementById('printPreviewBox');
+      if (box) return box;
+      box = document.createElement('div');
+      box.id = 'printPreviewBox';
+      box.style.position = 'fixed';
+      box.style.top = '-10000px';
+      box.style.left = '0';
+      box.style.width = (mmToPx(210 - 22 - 18)) + 'px'; // A4 Breite minus Ränder (22mm links, 18mm rechts wie @page)
+      document.body.appendChild(box);
+
+      const inner = document.createElement('div');
+      inner.className = 'print-letter';
+      inner.id = 'printLetter';
+      inner.style.transformOrigin = 'top left';
+      inner.style.padding = '0';
+      inner.style.margin = '0';
+      box.appendChild(inner);
+      return box;
+    }
+
+    function updatePreview() {
+      const ta = document.getElementById('message');
+      const inner = document.getElementById('printLetter');
+      if (!ta || !inner) return;
+      inner.textContent = ta.value || '';
+      // Grundlinienhöhe leicht verdichten, ohne Inhalt zu verändern
+      inner.style.lineHeight = '1.4';
+      inner.style.fontSize = '16px';
+      // Messen & ggf. skalieren
+      inner.style.transform = '';
+      inner.style.height = '';
+      const h = inner.scrollHeight;
+      if (h > PRINTABLE_PX) {
+        let scale = Math.min(1, PRINTABLE_PX / h);
+        if (scale < 0.88) scale = 0.88; // Lesbarkeitsuntergrenze
+        inner.style.transform = 'scale(' + scale + ')';
+        inner.style.height = (h * scale) + 'px';
+      }
+    }
+
+    function beforePrint() {
+      ensurePreview();
+      updatePreview();
+    }
+
+    // Aktualisiere Vorschau bei Eingaben, aber nur wenn sie existiert
+    ['input','change','keyup'].forEach(ev=>{
+      document.getElementById('message')?.addEventListener(ev, () => {
+        if (document.getElementById('printLetter')) updatePreview();
+      });
+    });
+
+    // Hooks für Druck
+    const mq = window.matchMedia && window.matchMedia('print');
+    if (mq && mq.addEventListener) {
+      mq.addEventListener('change', e => { if (e.matches) beforePrint(); });
+    } else {
+      window.onbeforeprint = beforePrint;
+    }
+  })();
+  </script>
+  <!-- --- Ende Zusatz --- -->
 </body>
 </html>
+
 
 
 
