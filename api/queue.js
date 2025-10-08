@@ -2,7 +2,7 @@
 import Brevo from "@getbrevo/brevo";
 import PDFDocument from "pdfkit";
 
-/** --- CORS (praktisch für lokale/andere Origins) --- */
+/** --- CORS --- */
 const allowCors = (fn) => async (req, res) => {
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
@@ -18,6 +18,7 @@ const esc = (s = "") =>
   String(s)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;")
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+const mm = (x) => (x * 72) / 25.4;
 
 function readBody(req) {
   if (!req.body) return {};
@@ -27,40 +28,41 @@ function readBody(req) {
   return req.body;
 }
 const toBool = (v) => ["true", "on", "1", "yes"].includes(String(v).toLowerCase());
-const mm = (x) => (x * 72) / 25.4;
 
-/** --- NEU: Fenster-Koordinaten + Absenderzeile im Fenster --- */
-const WINDOW = {
-  left: mm(20),       // Fenster beginnt 20 mm vom linken Blattrand
-  topFromTop: mm(45), // Fenster beginnt 45 mm von oben
-  width: mm(90),      // Fensterbreite 90 mm
-  height: mm(45),     // Fensterhöhe 45 mm
+/** --- Layout-Konstanten --- */
+const WINDOW = { left: mm(20), topFromTop: mm(45), width: mm(90), height: mm(45) };
+
+/** Schriftgrößen zentral:
+ * - header: Größe für Absenderblock rechts oben
+ * - body:   Größe für Empfängeradresse + Betreff + Fließtext (gleich wie header)
+ * - senderLine: kleine graue Absenderzeile über dem Fenster (unverändert klein)
+ */
+const FONT = {
+  header: 12,      // vorher 11
+  body:   12,      // Empfänger + Betreff + Text = gleich groß wie header
+  senderLine: 7.5, // kleine Zeile bleibt klein
 };
+
 function drawSenderLine(doc, senderLine) {
   if (!senderLine) return;
-  // Wir arbeiten hier – wie im restlichen Code – mit y von oben nach unten.
-  const padX = mm(2);          // kleiner Innenabstand links/rechts
-  const padY = mm(1.5);          // 1.5mm mm unter Fensteroberkante
+  const padX = mm(2);
+  const padY = mm(1.5);
   const x = WINDOW.left + padX;
   const y = WINDOW.topFromTop + padY;
   const w = WINDOW.width - padX * 2;
-
   doc.save();
-  doc.fontSize(7.5).fillColor("#555");
+  doc.fontSize(FONT.senderLine).fillColor("#555");
   doc.text(String(senderLine), x, y, { width: w, ellipsis: true });
   doc.restore();
 }
 
 /** Datum auf Deutsch */
 function formatDateDE(d = new Date()) {
-  const m = [
-    "Januar","Februar","März","April","Mai","Juni",
-    "Juli","August","September","Oktober","November","Dezember"
-  ];
+  const m = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
   return `${d.getDate()}. ${m[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-/** ersten Anschriften-Absatz aus dem Nachrichtentext entfernen */
+/** ersten Anschriften-Absatz entfernen */
 function stripRecipientParagraph(txt = "") {
   const parts = String(txt).trim().split(/\n{2,}/);
   if (!parts.length) return txt;
@@ -73,13 +75,32 @@ function stripRecipientParagraph(txt = "") {
   return parts.join("\n\n").trim();
 }
 
-/** PDF bauen – gibt Buffer zurück */
+/** --- Anrede-Helfer --- */
+const FEMALE = new Set(["anna","sabine","ursula","katrin","claudia","renate","petra","britta","heike","stefanie","julia","christine","lisa","marie","monika","andrea","martina","sandra","nicole","angelika","eva","kathrin","karin","bettina","svenja","ricarda","elisabeth","maria","linda","sarah"]);
+const MALE   = new Set(["hans","peter","wolfgang","thomas","michael","stefan","andreas","markus","martin","frank","jürgen","juergen","klaus","christian","alexander","lars","tobias","sebastian","uwe","ulrich","paul","max","jan","georg","rolf","rainer","christoph","bernd"]);
+function splitName(full = "") {
+  const s = String(full).replace(/\b(Dr\.?|Prof\.?|MdB)\b/gi, "").replace(/\s+/g, " ").trim();
+  const p = s.split(" ");
+  return { first: p[0] || "", last: p[p.length - 1] || "", raw: s };
+}
+function guessGender(first = "") {
+  const f = String(first).toLowerCase();
+  if (FEMALE.has(f)) return "f";
+  if (MALE.has(f)) return "m";
+  return null;
+}
+function buildPoliteSalutation(name = "", fallback = "Sehr geehrte Damen und Herren,") {
+  const { first, last } = splitName(name);
+  const g = guessGender(first);
+  const withComma = (s) => (/,\s*$/.test(s) ? s : s + ",");
+  if (g === "m") return withComma(`Sehr geehrter Herr ${last || first}`);
+  if (g === "f") return withComma(`Sehr geehrte Frau ${last || first}`);
+  return withComma(fallback.replace(/,\s*$/, ""));
+}
+
+/** --- PDF-Erstellung --- */
 async function buildLetterPDF({
-  queueId,
-  sender,        // { name, street, zip, city }
-  recipient,     // { name, address } address ggf. mehrzeilig
-  subject,
-  bodyText,      // reine Briefinhalte inkl. Anrede + Grußformel
+  queueId, sender, recipient, subject, bodyText
 }) {
   const doc = new PDFDocument({
     size: "A4",
@@ -87,22 +108,21 @@ async function buildLetterPDF({
     bufferPages: true,
   });
 
-  // Buffer einsammeln
   const chunks = [];
   const pdfDone = new Promise((resolve) => {
     doc.on("data", (d) => chunks.push(d));
     doc.on("end", () => resolve(Buffer.concat(chunks)));
   });
 
-  // Fonts
-  doc.font("Times-Roman").fontSize(11);
+  // Grundschrift (wir setzen Größen später pro Block explizit)
+  doc.font("Times-Roman");
 
   const pageWidth  = doc.page.width;
   const usableLeft = doc.page.margins.left;
   const usableRight= pageWidth - doc.page.margins.right;
   const usableWidth= usableRight - usableLeft;
 
-  // --- Header rechts oben: Absender + Datum + Vorgangs-ID ---
+  // Header rechts oben (Absenderblock)
   const senderBlock = [
     sender.name,
     sender.street,
@@ -112,18 +132,16 @@ async function buildLetterPDF({
     `Vorgangs-ID: ${queueId}`,
   ].filter(Boolean).join("\n");
 
-  doc.text(senderBlock, usableLeft, mm(15), {
+  doc.fontSize(FONT.header).text(senderBlock, usableLeft, mm(15), {
     width: usableWidth, align: "right"
   });
 
-  // --- NEU: Absenderzeile im Fensterbereich (klein, grau) ---
+  // Kleine Absenderzeile im Fenster
   const senderLine = [ sender.name, sender.street, `${sender.zip} ${sender.city}` ]
-    .filter(Boolean)
-    .join(" · ");
+    .filter(Boolean).join(" · ");
   drawSenderLine(doc, senderLine);
 
-  // --- Empfänger-Anschrift links, für Fensterkuvert ---
-  // Address mit "Deutscher Bundestag" sicherstellen
+  // Empfängeranschrift im Fenster – jetzt in FONT.body
   const addrLines = [];
   if (recipient.name) addrLines.push(recipient.name);
   const addr = String(recipient.address || "").replace(/\s*\n\s*/g, "\n").trim();
@@ -133,112 +151,93 @@ async function buildLetterPDF({
   const recipientBlock = addrLines.join("\n");
 
   const addressX = usableLeft;
-  const addressY = mm(52);          // ~ 52 mm von oben (liegt im Fenster)
-  const addressW = mm(85);          // ~ 85 mm breit (Fenster)
-  doc.text(recipientBlock, addressX, addressY, { width: addressW });
+  const addressY = mm(52); // Position beibehalten
+  const addressW = mm(85);
+  doc.fontSize(FONT.body).text(recipientBlock, addressX, addressY, { width: addressW });
 
-  // --- Brieftext (ohne Anschriften-Absatz) ---
+  // Start Y für Text nach der Anschrift
   const bodyStartY = addressY + doc.heightOfString(recipientBlock, { width: addressW }) + mm(10);
 
-  // Betreff (optional sichtbar)
+  // Betreff (fett), ebenfalls in FONT.body
   if (must(subject)) {
     doc.moveDown(0.5);
-    doc.font("Times-Bold").text(subject, usableLeft, bodyStartY, { width: usableWidth });
+    doc.font("Times-Bold").fontSize(FONT.body)
+       .text(subject, usableLeft, bodyStartY, { width: usableWidth });
     doc.font("Times-Roman");
   }
 
-  // Fließtext (Anrede + Inhalt + Gruß + Signatur) – PDFKit kümmert sich um Umbrüche
+  // Fließtext in FONT.body
   const cleanBody = stripRecipientParagraph(bodyText || "");
   const yAfterSubject = must(subject)
     ? bodyStartY + doc.heightOfString(subject, { width: usableWidth }) + mm(2)
     : bodyStartY;
 
-  doc.text(cleanBody, usableLeft, yAfterSubject, {
+  doc.fontSize(FONT.body).text(cleanBody, usableLeft, yAfterSubject, {
     width: usableWidth,
     align: "left",
     lineGap: 2,
   });
 
-  // Ende
   doc.end();
   return pdfDone;
 }
 
+/** --- Handler --- */
 export default allowCors(async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ ok:false, error:"method_not_allowed" });
   }
 
-  // Body lesen & vereinheitlichen
   const raw = readBody(req);
   const body = {
-    // Empfänger/MdB-Ermittlung (von der Seite)
     zip:            raw.zip ?? raw.plz ?? "",
     city:           raw.city ?? raw.ort ?? "",
     mp_name:        raw.mp_name ?? raw.abgeordneter ?? "",
-
-    // Absender
     first_name:     raw.first_name ?? raw.vorname ?? "",
     last_name:      raw.last_name ?? raw.nachname ?? "",
     email:          raw.email ?? "",
     street:         raw.street ?? raw.strasse ?? "",
     sender_zip:     raw.sender_zip ?? raw.plz_abs ?? "",
     sender_city:    raw.sender_city ?? raw.ort_abs ?? "",
-
-    // Brief
     subject:        raw.subject ?? "",
     message:        raw.message ?? "",
-
-    // Optionen
     consent_print:  toBool(raw.consent_print ?? raw.postversand ?? false),
     copy_to_self:   toBool(raw.copy_to_self ?? raw.copy ?? false),
   };
 
-  // Fallbacks: Absender-PLZ/-Ort aus oberen Feldern ziehen
   body.sender_zip  = body.sender_zip  || body.zip;
   body.sender_city = body.sender_city || body.city;
 
-  // Pflichtfelder
   const required = ["first_name","last_name","email","street","sender_zip","sender_city","subject","message"];
   const missing = required.filter(k => !must(body[k]));
   if (missing.length) {
     return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
   }
 
-  // ENV prüfen
-  if (!process.env.BREVO_API_KEY || !process.env.FROM_EMAIL || !process.env.TEAM_INBOX) {
-    return res.status(500).json({
-      ok:false, error:"env_missing",
-      envState:{
-        BREVO_API_KEY: !!process.env.BREVO_API_KEY,
-        FROM_EMAIL:    !!process.env.FROM_EMAIL,
-        TEAM_INBOX:    !!process.env.TEAM_INBOX
-      }
-    });
-  }
+  // Anrede bauen
+  const nameForSalutation = must(body.mp_name) ? String(body.mp_name).trim() : "";
+  const politeSalutation  = nameForSalutation
+    ? buildPoliteSalutation(nameForSalutation)
+    : "Sehr geehrte Damen und Herren,";
 
   // Platzhalter ersetzen
-  const anredeName = must(body.mp_name) ? body.mp_name : "Sehr geehrte Damen und Herren";
-
   let finalMessage = body.message;
-  finalMessage = finalMessage.replace("{Anrede_Name}", anredeName);
-  finalMessage = finalMessage.replace("{Anrede}",       anredeName);
-  finalMessage = finalMessage.replace("{Vorname}",      body.first_name);
-  finalMessage = finalMessage.replace("{Nachname}",     body.last_name);
-  finalMessage = finalMessage.replace("{Straße}",       body.street);
-  finalMessage = finalMessage.replace("{PLZ}",          body.sender_zip);
-  finalMessage = finalMessage.replace("{Ort}",          body.sender_city);
+  finalMessage = finalMessage.split("{Anrede}").join(politeSalutation);
+  finalMessage = finalMessage.split("{Anrede_Name}").join(nameForSalutation || "");
+  finalMessage = finalMessage.split("{Vorname}").join(body.first_name);
+  finalMessage = finalMessage.split("{Nachname}").join(body.last_name);
+  finalMessage = finalMessage.split("{Straße}").join(body.street);
+  finalMessage = finalMessage.split("{PLZ}").join(body.sender_zip);
+  finalMessage = finalMessage.split("{Ort}").join(body.sender_city);
 
-  // Empfänger-Block (nur für PDF; E-Mail lässt den Text wie er ist)
   const recipient = {
-    name:    anredeName, // i. d. R. „Vorname Nachname“ – okay für Block
-    address: "Platz der Republik 1\n11011 Berlin", // Bundestagsadresse
+    name:    nameForSalutation || "Mitglied des Deutschen Bundestages",
+    address: "Platz der Republik 1\n11011 Berlin",
   };
 
   const queueId = Math.random().toString(36).slice(2, 8).toUpperCase();
   const today   = new Date().toISOString().slice(0,10);
 
-  // PDF erzeugen
   const pdfBuffer = await buildLetterPDF({
     queueId,
     sender: {
@@ -249,10 +248,9 @@ export default allowCors(async function handler(req, res) {
     },
     recipient,
     subject: body.subject,
-    bodyText: finalMessage, // enthält Anrede + Inhalt + Gruß + Signatur
+    bodyText: finalMessage,
   });
 
-  // E-Mail-Inhalte
   const teamHtml = `
     <h2>Neue Einreichung – ${esc(queueId)}</h2>
     <p><b>Datum:</b> ${esc(today)}</p>
@@ -262,10 +260,9 @@ export default allowCors(async function handler(req, res) {
       ${esc(body.sender_zip)} ${esc(body.sender_city)}<br>
       E-Mail: ${esc(body.email)}
     </p>
-    <p><b>PLZ/Ort für MdB-Ermittlung:</b> ${esc(body.zip)} ${esc(body.city)}</p>
-    <p><b>Optionaler MdB-Name:</b> ${esc(body.mp_name)}</p>
+    <p><b>MdB:</b> ${esc(body.mp_name)}</p>
     <p><b>Betreff:</b> ${esc(body.subject)}</p>
-    <p><b>Brieftext (ersetzte Platzhalter):</b><br>${esc(finalMessage).replace(/\n/g,"<br>")}</p>
+    <p><b>Brieftext:</b><br>${esc(finalMessage).replace(/\n/g,"<br>")}</p>
   `;
 
   const userHtml = `
@@ -283,7 +280,6 @@ export default allowCors(async function handler(req, res) {
     const api = new Brevo.TransactionalEmailsApi();
     api.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
-    // 1) Mail an euer Team (mit PDF)
     await api.sendTransacEmail({
       to:     [{ email: process.env.TEAM_INBOX }],
       sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Formular" },
@@ -293,7 +289,6 @@ export default allowCors(async function handler(req, res) {
       attachment: [{ name: pdfName, content: pdfBase64 }]
     });
 
-    // 2) Optional Kopie an Absender:in (mit PDF)
     if (body.copy_to_self) {
       await api.sendTransacEmail({
         to:     [{ email: body.email }],
@@ -314,12 +309,3 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
-
-
-
-
-
-
-
-
-
