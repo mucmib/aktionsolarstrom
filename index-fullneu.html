@@ -173,6 +173,11 @@ Mit freundlichen Grüßen
                 <input id="copy_to_self" name="copy_to_self" type="checkbox" checked>
                 <span><strong>Kopie an mich</strong> per E-Mail senden</span>
               </label>
+              <!-- NEU: ZIP-Option für Absender:in -->
+              <label class="opt">
+                <input id="copy_zip_to_self" name="copy_zip_to_self" type="checkbox" disabled>
+                <span>Falls mehrere Empfänger: <strong>alle Briefe als ZIP</strong> an mich</span>
+              </label>
               <div class="hint" style="grid-column:1 / -1">
                 Wir verwenden Ihre Angaben ausschließlich zur Zustellung des Briefes. Details siehe <a href="Datenschutz.html">Datenschutz</a>.
               </div>
@@ -480,6 +485,17 @@ Mit freundlichen Grüßen
     const topPLZ=()=>($('#plz')?.value||'').trim();
     const topCity=()=>($('#city')?.value||'').trim();
 
+    // ZIP-Checkbox abhängig von "Kopie an mich"
+    const copyCB = document.getElementById('copy_to_self');
+    const zipCB  = document.getElementById('copy_zip_to_self');
+    function toggleZipEnable(){
+      if(!zipCB) return;
+      zipCB.disabled = !copyCB.checked;
+      if(zipCB.disabled) zipCB.checked = false;
+    }
+    copyCB?.addEventListener('change', toggleZipEnable);
+    document.addEventListener('DOMContentLoaded', toggleZipEnable);
+
     function vals(){
       const m={};
       for(const [t,sel] of Object.entries(F)){
@@ -531,9 +547,10 @@ Mit freundlichen Grüßen
       const fd=new FormData(form);
       const payload={};
       fd.forEach((v,k)=>payload[k]=v);
-      payload.copy_to_self  = fd.has('copy_to_self');
-      payload.consent_print = fd.has('consent_print');
-      payload.message       = finalMsg;
+      payload.copy_to_self     = fd.has('copy_to_self');
+      payload.copy_zip_to_self = fd.has('copy_zip_to_self'); /* NEU */
+      payload.consent_print    = fd.has('consent_print');
+      payload.message          = finalMsg;
 
       // Extra-Empfänger & Primary mitsenden (Fan-out ready)
       try{
@@ -556,7 +573,7 @@ Mit freundlichen Grüßen
         if(data.ok){
           const box=document.getElementById('successMessage');
           if(box){ box.textContent='Danke! Ihr Brief wurde erfolgreich eingereicht. Vorgangs-ID: '+(data.queueId||''); box.style.display='block'; }
-          form.reset(); renderSenderPreview();
+          form.reset(); renderSenderPreview(); toggleZipEnable();
         }else{
           alert('Fehler: '+(data.error||'Unbekannt'));
         }
@@ -570,6 +587,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
