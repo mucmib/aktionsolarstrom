@@ -1944,5 +1944,173 @@
     "bundestag_address": "Platz der Republik 1\n11011 Berlin",
     "fraktion": "CDU/CSU (CDU)",
     "bundesland": "Niedersachsen"
+  },
+  "17": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "44": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "59": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "63": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "66": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "68": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "73": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "153": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "154": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "157": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "160": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "162": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "163": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "165": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "185": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "190": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "191": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "195": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "259": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "282": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
+  },
+  "290": {
+    "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
+    "fraktion": "",
+    "bundesland": "",
+    "anrede": "Sehr geehrte Damen und Herren",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
+    "placeholder": true
   }
 }
