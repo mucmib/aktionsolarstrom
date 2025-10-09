@@ -113,15 +113,15 @@
         </div>
       </div>
 
-      <!-- Live-Zähler: sicher versendete Briefe (E-Mail an Druck) -->
+      <!-- Live-Zähler: erzeugte PDF-Briefe -->
       <div class="stats-banner" role="status" aria-live="polite">
         <div class="stats-iconbox">
-          <div class="stats-icon" aria-hidden="true">✉️</div>
+          <div class="stats-icon" aria-hidden="true">📄</div>
         </div>
         <div class="stats-text">
-          <div class="stats-label">In Auftrag gegebene Briefe</div>
+          <div class="stats-label">Erzeugte PDF-Briefe</div>
           <div class="stats-value">
-            <span id="sentCount" class="count">–</span>
+            <span id="pdfCount" class="count">–</span>
           </div>
           <div class="stats-meta" id="statsMeta" hidden>
             <span class="dot" aria-hidden="true"></span>
@@ -288,9 +288,9 @@
       if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
     });
 
-    // ---- Live-Zähler-Logik ----
-    // Erwartet JSON: { "sent_emails": <Number>, "last_update": "<ISO-Datum>" }
-    const STATS_URL = '/api/stats.json';
+    // ---- Live-Zähler-Logik (PDFs) ----
+    // Erwartet JSON von /api/stats: { ok, pdfs_generated, updated_at, … }
+    const STATS_URL = '/api/stats';
 
     function countUp(el, to, duration = 1200) {
       const start = performance.now();
@@ -316,7 +316,7 @@
     }
 
     async function loadCounter() {
-      const el = document.getElementById('sentCount');
+      const el = document.getElementById('pdfCount');
       const metaWrap = document.getElementById('statsMeta');
       const metaText = document.getElementById('statsTime');
       if (!el) return;
@@ -327,12 +327,12 @@
         const data = await res.json();
 
         // Zahl
-        const raw = Number(data.sent_emails);
+        const raw = Number(data.pdfs_generated);
         const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
         countUp(el, value);
 
         // Datum/Uhrzeit
-        const stand = formatStandText(data.last_update);
+        const stand = formatStandText(data.updated_at);
         if (stand && metaWrap && metaText) {
           metaText.textContent = stand;
           metaWrap.hidden = false;
@@ -350,6 +350,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
