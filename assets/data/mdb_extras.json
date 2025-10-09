@@ -1,42 +1,50 @@
 [
   {
-    "rolle": "Sprecherin für Klimaschutz und Energie",
-    "fraktion": "SPD",
-    "mdb_name": "Nina Scheer",
-    "anrede": "Sehr geehrte Frau Scheer",
-    "bundesland": "Schleswig-Holstein",
-    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
-  },
-  {
-    "rolle": "Sprecherin für Klimaschutz",
-    "fraktion": "Bündnis 90/Die Grünen",
-    "mdb_name": "Lisa Badum",
-    "anrede": "Sehr geehrte Frau Badum",
-    "bundesland": "Bayern",
-    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
-  },
-  {
-    "rolle": "Sprecher für Klimaschutz und Energie",
+    "rolle": "Bundeskanzler / Vorsitzender der CDU/CSU-Fraktion",
     "fraktion": "CDU/CSU",
-    "mdb_name": "Andreas Jung",
-    "anrede": "Sehr geehrter Herr Jung",
-    "bundesland": "Baden-Württemberg",
+    "mdb_name": "Friedrich Merz",
+    "anrede": "Sehr geehrter Herr Merz",
+    "bundesland": "Nordrhein-Westfalen",
     "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
   },
   {
-    "rolle": "Sprecher für Energiepolitik",
+    "rolle": "Fraktionsvorsitzender",
+    "fraktion": "SPD",
+    "mdb_name": "Matthias Miersch",
+    "anrede": "Sehr geehrter Herr Miersch",
+    "bundesland": "Niedersachsen",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
+  },
+  {
+    "rolle": "Fraktionsvorsitzende",
+    "fraktion": "Bündnis 90/Die Grünen",
+    "mdb_name": "Katharina Dröge",
+    "anrede": "Sehr geehrte Frau Dröge",
+    "bundesland": "Nordrhein-Westfalen",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
+  },
+  {
+    "rolle": "Fraktionsvorsitzender",
     "fraktion": "FDP",
-    "mdb_name": "Michael Kruse",
-    "anrede": "Sehr geehrter Herr Kruse",
-    "bundesland": "Hamburg",
+    "mdb_name": "Christian Dürr",
+    "anrede": "Sehr geehrter Herr Dürr",
+    "bundesland": "Niedersachsen",
     "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
   },
   {
-    "rolle": "Energie- und Klimapolitischer Sprecher",
+    "rolle": "Fraktionsvorsitzende",
     "fraktion": "DIE LINKE",
-    "mdb_name": "Lorenz Gösta Beutin",
-    "anrede": "Sehr geehrter Herr Beutin",
-    "bundesland": "Schleswig-Holstein",
+    "mdb_name": "Amira Mohamed Ali",
+    "anrede": "Sehr geehrte Frau Mohamed Ali",
+    "bundesland": "Niedersachsen",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
+  },
+  {
+    "rolle": "Fraktionsvorsitzender",
+    "fraktion": "Bündnis Sahra Wagenknecht (BSW)",
+    "mdb_name": "Sahra Wagenknecht",
+    "anrede": "Sehr geehrte Frau Wagenknecht",
+    "bundesland": "Nordrhein-Westfalen",
     "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
   }
 ]
