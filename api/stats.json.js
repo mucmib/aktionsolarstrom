@@ -1,46 +1,48 @@
-// /api/stats.js – gibt aggregierte Zähler zurück (u.a. erzeugte PDFs)
+// /api/stats.js – liefert aktuelle Statistik (PDFs, Datum etc.)
 import { kv } from "@vercel/kv";
 
-const allowCors = (fn) => async (req, res) => {
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  if (req.method === "OPTIONS") return res.status(200).end();
-  return await fn(req, res);
-};
-
-export default allowCors(async function handler(req, res) {
-  if (req.method !== "GET") {
-    return res.status(405).json({ ok: false, error: "method_not_allowed" });
-  }
-
-  // Keys wie zuvor in queue.js verwendet
-  async function getNum(key) {
-    try {
-      const v = await kv.get(key);
-      const n = Number(v);
-      return Number.isFinite(n) && n >= 0 ? n : 0;
-    } catch {
-      return 0;
-    }
-  }
-
-  const [emails, pdfs, zips, recipients, updatedAt] = await Promise.all([
-    getNum("emails_sent"),
-    getNum("pdfs_generated"),
-    getNum("zips_generated"),
-    getNum("recipients_total"),
-    kv.get("stats_last_update").catch(() => null),
-  ]);
-
+/**
+ * Diese API-Route wird von der Startseite abgefragt:
+ * fetch('/api/stats.json')
+ * Sie gibt ein JSON mit Zählerständen zurück.
+ */
+export default async function handler(req, res) {
+  // CORS für Sicherheit und lokale Tests
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Cache-Control", "no-store");
-  return res.status(200).json({
-    ok: true,
-    emails_sent: emails,
-    pdfs_generated: pdfs,
-    zips_generated: zips,
-    recipients_total: recipients,
-    updated_at: updatedAt || null,
-  });
-});
+
+  try {
+    // Hauptzähler (Anzahl erzeugter PDFs)
+    const pdfs_generated = Number(await kv.get("pdfs_generated")) || 0;
+
+    // optional: alte Kompatibilität
+    const sent_emails = Number(await kv.get("sent_emails")) || 0;
+    const count = pdfs_generated || sent_emails;
+
+    // Zeitpunkt der letzten Aktualisierung
+    const last_update =
+      (await kv.get("stats_updated_at")) ||
+      (await kv.get("sent_emails_last_update")) ||
+      new Date().toISOString();
+
+    // Optional: weitere Werte, falls du sie später ergänzt
+    const zips_generated = Number(await kv.get("zips_generated")) || 0;
+    const recipients_total = Number(await kv.get("recipients_total")) || 0;
+
+    return res.status(200).json({
+      ok: true,
+      pdfs_generated: count,
+      sent_emails,
+      zips_generated,
+      recipients_total,
+      last_update,
+    });
+  } catch (err) {
+    console.error("Fehler beim Lesen aus KV:", err);
+    return res.status(500).json({
+      ok: false,
+      error: "kv_read_failed",
+      message: String(err),
+    });
+  }
+}
