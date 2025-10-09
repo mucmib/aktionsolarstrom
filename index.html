@@ -281,7 +281,7 @@
   </div>
 
   <script>
-  // Smooth Scrolling für In-Page-Links
+  // Smooth Scrolling
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="#"]'); if(!a) return;
     const el = document.querySelector(a.getAttribute('href'));
@@ -289,7 +289,6 @@
   });
 
   // ---- Live-Zähler-Logik (PDFs) ----
-  // Erwartet JSON von /api/stats.json: { pdfs_generated, count, last_update, ... }
   const STATS_URL = '/api/stats.json';
 
   function countUp(el, to, duration = 1200) {
@@ -298,7 +297,7 @@
     const fmt = new Intl.NumberFormat('de-DE');
     function frame(now) {
       const t = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+      const eased = 1 - Math.pow(1 - t, 3);
       const val = Math.round(from + (to - from) * eased);
       el.textContent = fmt.format(val);
       if (t < 1) requestAnimationFrame(frame);
@@ -325,8 +324,9 @@
       const res = await fetch(STATS_URL + `?nocache=${Date.now()}`, { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
+      console.debug('stats.json ->', data); // <— Debug
 
-      // NEU: PDFs statt E-Mails – mit Fallback
+      // PDFs auslesen (mit Fallbacks)
       const raw = Number(
         data.pdfs_generated ?? data.count ?? data.sent_emails ?? 0
       );
@@ -349,8 +349,10 @@
 
   loadCounter();
 </script>
+
 </body>
 </html>
+
 
 
 
