@@ -1,9 +1,7 @@
 // /api/queue.js – Vercel Serverless Function
 import Brevo from "@getbrevo/brevo";
 import PDFDocument from "pdfkit";
-import archiver from "archiver";             // ← NEU (für ZIP)
-import { PassThrough } from "stream";
-import { kv } from "@vercel/kv";
+import { kv } from "@vercel/kv"; // ← NEU
 
 /** --- CORS --- */
 const allowCors = (fn) => async (req, res) => {
@@ -37,9 +35,9 @@ const WINDOW = { left: mm(20), topFromTop: mm(45), width: mm(90), height: mm(45)
 
 /** Schriftgrößen zentral */
 const FONT = {
-  header: 12,
-  body:   11,
-  senderLine: 7.5,
+  header: 12,   // rechts oben (Absender-Block)
+  body:   11,   // << zurück auf 11 pt für Anschrift + Fließtext
+  senderLine: 7.5, // kleine Zeile im Fenster über der Empfängeradresse
 };
 
 function drawSenderLine(doc, senderLine) {
@@ -97,34 +95,6 @@ function buildPoliteSalutation(name = "", fallback = "Sehr geehrte Damen und Her
   return withComma(fallback.replace(/,\s*$/, ""));
 }
 
-/** ——— NEU: Empfänger-Helfer ——— */
-function normalizeBundestagAddress(addr) {
-  const lines = String(addr || "").split("\n").map(s=>s.trim()).filter(Boolean);
-  const hasHeader = lines.some(l=>/^deutscher\s+bundestag$/i.test(l));
-  const body = hasHeader ? lines : ["Deutscher Bundestag", ...lines];
-  const out=[]; for(const l of body){ if(out[out.length-1]!==l) out.push(l); }
-  return out.join("\n");
-}
-
-function recipientToAddressBlock(recipient) {
-  const name = recipient.mdb_name || recipient.name || "";
-  const addr = normalizeBundestagAddress(
-    recipient.bundestag_address || recipient.address || "Platz der Republik 1\n11011 Berlin"
-  );
-  return (name ? name + "\n" : "") + addr;
-}
-
-function personalizeText(base, recipient, salutationFallback) {
-  const block = recipientToAddressBlock(recipient);
-  const sal = (recipient.anrede && /\S/.test(recipient.anrede))
-    ? (/,/.test(recipient.anrede) ? recipient.anrede : recipient.anrede + ",")
-    : buildPoliteSalutation(recipient.mdb_name || recipient.name || "", salutationFallback || "Sehr geehrte Damen und Herren,");
-  return String(base || "")
-    .replace("{MdB_Name_und_Adresse}", block)
-    .replace("{MdB_Adresse}", block)
-    .replace("{Anrede}", sal);
-}
-
 /** --- PDF-Erstellung --- */
 async function buildLetterPDF({
   queueId, sender, recipient, subject, bodyText, salutation
@@ -168,14 +138,21 @@ async function buildLetterPDF({
   drawSenderLine(doc, senderLine);
 
   // Empfängeranschrift im Fenster
-  const addrBlock = recipientToAddressBlock(recipient);
+  const addrLines = [];
+  if (recipient.name) addrLines.push(recipient.name);
+  const addr = String(recipient.address || "").replace(/\s*\n\s*/g, "\n").trim();
+  const hasBundestag = /Deutscher Bundestag/i.test(addr);
+  if (!hasBundestag) addrLines.push("Deutscher Bundestag");
+  if (addr) addrLines.push(...addr.split("\n"));
+  const recipientBlock = addrLines.join("\n");
+
   const addressX = usableLeft;
   const addressY = mm(52);
   const addressW = mm(85);
-  doc.fontSize(FONT.body).text(addrBlock, addressX, addressY, { width: addressW });
+  doc.fontSize(FONT.body).text(recipientBlock, addressX, addressY, { width: addressW });
 
-  // Textstart
-  const bodyStartY = addressY + doc.heightOfString(addrBlock, { width: addressW }) + mm(10);
+  // Textstart nach Anschrift
+  const bodyStartY = addressY + doc.heightOfString(recipientBlock, { width: addressW }) + mm(10);
 
   // Betreff
   if (must(subject)) {
@@ -206,35 +183,16 @@ async function buildLetterPDF({
   return pdfDone;
 }
 
-/** --- Statistik: Zähler erhöhen --- */
+/** --- Statistik: Zähler erhöhen (NEU) --- */
 async function incrementCounter() {
   try {
-    const n = await kv.incr("sent_emails");
+    const n = await kv.incr("sent_emails"); // +1
     await kv.set("sent_emails_last_update", new Date().toISOString());
     return n;
   } catch (e) {
     console.error("KV increment failed:", e);
-    return null;
+    return null; // Versand nicht blockieren
   }
-}
-
-/** ——— NEU: ZIP aus Buffern bauen ——— */
-async function zipBuffers(files /* [{name, buffer}] */) {
-  const archive = archiver("zip", { zlib: { level: 9 } });
-  const out = [];
-  const stream = new PassThrough();
-  stream.on("data", (c) => out.push(c));
-  const done = new Promise((resolve, reject) => {
-    stream.on("end", () => resolve(Buffer.concat(out)));
-    archive.on("error", reject);
-  });
-  archive.pipe(stream);
-  for (const f of files) {
-    archive.append(f.buffer, { name: f.name });
-  }
-  await archive.finalize();
-  stream.end();
-  return done;
 }
 
 /** --- Handler --- */
@@ -258,10 +216,6 @@ export default allowCors(async function handler(req, res) {
     message:        raw.message ?? "",
     consent_print:  toBool(raw.consent_print ?? raw.postversand ?? false),
     copy_to_self:   toBool(raw.copy_to_self ?? raw.copy ?? false),
-
-    // NEU: optional Fan-out
-    primary_recipient: raw.primary_recipient || null,
-    extra_recipients:  Array.isArray(raw.extra_recipients) ? raw.extra_recipients : [],
   };
 
   body.sender_zip  = body.sender_zip  || body.zip;
@@ -273,135 +227,99 @@ export default allowCors(async function handler(req, res) {
     return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
   }
 
+  // Anrede bauen
   const nameForSalutation = must(body.mp_name) ? String(body.mp_name).trim() : "";
   const politeSalutation  = nameForSalutation
     ? buildPoliteSalutation(nameForSalutation)
     : "Sehr geehrte Damen und Herren,";
 
-  // Absender
-  const sender = {
-    name: `${body.first_name} ${body.last_name}`.trim(),
-    street: body.street,
-    zip: body.sender_zip,
-    city: body.sender_city,
-  };
+  // Platzhalter ersetzen
+  let finalMessage = body.message;
+  finalMessage = finalMessage.split("{Anrede}").join(politeSalutation);
+  finalMessage = finalMessage.split("{Anrede_Name}").join(nameForSalutation || "");
+  finalMessage = finalMessage.split("{Vorname}").join(body.first_name);
+  finalMessage = finalMessage.split("{Nachname}").join(body.last_name);
+  finalMessage = finalMessage.split("{Straße}").join(body.street);
+  finalMessage = finalMessage.split("{PLZ}").join(body.sender_zip);
+  finalMessage = finalMessage.split("{Ort}").join(body.sender_city);
 
-  // === Empfänger bestimmen (abwärtskompatibel) ===
-  const recipients = [];
-  if (body.primary_recipient && typeof body.primary_recipient === "object") {
-    recipients.push(body.primary_recipient);
-  }
-  if (body.extra_recipients.length) {
-    for (const r of body.extra_recipients) {
-      if (r && typeof r === "object") recipients.push(r);
-    }
-  }
-  if (!recipients.length) {
-    // Fallback: wie bisher – ein generischer MdB-Empfänger
-    recipients.push({
-      mdb_name: body.mp_name || "Mitglied des Deutschen Bundestages",
-      bundestag_address: "Platz der Republik 1\n11011 Berlin",
-      anrede: politeSalutation,
-    });
-  }
+  const recipient = {
+    name:    nameForSalutation || "Mitglied des Deutschen Bundestages",
+    address: "Platz der Republik 1\n11011 Berlin",
+  };
 
   const queueId = Math.random().toString(36).slice(2, 8).toUpperCase();
   const today   = new Date().toISOString().slice(0,10);
 
-  // === PDFs generieren (pro Empfänger personalisiert) ===
-  const pdfs = [];
-  for (let i = 0; i < recipients.length; i++) {
-    const r = recipients[i];
-    const personalized = personalizeText(body.message, r, politeSalutation);
-    const fileName = `Brief_${queueId}_${String(i+1).padStart(2,"0")}_${String(r.mdb_name||r.name||"Empfaenger").replace(/[^\p{L}\p{N}_ -]/gu,"").replace(/\s+/g,"-").slice(0,70)}.pdf`;
-
-    const pdfBuffer = await buildLetterPDF({
-      queueId,
-      sender,
-      recipient: {
-        name: r.mdb_name || r.name || "",
-        address: r.bundestag_address || r.address || "Platz der Republik 1\n11011 Berlin",
-        anrede: r.anrede || "",
-        fraktion: r.fraktion || "",
-        bundesland: r.bundesland || "",
-      },
-      subject: body.subject,
-      bodyText: personalized,
-      salutation: r.anrede || politeSalutation,
-    });
-
-    pdfs.push({ name: fileName, buffer: pdfBuffer, meta: r });
-  }
-
-  // === Team + Nutzer-HTML ===
-  const recipientsListHtml = pdfs.map(p =>
-    `- ${esc(p.meta.mdb_name || p.meta.name || "Unbekannt")}${p.meta.fraktion ? " ("+esc(p.meta.fraktion)+")":""}`
-  ).join("<br>");
+  const pdfBuffer = await buildLetterPDF({
+    queueId,
+    sender: {
+      name: `${body.first_name} ${body.last_name}`.trim(),
+      street: body.street,
+      zip: body.sender_zip,
+      city: body.sender_city,
+    },
+    recipient,
+    subject: body.subject,
+    bodyText: finalMessage,
+    salutation: politeSalutation,
+  });
 
   const teamHtml = `
     <h2>Neue Einreichung – ${esc(queueId)}</h2>
     <p><b>Datum:</b> ${esc(today)}</p>
     <p><b>Absender:in</b><br>
-      ${esc(sender.name)}<br>
-      ${esc(sender.street)}<br>
-      ${esc(sender.zip)} ${esc(sender.city)}<br>
+      ${esc(body.first_name)} ${esc(body.last_name)}<br>
+      ${esc(body.street)}<br>
+      ${esc(body.sender_zip)} ${esc(body.sender_city)}<br>
       E-Mail: ${esc(body.email)}
     </p>
-    <p><b>Empfänger (${pdfs.length}):</b><br>${recipientsListHtml}</p>
+    <p><b>MdB:</b> ${esc(body.mp_name)}</p>
     <p><b>Betreff:</b> ${esc(body.subject)}</p>
+    <p><b>Brieftext:</b><br>${esc(finalMessage).replace(/\n/g,"<br>")}</p>
   `;
 
   const userHtml = `
     <p>Danke – wir haben Ihren Brief übernommen und bereiten den Postversand vor.</p>
     <p><b>Vorgangs-ID:</b> ${esc(queueId)}</p>
-    <p><b>Empfänger (${pdfs.length}):</b><br>${recipientsListHtml}</p>
     <hr>
     <p><b>Betreff:</b> ${esc(body.subject)}</p>
+    <p><b>Brieftext:</b><br>${esc(finalMessage).replace(/\n/g,"<br>")}</p>
   `;
 
-  // === Attachments: 1 PDF direkt, >1 als ZIP ===
-  let attachments = [];
-  if (pdfs.length === 1) {
-    attachments = [{ name: pdfs[0].name, content: pdfs[0].buffer.toString("base64") }];
-  } else {
-    const zipBuffer = await zipBuffers(pdfs);
-    attachments = [{ name: `Briefe_${queueId}.zip`, content: zipBuffer.toString("base64") }];
-  }
+  const pdfBase64 = pdfBuffer.toString("base64");
+  const pdfName   = `Brief_${queueId}.pdf`;
 
   try {
     const api = new Brevo.TransactionalEmailsApi();
     api.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
-    // 1) TEAM-Mail
+    // 1) TEAM-Mail (entscheidend für "sicher versendet")
     await api.sendTransacEmail({
       to:     [{ email: process.env.TEAM_INBOX }],
       sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Formular" },
-      replyTo:{ email: body.email, name: sender.name },
-      subject:`Vorgang ${queueId}: Brief(e) an MdB (${pdfs.length})`,
+      replyTo:{ email: body.email, name: `${body.first_name} ${body.last_name}` },
+      subject:`Vorgang ${queueId}: Brief an MdB`,
       htmlContent: teamHtml,
-      attachment: attachments
+      attachment: [{ name: pdfName, content: pdfBase64 }]
     });
 
-    // Zähler (einmal pro Vorgang)
+    // === GENAU HIER ZÄHLEN (nur einmal pro Vorgang) ===
     await incrementCounter();
 
-    // 2) Optionale Kopie an Absender:in (ohne Attachments oder – wenn gewünscht – nur 1. PDF)
-   if (body.copy_to_self) {
-  const firstAttachment = pdfs.length
-    ? [{ name: pdfs[0].name, content: pdfs[0].buffer.toString("base64") }]
-    : [];
-
-  await api.sendTransacEmail({
-    to:     [{ email: body.email }],
-    sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Team" },
-    subject:`Kopie Ihrer Einreichung – Vorgang ${queueId}`,
-    htmlContent: userHtml,
-    attachment: firstAttachment,
-  });
-}
+    // 2) Optionale Kopie an Absender:in (ohne weitere Zählung)
+    if (body.copy_to_self) {
+      await api.sendTransacEmail({
+        to:     [{ email: body.email }],
+        sender: { email: process.env.FROM_EMAIL, name: "Kampagnen-Team" },
+        subject:`Kopie Ihrer Einreichung – Vorgang ${queueId}`,
+        htmlContent: userHtml,
+        attachment: [{ name: pdfName, content: pdfBase64 }]
+      });
+    }
 
     res.setHeader("Cache-Control", "no-store");
-    return res.status(200).json({ ok:true, queueId, lettersCreated: pdfs.length, copySent: body.copy_to_self });
+    return res.status(200).json({ ok:true, queueId, copySent: body.copy_to_self });
   } catch (err) {
     const status = err?.response?.status;
     let detail   = err?.response?.text || err?.message || String(err);
@@ -410,6 +328,9 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
+
+
 
 
 
