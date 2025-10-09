@@ -1,4 +1,4 @@
-// /api/queue.js – Vercel Serverless Function (Fan-out + ZIP + PDF-Zähler)
+// /api/queue.js – Vercel Serverless Function (Fan-out + ZIP + robuster PDF-Zähler)
 import Brevo from "@getbrevo/brevo";
 import PDFDocument from "pdfkit";
 import { kv } from "@vercel/kv";
@@ -147,15 +147,18 @@ async function incrementCounter(){
   }
 }
 
-/** --- NEU: PDFs-Zähler + Zeitstempel --- */
+/** --- NEU: PDFs-Zähler + Zeitstempel (robust) --- */
 async function updateStats(pdfsAdded = 0) {
   try {
-    if (pdfsAdded > 0) {
-      await kv.incrby("pdfs_generated", pdfsAdded); // legt Key an, falls nicht vorhanden
-    }
+    const curRaw = await kv.get("pdfs_generated");
+    let cur = Number(curRaw);
+    if (!Number.isFinite(cur) || cur < 0) cur = 0;
+    const next = cur + (Number.isFinite(pdfsAdded) ? pdfsAdded : 0);
+    await kv.set("pdfs_generated", next);
     await kv.set("stats_updated_at", new Date().toISOString());
   } catch (e) {
     console.error("KV stats update failed:", e);
+    try { await kv.set("stats_updated_at", new Date().toISOString()); } catch {}
   }
 }
 
@@ -179,7 +182,6 @@ export default allowCors(async function handler(req,res){
     consent_print: toBool(raw.consent_print ?? raw.postversand ?? false),
     copy_to_self:  toBool(raw.copy_to_self  ?? raw.copy       ?? false),
 
-    // Fan-out:
     primary_recipient: raw.primary_recipient || null,
     extra_recipients: Array.isArray(raw.extra_recipients) ? raw.extra_recipients : [],
   };
@@ -191,7 +193,6 @@ export default allowCors(async function handler(req,res){
   const missing=required.filter(k=>!must(body[k]));
   if(missing.length) return res.status(400).json({ ok:false, error:"missing_fields", fields:missing });
 
-  // Empfängerliste
   const recipients=[];
   const isExcludedParty=(p="")=>/^(afd|werteunion)$/i.test(String(p).trim());
   function pushRecipient(r){
@@ -211,16 +212,13 @@ export default allowCors(async function handler(req,res){
 
   const senderData={ name:`${body.first_name} ${body.last_name}`.trim(), street:body.street, zip:body.sender_zip, city:body.sender_city };
 
-  // PDFs erzeugen – pro Empfänger Anrede/Adresse neu setzen
   const pdfFiles=[];
   for(let i=0;i<recipients.length;i++){
     const r=recipients[i];
     const salForThis = (r.anrede && r.anrede.trim()) ? r.anrede : buildPoliteSalutation(r.name, "Sehr geehrte Damen und Herren,");
-
     let msgForThis = String(body.message||"");
     msgForThis = stripRecipientParagraph(msgForThis);
     msgForThis = stripLeadingSalutation(msgForThis);
-
     msgForThis = msgForThis
       .replace(/\{Anrede\}/g, salForThis)
       .replace(/\{Anrede_Name\}/g, r.name || "")
@@ -230,7 +228,6 @@ export default allowCors(async function handler(req,res){
       .replace(/\{PLZ\}/g, body.sender_zip)
       .replace(/\{Ort\}/g, body.sender_city)
       .replace(/\{MdB_Name_und_Adresse\}|\{MdB_Adresse\}/g, `${r.name}\n${r.address}`);
-
     const pdfBuffer=await buildLetterPDF({
       queueId,
       sender: senderData,
@@ -239,12 +236,10 @@ export default allowCors(async function handler(req,res){
       bodyText: msgForThis,
       salutation: salForThis,
     });
-
     const filename = recipients.length===1 ? `Brief_${queueId}.pdf` : `Brief_${queueId}_${String(i+1).padStart(2,"0")}.pdf`;
     pdfFiles.push({ name: filename, buffer: pdfBuffer });
   }
 
-  // Mails bauen
   const teamHtml = `
     <h2>Neue Einreichung – ${esc(queueId)}</h2>
     <p><b>Datum:</b> ${esc(today)}</p>
@@ -280,7 +275,6 @@ export default allowCors(async function handler(req,res){
       teamAttachments=[{ name:`Briefe_${queueId}.zip`, content: zipBuf.toString("base64") }];
     }
 
-    // TEAM-Mail (entscheidend für "sicher erzeugt")
     await api.sendTransacEmail({
       to:[{email:process.env.TEAM_INBOX}],
       sender:{email:process.env.FROM_EMAIL, name:"Kampagnen-Formular"},
@@ -291,10 +285,9 @@ export default allowCors(async function handler(req,res){
     });
 
     // --- Zähler aktualisieren ---
-    await updateStats(pdfFiles.length);   // PDFs
-    await incrementCounter();             // (optional) E-Mails
+    await updateStats(pdfFiles.length);
+    await incrementCounter();
 
-    // Nutzerkopie (falls gewünscht)
     if(body.copy_to_self && pdfFiles.length>0){
       await api.sendTransacEmail({
         to:[{email:body.email}],
@@ -315,6 +308,8 @@ export default allowCors(async function handler(req,res){
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
+
 
 
 
