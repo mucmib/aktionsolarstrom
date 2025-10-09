@@ -33,6 +33,13 @@
     .shipbox { display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; background:#f9fafb; border:1px dashed #cbd5e1; border-radius:12px; padding:12px; }
     .shipbox .opt { display:flex; align-items:center; gap:10px; }
     .shipbox strong { font-weight:800; }
+
+    /* Zusatz-Empfänger */
+    .extra-recipients { margin-top:12px; padding:12px; border:1px solid #e5e7eb; border-radius:12px; background:#f9fafb; }
+    .extra-controls { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .extra-controls label span { display:block; font-weight:600; margin:0 0 4px; }
+    .chip { display:inline-block; padding:3px 8px; border-radius:999px; background:#eef6f1; border:1px solid #cfe7d8; margin:4px 6px 0 0; font-size:.9rem; user-select:none; cursor:pointer; }
+    .chip[data-active="1"] { background:#d1fae5; border-color:#9ee3c4; }
   </style>
 </head>
 <body>
@@ -58,7 +65,7 @@
         </ol>
       </section>
 
-      <section id="brief" class="form-section">
+      <section id="brief">
         <h2>Brief einreichen</h2>
 
         <form id="letterForm" method="post" action="/api/queue" novalidate>
@@ -75,6 +82,26 @@
               <select id="mp_select"></select>
               <div class="hint" id="mp_hint"></div>
             </div>
+          </fieldset>
+
+          <!-- Zusatz-Empfänger -->
+          <fieldset class="extra-recipients">
+            <legend>Weitere Empfänger (optional)</legend>
+            <div class="extra-controls">
+              <label>
+                <span>Bundesland</span>
+                <select id="filter-bundesland"><option value="">– Bundesland wählen –</option></select>
+              </label>
+              <label>
+                <span>Partei</span>
+                <select id="filter-partei"><option value="">– Partei wählen –</option></select>
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; margin-left:auto;">
+                <input type="checkbox" id="add-faction-leads">
+                <span>Zusätzlich: Fraktionsvorsitzende/r</span>
+              </label>
+            </div>
+            <div id="extra-list" class="hint" style="margin-top:8px;">Keine zusätzlichen Empfänger ausgewählt.</div>
           </fieldset>
 
           <fieldset>
@@ -169,7 +196,7 @@ Mit freundlichen Grüßen
     </footer>
   </div>
 
-  <!-- MdB Lookup – nur aus Dropdown übernehmen; Intro nachträglich aktualisierbar -->
+  <!-- MdB Lookup (wie gehabt) -->
   <script>
   (function(){
     const $ = (s)=>document.querySelector(s);
@@ -214,12 +241,11 @@ Mit freundlichen Grüßen
         const name=clean(m.mdb_name); if(!name) continue;
         const anrede=salutation(name, clean(m.anrede));
         const address=(m.bundestag_address||'Platz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
-        if(!byName.has(name)){ byName.set(name,{name,anrede,address,party:clean(m.fraktion||m.party||''), wk:String(m.wk_nr||m.wk||'')}); }
+        if(!byName.has(name)){ byName.set(name,{name,anrede,address,party:clean(m.fraktion||m.party||''), wk:String(m.wk_nr||m.wk||wk)}); }
       }
       return { candidates:[...byName.values()], wks };
     }
 
-    // ---- Adresse normalisieren: "Deutscher Bundestag" sicher einfügen ----
     function normalizeBtAddr(addr){
       const lines=String(addr||'').split('\n').map(s=>s.trim()).filter(Boolean);
       const hasHeader=lines.some(l=>/^deutscher\s+bundestag$/i.test(l));
@@ -228,7 +254,6 @@ Mit freundlichen Grüßen
       return out.join('\n');
     }
 
-    // Intro-Block setzen/aktualisieren (Platzhalter ODER vorherigen Inhalt ersetzen)
     function setIntro(anrede, addr, name){
       const addrNorm = normalizeBtAddr(addr || 'Platz der Republik 1\n11011 Berlin');
       const newAddr  = (name?name+'\n':'') + addrNorm;
@@ -251,6 +276,17 @@ Mit freundlichen Grüßen
       elMSG.value = txt;
       elMSG.dataset.recipientAddr = newAddr;
       elMSG.dataset.salutation    = newSal;
+
+      if (window.setPrimaryRecipient) {
+        window.setPrimaryRecipient({
+          mdb_name: name || '',
+          anrede: newSal.replace(/,\s*$/,''),
+          fraktion: '',
+          bundesland: '',
+          bundestag_address: addrNorm,
+          placeholder: !name
+        });
+      }
     }
 
     function hideSelect(){ selWrap.style.display='none'; elSel.innerHTML=''; elHint.textContent=''; }
@@ -289,8 +325,8 @@ Mit freundlichen Grüßen
       hideSelect();
       const plz=(elPLZ.value||'').trim(); const city=(elCity.value||'').trim();
       if(!/^\d{5}$/.test(plz) && city.length<2){
-        setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin',''); 
-        return; 
+        setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin','');
+        return;
       }
       try{
         const {candidates,wks}=await findCandidates(plz,city);
@@ -310,7 +346,129 @@ Mit freundlichen Grüßen
   })();
   </script>
 
-  <!-- Token Handling mit Live-Vorschau + finalem Submit -->
+  <!-- Zusatz-Empfänger (Bundesland/Partei + optional Fraktionsvorsitzende/Kanzler) -->
+  <script type="module">
+    async function loadJSON(p){ return fetch(p,{cache:'no-store'}).then(r=>r.json()); }
+
+    // robust laden (assets/… und Fallback)
+    async function loadSeries(paths){
+      for (const p of paths){ try { const j = await loadJSON(p); if (j) return j; } catch(e){} }
+      return {};
+    }
+    const byState = await loadSeries(['assets/data/mdb_by_state.json','/assets/data/mdb_by_state.json','mdb_by_state.json']);
+    const byParty = await loadSeries(['assets/data/mdb_by_party.json','/assets/data/mdb_by_party.json','mdb_by_party.json']);
+
+    async function loadExtras(){
+      const x = await loadSeries(['assets/data/mdb_extras.json','/assets/data/mdb_extras.json','/data/mdb_extras.json','mdb_extras.json']);
+      return Array.isArray(x) ? x : (Array.isArray(x.items) ? x.items : []);
+    }
+    const extras = await loadExtras();
+
+    const $state = document.getElementById('filter-bundesland');
+    const $party = document.getElementById('filter-partei');
+    const $addFaction = document.getElementById('add-faction-leads');
+    const $list = document.getElementById('extra-list');
+
+    // Dropdowns füllen
+    Object.keys(byState).filter(Boolean).sort().forEach(s=>{
+      const o=document.createElement('option'); o.value=s; o.textContent=s; $state.appendChild(o);
+    });
+    Object.keys(byParty).filter(Boolean).sort().forEach(p=>{
+      const o=document.createElement('option'); o.value=p; o.textContent=p; $party.appendChild(o);
+    });
+
+    // Brücke für Hauptempfänger
+    let primaryRecipient = null;
+    window.setPrimaryRecipient = function(mdbEntry){
+      primaryRecipient = mdbEntry || null;
+    };
+    window.getPrimaryRecipient = function(){
+      return primaryRecipient && !primaryRecipient.placeholder ? primaryRecipient : null;
+    };
+
+    // interne Liste (klick-aktivierbare Chips)
+    let extraRecipients = [];
+
+    function uniquePush(list, entry){
+      if(!entry || !entry.mdb_name) return;
+      const key=(entry.mdb_name+'|'+(entry.fraktion||'')+'|'+(entry.bundesland||'')).toLowerCase();
+      if(!list.some(e => (e.mdb_name+'|'+(e.fraktion||'')+'|'+(e.bundesland||'')).toLowerCase()===key)){
+        list.push({...entry, active:false});
+      }
+    }
+
+    function renderExtraList(){
+      if(!extraRecipients.length){
+        $list.textContent='Keine zusätzlichen Empfänger ausgewählt.';
+        return;
+      }
+      $list.innerHTML = '<strong>Zusätzliche Empfänger ('+extraRecipients.filter(e=>e.active).length+'/'+extraRecipients.length+')</strong><br>';
+      extraRecipients.forEach(e=>{
+        const chip=document.createElement('span');
+        chip.className='chip';
+        chip.textContent=`${e.mdb_name}${e.fraktion? ' · '+e.fraktion : ''}${e.bundesland? ' · '+e.bundesland : ''}`;
+        chip.dataset.active = e.active ? '1' : '0';
+        chip.addEventListener('click',()=>{ e.active = !e.active; renderExtraList(); });
+        $list.appendChild(chip);
+      });
+    }
+
+    function addFactionLeads(list, partyOrNull){
+      if(!extras.length) return;
+      const filtered = extras.filter(x=>{
+        const role = (x.rolle || '');
+        const isLead = /(fraktionsvorsitz|vorsitzender|vorsitzende|bundeskanzler|kanzler)/i.test(role);
+        if(!isLead) return false;
+        if(partyOrNull && (x.fraktion||'').toLowerCase() !== partyOrNull.toLowerCase()) return false;
+        return !/(afd|werteunion|alternative f[üu]r deutschland)/i.test(x.fraktion||'');
+      });
+      filtered.forEach(x=>uniquePush(list,x));
+    }
+
+    function removeFactionLeads(list){
+      for(let i=list.length-1;i>=0;i--){
+        if(/(fraktionsvorsitz|vorsitzender|vorsitzende|bundeskanzler|kanzler)/i.test(list[i].rolle||'')) list.splice(i,1);
+      }
+    }
+
+    // Filterevents
+    $state.addEventListener('change', ()=>{
+      extraRecipients = [];
+      const state=$state.value;
+      if(state && byState[state]) byState[state].forEach(e=>uniquePush(extraRecipients,e));
+      const party=$party.value;
+      if(party) extraRecipients = extraRecipients.filter(e => (e.fraktion||'').toLowerCase()===party.toLowerCase());
+      if($addFaction.checked) addFactionLeads(extraRecipients, $party.value || null);
+      renderExtraList();
+    });
+
+    $party.addEventListener('change', ()=>{
+      extraRecipients = [];
+      const party=$party.value;
+      if(party && byParty[party]) byParty[party].forEach(e=>uniquePush(extraRecipients,e));
+      const state=$state.value;
+      if(state) extraRecipients = extraRecipients.filter(e => (e.bundesland||'')===state);
+      if($addFaction.checked) addFactionLeads(extraRecipients, party || null);
+      renderExtraList();
+    });
+
+    $addFaction.addEventListener('change', ()=>{
+      const party = $party.value || null;
+      if($addFaction.checked) addFactionLeads(extraRecipients, party);
+      else removeFactionLeads(extraRecipients);
+      renderExtraList();
+    });
+
+    // Exponiere Auswahl für den Submit – nur aktive Chips gehen mit
+    window.getSelectedRecipients = function(){
+      const result=[];
+      if(primaryRecipient && !primaryRecipient.placeholder && !primaryRecipient.excluded) result.push(primaryRecipient);
+      extraRecipients.filter(e=>e.active).forEach(e=>result.push(e));
+      return result;
+    };
+  </script>
+
+  <!-- Tokens & Submit -->
   <script>
   (function(){
     const $=(s)=>document.querySelector(s);
@@ -339,7 +497,6 @@ Mit freundlichen Grüßen
       return out.replace(/\n{3,}/g,'\n\n').trimEnd();
     }
 
-    // Live-Vorschau nur für Absenderblock
     const TOKENS=['{Vorname}','{Nachname}','{Straße}','{PLZ}','{Ort}'];
     function renderSenderPreview(){
       if(!msg) return;
@@ -350,7 +507,6 @@ Mit freundlichen Grüßen
     ['#first_name','#last_name','#street','#sender_zip','#sender_city','#plz','#city'].forEach(sel=>$(sel)?.addEventListener('blur',renderSenderPreview));
     document.addEventListener('DOMContentLoaded',renderSenderPreview);
 
-    // Finaler Submit
     form?.addEventListener('submit', async (e)=>{
       e.preventDefault();
       const sal  = msg?.dataset?.salutation    || 'Sehr geehrte Damen und Herren,';
@@ -378,6 +534,20 @@ Mit freundlichen Grüßen
       payload.copy_to_self  = fd.has('copy_to_self');
       payload.consent_print = fd.has('consent_print');
       payload.message       = finalMsg;
+
+      // Extra-Empfänger & Primary mitsenden (Fan-out ready)
+      try{
+        if (window.getSelectedRecipients) {
+          const recips = window.getSelectedRecipients() || [];
+          if (Array.isArray(recips) && recips.length) {
+            payload.extra_recipients = recips.filter((_,i)=>i>0); // alles außer primary
+          }
+        }
+        if (window.getPrimaryRecipient) {
+          const primary = window.getPrimaryRecipient();
+          if (primary) payload.primary_recipient = primary;
+        }
+      }catch{}
 
       try{
         const res=await fetch(form.action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
