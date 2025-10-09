@@ -1,4 +1,4 @@
-// /api/queue.js – Vercel Serverless Function (Fan-out + ZIP)
+// /api/queue.js – Vercel Serverless Function (Fan-out + ZIP + PDF-Zähler)
 import Brevo from "@getbrevo/brevo";
 import PDFDocument from "pdfkit";
 import { kv } from "@vercel/kv";
@@ -18,8 +18,9 @@ const allowCors = (fn) => async (req, res) => {
 /** --- kleine Helfer --- */
 const must = (v) => v && String(v).trim() !== "";
 const esc = (s = "") =>
-  String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
-           .replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+  String(s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 const mm = (x) => (x * 72) / 25.4;
 
 function readBody(req) {
@@ -61,9 +62,8 @@ function stripRecipientParagraph(txt=""){
   return parts.join("\n\n").trim();
 }
 
-/** NEU: ggf. führende Anrede-Zeile entfernen */
+/** ggf. führende Anrede-Zeile entfernen */
 function stripLeadingSalutation(txt=""){
-  // Start des Textes: Zeile mit "Sehr geehrte..." + folgende Leerzeile abwerfen
   return String(txt).replace(/^\s*Sehr\s+geehrte[^\n]*\n\s*\n?/i, "");
 }
 
@@ -107,9 +107,8 @@ async function buildLetterPDF({ queueId, sender, recipient, subject, bodyText, s
 
   if (must(subject)) { doc.moveDown(0.5); doc.font("Times-Bold").fontSize(FONT.body).text(subject, usableLeft, bodyStartY, { width:usableWidth }); doc.font("Times-Roman"); }
 
-  let cleanBody=stripRecipientParagraph(bodyText||""); // Adresse vorne raus
-  cleanBody=stripLeadingSalutation(cleanBody);         // NEU: evtl. alte Anrede raus
-  // Falls jetzt keine Anrede am Start, präfixen
+  let cleanBody=stripRecipientParagraph(bodyText||"");
+  cleanBody=stripLeadingSalutation(cleanBody);
   if (!/^\s*Sehr\s+geehrte/i.test(cleanBody)) {
     const sal = salutation && String(salutation).trim() ? salutation : "Sehr geehrte Damen und Herren,";
     cleanBody = `${sal}\n\n${cleanBody}`;
@@ -131,14 +130,33 @@ function zipBuffers(files){
     const out=new PassThrough(); const chunks=[];
     out.on("data",(d)=>chunks.push(d)); out.on("end",()=>resolve(Buffer.concat(chunks)));
     archive.on("error",(err)=>reject(err)); archive.pipe(out);
-    files.forEach(f=>archive.append(f.buffer,{name:f.name})); archive.finalize();
+    files.forEach(f=>archive.append(f.buffer,{name:f.name}));
+    archive.finalize();
   });
 }
 
-/** --- Statistik-Zähler --- */
+/** --- Statistik-Zähler (Legacy: E-Mail) --- */
 async function incrementCounter(){
-  try{ const n=await kv.incr("sent_emails"); await kv.set("sent_emails_last_update", new Date().toISOString()); return n; }
-  catch(e){ console.error("KV increment failed:",e); return null; }
+  try{
+    const n=await kv.incr("sent_emails");
+    await kv.set("sent_emails_last_update", new Date().toISOString());
+    return n;
+  }catch(e){
+    console.error("KV increment failed:",e);
+    return null;
+  }
+}
+
+/** --- NEU: PDFs-Zähler + Zeitstempel --- */
+async function updateStats(pdfsAdded = 0) {
+  try {
+    if (pdfsAdded > 0) {
+      await kv.incrby("pdfs_generated", pdfsAdded); // legt Key an, falls nicht vorhanden
+    }
+    await kv.set("stats_updated_at", new Date().toISOString());
+  } catch (e) {
+    console.error("KV stats update failed:", e);
+  }
 }
 
 /** --- Handler --- */
@@ -160,6 +178,8 @@ export default allowCors(async function handler(req,res){
     message: raw.message ?? "",
     consent_print: toBool(raw.consent_print ?? raw.postversand ?? false),
     copy_to_self:  toBool(raw.copy_to_self  ?? raw.copy       ?? false),
+
+    // Fan-out:
     primary_recipient: raw.primary_recipient || null,
     extra_recipients: Array.isArray(raw.extra_recipients) ? raw.extra_recipients : [],
   };
@@ -171,6 +191,7 @@ export default allowCors(async function handler(req,res){
   const missing=required.filter(k=>!must(body[k]));
   if(missing.length) return res.status(400).json({ ok:false, error:"missing_fields", fields:missing });
 
+  // Empfängerliste
   const recipients=[];
   const isExcludedParty=(p="")=>/^(afd|werteunion)$/i.test(String(p).trim());
   function pushRecipient(r){
@@ -196,12 +217,10 @@ export default allowCors(async function handler(req,res){
     const r=recipients[i];
     const salForThis = (r.anrede && r.anrede.trim()) ? r.anrede : buildPoliteSalutation(r.name, "Sehr geehrte Damen und Herren,");
 
-    // Aus Nutzertest: vorhandene Adresse + alte Anrede sicher entfernen, dann Tokens setzen
     let msgForThis = String(body.message||"");
-    msgForThis = stripRecipientParagraph(msgForThis);  // evtl. bereits eingefügte Anschrift streichen
-    msgForThis = stripLeadingSalutation(msgForThis);   // evtl. bereits eingefügte Anrede streichen
+    msgForThis = stripRecipientParagraph(msgForThis);
+    msgForThis = stripLeadingSalutation(msgForThis);
 
-    // Tokens/Substitute einsetzen
     msgForThis = msgForThis
       .replace(/\{Anrede\}/g, salForThis)
       .replace(/\{Anrede_Name\}/g, r.name || "")
@@ -217,8 +236,8 @@ export default allowCors(async function handler(req,res){
       sender: senderData,
       recipient: { name:r.name, address:r.address },
       subject: body.subject,
-      bodyText: msgForThis,     // enthält jetzt KEINE alte Anrede/Adresse mehr
-      salutation: salForThis,   // falls Nutzertext keine {Anrede} hatte
+      bodyText: msgForThis,
+      salutation: salForThis,
     });
 
     const filename = recipients.length===1 ? `Brief_${queueId}.pdf` : `Brief_${queueId}_${String(i+1).padStart(2,"0")}.pdf`;
@@ -261,6 +280,7 @@ export default allowCors(async function handler(req,res){
       teamAttachments=[{ name:`Briefe_${queueId}.zip`, content: zipBuf.toString("base64") }];
     }
 
+    // TEAM-Mail (entscheidend für "sicher erzeugt")
     await api.sendTransacEmail({
       to:[{email:process.env.TEAM_INBOX}],
       sender:{email:process.env.FROM_EMAIL, name:"Kampagnen-Formular"},
@@ -270,8 +290,11 @@ export default allowCors(async function handler(req,res){
       attachment:teamAttachments
     });
 
-    await incrementCounter();
+    // --- Zähler aktualisieren ---
+    await updateStats(pdfFiles.length);   // PDFs
+    await incrementCounter();             // (optional) E-Mails
 
+    // Nutzerkopie (falls gewünscht)
     if(body.copy_to_self && pdfFiles.length>0){
       await api.sendTransacEmail({
         to:[{email:body.email}],
@@ -292,6 +315,8 @@ export default allowCors(async function handler(req,res){
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
+
 
 
 
