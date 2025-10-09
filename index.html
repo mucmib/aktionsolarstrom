@@ -281,75 +281,77 @@
   </div>
 
   <script>
-    // Smooth Scrolling für In-Page-Links
-    document.addEventListener('click', (e) => {
-      const a = e.target.closest('a[href^="#"]'); if(!a) return;
-      const el = document.querySelector(a.getAttribute('href'));
-      if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
-    });
+  // Smooth Scrolling für In-Page-Links
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]'); if(!a) return;
+    const el = document.querySelector(a.getAttribute('href'));
+    if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+  });
 
-    // ---- Live-Zähler-Logik (PDFs) ----
-    // Erwartet JSON von /api/stats: { ok, pdfs_generated, updated_at, … }
-    const STATS_URL = '/api/stats';
+  // ---- Live-Zähler-Logik (PDFs) ----
+  // Erwartet JSON von /api/stats.json: { pdfs_generated, count, last_update, ... }
+  const STATS_URL = '/api/stats.json';
 
-    function countUp(el, to, duration = 1200) {
-      const start = performance.now();
-      const from = 0;
-      const fmt = new Intl.NumberFormat('de-DE');
-      function frame(now) {
-        const t = Math.min(1, (now - start) / duration);
-        const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
-        const val = Math.round(from + (to - from) * eased);
-        el.textContent = fmt.format(val);
-        if (t < 1) requestAnimationFrame(frame);
+  function countUp(el, to, duration = 1200) {
+    const start = performance.now();
+    const from = 0;
+    const fmt = new Intl.NumberFormat('de-DE');
+    function frame(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+      const val = Math.round(from + (to - from) * eased);
+      el.textContent = fmt.format(val);
+      if (t < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function formatStandText(isoString) {
+    if (!isoString) return null;
+    const d = new Date(isoString);
+    if (isNaN(d)) return null;
+    const fmtDate = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
+    const fmtTime = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
+    return `Stand: ${fmtDate}, ${fmtTime} Uhr`;
+  }
+
+  async function loadCounter() {
+    const el = document.getElementById('sentCount');
+    const metaWrap = document.getElementById('statsMeta');
+    const metaText = document.getElementById('statsTime');
+    if (!el) return;
+
+    try {
+      const res = await fetch(STATS_URL + `?nocache=${Date.now()}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+
+      // NEU: PDFs statt E-Mails – mit Fallback
+      const raw = Number(
+        data.pdfs_generated ?? data.count ?? data.sent_emails ?? 0
+      );
+      const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
+      countUp(el, value);
+
+      const stand = formatStandText(data.last_update);
+      if (stand && metaWrap && metaText) {
+        metaText.textContent = stand;
+        metaWrap.hidden = false;
+      } else if (metaWrap) {
+        metaWrap.hidden = true;
       }
-      requestAnimationFrame(frame);
+    } catch (e) {
+      console.warn('Zähler konnte nicht geladen werden:', e);
+      el.textContent = '–';
+      if (metaWrap) metaWrap.hidden = true;
     }
+  }
 
-    function formatStandText(isoString) {
-      if (!isoString) return null;
-      const d = new Date(isoString);
-      if (isNaN(d)) return null;
-      const fmtDate = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
-      const fmtTime = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
-      return `Stand: ${fmtDate}, ${fmtTime} Uhr`;
-    }
-
-    async function loadCounter() {
-      const el = document.getElementById('pdfCount');
-      const metaWrap = document.getElementById('statsMeta');
-      const metaText = document.getElementById('statsTime');
-      if (!el) return;
-
-      try {
-        const res = await fetch(STATS_URL + `?nocache=${Date.now()}`, { cache: 'no-store' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
-
-        // Zahl
-        const raw = Number(data.pdfs_generated);
-        const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
-        countUp(el, value);
-
-        // Datum/Uhrzeit
-        const stand = formatStandText(data.updated_at);
-        if (stand && metaWrap && metaText) {
-          metaText.textContent = stand;
-          metaWrap.hidden = false;
-        } else if (metaWrap) {
-          metaWrap.hidden = true;
-        }
-      } catch (e) {
-        console.warn('Zähler konnte nicht geladen werden:', e);
-        el.textContent = '–';
-        if (metaWrap) metaWrap.hidden = true;
-      }
-    }
-
-    loadCounter();
-  </script>
+  loadCounter();
+</script>
 </body>
 </html>
+
 
 
 
