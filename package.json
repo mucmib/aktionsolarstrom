@@ -5,6 +5,7 @@
   "dependencies": {
     "@getbrevo/brevo": "^2.0.0",
     "pdfkit": "^0.15.0",
-    "@vercel/kv": "^1.0.0"
+    "@vercel/kv": "^1.0.0",
+    "archiver": "^6.0.1"
   }
 }
