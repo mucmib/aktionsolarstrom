@@ -1,0 +1,42 @@
+[
+  {
+    "rolle": "Sprecherin für Klimaschutz und Energie",
+    "fraktion": "SPD",
+    "mdb_name": "Nina Scheer",
+    "anrede": "Sehr geehrte Frau Scheer",
+    "bundesland": "Schleswig-Holstein",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
+  },
+  {
+    "rolle": "Sprecherin für Klimaschutz",
+    "fraktion": "Bündnis 90/Die Grünen",
+    "mdb_name": "Lisa Badum",
+    "anrede": "Sehr geehrte Frau Badum",
+    "bundesland": "Bayern",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
+  },
+  {
+    "rolle": "Sprecher für Klimaschutz und Energie",
+    "fraktion": "CDU/CSU",
+    "mdb_name": "Andreas Jung",
+    "anrede": "Sehr geehrter Herr Jung",
+    "bundesland": "Baden-Württemberg",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
+  },
+  {
+    "rolle": "Sprecher für Energiepolitik",
+    "fraktion": "FDP",
+    "mdb_name": "Michael Kruse",
+    "anrede": "Sehr geehrter Herr Kruse",
+    "bundesland": "Hamburg",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
+  },
+  {
+    "rolle": "Energie- und Klimapolitischer Sprecher",
+    "fraktion": "DIE LINKE",
+    "mdb_name": "Lorenz Gösta Beutin",
+    "anrede": "Sehr geehrter Herr Beutin",
+    "bundesland": "Schleswig-Holstein",
+    "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin"
+  }
+]
