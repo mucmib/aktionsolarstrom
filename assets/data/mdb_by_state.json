@@ -1,0 +1,2258 @@
+{
+  "Nordrhein-Westfalen": [
+    {
+      "mdb_name": "Serap Güler",
+      "anrede": "Sehr geehrte/r Serap Güler",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "92"
+    },
+    {
+      "mdb_name": "Tijen Ataoğlu",
+      "anrede": "Sehr geehrte/r Tijen Ataoğlu",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "137"
+    },
+    {
+      "mdb_name": "Mahmut Özdemir",
+      "anrede": "Sehr geehrte/r Mahmut Özdemir",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "115"
+    },
+    {
+      "mdb_name": "Lamya Kaddor",
+      "anrede": "Sehr geehrte/r Lamya Kaddor",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "114"
+    },
+    {
+      "mdb_name": "Sascha van Beek",
+      "anrede": "Sehr geehrte/r Sascha van Beek",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "112"
+    },
+    {
+      "mdb_name": "Oliver Pöpsel",
+      "anrede": "Sehr geehrte/r Oliver Pöpsel",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "145"
+    },
+    {
+      "mdb_name": "Ophelia Nick",
+      "anrede": "Sehr geehrte/r Ophelia Nick",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "104"
+    },
+    {
+      "mdb_name": "Hendrik Bollmann",
+      "anrede": "Sehr geehrte/r Hendrik Bollmann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "140"
+    },
+    {
+      "mdb_name": "Caroline Bosbach",
+      "anrede": "Sehr geehrte/r Caroline Bosbach",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "99"
+    },
+    {
+      "mdb_name": "Ralph Brinkhaus",
+      "anrede": "Sehr geehrte/r Ralph Brinkhaus",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "130"
+    },
+    {
+      "mdb_name": "Jan Köstering",
+      "anrede": "Sehr geehrte/r Jan Köstering",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "98"
+    },
+    {
+      "mdb_name": "Katrin Fey",
+      "anrede": "Sehr geehrte/r Katrin Fey",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "147"
+    },
+    {
+      "mdb_name": "Ulrich Thoden",
+      "anrede": "Sehr geehrte/r Ulrich Thoden",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "127"
+    },
+    {
+      "mdb_name": "Katja Strauss-Köster",
+      "anrede": "Sehr geehrte/r Katja Strauss-Köster",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "138"
+    },
+    {
+      "mdb_name": "Ulle Schauws",
+      "anrede": "Sehr geehrte/r Ulle Schauws",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "113"
+    },
+    {
+      "mdb_name": "Rolf Mützenich",
+      "anrede": "Sehr geehrte/r Rolf Mützenich",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "94"
+    },
+    {
+      "mdb_name": "Stefan Schwartze",
+      "anrede": "Sehr geehrte/r Stefan Schwartze",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "132"
+    },
+    {
+      "mdb_name": "Lars Ehm",
+      "anrede": "Sehr geehrte/r Lars Ehm",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "121"
+    },
+    {
+      "mdb_name": "Britta Haßelmann",
+      "anrede": "Sehr geehrte/r Britta Haßelmann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "131"
+    },
+    {
+      "mdb_name": "Astrid Timmermann-Fechter",
+      "anrede": "Sehr geehrte/r Astrid Timmermann-Fechter",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "117"
+    },
+    {
+      "mdb_name": "Oliver Vogt",
+      "anrede": "Sehr geehrte/r Oliver Vogt",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "133"
+    },
+    {
+      "mdb_name": "Svenja Schulze",
+      "anrede": "Sehr geehrte/r Svenja Schulze",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "128"
+    },
+    {
+      "mdb_name": "Christian Haase",
+      "anrede": "Sehr geehrte/r Christian Haase",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "135"
+    },
+    {
+      "mdb_name": "Jürgen Hardt",
+      "anrede": "Sehr geehrte/r Jürgen Hardt",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "102"
+    },
+    {
+      "mdb_name": "Elisabeth Winkelmeier-Becker",
+      "anrede": "Sehr geehrte/r Elisabeth Winkelmeier-Becker",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "96"
+    },
+    {
+      "mdb_name": "Matthias Hauer",
+      "anrede": "Sehr geehrte/r Matthias Hauer",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "119"
+    },
+    {
+      "mdb_name": "Marc Henrichmann",
+      "anrede": "Sehr geehrte/r Marc Henrichmann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "126"
+    },
+    {
+      "mdb_name": "Jens Spahn",
+      "anrede": "Sehr geehrte/r Jens Spahn",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "123"
+    },
+    {
+      "mdb_name": "Anne König",
+      "anrede": "Sehr geehrte/r Anne König",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "125"
+    },
+    {
+      "mdb_name": "Ansgar Heveling",
+      "anrede": "Sehr geehrte/r Ansgar Heveling",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "109"
+    },
+    {
+      "mdb_name": "Thomas Jarzombek",
+      "anrede": "Sehr geehrte/r Thomas Jarzombek",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "105"
+    },
+    {
+      "mdb_name": "Oliver Kaczmarek",
+      "anrede": "Sehr geehrte/r Oliver Kaczmarek",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "143"
+    },
+    {
+      "mdb_name": "Nicklas Kappe",
+      "anrede": "Sehr geehrte/r Nicklas Kappe",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "124"
+    },
+    {
+      "mdb_name": "Georg Kippels",
+      "anrede": "Sehr geehrte/r Georg Kippels",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "90"
+    },
+    {
+      "mdb_name": "Serdar Yüksel",
+      "anrede": "Sehr geehrte/r Serdar Yüksel",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "139"
+    },
+    {
+      "mdb_name": "Günter Krings",
+      "anrede": "Sehr geehrte/r Günter Krings",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "108"
+    },
+    {
+      "mdb_name": "Nyke Slawik",
+      "anrede": "Sehr geehrte/r Nyke Slawik",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "100"
+    },
+    {
+      "mdb_name": "Lea Reisner",
+      "anrede": "Sehr geehrte/r Lea Reisner",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "93"
+    },
+    {
+      "mdb_name": "Sabine Poschmann",
+      "anrede": "Sehr geehrte/r Sabine Poschmann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "142"
+    },
+    {
+      "mdb_name": "Helge Lindh",
+      "anrede": "Sehr geehrte/r Helge Lindh",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "101"
+    },
+    {
+      "mdb_name": "Charlotte Neuhäuser",
+      "anrede": "Sehr geehrte/r Charlotte Neuhäuser",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "136"
+    },
+    {
+      "mdb_name": "Paul Ziemiak",
+      "anrede": "Sehr geehrte/r Paul Ziemiak",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "149"
+    },
+    {
+      "mdb_name": "Dirk Wiese",
+      "anrede": "Sehr geehrte/r Dirk Wiese",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "146"
+    },
+    {
+      "mdb_name": "Markus Töns",
+      "anrede": "Sehr geehrte/r Markus Töns",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "122"
+    },
+    {
+      "mdb_name": "Catarina dos Santos-Wintz",
+      "anrede": "Sehr geehrte/r Catarina dos Santos-Wintz",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "87"
+    },
+    {
+      "mdb_name": "Florian Müller",
+      "anrede": "Sehr geehrte/r Florian Müller",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "148"
+    },
+    {
+      "mdb_name": "Johannes Winkel",
+      "anrede": "Sehr geehrte/r Johannes Winkel",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "106"
+    },
+    {
+      "mdb_name": "Wilfried Oellers",
+      "anrede": "Sehr geehrte/r Wilfried Oellers",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "88"
+    },
+    {
+      "mdb_name": "Jens Peick",
+      "anrede": "Sehr geehrte/r Jens Peick",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "141"
+    },
+    {
+      "mdb_name": "Martin Plum",
+      "anrede": "Sehr geehrte/r Martin Plum",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "110"
+    },
+    {
+      "mdb_name": "Daniel Walter",
+      "anrede": "Sehr geehrte/r Daniel Walter",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "89"
+    },
+    {
+      "mdb_name": "Henning Rehbaum",
+      "anrede": "Sehr geehrte/r Henning Rehbaum",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "129"
+    },
+    {
+      "mdb_name": "Carl-Philipp Sassenrath",
+      "anrede": "Sehr geehrte/r Carl-Philipp Sassenrath",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "107"
+    },
+    {
+      "mdb_name": "Norbert Röttgen",
+      "anrede": "Sehr geehrte/r Norbert Röttgen",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "97"
+    },
+    {
+      "mdb_name": "Stefan Rouenhoff",
+      "anrede": "Sehr geehrte/r Stefan Rouenhoff",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "111"
+    },
+    {
+      "mdb_name": "Frank Schwabe",
+      "anrede": "Sehr geehrte/r Frank Schwabe",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "120"
+    },
+    {
+      "mdb_name": "Detlef Seif",
+      "anrede": "Sehr geehrte/r Detlef Seif",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "91"
+    },
+    {
+      "mdb_name": "Katrin Uhlig",
+      "anrede": "Sehr geehrte/r Katrin Uhlig",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "95"
+    },
+    {
+      "mdb_name": "Michael Thews",
+      "anrede": "Sehr geehrte/r Michael Thews",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "144"
+    },
+    {
+      "mdb_name": "Robin Wagener",
+      "anrede": "Sehr geehrte/r Robin Wagener",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "134"
+    },
+    {
+      "mdb_name": "Ingo Vogel",
+      "anrede": "Sehr geehrte/r Ingo Vogel",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "118"
+    },
+    {
+      "mdb_name": "Sascha H. Wagner",
+      "anrede": "Sehr geehrte/r Sascha H. Wagner",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "116"
+    },
+    {
+      "mdb_name": "Klaus Wiener",
+      "anrede": "Sehr geehrte/r Klaus Wiener",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Nordrhein-Westfalen",
+      "wahlkreis": "103"
+    }
+  ],
+  "Brandenburg": [
+    {
+      "mdb_name": "Knut Abraham",
+      "anrede": "Sehr geehrte/r Knut Abraham",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Brandenburg",
+      "wahlkreis": "65"
+    },
+    {
+      "mdb_name": "Christin Willnat",
+      "anrede": "Sehr geehrte/r Christin Willnat",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Brandenburg",
+      "wahlkreis": "60"
+    },
+    {
+      "mdb_name": "Uwe Feiler",
+      "anrede": "Sehr geehrte/r Uwe Feiler",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Brandenburg",
+      "wahlkreis": "58"
+    },
+    {
+      "mdb_name": "Maja Wallstein",
+      "anrede": "Sehr geehrte/r Maja Wallstein",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Brandenburg",
+      "wahlkreis": "64"
+    },
+    {
+      "mdb_name": "Stefan Zierke",
+      "anrede": "Sehr geehrte/r Stefan Zierke",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Brandenburg",
+      "wahlkreis": "57"
+    },
+    {
+      "mdb_name": "Andrea Lübcke",
+      "anrede": "Sehr geehrte/r Andrea Lübcke",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Brandenburg",
+      "wahlkreis": "62"
+    },
+    {
+      "mdb_name": "Isabelle Vandre",
+      "anrede": "Sehr geehrte/r Isabelle Vandre",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Brandenburg",
+      "wahlkreis": "61"
+    },
+    {
+      "mdb_name": "Sebastian Steineke",
+      "anrede": "Sehr geehrte/r Sebastian Steineke",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Brandenburg",
+      "wahlkreis": "56"
+    }
+  ],
+  "Bremen": [
+    {
+      "mdb_name": "Thomas Röwekamp",
+      "anrede": "Sehr geehrte/r Thomas Röwekamp",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Bremen",
+      "wahlkreis": "54"
+    },
+    {
+      "mdb_name": "Uwe Schmidt",
+      "anrede": "Sehr geehrte/r Uwe Schmidt",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Bremen",
+      "wahlkreis": "55"
+    }
+  ],
+  "Sachsen-Anhalt": [
+    {
+      "mdb_name": "David Schliesing",
+      "anrede": "Sehr geehrte/r David Schliesing",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Sachsen-Anhalt",
+      "wahlkreis": "67"
+    },
+    {
+      "mdb_name": "Janina Böttger",
+      "anrede": "Sehr geehrte/r Janina Böttger",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Sachsen-Anhalt",
+      "wahlkreis": "71"
+    },
+    {
+      "mdb_name": "Tino Sorge",
+      "anrede": "Sehr geehrte/r Tino Sorge",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Sachsen-Anhalt",
+      "wahlkreis": "69"
+    },
+    {
+      "mdb_name": "Sepp Müller",
+      "anrede": "Sehr geehrte/r Sepp Müller",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Sachsen-Anhalt",
+      "wahlkreis": "70"
+    },
+    {
+      "mdb_name": "Dieter Stier",
+      "anrede": "Sehr geehrte/r Dieter Stier",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Sachsen-Anhalt",
+      "wahlkreis": "72"
+    }
+  ],
+  "Niedersachsen": [
+    {
+      "mdb_name": "Timon Dzienus",
+      "anrede": "Sehr geehrte/r Timon Dzienus",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "41"
+    },
+    {
+      "mdb_name": "Dennis Rohde",
+      "anrede": "Sehr geehrte/r Dennis Rohde",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "27"
+    },
+    {
+      "mdb_name": "Dunja Kreiser",
+      "anrede": "Sehr geehrte/r Dunja Kreiser",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "49"
+    },
+    {
+      "mdb_name": "Svenja Stadler",
+      "anrede": "Sehr geehrte/r Svenja Stadler",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "36"
+    },
+    {
+      "mdb_name": "Julia Verlinden",
+      "anrede": "Sehr geehrte/r Julia Verlinden",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "37"
+    },
+    {
+      "mdb_name": "Silvia Breher",
+      "anrede": "Sehr geehrte/r Silvia Breher",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "32"
+    },
+    {
+      "mdb_name": "Marja-Liisa Völlers",
+      "anrede": "Sehr geehrte/r Marja-Liisa Völlers",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "40"
+    },
+    {
+      "mdb_name": "Filiz Polat",
+      "anrede": "Sehr geehrte/r Filiz Polat",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "38"
+    },
+    {
+      "mdb_name": "Daniela Rump",
+      "anrede": "Sehr geehrte/r Daniela Rump",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "48"
+    },
+    {
+      "mdb_name": "Anja Troff-Schaffarzyk",
+      "anrede": "Sehr geehrte/r Anja Troff-Schaffarzyk",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "25"
+    },
+    {
+      "mdb_name": "Bastian Ernst",
+      "anrede": "Sehr geehrte/r Bastian Ernst",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "28"
+    },
+    {
+      "mdb_name": "Christoph Frauenpreiß",
+      "anrede": "Sehr geehrte/r Christoph Frauenpreiß",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "29"
+    },
+    {
+      "mdb_name": "Andreas Mattfeldt",
+      "anrede": "Sehr geehrte/r Andreas Mattfeldt",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "34"
+    },
+    {
+      "mdb_name": "Fritz Güntzler",
+      "anrede": "Sehr geehrte/r Fritz Güntzler",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "53"
+    },
+    {
+      "mdb_name": "Hubertus Heil",
+      "anrede": "Sehr geehrte/r Hubertus Heil",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "45"
+    },
+    {
+      "mdb_name": "Karoline Otte",
+      "anrede": "Sehr geehrte/r Karoline Otte",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "52"
+    },
+    {
+      "mdb_name": "Hendrik Hoppenstedt",
+      "anrede": "Sehr geehrte/r Hendrik Hoppenstedt",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "43"
+    },
+    {
+      "mdb_name": "Siemtje Möller",
+      "anrede": "Sehr geehrte/r Siemtje Möller",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "26"
+    },
+    {
+      "mdb_name": "Alexander Jordan",
+      "anrede": "Sehr geehrte/r Alexander Jordan",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "51"
+    },
+    {
+      "mdb_name": "Boris Pistorius",
+      "anrede": "Sehr geehrte/r Boris Pistorius",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "42"
+    },
+    {
+      "mdb_name": "Vivian Tauschwitz",
+      "anrede": "Sehr geehrte/r Vivian Tauschwitz",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "35"
+    },
+    {
+      "mdb_name": "Axel Knoerig",
+      "anrede": "Sehr geehrte/r Axel Knoerig",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "33"
+    },
+    {
+      "mdb_name": "Matthias Miersch",
+      "anrede": "Sehr geehrte/r Matthias Miersch",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "47"
+    },
+    {
+      "mdb_name": "Mareike Wulf",
+      "anrede": "Sehr geehrte/r Mareike Wulf",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "46"
+    },
+    {
+      "mdb_name": "Heidi Reichinnek",
+      "anrede": "Sehr geehrte/r Heidi Reichinnek",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "39"
+    },
+    {
+      "mdb_name": "Christos Pantazis",
+      "anrede": "Sehr geehrte/r Christos Pantazis",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "50"
+    },
+    {
+      "mdb_name": "Johann Saathoff",
+      "anrede": "Sehr geehrte/r Johann Saathoff",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "24"
+    },
+    {
+      "mdb_name": "Albert Stegemann",
+      "anrede": "Sehr geehrte/r Albert Stegemann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "31"
+    },
+    {
+      "mdb_name": "Vanessa-Kim Zobel",
+      "anrede": "Sehr geehrte/r Vanessa-Kim Zobel",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Niedersachsen",
+      "wahlkreis": "30"
+    }
+  ],
+  "Baden-Württemberg": [
+    {
+      "mdb_name": "Isabel Cademartori",
+      "anrede": "Sehr geehrte/r Isabel Cademartori",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "275"
+    },
+    {
+      "mdb_name": "Thomas Bareiß",
+      "anrede": "Sehr geehrte/r Thomas Bareiß",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "295"
+    },
+    {
+      "mdb_name": "Zoe Mayer",
+      "anrede": "Sehr geehrte/r Zoe Mayer",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "271"
+    },
+    {
+      "mdb_name": "Derya Türk-Nachbaur",
+      "anrede": "Sehr geehrte/r Derya Türk-Nachbaur",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "86"
+    },
+    {
+      "mdb_name": "Jasmina Hostert",
+      "anrede": "Sehr geehrte/r Jasmina Hostert",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "260"
+    },
+    {
+      "mdb_name": "Macit Karaahmetoğlu",
+      "anrede": "Sehr geehrte/r Macit Karaahmetoğlu",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "265"
+    },
+    {
+      "mdb_name": "Sahra Mirow",
+      "anrede": "Sehr geehrte/r Sahra Mirow",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "274"
+    },
+    {
+      "mdb_name": "Axel Müller",
+      "anrede": "Sehr geehrte/r Axel Müller",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "294"
+    },
+    {
+      "mdb_name": "Johannes Fechner",
+      "anrede": "Sehr geehrte/r Johannes Fechner",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "283"
+    },
+    {
+      "mdb_name": "Lars Castellucci",
+      "anrede": "Sehr geehrte/r Lars Castellucci",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "277"
+    },
+    {
+      "mdb_name": "Anja Reinalter",
+      "anrede": "Sehr geehrte/r Anja Reinalter",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "292"
+    },
+    {
+      "mdb_name": "Anne Zerr",
+      "anrede": "Sehr geehrte/r Anne Zerr",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "289"
+    },
+    {
+      "mdb_name": "Christian von Stetten",
+      "anrede": "Sehr geehrte/r Christian von Stetten",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "268"
+    },
+    {
+      "mdb_name": "Ronja Kemmer",
+      "anrede": "Sehr geehrte/r Ronja Kemmer",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "291"
+    },
+    {
+      "mdb_name": "Klaus Mack",
+      "anrede": "Sehr geehrte/r Klaus Mack",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "280"
+    },
+    {
+      "mdb_name": "Hermann Färber",
+      "anrede": "Sehr geehrte/r Hermann Färber",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "263"
+    },
+    {
+      "mdb_name": "Luigi Pantisano",
+      "anrede": "Sehr geehrte/r Luigi Pantisano",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "258"
+    },
+    {
+      "mdb_name": "Thorsten Frei",
+      "anrede": "Sehr geehrte/r Thorsten Frei",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "286"
+    },
+    {
+      "mdb_name": "Nils Schmid",
+      "anrede": "Sehr geehrte/r Nils Schmid",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "262"
+    },
+    {
+      "mdb_name": "Chantal Kopf",
+      "anrede": "Sehr geehrte/r Chantal Kopf",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "281"
+    },
+    {
+      "mdb_name": "Fabian Gramling",
+      "anrede": "Sehr geehrte/r Fabian Gramling",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "266"
+    },
+    {
+      "mdb_name": "Ricarda Lang",
+      "anrede": "Sehr geehrte/r Ricarda Lang",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "269"
+    },
+    {
+      "mdb_name": "Olav Gutting",
+      "anrede": "Sehr geehrte/r Olav Gutting",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "278"
+    },
+    {
+      "mdb_name": "Lina Seitzl",
+      "anrede": "Sehr geehrte/r Lina Seitzl",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "287"
+    },
+    {
+      "mdb_name": "Roderich Kiesewetter",
+      "anrede": "Sehr geehrte/r Roderich Kiesewetter",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "270"
+    },
+    {
+      "mdb_name": "Katja Mast",
+      "anrede": "Sehr geehrte/r Katja Mast",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "279"
+    },
+    {
+      "mdb_name": "Volker Mayer-Lay",
+      "anrede": "Sehr geehrte/r Volker Mayer-Lay",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "293"
+    },
+    {
+      "mdb_name": "Sebastian Schäfer",
+      "anrede": "Sehr geehrte/r Sebastian Schäfer",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "261"
+    },
+    {
+      "mdb_name": "Johannes Rothenberger",
+      "anrede": "Sehr geehrte/r Johannes Rothenberger",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "284"
+    },
+    {
+      "mdb_name": "Rita Schwarzelühr-Sutter",
+      "anrede": "Sehr geehrte/r Rita Schwarzelühr-Sutter",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "288"
+    },
+    {
+      "mdb_name": "Christina Stumpp",
+      "anrede": "Sehr geehrte/r Christina Stumpp",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "264"
+    },
+    {
+      "mdb_name": "Alexander Throm",
+      "anrede": "Sehr geehrte/r Alexander Throm",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "267"
+    },
+    {
+      "mdb_name": "Nina Warken",
+      "anrede": "Sehr geehrte/r Nina Warken",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "276"
+    },
+    {
+      "mdb_name": "Maria-Lena Weiss",
+      "anrede": "Sehr geehrte/r Maria-Lena Weiss",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "285"
+    },
+    {
+      "mdb_name": "Kai Whittaker",
+      "anrede": "Sehr geehrte/r Kai Whittaker",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "273"
+    },
+    {
+      "mdb_name": "Nicolas Zippelius",
+      "anrede": "Sehr geehrte/r Nicolas Zippelius",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Baden-Württemberg",
+      "wahlkreis": "272"
+    }
+  ],
+  "Mecklenburg-Vorpommern": [
+    {
+      "mdb_name": "Ina Latendorf",
+      "anrede": "Sehr geehrte/r Ina Latendorf",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Mecklenburg-Vorpommern",
+      "wahlkreis": "12"
+    },
+    {
+      "mdb_name": "Philipp Amthor",
+      "anrede": "Sehr geehrte/r Philipp Amthor",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Mecklenburg-Vorpommern",
+      "wahlkreis": "16"
+    },
+    {
+      "mdb_name": "Dietmar Bartsch",
+      "anrede": "Sehr geehrte/r Dietmar Bartsch",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Mecklenburg-Vorpommern",
+      "wahlkreis": "14"
+    },
+    {
+      "mdb_name": "Frank Junge",
+      "anrede": "Sehr geehrte/r Frank Junge",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Mecklenburg-Vorpommern",
+      "wahlkreis": "13"
+    },
+    {
+      "mdb_name": "Claudia Müller",
+      "anrede": "Sehr geehrte/r Claudia Müller",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Mecklenburg-Vorpommern",
+      "wahlkreis": "15"
+    }
+  ],
+  "Hessen": [
+    {
+      "mdb_name": "Anna Lührmann",
+      "anrede": "Sehr geehrte/r Anna Lührmann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Hessen",
+      "wahlkreis": "180"
+    },
+    {
+      "mdb_name": "Björn Simon",
+      "anrede": "Sehr geehrte/r Björn Simon",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hessen",
+      "wahlkreis": "184"
+    },
+    {
+      "mdb_name": "Klaus-Peter Willsch",
+      "anrede": "Sehr geehrte/r Klaus-Peter Willsch",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hessen",
+      "wahlkreis": "177"
+    },
+    {
+      "mdb_name": "Sören Bartol",
+      "anrede": "Sehr geehrte/r Sören Bartol",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Hessen",
+      "wahlkreis": "170"
+    },
+    {
+      "mdb_name": "Felix Döring",
+      "anrede": "Sehr geehrte/r Felix Döring",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Hessen",
+      "wahlkreis": "172"
+    },
+    {
+      "mdb_name": "Boris Mijatović",
+      "anrede": "Sehr geehrte/r Boris Mijatović",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Hessen",
+      "wahlkreis": "167"
+    },
+    {
+      "mdb_name": "Michael Brand",
+      "anrede": "Sehr geehrte/r Michael Brand",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hessen",
+      "wahlkreis": "173"
+    },
+    {
+      "mdb_name": "Jörg Cezanne",
+      "anrede": "Sehr geehrte/r Jörg Cezanne",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Hessen",
+      "wahlkreis": "183"
+    },
+    {
+      "mdb_name": "Jan-Wilhelm Pohlmann",
+      "anrede": "Sehr geehrte/r Jan-Wilhelm Pohlmann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hessen",
+      "wahlkreis": "166"
+    },
+    {
+      "mdb_name": "Armand Zorn",
+      "anrede": "Sehr geehrte/r Armand Zorn",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Hessen",
+      "wahlkreis": "181"
+    },
+    {
+      "mdb_name": "Awet Tesfaiesus",
+      "anrede": "Sehr geehrte/r Awet Tesfaiesus",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Hessen",
+      "wahlkreis": "168"
+    },
+    {
+      "mdb_name": "Markus Koob",
+      "anrede": "Sehr geehrte/r Markus Koob",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hessen",
+      "wahlkreis": "175"
+    },
+    {
+      "mdb_name": "Stefan Korbach",
+      "anrede": "Sehr geehrte/r Stefan Korbach",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hessen",
+      "wahlkreis": "178"
+    },
+    {
+      "mdb_name": "Patricia Lips",
+      "anrede": "Sehr geehrte/r Patricia Lips",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hessen",
+      "wahlkreis": "186"
+    },
+    {
+      "mdb_name": "Michael Meister",
+      "anrede": "Sehr geehrte/r Michael Meister",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hessen",
+      "wahlkreis": "187"
+    },
+    {
+      "mdb_name": "Omid Nouripour",
+      "anrede": "Sehr geehrte/r Omid Nouripour",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Hessen",
+      "wahlkreis": "182"
+    },
+    {
+      "mdb_name": "Natalie Pawlik",
+      "anrede": "Sehr geehrte/r Natalie Pawlik",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Hessen",
+      "wahlkreis": "176"
+    },
+    {
+      "mdb_name": "Pascal Reddig",
+      "anrede": "Sehr geehrte/r Pascal Reddig",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hessen",
+      "wahlkreis": "179"
+    },
+    {
+      "mdb_name": "Philipp Rottwilm",
+      "anrede": "Sehr geehrte/r Philipp Rottwilm",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Hessen",
+      "wahlkreis": "169"
+    },
+    {
+      "mdb_name": "Johannes Volkmann",
+      "anrede": "Sehr geehrte/r Johannes Volkmann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hessen",
+      "wahlkreis": "171"
+    },
+    {
+      "mdb_name": "Johannes Wiegelmann",
+      "anrede": "Sehr geehrte/r Johannes Wiegelmann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hessen",
+      "wahlkreis": "174"
+    }
+  ],
+  "Schleswig-Holstein": [
+    {
+      "mdb_name": "Tamara Mazzi",
+      "anrede": "Sehr geehrte/r Tamara Mazzi",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Schleswig-Holstein",
+      "wahlkreis": "5"
+    },
+    {
+      "mdb_name": "Melanie Bernstein",
+      "anrede": "Sehr geehrte/r Melanie Bernstein",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Schleswig-Holstein",
+      "wahlkreis": "8"
+    },
+    {
+      "mdb_name": "Stefan Seidler",
+      "anrede": "Sehr geehrte/r Stefan Seidler",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "fraktionslos",
+      "bundesland": "Schleswig-Holstein",
+      "wahlkreis": "1"
+    },
+    {
+      "mdb_name": "Truels Reichardt",
+      "anrede": "Sehr geehrte/r Truels Reichardt",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Schleswig-Holstein",
+      "wahlkreis": "2"
+    },
+    {
+      "mdb_name": "Sandra Carstensen",
+      "anrede": "Sehr geehrte/r Sandra Carstensen",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Schleswig-Holstein",
+      "wahlkreis": "6"
+    },
+    {
+      "mdb_name": "Sebastian Schmidt",
+      "anrede": "Sehr geehrte/r Sebastian Schmidt",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Schleswig-Holstein",
+      "wahlkreis": "9"
+    },
+    {
+      "mdb_name": "Mark Helfrich",
+      "anrede": "Sehr geehrte/r Mark Helfrich",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Schleswig-Holstein",
+      "wahlkreis": "3"
+    },
+    {
+      "mdb_name": "Tim Klüssendorf",
+      "anrede": "Sehr geehrte/r Tim Klüssendorf",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Schleswig-Holstein",
+      "wahlkreis": "11"
+    },
+    {
+      "mdb_name": "Ralf Stegner",
+      "anrede": "Sehr geehrte/r Ralf Stegner",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Schleswig-Holstein",
+      "wahlkreis": "7"
+    },
+    {
+      "mdb_name": "Henri Schmidt",
+      "anrede": "Sehr geehrte/r Henri Schmidt",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Schleswig-Holstein",
+      "wahlkreis": "10"
+    },
+    {
+      "mdb_name": "Johann Wadephul",
+      "anrede": "Sehr geehrte/r Johann Wadephul",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Schleswig-Holstein",
+      "wahlkreis": "4"
+    }
+  ],
+  "Saarland": [
+    {
+      "mdb_name": "Esra Limbacher",
+      "anrede": "Sehr geehrte/r Esra Limbacher",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Saarland",
+      "wahlkreis": "299"
+    },
+    {
+      "mdb_name": "Josephine Ortleb",
+      "anrede": "Sehr geehrte/r Josephine Ortleb",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Saarland",
+      "wahlkreis": "296"
+    },
+    {
+      "mdb_name": "Philip Hoffmann",
+      "anrede": "Sehr geehrte/r Philip Hoffmann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Saarland",
+      "wahlkreis": "297"
+    },
+    {
+      "mdb_name": "Roland Theis",
+      "anrede": "Sehr geehrte/r Roland Theis",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Saarland",
+      "wahlkreis": "298"
+    }
+  ],
+  "Berlin": [
+    {
+      "mdb_name": "Ferat Koçak",
+      "anrede": "Sehr geehrte/r Ferat Koçak",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Berlin",
+      "wahlkreis": "81"
+    },
+    {
+      "mdb_name": "Katalin Gennburg",
+      "anrede": "Sehr geehrte/r Katalin Gennburg",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Berlin",
+      "wahlkreis": "84"
+    },
+    {
+      "mdb_name": "Ruppert Stüwe",
+      "anrede": "Sehr geehrte/r Ruppert Stüwe",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Berlin",
+      "wahlkreis": "78"
+    },
+    {
+      "mdb_name": "Gregor Gysi",
+      "anrede": "Sehr geehrte/r Gregor Gysi",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Berlin",
+      "wahlkreis": "83"
+    },
+    {
+      "mdb_name": "Jan-Marco Luczak",
+      "anrede": "Sehr geehrte/r Jan-Marco Luczak",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Berlin",
+      "wahlkreis": "80"
+    },
+    {
+      "mdb_name": "Helmut Kleebank",
+      "anrede": "Sehr geehrte/r Helmut Kleebank",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Berlin",
+      "wahlkreis": "77"
+    },
+    {
+      "mdb_name": "Hanna Steinmüller",
+      "anrede": "Sehr geehrte/r Hanna Steinmüller",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Berlin",
+      "wahlkreis": "74"
+    },
+    {
+      "mdb_name": "Lisa Paus",
+      "anrede": "Sehr geehrte/r Lisa Paus",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Berlin",
+      "wahlkreis": "79"
+    },
+    {
+      "mdb_name": "Pascal Meiser",
+      "anrede": "Sehr geehrte/r Pascal Meiser",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Berlin",
+      "wahlkreis": "82"
+    },
+    {
+      "mdb_name": "Julia Schneider",
+      "anrede": "Sehr geehrte/r Julia Schneider",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Berlin",
+      "wahlkreis": "75"
+    },
+    {
+      "mdb_name": "Marvin Schulz",
+      "anrede": "Sehr geehrte/r Marvin Schulz",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Berlin",
+      "wahlkreis": "76"
+    },
+    {
+      "mdb_name": "Ines Schwerdtner",
+      "anrede": "Sehr geehrte/r Ines Schwerdtner",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Berlin",
+      "wahlkreis": "85"
+    }
+  ],
+  "Bayern": [
+    {
+      "mdb_name": "Artur Auernhammer",
+      "anrede": "Sehr geehrte/r Artur Auernhammer",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "240"
+    },
+    {
+      "mdb_name": "Carolin Wagner",
+      "anrede": "Sehr geehrte/r Carolin Wagner",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Bayern",
+      "wahlkreis": "232"
+    },
+    {
+      "mdb_name": "Thomas Silberhorn",
+      "anrede": "Sehr geehrte/r Thomas Silberhorn",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "235"
+    },
+    {
+      "mdb_name": "Sabine Dittmar",
+      "anrede": "Sehr geehrte/r Sabine Dittmar",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Bayern",
+      "wahlkreis": "247"
+    },
+    {
+      "mdb_name": "Alexander Radwan",
+      "anrede": "Sehr geehrte/r Alexander Radwan",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "222"
+    },
+    {
+      "mdb_name": "Marlene Schönberger",
+      "anrede": "Sehr geehrte/r Marlene Schönberger",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Bayern",
+      "wahlkreis": "229"
+    },
+    {
+      "mdb_name": "Sarah Vollath",
+      "anrede": "Sehr geehrte/r Sarah Vollath",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Bayern",
+      "wahlkreis": "215"
+    },
+    {
+      "mdb_name": "Daniela Ludwig",
+      "anrede": "Sehr geehrte/r Daniela Ludwig",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "221"
+    },
+    {
+      "mdb_name": "Anja Weisgerber",
+      "anrede": "Sehr geehrte/r Anja Weisgerber",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "249"
+    },
+    {
+      "mdb_name": "Alexander Dobrindt",
+      "anrede": "Sehr geehrte/r Alexander Dobrindt",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "225"
+    },
+    {
+      "mdb_name": "Florian Dorn",
+      "anrede": "Sehr geehrte/r Florian Dorn",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "255"
+    },
+    {
+      "mdb_name": "Aaron Valent",
+      "anrede": "Sehr geehrte/r Aaron Valent",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Bayern",
+      "wahlkreis": "250"
+    },
+    {
+      "mdb_name": "Heike Heubach",
+      "anrede": "Sehr geehrte/r Heike Heubach",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Bayern",
+      "wahlkreis": "252"
+    },
+    {
+      "mdb_name": "Christian Moser",
+      "anrede": "Sehr geehrte/r Christian Moser",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "213"
+    },
+    {
+      "mdb_name": "Evelyn Schötz",
+      "anrede": "Sehr geehrte/r Evelyn Schötz",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Bayern",
+      "wahlkreis": "245"
+    },
+    {
+      "mdb_name": "Alexander Engelhard",
+      "anrede": "Sehr geehrte/r Alexander Engelhard",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "254"
+    },
+    {
+      "mdb_name": "Tina Winklmann",
+      "anrede": "Sehr geehrte/r Tina Winklmann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Bayern",
+      "wahlkreis": "233"
+    },
+    {
+      "mdb_name": "Thomas Erndl",
+      "anrede": "Sehr geehrte/r Thomas Erndl",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "226"
+    },
+    {
+      "mdb_name": "Sascha Müller",
+      "anrede": "Sehr geehrte/r Sascha Müller",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Bayern",
+      "wahlkreis": "244"
+    },
+    {
+      "mdb_name": "Johannes Wagner",
+      "anrede": "Sehr geehrte/r Johannes Wagner",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Bayern",
+      "wahlkreis": "237"
+    },
+    {
+      "mdb_name": "Stephan Pilsinger",
+      "anrede": "Sehr geehrte/r Stephan Pilsinger",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "219"
+    },
+    {
+      "mdb_name": "Anton Hofreiter",
+      "anrede": "Sehr geehrte/r Anton Hofreiter",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Bayern",
+      "wahlkreis": "220"
+    },
+    {
+      "mdb_name": "Heiko Hain",
+      "anrede": "Sehr geehrte/r Heiko Hain",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "238"
+    },
+    {
+      "mdb_name": "Rebecca Lenhard",
+      "anrede": "Sehr geehrte/r Rebecca Lenhard",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Bayern",
+      "wahlkreis": "243"
+    },
+    {
+      "mdb_name": "Susanne Hierl",
+      "anrede": "Sehr geehrte/r Susanne Hierl",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "231"
+    },
+    {
+      "mdb_name": "Bernd Rützel",
+      "anrede": "Sehr geehrte/r Bernd Rützel",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Bayern",
+      "wahlkreis": "248"
+    },
+    {
+      "mdb_name": "Johannes Schätzl",
+      "anrede": "Sehr geehrte/r Johannes Schätzl",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Bayern",
+      "wahlkreis": "228"
+    },
+    {
+      "mdb_name": "Carmen Wegge",
+      "anrede": "Sehr geehrte/r Carmen Wegge",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Bayern",
+      "wahlkreis": "223"
+    },
+    {
+      "mdb_name": "Siegfried Walch",
+      "anrede": "Sehr geehrte/r Siegfried Walch",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "224"
+    },
+    {
+      "mdb_name": "Konrad Körner",
+      "anrede": "Sehr geehrte/r Konrad Körner",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "241"
+    },
+    {
+      "mdb_name": "Silke Launert",
+      "anrede": "Sehr geehrte/r Silke Launert",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "236"
+    },
+    {
+      "mdb_name": "Christoph Schmid",
+      "anrede": "Sehr geehrte/r Christoph Schmid",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Bayern",
+      "wahlkreis": "253"
+    },
+    {
+      "mdb_name": "Andreas Lenz",
+      "anrede": "Sehr geehrte/r Andreas Lenz",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "212"
+    },
+    {
+      "mdb_name": "Niklas Wagener",
+      "anrede": "Sehr geehrte/r Niklas Wagener",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Bayern",
+      "wahlkreis": "246"
+    },
+    {
+      "mdb_name": "Stephan Mayer",
+      "anrede": "Sehr geehrte/r Stephan Mayer",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "211"
+    },
+    {
+      "mdb_name": "Florian Oßner",
+      "anrede": "Sehr geehrte/r Florian Oßner",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "227"
+    },
+    {
+      "mdb_name": "Alois Rainer",
+      "anrede": "Sehr geehrte/r Alois Rainer",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "230"
+    },
+    {
+      "mdb_name": "Jamila Schäfer",
+      "anrede": "Sehr geehrte/r Jamila Schäfer",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Bayern",
+      "wahlkreis": "218"
+    },
+    {
+      "mdb_name": "Claudia Roth",
+      "anrede": "Sehr geehrte/r Claudia Roth",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Bayern",
+      "wahlkreis": "251"
+    },
+    {
+      "mdb_name": "Albert Rupprecht",
+      "anrede": "Sehr geehrte/r Albert Rupprecht",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "234"
+    },
+    {
+      "mdb_name": "Katrin Staffler",
+      "anrede": "Sehr geehrte/r Katrin Staffler",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "214"
+    },
+    {
+      "mdb_name": "Wolfgang Stefinger",
+      "anrede": "Sehr geehrte/r Wolfgang Stefinger",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "217"
+    },
+    {
+      "mdb_name": "Stephan Stracke",
+      "anrede": "Sehr geehrte/r Stephan Stracke",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "257"
+    },
+    {
+      "mdb_name": "Hans Theiss",
+      "anrede": "Sehr geehrte/r Hans Theiss",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "216"
+    },
+    {
+      "mdb_name": "Tobias Winkler",
+      "anrede": "Sehr geehrte/r Tobias Winkler",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "242"
+    },
+    {
+      "mdb_name": "Mechthilde Wittmann",
+      "anrede": "Sehr geehrte/r Mechthilde Wittmann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "256"
+    },
+    {
+      "mdb_name": "Emmi Zeulner",
+      "anrede": "Sehr geehrte/r Emmi Zeulner",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CSU)",
+      "bundesland": "Bayern",
+      "wahlkreis": "239"
+    }
+  ],
+  "Rheinland-Pfalz": [
+    {
+      "mdb_name": "Gerhard Trabert",
+      "anrede": "Sehr geehrte/r Gerhard Trabert",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "204"
+    },
+    {
+      "mdb_name": "Angelika Glöckner",
+      "anrede": "Sehr geehrte/r Angelika Glöckner",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "209"
+    },
+    {
+      "mdb_name": "Julian-Béla Joswig",
+      "anrede": "Sehr geehrte/r Julian-Béla Joswig",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "199"
+    },
+    {
+      "mdb_name": "Ellen Demuth",
+      "anrede": "Sehr geehrte/r Ellen Demuth",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "196"
+    },
+    {
+      "mdb_name": "Thomas Gebhart",
+      "anrede": "Sehr geehrte/r Thomas Gebhart",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "210"
+    },
+    {
+      "mdb_name": "Armin Grau",
+      "anrede": "Sehr geehrte/r Armin Grau",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "206"
+    },
+    {
+      "mdb_name": "Mechthild Heil",
+      "anrede": "Sehr geehrte/r Mechthild Heil",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "197"
+    },
+    {
+      "mdb_name": "Corinna Rüffer",
+      "anrede": "Sehr geehrte/r Corinna Rüffer",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "202"
+    },
+    {
+      "mdb_name": "Johannes Steiniger",
+      "anrede": "Sehr geehrte/r Johannes Steiniger",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "207"
+    },
+    {
+      "mdb_name": "Julia Klöckner",
+      "anrede": "Sehr geehrte/r Julia Klöckner",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "200"
+    },
+    {
+      "mdb_name": "Harald Orthey",
+      "anrede": "Sehr geehrte/r Harald Orthey",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "203"
+    },
+    {
+      "mdb_name": "Julia-Christina Stange",
+      "anrede": "Sehr geehrte/r Julia-Christina Stange",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "205"
+    },
+    {
+      "mdb_name": "Matthias Mieves",
+      "anrede": "Sehr geehrte/r Matthias Mieves",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "208"
+    },
+    {
+      "mdb_name": "Thorsten Rudolph",
+      "anrede": "Sehr geehrte/r Thorsten Rudolph",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "198"
+    },
+    {
+      "mdb_name": "Patrick Schnieder",
+      "anrede": "Sehr geehrte/r Patrick Schnieder",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Rheinland-Pfalz",
+      "wahlkreis": "201"
+    }
+  ],
+  "Hamburg": [
+    {
+      "mdb_name": "Christoph Ploß",
+      "anrede": "Sehr geehrte/r Christoph Ploß",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hamburg",
+      "wahlkreis": "21"
+    },
+    {
+      "mdb_name": "Christoph de Vries",
+      "anrede": "Sehr geehrte/r Christoph de Vries",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Hamburg",
+      "wahlkreis": "18"
+    },
+    {
+      "mdb_name": "Metin Hakverdi",
+      "anrede": "Sehr geehrte/r Metin Hakverdi",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Hamburg",
+      "wahlkreis": "23"
+    },
+    {
+      "mdb_name": "Linda Heitmann",
+      "anrede": "Sehr geehrte/r Linda Heitmann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Hamburg",
+      "wahlkreis": "19"
+    },
+    {
+      "mdb_name": "Aydan Özoğuz",
+      "anrede": "Sehr geehrte/r Aydan Özoğuz",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Hamburg",
+      "wahlkreis": "22"
+    },
+    {
+      "mdb_name": "Till Steffen",
+      "anrede": "Sehr geehrte/r Till Steffen",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Hamburg",
+      "wahlkreis": "20"
+    }
+  ],
+  "Sachsen": [
+    {
+      "mdb_name": "Lars Rohwer",
+      "anrede": "Sehr geehrte/r Lars Rohwer",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Sachsen",
+      "wahlkreis": "159"
+    },
+    {
+      "mdb_name": "Carsten Körber",
+      "anrede": "Sehr geehrte/r Carsten Körber",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Sachsen",
+      "wahlkreis": "164"
+    },
+    {
+      "mdb_name": "Kathrin Michel",
+      "anrede": "Sehr geehrte/r Kathrin Michel",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Sachsen",
+      "wahlkreis": "155"
+    },
+    {
+      "mdb_name": "Holger Mann",
+      "anrede": "Sehr geehrte/r Holger Mann",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Sachsen",
+      "wahlkreis": "151"
+    },
+    {
+      "mdb_name": "Kassem Taher Saleh",
+      "anrede": "Sehr geehrte/r Kassem Taher Saleh",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Sachsen",
+      "wahlkreis": "158"
+    },
+    {
+      "mdb_name": "Florian Oest",
+      "anrede": "Sehr geehrte/r Florian Oest",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Sachsen",
+      "wahlkreis": "156"
+    },
+    {
+      "mdb_name": "Paula Piechotta",
+      "anrede": "Sehr geehrte/r Paula Piechotta",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Grüne",
+      "bundesland": "Sachsen",
+      "wahlkreis": "152"
+    },
+    {
+      "mdb_name": "Christiane Schenderlein",
+      "anrede": "Sehr geehrte/r Christiane Schenderlein",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Sachsen",
+      "wahlkreis": "150"
+    },
+    {
+      "mdb_name": "Nora Seitz",
+      "anrede": "Sehr geehrte/r Nora Seitz",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Sachsen",
+      "wahlkreis": "161"
+    }
+  ],
+  "Thüringen": [
+    {
+      "mdb_name": "Diana Herbstreuth",
+      "anrede": "Sehr geehrte/r Diana Herbstreuth",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Thüringen",
+      "wahlkreis": "194"
+    },
+    {
+      "mdb_name": "Carsten Schneider",
+      "anrede": "Sehr geehrte/r Carsten Schneider",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Thüringen",
+      "wahlkreis": "192"
+    },
+    {
+      "mdb_name": "Donata Vogtschmidt",
+      "anrede": "Sehr geehrte/r Donata Vogtschmidt",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "Die Linke",
+      "bundesland": "Thüringen",
+      "wahlkreis": "188"
+    },
+    {
+      "mdb_name": "Christian Hirte",
+      "anrede": "Sehr geehrte/r Christian Hirte",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "CDU/CSU (CDU)",
+      "bundesland": "Thüringen",
+      "wahlkreis": "189"
+    },
+    {
+      "mdb_name": "Elisabeth Kaiser",
+      "anrede": "Sehr geehrte/r Elisabeth Kaiser",
+      "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+      "fraktion": "SPD",
+      "bundesland": "Thüringen",
+      "wahlkreis": "193"
+    }
+  ]
+}
