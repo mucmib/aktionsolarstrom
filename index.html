@@ -153,40 +153,46 @@
 
     /* === Utility === */
     .section-title{ margin: 0 0 12px; color: var(--brand); }
+
+/* Hero mit Logo – Desktop & mobil */
+.hero { display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap; text-align:center; padding:32px 0; }
+.hero img.logo { max-height: 220px; width:auto; display:block; }
+@media (max-width: 600px) {
+  .hero { flex-direction: column; padding: 16px 0; }
+  .hero img.logo { max-width: 90%; max-height: 140px; object-fit: contain; margin: 0 auto; }
+}
+    
   </style>
 </head>
 <body>
   <div class="page">
     <!-- HERO -->
     <header class="site-header middle">
-      <div class="hero-wrap">
-        <div class="hero">
-          <div class="hero-inner">
-            <div class="brandbar">
-              <span>Aktion</span><span class="branddot"></span><span>Solarstrom statt Erdgas-Strom</span>
-            </div>
-            <h1>Solarstrom statt Erdgas-Strom</h1>
-            <p class="tagline">Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken &amp; versenden physisch.</p>
-            <div class="cta-row">
-              <a class="cta primary" href="#mitmachen" aria-label="Jetzt mitmachen">Jetzt mitmachen</a>
-              <a class="cta secondary" href="#material" aria-label="Materialien ansehen">Materialien</a>
-            </div>
-          </div>
-        </div>
+  <div class="hero">
+    <img class="logo" src="assets/logo.jpg" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+    <div>
+      <h1>Solarstrom statt Erdgas-Strom</h1>
+      <p class="tagline">Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken &amp; versenden physisch.</p>
+      <div style="margin-top:10px">
+        <a class="cta primary" href="#mitmachen">Jetzt mitmachen</a>
+        <a class="cta secondary" href="#material">Materialien</a>
       </div>
+    </div>
+  </div>
 
-      <!-- Live-Zähler: erzeugte PDF-Briefe -->
-      <div class="stats-banner middle" role="status" aria-live="polite">
-        <div class="stats-iconbox"><div class="stats-icon" aria-hidden="true">📄</div></div>
-        <div class="stats-text">
-          <div class="stats-label">Erzeugte PDF-Briefe</div>
-          <div class="stats-value"><span id="pdfCount" class="count">–</span></div>
-          <div class="stats-meta" id="statsMeta" hidden>
-            <span class="dot" aria-hidden="true"></span><span id="statsTime">Stand: –</span>
-          </div>
-        </div>
+  <!-- Zähler bleibt wie gehabt -->
+  <div class="stats-banner" role="status" aria-live="polite">
+    <div class="stats-iconbox"><div class="stats-icon" aria-hidden="true">📄</div></div>
+    <div class="stats-text">
+      <div class="stats-label">Erzeugte PDF-Briefe</div>
+      <div class="stats-value"><span id="pdfCount" class="count">–</span></div>
+      <div class="stats-meta" id="statsMeta" hidden>
+        <span class="dot" aria-hidden="true"></span>
+        <span id="statsTime">Stand: –</span>
       </div>
-    </header>
+    </div>
+  </div>
+</header>
 
     <!-- CONTENT -->
     <main class="middle">
@@ -402,6 +408,7 @@
   </script>
 </body>
 </html>
+
 
 
 
