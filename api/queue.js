@@ -143,7 +143,7 @@ async function buildLetterPDF({ queueId, sender, recipient, subject, bodyText, s
   const addr = String(recipient.address || "").replace(/\s*\n\s*/g, "\n").trim();
   const hasBundestag = /Deutscher Bundestag/i.test(addr);
   if (!hasBundestag) addrLines.push("Deutscher Bundestag");
-  if (addr) addrLines.push(...addr.split("\n"));
+  if (addr) addrLines.push(...addr.split("\n")); // FIX: Spread statt Tippfehler
   const recipientBlock = addrLines.join("\n");
 
   const addressX = usableLeft;
@@ -154,9 +154,8 @@ async function buildLetterPDF({ queueId, sender, recipient, subject, bodyText, s
   // Textstart nach Anschrift
   const bodyStartY = addressY + doc.heightOfString(recipientBlock, { width: addressW }) + mm(10);
 
-  // Betreff
+  // Betreff (ohne moveDown; absolut positioniert)
   if (must(subject)) {
-    doc.moveDown(0.5);
     doc.font("Times-Bold").fontSize(FONT.body)
        .text(subject, usableLeft, bodyStartY, { width: usableWidth });
     doc.font("Times-Roman");
@@ -169,15 +168,18 @@ async function buildLetterPDF({ queueId, sender, recipient, subject, bodyText, s
     const sal = salutation && String(salutation).trim() ? salutation : "Sehr geehrte Damen und Herren,";
     cleanBody = `${sal}\n\n${cleanBody}`;
   }
+  // optional: Mehrfachleerzeilen straffen
+  cleanBody = cleanBody.replace(/\n{3,}/g, "\n\n");
 
+  // FIX: mehr Abstand zwischen Betreff und Anrede/Body
   const yAfterSubject = must(subject)
-    ? bodyStartY + doc.heightOfString(subject, { width: usableWidth }) + mm(2)
+    ? bodyStartY + doc.heightOfString(subject, { width: usableWidth }) + mm(8)
     : bodyStartY;
 
   doc.fontSize(FONT.body).text(cleanBody, usableLeft, yAfterSubject, {
     width: usableWidth,
     align: "left",
-    lineGap: 2,
+    lineGap: 3, // etwas luftiger
   });
 
   doc.end();
@@ -424,9 +426,11 @@ export default allowCors(async function handler(req, res) {
     // Statistik nur nach erfolgreicher TEAM-Mail
     try {
       const added = recipients.length;
-      // PDFs hochzählen
       await kv.incrby("pdfs_generated", added);
-      await kv.set("last_update", new Date().toISOString());
+      // beide Keys setzen, damit /api/stats.json die Zeit sicher findet
+      const nowISO = new Date().toISOString();
+      await kv.set("stats_updated_at", nowISO);
+      await kv.set("last_update", nowISO);
     } catch (e) {
       console.error("KV stats failed (non-blocking):", e?.message || e);
     }
@@ -452,6 +456,7 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
 
 
 
