@@ -219,74 +219,68 @@
     // ---- Live-Zähler-Logik (PDFs) ----
     const STATS_URL = '/api/stats.json';
 
-    function countUp(el, to, duration = 1200) {
-      const fmt = new Intl.NumberFormat('de-DE');
-      if (!('requestAnimationFrame' in window) || duration <= 0) {
-        el.textContent = fmt.format(Math.max(0, Number(to)||0));
-        return;
-      }
-      const start = performance.now();
-      const from = Number(el.textContent.replace(/\./g,'')) || 0;
-      function frame(now) {
-        const t = Math.min(1, (now - start) / duration);
-        const eased = 1 - Math.pow(1 - t, 3);
-        const val = Math.round(from + (to - from) * eased);
-        el.textContent = fmt.format(val);
-        if (t < 1) requestAnimationFrame(frame);
-      }
-      requestAnimationFrame(frame);
+  function countUp(el, to, duration = 900) {
+    const fmt = new Intl.NumberFormat('de-DE');
+    if (!('requestAnimationFrame' in window) || duration <= 0) {
+      el.textContent = fmt.format(Math.max(0, Number(to)||0));
+      return;
     }
-
-    function formatStand(isoOrDate) {
-      const d = isoOrDate instanceof Date ? isoOrDate : new Date(isoOrDate);
-      if (isNaN(d)) return null;
-      const fmtDate = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
-      const fmtTime = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
-      return `Stand: ${fmtDate}, ${fmtTime} Uhr`;
+    const start = performance.now();
+    const from = 0;
+    function frame(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = Math.round(from + (to - from) * eased);
+      el.textContent = fmt.format(val);
+      if (t < 1) requestAnimationFrame(frame);
     }
+    requestAnimationFrame(frame);
+  }
 
-    function setStand(metaWrap, metaText, isoString) {
-      const txt = formatStand(isoString || new Date());
-      if (txt && metaWrap && metaText) {
-        metaText.textContent = txt;
-        metaWrap.hidden = false;
-      } else if (metaWrap) {
-        metaWrap.hidden = true;
-      }
-    }
+  function formatLocalStand(dateObj = new Date()) {
+    const d = dateObj;
+    const fmtDate = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
+    const fmtTime = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
+    return `Stand: ${fmtDate}, ${fmtTime} Uhr`;
+  }
 
-    async function fetchStats() {
+  async function loadCounter() {
+    const el = document.getElementById('pdfCount');
+    const metaWrap = document.getElementById('statsMeta');
+    const metaText = document.getElementById('statsTime');
+    if (!el) return;
+
+    try {
       const res = await fetch(STATS_URL + `?nocache=${Date.now()}`, { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
-      return res.json();
-    }
+      const data = await res.json();
 
-    async function loadCounter() {
-      const el = document.getElementById('pdfCount');
+      // Zahl (neuer Key + Fallbacks)
+      const raw = Number(data.pdfs_generated ?? data.count ?? data.sent_emails ?? 0);
+      const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
+      countUp(el, value);
+
+      // Immer lokale Abrufzeit anzeigen
+      metaText.textContent = formatLocalStand(new Date());
+      metaWrap.hidden = false;
+
+    } catch (e) {
+      console.warn('Zähler konnte nicht geladen werden:', e);
+      el.textContent = '–';
+      // Trotzdem die lokale Zeit zeigen, damit „Stand“ nicht leer ist
       const metaWrap = document.getElementById('statsMeta');
       const metaText = document.getElementById('statsTime');
-      if (!el) return;
-
-      try {
-        const data = await fetchStats();
-
-        // Zahl (neuer Key pdfs_generated, Fallbacks bleiben)
-        const raw = Number(data.pdfs_generated ?? data.count ?? data.sent_emails ?? 0);
-        const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
-        countUp(el, value, 900);
-
-        // Zeitstempel: API-Feld oder lokale Uhr als Fallback
-        const stamp = data.last_update || data.stats_updated_at || data.sent_emails_last_update || null;
-        setStand(metaWrap, metaText, stamp);
-      } catch (e) {
-        console.warn('Zähler konnte nicht geladen werden:', e);
-        setStand(metaWrap, metaText, new Date()); // Fallback: lokale Zeit zeigen
+      if (metaWrap && metaText) {
+        metaText.textContent = formatLocalStand(new Date());
+        metaWrap.hidden = false;
       }
     }
+  }
 
-    // Initial laden & anschließend alle 60s aktualisieren
-    loadCounter();
-    setInterval(loadCounter, 60000);
-  </script>
+  // Initial laden + alle 60s aktualisieren
+  loadCounter();
+  setInterval(loadCounter, 60000);
+</script>
 </body>
 </html>
+
