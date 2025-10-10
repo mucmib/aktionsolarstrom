@@ -8,31 +8,87 @@
   <link rel="stylesheet" href="assets/styles.css">
   <style>
     :root { --maxw: 960px; --brand:#0a7d32; --muted:#6b7280; }
+
     body { margin:0; font:16px/1.5 system-ui, Arial, sans-serif; color:#111; background:#fff; }
     .page { display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr; }
     .middle { grid-column:2; padding:16px; }
-    .hero { display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; padding:28px 0 10px; text-align:center; background:linear-gradient(180deg,#0a7d32,#065f26); color:#fff; border-radius:0 0 16px 16px; }
-    .hero a.logo { display:inline-block }
-    .hero img { width:min(95vw, 540px); height:auto; display:block; filter:drop-shadow(0 6px 18px rgba(0,0,0,.25)); }
-    .tagline { margin:8px 0 0; font-size:1.1rem; opacity:.95; }
-    .cta { display:inline-block; margin-top:10px; padding:10px 16px; background:#fff; color:#0a7d32; text-decoration:none; border-radius:10px; font-weight:700; }
-    main.middle > section { margin:22px 0; }
+
+    /* HERO: Foto + halbtransparentes grünes Panel */
+    .hero{
+      position:relative;
+      display:flex; align-items:center; justify-content:center;
+      min-height: 360px; padding: 36px 16px 26px;
+      border-radius:0 0 16px 16px; overflow:hidden;
+      background: url('assets/Bundestag.jpg') center 35% / cover no-repeat;
+    }
+    .hero::before{
+      content:""; position:absolute; inset:0;
+      background: radial-gradient(140% 100% at 50% 20%, rgba(0,0,0,.15), rgba(0,0,0,.45));
+    }
+    .hero-panel{
+      position:relative; z-index:1;
+      background: rgba(10,125,50,.82);
+      color:#fff; border-radius:22px;
+      padding: 20px 24px; max-width:min(92vw,720px); width:fit-content;
+      box-shadow: 0 18px 48px rgba(0,0,0,.35);
+      text-align:center;
+    }
+    .hero .logo img{
+      width: clamp(220px, 48vw, 520px); height:auto; display:block;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,.25));
+      margin-inline:auto;
+    }
+    .tagline{ margin:8px 0 0; font-size:1.05rem; opacity:.95; }
+    .cta{ display:inline-block; margin-top:12px; padding:10px 16px; background:#fff; color:#0a7d32; text-decoration:none; border-radius:10px; font-weight:700; }
+
+    @media (max-width:720px){
+      .hero{ min-height: 300px; padding: 26px 12px 18px; background-position:center 40%; }
+      .hero-panel{ border-radius:16px; padding:16px; }
+      .tagline{ font-size:.98rem; }
+    }
+
+    /* Form-Grundlayout (falls nicht schon in assets/styles.css) */
     fieldset { border:1px solid #e6e6e6; border-radius:12px; padding:16px; margin:18px 0; }
     legend { padding:0 6px; font-weight:700; color:#0b4d25; }
     label { display:block; font-weight:600; margin:12px 0 6px; }
-    input[type="text"], input[type="email"], select, textarea { width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid #cfcfcf; border-radius:8px; font:inherit; background:#fff; }
-    textarea { min-height: 260px; }
+    input[type="text"], input[type="email"], select, textarea {
+      width:100%; box-sizing:border-box; padding:10px 12px;
+      border:1px solid #cfcfcf; border-radius:8px; font:inherit; background:#fff;
+    }
+    .notice, .hint { font-size:.92rem; color:var(--muted); }
+
+    /* GRID-Helfer */
     .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
     @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
-    .actions { margin-top:16px; display:flex; gap:12px; align-items:center; }
-    button[type="submit"]{ padding:12px 18px; border:0; border-radius:10px; background:#0a7d32; color:#fff; font-weight:800; cursor:pointer; }
-    .success { display:none; margin-top:10px; padding:10px 12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:8px; color:#145214; }
-    .notice, .hint { font-size:.92rem; color:var(--muted); }
-    footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
-    footer a { color:#333; }
-    .shipbox { display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; background:#f9fafb; border:1px dashed #cbd5e1; border-radius:12px; padding:12px; }
-    .shipbox .opt { display:flex; align-items:center; gap:10px; }
-    .shipbox strong { font-weight:800; }
+
+    /* Shipbox – 2 Spalten, mobil 1 Spalte */
+    .shipbox{
+      display:grid; grid-template-columns: 1fr 1fr; gap:14px; align-items:start;
+      background:#f9fafb; border:1px dashed #cbd5e1; border-radius:12px; padding:12px;
+    }
+    @media (max-width:720px){ .shipbox{ grid-template-columns:1fr; } }
+
+    /* Checkbox + Text inline, gute Klickfläche */
+    .shipbox .opt{
+      display:flex; align-items:center; gap:10px;
+      cursor:pointer; user-select:none; margin:0;
+    }
+    .shipbox .opt input[type="checkbox"]{
+      flex:0 0 auto; width:1.2em; height:1.2em; margin:0;
+      accent-color: var(--brand);
+    }
+    .shipbox .opt span{ flex:1 1 auto; }
+
+    /* Brief-Feld groß & gut lesbar */
+    #message{
+      min-height: 520px;
+      font-size: 1rem;
+      line-height: 1.6;
+      padding: 14px 16px;
+      resize: vertical;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,.05);
+    }
+    @media (max-width:720px){ #message{ min-height: 380px; } }
 
     /* Zusatz-Empfänger */
     .extra-recipients { margin-top:12px; padding:12px; border:1px solid #e5e7eb; border-radius:12px; background:#f9fafb; }
@@ -40,18 +96,23 @@
     .extra-controls label span { display:block; font-weight:600; margin:0 0 4px; }
     .chip { display:inline-block; padding:3px 8px; border-radius:999px; background:#eef6f1; border:1px solid #cfe7d8; margin:4px 6px 0 0; font-size:.9rem; user-select:none; cursor:pointer; }
     .chip[data-active="1"] { background:#d1fae5; border-color:#9ee3c4; }
+
+    .actions { margin-top:16px; display:flex; gap:12px; align-items:center; }
+    button[type="submit"]{ padding:12px 18px; border:0; border-radius:10px; background:#0a7d32; color:#fff; font-weight:800; cursor:pointer; }
+    .success { display:none; margin-top:10px; padding:10px 12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:8px; color:#145214; }
   </style>
 </head>
 <body>
   <div class="page">
     <header class="site-header middle">
       <div class="hero">
-        <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
-          <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
-        </a>
-        <div style="flex-basis:100%"></div>
-        <p class="tagline">Sie schreiben den Brief – wir übernehmen Ausdruck und Postversand an die Abgeordneten.</p>
-        <a class="cta" href="#brief">Brief einreichen</a>
+        <div class="hero-panel" role="banner" aria-label="Kampagnen-Intro">
+          <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
+            <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+          </a>
+          <p class="tagline">Sie schreiben den Brief – wir übernehmen den weiteren Ablauf: Ausdruck und Zustellung an die Abgeordneten des deutschen Bundestages.</p>
+          <a class="cta" href="#brief">Brief einreichen</a>
+        </div>
       </div>
     </header>
 
@@ -96,7 +157,7 @@
                 <span>Partei</span>
                 <select id="filter-partei"><option value="">– Partei wählen –</option></select>
               </label>
-              <label style="display:flex; align-items:center; gap:6px; margin-left:auto;">
+              <label class="opt" style="margin-left:auto;">
                 <input type="checkbox" id="add-faction-leads">
                 <span>Zusätzlich: Fraktionsvorsitzende/r</span>
               </label>
@@ -173,7 +234,6 @@ Mit freundlichen Grüßen
                 <input id="copy_to_self" name="copy_to_self" type="checkbox" checked>
                 <span><strong>Kopie an mich</strong> per E-Mail senden</span>
               </label>
-              <!-- NEU: ZIP-Option für Absender:in -->
               <label class="opt">
                 <input id="copy_zip_to_self" name="copy_zip_to_self" type="checkbox" disabled>
                 <span>Falls mehrere Empfänger: <strong>alle Briefe als ZIP</strong> an mich</span>
@@ -273,7 +333,7 @@ Mit freundlichen Grüßen
                  .replace('{Anrede}',              newSal);
       } else {
         const prevAddr = elMSG.dataset.recipientAddr || '';
-        const prevSal  = elMSG.dataset.salutation    || '';
+               const prevSal  = elMSG.dataset.salutation    || '';
         if (prevAddr && txt.includes(prevAddr)) txt = txt.replace(prevAddr, newAddr);
         if (prevSal  && txt.includes(prevSal))  txt = txt.replace(prevSal,  newSal);
       }
@@ -351,15 +411,10 @@ Mit freundlichen Grüßen
   })();
   </script>
 
-  <!-- Zusatz-Empfänger (Bundesland/Partei + optional Fraktionsvorsitzende/Kanzler) -->
+  <!-- Zusatz-Empfänger (unchanged) -->
   <script type="module">
     async function loadJSON(p){ return fetch(p,{cache:'no-store'}).then(r=>r.json()); }
-
-    // robust laden (assets/… und Fallback)
-    async function loadSeries(paths){
-      for (const p of paths){ try { const j = await loadJSON(p); if (j) return j; } catch(e){} }
-      return {};
-    }
+    async function loadSeries(paths){ for (const p of paths){ try { const j = await loadJSON(p); if (j) return j; } catch(e){} } return {}; }
     const byState = await loadSeries(['assets/data/mdb_by_state.json','/assets/data/mdb_by_state.json','mdb_by_state.json']);
     const byParty = await loadSeries(['assets/data/mdb_by_party.json','/assets/data/mdb_by_party.json','mdb_by_party.json']);
 
@@ -374,7 +429,6 @@ Mit freundlichen Grüßen
     const $addFaction = document.getElementById('add-faction-leads');
     const $list = document.getElementById('extra-list');
 
-    // Dropdowns füllen
     Object.keys(byState).filter(Boolean).sort().forEach(s=>{
       const o=document.createElement('option'); o.value=s; o.textContent=s; $state.appendChild(o);
     });
@@ -382,18 +436,11 @@ Mit freundlichen Grüßen
       const o=document.createElement('option'); o.value=p; o.textContent=p; $party.appendChild(o);
     });
 
-    // Brücke für Hauptempfänger
     let primaryRecipient = null;
-    window.setPrimaryRecipient = function(mdbEntry){
-      primaryRecipient = mdbEntry || null;
-    };
-    window.getPrimaryRecipient = function(){
-      return primaryRecipient && !primaryRecipient.placeholder ? primaryRecipient : null;
-    };
+    window.setPrimaryRecipient = function(mdbEntry){ primaryRecipient = mdbEntry || null; };
+    window.getPrimaryRecipient = function(){ return primaryRecipient && !primaryRecipient.placeholder ? primaryRecipient : null; };
 
-    // interne Liste (klick-aktivierbare Chips)
     let extraRecipients = [];
-
     function uniquePush(list, entry){
       if(!entry || !entry.mdb_name) return;
       const key=(entry.mdb_name+'|'+(entry.fraktion||'')+'|'+(entry.bundesland||'')).toLowerCase();
@@ -436,7 +483,6 @@ Mit freundlichen Grüßen
       }
     }
 
-    // Filterevents
     $state.addEventListener('change', ()=>{
       extraRecipients = [];
       const state=$state.value;
@@ -464,7 +510,6 @@ Mit freundlichen Grüßen
       renderExtraList();
     });
 
-    // Exponiere Auswahl für den Submit – nur aktive Chips gehen mit
     window.getSelectedRecipients = function(){
       const result=[];
       if(primaryRecipient && !primaryRecipient.placeholder && !primaryRecipient.excluded) result.push(primaryRecipient);
@@ -473,7 +518,7 @@ Mit freundlichen Grüßen
     };
   </script>
 
-  <!-- Tokens & Submit -->
+  <!-- Tokens & Submit (unchanged) -->
   <script>
   (function(){
     const $=(s)=>document.querySelector(s);
@@ -485,14 +530,9 @@ Mit freundlichen Grüßen
     const topPLZ=()=>($('#plz')?.value||'').trim();
     const topCity=()=>($('#city')?.value||'').trim();
 
-    // ZIP-Checkbox abhängig von "Kopie an mich"
-    const copyCB = document.getElementById('copy_to_self');
-    const zipCB  = document.getElementById('copy_zip_to_self');
-    function toggleZipEnable(){
-      if(!zipCB) return;
-      zipCB.disabled = !copyCB.checked;
-      if(zipCB.disabled) zipCB.checked = false;
-    }
+    const copyCB=document.getElementById('copy_to_self');
+    const zipCB=document.getElementById('copy_zip_to_self');
+    function toggleZipEnable(){ if(!zipCB) return; zipCB.disabled=!copyCB.checked; if(zipCB.disabled) zipCB.checked=false; }
     copyCB?.addEventListener('change', toggleZipEnable);
     document.addEventListener('DOMContentLoaded', toggleZipEnable);
 
@@ -548,16 +588,15 @@ Mit freundlichen Grüßen
       const payload={};
       fd.forEach((v,k)=>payload[k]=v);
       payload.copy_to_self     = fd.has('copy_to_self');
-      payload.copy_zip_to_self = fd.has('copy_zip_to_self'); /* NEU */
+      payload.copy_zip_to_self = fd.has('copy_zip_to_self');
       payload.consent_print    = fd.has('consent_print');
       payload.message          = finalMsg;
 
-      // Extra-Empfänger & Primary mitsenden (Fan-out ready)
       try{
         if (window.getSelectedRecipients) {
           const recips = window.getSelectedRecipients() || [];
           if (Array.isArray(recips) && recips.length) {
-            payload.extra_recipients = recips.filter((_,i)=>i>0); // alles außer primary
+            payload.extra_recipients = recips.filter((_,i)=>i>0);
           }
         }
         if (window.getPrimaryRecipient) {
