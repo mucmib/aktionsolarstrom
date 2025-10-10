@@ -5,148 +5,264 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Solarstrom statt Erdgas-Strom – Info & Mitmachen</title>
   <meta name="description" content="Alle Infos zur Kampagne Solarstrom statt Erdgas-Strom: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
-  <link rel="stylesheet" href="assets/styles.css">
-
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
   <style>
-    /* 3-Spalten Layout mit mittlerer Content-Spalte */
-    .page { display:grid; grid-template-columns: 1fr minmax(0, 920px) 1fr; min-height:100dvh; }
-    .middle { grid-column:2; width:100%; }
-
-    /* Hero */
-    .hero { display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap; text-align:center; padding:32px 0; }
-    .hero img { max-height: 220px; width:auto; }
-    .tagline { margin:6px 0 0; font-size:1.05rem; }
-
-    /* Zähler-Banner */
-    .stats-banner { display:flex; align-items:center; gap:14px; margin:10px auto 0; padding:14px 18px; width:fit-content; max-width:100%; background:linear-gradient(135deg,#0a7c5b 0%,#12a37d 50%,#0a7c5b 100%); color:#fff; border-radius:16px; box-shadow:0 10px 24px rgba(10,124,91,.25); }
-    .stats-iconbox { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.15); box-shadow:inset 0 0 0 1px rgba(255,255,255,.18); }
-    .stats-icon { font-size:1.3rem; filter:drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
-    .stats-text { display:flex; flex-direction:column; line-height:1.1; }
-    .stats-label { font-size:.9rem; opacity:.95; letter-spacing:.2px; }
-    .stats-value { font-weight:800; font-size:2.1rem; line-height:1; margin-top:2px; }
-    .count { font-variant-numeric: tabular-nums; }
-    .stats-meta { margin-top:6px; font-size:.82rem; opacity:.9; display:flex; align-items:center; gap:8px; }
-    .stats-meta .dot { width:6px; height:6px; border-radius:50%; background:#fff; opacity:.7; }
-
-    @media (max-width:520px){ .stats-banner{ padding:12px 14px } .stats-value{ font-size:1.7rem } }
-
-    /* Sektionen */
-    main.middle > section { margin:32px 0; }
-    .lead { font-size:1.15rem; line-height:1.6; }
-    .grid2 { display:grid; gap:18px; grid-template-columns:1fr; }
-    @media (min-width:780px){ .grid2{ grid-template-columns:1fr 1fr } }
-
-    /* Karten */
-    .card { border:1px solid rgba(0,0,0,.08); border-radius:12px; padding:18px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.04); }
-    .card h3 { margin-top:0 }
-
-    /* Callout */
-    .callout { border-left:4px solid #f6b10a; background:#fff8e1; padding:14px 16px; border-radius:8px; }
-
-    /* CTA-Buttons */
-    .cta { display:inline-block; padding:12px 16px; border-radius:10px; text-decoration:none; }
-    .cta.primary { background:#0a7c5b; color:#fff; }
-    .cta.secondary { background:#e9f5f1; color:#0a7c5b; }
-
-    /* Video */
-    .video-wrap { position:relative; width:100%; aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.06); margin-bottom:18px; }
-    .video-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
-
-    /* Partner / Träger */
-    .partner { border:1px solid rgba(0,0,0,.08); border-radius:12px; padding:18px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.04); }
-    .partner h2 { margin-top:0; }
-    .orgs { display:grid; gap:18px; grid-template-columns:1fr; align-items:start; }
-    @media (min-width:780px){ .orgs{ grid-template-columns:1fr 1fr } }
-    .org { display:grid; grid-template-columns:80px 1fr; gap:14px; align-items:start; }
-    .org .logoBox { display:flex; align-items:center; justify-content:center; background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; padding:10px; }
-    .org img { max-width:100%; height:auto; display:block; }
-    .org h3 { margin:0 0 6px; font-size:1.05rem; }
-    .org p { margin:0 0 10px; }
-    .org a { color:#0a7c5b; text-decoration:none; }
-    .org a:hover { text-decoration:underline; }
-
-    /* Footer */
-    footer .legal { text-align:center; display:block; }
-    
-    /* Mobile-Header-Bild */
-    @media (max-width: 600px) {
-      .hero { flex-direction: column; padding: 16px 0; }
-      .hero img { max-width: 90%; height: auto; max-height: 140px; object-fit: contain; margin: 0 auto; display:block; }
-      .hero h1 { font-size: 1.4rem; line-height: 1.3; }
-      .tagline { font-size: 0.95rem; }
+    /* === Design-Token === */
+    :root{
+      --brand: #0a7d32;
+      --brand-2: #0bbd54;
+      --bg: #f7faf9;
+      --card: #fff;
+      --text: #222;
+      --muted: #6b7280;
+      --accent: #f6b10a;
+      --radius: 14px;
+      --shadow: 0 6px 28px rgba(0,0,0,.08);
+      --shadow-lg: 0 18px 48px rgba(0,0,0,.12);
+      --maxw: 960px;
     }
+
+    /* === Base === */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font: 16px/1.6 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    img { max-width: 100%; display: block; }
+
+    .page { display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr; min-height:100dvh; }
+    .middle { grid-column:2; width:100%; padding: 0 16px; }
+
+    /* === Hero mit Hintergrundbild + Overlay-Panel === */
+    .hero-wrap{
+      position: relative;
+      border-radius: 0 0 var(--radius) var(--radius);
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.55)),
+        url('assets/Bundestag.jpg') center 40%/cover no-repeat;
+    }
+    .hero{
+      display:flex; align-items:center; justify-content:center; text-align:center;
+      padding: 84px 16px 72px;
+      color:#fff;
+    }
+    .hero-inner{
+      background: rgba(10,125,50,.82);
+      backdrop-filter: saturate(110%) blur(2px);
+      border-radius: 22px;
+      padding: 22px 24px;
+      max-width: 860px;
+      width: min(92vw, 860px);
+      margin: 0 auto;
+      box-shadow: var(--shadow-lg);
+    }
+    .hero .brandbar{
+      display:flex; gap:10px; align-items:center; justify-content:center;
+      font-weight:700; letter-spacing:.2px;
+      margin-bottom: 10px;
+    }
+    .branddot{ width:8px; height:8px; border-radius:50%; background:#fff; opacity:.7; }
+    .hero h1{
+      font-size: clamp(1.6rem, 2.6vw + 1rem, 2.4rem);
+      line-height: 1.15;
+      margin: 6px 0 6px;
+    }
+    .hero .tagline{
+      font-size: clamp(1rem, .5vw + .95rem, 1.15rem);
+      opacity:.95;
+      margin: 0;
+    }
+    .cta-row{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:14px; }
+    .cta{
+      display:inline-block; padding:12px 18px; border-radius: 12px; font-weight:700; text-decoration:none;
+      transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+    }
+    .cta.primary{
+      color:#fff; background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 8px 20px rgba(11,189,84,.25);
+    }
+    .cta.secondary{ color: var(--brand); background:#eaf9f1; border:1px solid #cfe7d8; }
+    .cta:hover{ transform: translateY(-1px); }
+
+    /* === Stats-Banner === */
+    .stats-banner{
+      display:flex; align-items:center; gap:14px;
+      margin: -42px auto 28px; padding: 14px 18px;
+      width: fit-content; max-width: 100%;
+      background: linear-gradient(135deg, #0a7c5b 0%, #12a37d 50%, #0a7c5b 100%);
+      color:#fff; border-radius:16px; box-shadow: var(--shadow);
+    }
+    .stats-iconbox{
+      width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+      background: rgba(255,255,255,.15);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+    .stats-icon{ font-size:1.3rem; filter: drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
+    .stats-text{ display:flex; flex-direction:column; line-height:1.1; }
+    .stats-label{ font-size:.9rem; opacity:.95; letter-spacing:.2px; }
+    .stats-value{ font-weight:800; font-size:2.1rem; line-height:1; margin-top:2px; }
+    .count{ font-variant-numeric: tabular-nums; }
+    .stats-meta{ margin-top:6px; font-size:.82rem; opacity:.92; }
+    .stats-meta .dot{ display:inline-block; width:6px; height:6px; border-radius:50%; background:#fff; opacity:.7; margin:0 8px 1px; vertical-align:middle; }
+
+    @media (max-width:600px){
+      .hero-inner{ border-radius: 18px; padding: 18px; }
+      .stats-banner{ margin: -30px auto 22px; padding: 12px 14px; }
+      .stats-value{ font-size:1.7rem; }
+    }
+
+    /* === Sections === */
+    main.middle > section { margin: 32px 0; }
+
+    .lead{ font-size:1.12rem; background: var(--card); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+    .callout{ border-left: 5px solid var(--accent); background:#fff8e1; padding:14px 16px; border-radius:10px; }
+
+    .grid2{ display:grid; gap:18px; grid-template-columns:1fr; }
+    @media (min-width: 780px){ .grid2{ grid-template-columns: 1fr 1fr; } }
+
+    .card{
+      background: var(--card); border-radius: var(--radius); padding: 18px;
+      box-shadow: var(--shadow);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .card:hover{ transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0,0,0,.12); }
+    .card h3{ margin: 0 0 8px; color: var(--brand); }
+
+    .video-wrap{ position:relative; width:100%; aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden; box-shadow: var(--shadow); }
+    .video-wrap iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+
+    /* === Partner === */
+    .partner{ background: var(--card); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+    .orgs{ display:grid; gap:18px; grid-template-columns:1fr; }
+    @media (min-width: 780px){ .orgs{ grid-template-columns: 1fr 1fr; } }
+    .org{ display:grid; grid-template-columns: 88px 1fr; gap:14px; align-items:start; }
+    .logoBox{ display:flex; align-items:center; justify-content:center; background:#f3f6f5; border:1px solid #e5e7eb; border-radius:10px; padding:10px; }
+    .org a{ color: var(--brand); text-decoration: none; }
+    .org a:hover{ text-decoration: underline; }
+
+    /* === Footer === */
+    footer{ margin: 36px 0 24px; color: var(--muted); }
+    footer .legal{ text-align:center; display:block; }
+    footer a{ color: inherit; }
+
+    /* === Utility === */
+    .section-title{ margin: 0 0 12px; color: var(--brand); }
   </style>
 </head>
 <body>
-
   <div class="page">
+    <!-- HERO -->
     <header class="site-header middle">
-      <div class="hero">
-        <img src="assets/SolarstromGasstromTitel.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
-        <div>
-          <h1>Solarstrom statt Erdgas-Strom</h1>
-          <p class="tagline">Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken &amp; versenden physisch.</p>
-          <div style="margin-top:10px">
-            <a class="cta primary" href="#mitmachen">Jetzt mitmachen</a>
-            <a class="cta secondary" href="#material">Materialien</a>
+      <div class="hero-wrap">
+        <div class="hero">
+          <div class="hero-inner">
+            <div class="brandbar">
+              <span>Aktion</span><span class="branddot"></span><span>Solarstrom statt Erdgas-Strom</span>
+            </div>
+            <h1>Solarstrom statt Erdgas-Strom</h1>
+            <p class="tagline">Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken &amp; versenden physisch.</p>
+            <div class="cta-row">
+              <a class="cta primary" href="#mitmachen" aria-label="Jetzt mitmachen">Jetzt mitmachen</a>
+              <a class="cta secondary" href="#material" aria-label="Materialien ansehen">Materialien</a>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Live-Zähler: erzeugte PDF-Briefe -->
-      <div class="stats-banner" role="status" aria-live="polite">
+      <div class="stats-banner middle" role="status" aria-live="polite">
         <div class="stats-iconbox"><div class="stats-icon" aria-hidden="true">📄</div></div>
         <div class="stats-text">
           <div class="stats-label">Erzeugte PDF-Briefe</div>
           <div class="stats-value"><span id="pdfCount" class="count">–</span></div>
           <div class="stats-meta" id="statsMeta" hidden>
-            <span class="dot" aria-hidden="true"></span>
-            <span id="statsTime" class="stats-time">Stand: –</span>
+            <span class="dot" aria-hidden="true"></span><span id="statsTime">Stand: –</span>
           </div>
         </div>
       </div>
     </header>
 
+    <!-- CONTENT -->
     <main class="middle">
+
       <!-- Einleitung -->
       <section id="intro">
-        <p class="lead">
+        <div class="lead">
           Wirtschaftsministerin Reiche und Bundeskanzler Friedrich Merz sprechen von Technologieoffenheit und Wirtschaftlichkeit. Mit ihren konkreten Forderungen werden aber einseitig fossile Kraftwerke begünstigt und der Ausbau günstiger Erneuerbaren gebremst. 
           Weniger Ausbau bedeutet: Bürger und Unternehmen mit höheren Stromkosten belasten, den Wirtschaftsstandort Deutschland schwächen, die Abhängigkeit von fossilen Importen aus unzuverlässigen Staaten verlängern und das Klimaziel gefährden.
           Weniger Ausbau steht zudem im Gegensatz zum Wahlprogramm 2025 der Union: <em>„Für uns ist klar: Energie muss bezahlbar, sicher und sauber sein“</em>.
-        </p>
-        <div class="callout"><strong>Kernaussage:</strong> Solarstrom senkt Kosten, erhöht Versorgungssicherheit und schützt Klima &amp; Gesundheit.</div>
+        </div>
+        <div class="callout" style="margin-top:12px;">
+          <strong>Kernaussage:</strong> Solarstrom senkt Kosten, erhöht Versorgungssicherheit und schützt Klima &amp; Gesundheit.
+        </div>
       </section>
 
       <!-- Aktuelle Sendung -->
       <section id="sendung">
-        <h2>Der Kampagenenstart</h2>
+        <h2 class="section-title">Der Kampagnenstart</h2>
         <div class="video-wrap">
-          <iframe src="https://www.youtube-nocookie.com/embed//lzq9l2sW6Lo" title="Solarstrom statt Erdgas-Strom – Der Kampagenenstart" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <iframe
+            src="https://www.youtube-nocookie.com/embed//lzq9l2sW6Lo"
+            title="Solarstrom statt Erdgas-Strom – Der Kampagnenstart"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen></iframe>
         </div>
-        <p style="margin-top:10px"><a class="cta secondary" href="https://youtu.be/hrUNTbE8zKQ" target="_blank" rel="noopener">Auf YouTube ansehen</a></p>
+
+        <p style="margin-top:10px">
+          <a class="cta secondary" href="https://youtu.be/hrUNTbE8zKQ" target="_blank" rel="noopener">
+            Auf YouTube ansehen
+          </a>
+        </p>
 
         <h3 style="margin-top:30px;">Weitere Beiträge der Aktion</h3>
         <div class="video-wrap">
-          <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc" title="YouTube-Playlist: Aktion Solarstrom statt Erdgas-Strom" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/videoseries?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc"
+            title="YouTube-Playlist: Aktion Solarstrom statt Erdgas-Strom"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen></iframe>
         </div>
-        <p style="margin-top:10px"><a class="cta secondary" href="https://www.youtube.com/playlist?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc" target="_blank" rel="noopener">Ganze Playlist auf YouTube ansehen</a></p>
+        <p style="margin-top:10px">
+          <a class="cta secondary" href="https://www.youtube.com/playlist?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc" target="_blank" rel="noopener">
+            Ganze Playlist auf YouTube ansehen
+          </a>
+        </p>
       </section>
 
       <!-- Ziele -->
       <section id="ziele">
-        <h2>Kernforderungen</h2>
+        <h2 class="section-title">Kernforderungen</h2>
         <div class="grid2">
-          <div class="card"><h3>1. Keine neuen Erdgaskraftwerke</h3><p>Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.</p></div>
-          <div class="card"><h3>2. Ausbau Erneuerbarer beschleunigen</h3><p>und netzdienliche Erzeugung belohnen.</p></div>
-          <div class="card"><h3>3. Feste Einspeisevergütung beibehalten</h3><p>bis Smart Meter flächendeckend eine einfache, flexible Vergütung erlauben.</p></div>
-          <div class="card"><h3>4. Bestandsschutz</h3><p>und keine Zusatzbelastung für erneuerbare Stromerzeugung.</p></div>
+          <div class="card">
+            <h3>1. Keine neuen Erdgaskraftwerke</h3>
+            <p>Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.</p>
+          </div>
+          <div class="card">
+            <h3>2. Ausbau Erneuerbarer beschleunigen</h3>
+            <p>und netzdienliche Erzeugung belohnen.</p>
+          </div>
+          <div class="card">
+            <h3>3. Feste Einspeisevergütung beibehalten</h3>
+            <p>bis Smart Meter flächendeckend eine einfache, flexible Vergütung erlauben.</p>
+          </div>
+          <div class="card">
+            <h3>4. Bestandsschutz</h3>
+            <p>und keine Zusatzbelastung für erneuerbare Stromerzeugung.</p>
+          </div>
         </div>
       </section>
 
       <!-- Hintergrund -->
       <section id="hintergrund">
-        <h2>Hintergrund &amp; Argumente</h2>
+        <h2 class="section-title">Hintergrund &amp; Argumente</h2>
         <h3>Kosten, Klima &amp; Sicherheit</h3>
         <ul>
           <li>Solarstrom senkt Stromgestehungskosten und Risiken fossiler Preise.</li>
@@ -157,16 +273,16 @@
 
       <!-- Materialien -->
       <section id="material">
-        <h2>Materialien</h2>
+        <h2 class="section-title">Materialien</h2>
         <p>Hier finden Sie die Begründung für unsere Forderungen – zum Nachlesen und Weitergeben.</p>
-        <div class="downloads">
+        <p>
           <a class="cta secondary" href="Solarstrom statt Erdgasstrom - Die Argumente.pdf" download>📄 Positionspapier</a>
-        </div>
+        </p>
       </section>
 
       <!-- Mitmachen -->
       <section id="mitmachen">
-        <h2>Mitmachen</h2>
+        <h2 class="section-title">Mitmachen</h2>
         <div class="grid2">
           <div class="card">
             <h3>Brief an Abgeordnete</h3>
@@ -178,20 +294,23 @@
 
       <!-- Träger -->
       <section id="partner" class="partner">
-        <h2>Träger der Kampagne</h2>
+        <h2 class="section-title">Träger der Kampagne</h2>
         <p>Die Kampagne wird von dem VEEG e.V. und der EWG durchgeführt.</p>
         <div class="orgs">
           <article class="org">
-            <div class="logoBox"><img src="assets/veeglogo.svg" alt="VEEG e. V. – Verband EnergieErzeugende Gebäude"></div>
+            <div class="logoBox">
+              <img src="assets/veeglogo.svg" alt="VEEG e. V. – Verband EnergieErzeugende Gebäude">
+            </div>
             <div>
               <h3>VEEG e. V. – Verband EnergieErzeugende Gebäude</h3>
               <p>Der VEEG e. V. fördert Gebäude als aktive Energieproduzenten – also solche, die ihren Energiebedarf selbst erzeugen, möglichst energiekostenfrei werden und Klimaschutz praktisch mitdenken.</p>
               <p><a href="https://ve-eg.de/" target="_blank" rel="noopener">ve-eg.de</a></p>
             </div>
           </article>
-
           <article class="org">
-            <div class="logoBox"><img src="assets/energywatchgroup.png" alt="Energy Watch Group (EWG)"></div>
+            <div class="logoBox">
+              <img src="assets/energywatchgroup.png" alt="Energy Watch Group (EWG)">
+            </div>
             <div>
               <h3>Energy Watch Group (EWG)</h3>
               <p>Die Energy Watch Group (EWG) ist ein gemeinnütziger Think Tank, der sich dem Ziel verschrieben hat, die Klimakrise zu stoppen und die Erdatmosphäre wieder abzukühlen.</p>
@@ -203,13 +322,15 @@
     </main>
 
     <footer class="site-footer middle">
-      <nav class="legal"><a href="Impressum.html">Impressum</a> · <a href="Datenschutz.html">Datenschutz</a></nav>
+      <nav class="legal">
+        <a href="Impressum.html">Impressum</a> · <a href="Datenschutz.html">Datenschutz</a>
+      </nav>
       <p style="text-align:center">© Kampagne „Solarstrom statt Erdgas-Strom”</p>
     </footer>
   </div>
 
   <script>
-    // Smooth Scrolling
+    // Smooth Scrolling für In-Page-Links
     document.addEventListener('click', (e) => {
       const a = e.target.closest('a[href^="#"]'); if(!a) return;
       const el = document.querySelector(a.getAttribute('href'));
@@ -219,68 +340,68 @@
     // ---- Live-Zähler-Logik (PDFs) ----
     const STATS_URL = '/api/stats.json';
 
-  function countUp(el, to, duration = 900) {
-    const fmt = new Intl.NumberFormat('de-DE');
-    if (!('requestAnimationFrame' in window) || duration <= 0) {
-      el.textContent = fmt.format(Math.max(0, Number(to)||0));
-      return;
+    function countUp(el, to, duration = 1200) {
+      const fmt = new Intl.NumberFormat('de-DE');
+      if (!('requestAnimationFrame' in window) || duration <= 0) {
+        el.textContent = fmt.format(Math.max(0, Number(to)||0));
+        return;
+      }
+      const start = performance.now();
+      const from = 0;
+      function frame(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const val = Math.round(from + (to - from) * eased);
+        el.textContent = fmt.format(val);
+        if (t < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
     }
-    const start = performance.now();
-    const from = 0;
-    function frame(now) {
-      const t = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - t, 3);
-      const val = Math.round(from + (to - from) * eased);
-      el.textContent = fmt.format(val);
-      if (t < 1) requestAnimationFrame(frame);
+
+    function formatStandText(isoString) {
+      if (!isoString) return null;
+      const d = new Date(isoString);
+      if (isNaN(d)) return null;
+      const fmtDate = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
+      const fmtTime = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
+      return `Stand: ${fmtDate}, ${fmtTime} Uhr`;
     }
-    requestAnimationFrame(frame);
-  }
 
-  function formatLocalStand(dateObj = new Date()) {
-    const d = dateObj;
-    const fmtDate = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
-    const fmtTime = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
-    return `Stand: ${fmtDate}, ${fmtTime} Uhr`;
-  }
-
-  async function loadCounter() {
-    const el = document.getElementById('pdfCount');
-    const metaWrap = document.getElementById('statsMeta');
-    const metaText = document.getElementById('statsTime');
-    if (!el) return;
-
-    try {
-      const res = await fetch(STATS_URL + `?nocache=${Date.now()}`, { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-
-      // Zahl (neuer Key + Fallbacks)
-      const raw = Number(data.pdfs_generated ?? data.count ?? data.sent_emails ?? 0);
-      const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
-      countUp(el, value);
-
-      // Immer lokale Abrufzeit anzeigen
-      metaText.textContent = formatLocalStand(new Date());
-      metaWrap.hidden = false;
-
-    } catch (e) {
-      console.warn('Zähler konnte nicht geladen werden:', e);
-      el.textContent = '–';
-      // Trotzdem die lokale Zeit zeigen, damit „Stand“ nicht leer ist
+    async function loadCounter() {
+      const el = document.getElementById('pdfCount');
       const metaWrap = document.getElementById('statsMeta');
       const metaText = document.getElementById('statsTime');
-      if (metaWrap && metaText) {
-        metaText.textContent = formatLocalStand(new Date());
-        metaWrap.hidden = false;
+      if (!el) return;
+
+      try {
+        const res = await fetch(STATS_URL + `?nocache=${Date.now()}`, { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        // Zahl (neuer Key pdfs_generated, Fallbacks bleiben)
+        const raw = Number(data.pdfs_generated ?? data.count ?? data.sent_emails ?? 0);
+        const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
+        countUp(el, value);
+
+        // Zeitstempel anzeigen (neuer/alte Keys)
+        const stand = formatStandText(data.last_update || data.stats_updated_at || data.sent_emails_last_update);
+        if (stand && metaWrap && metaText) {
+          metaText.textContent = stand;
+          metaWrap.hidden = false;
+        } else if (metaWrap) {
+          metaWrap.hidden = true;
+        }
+      } catch (e) {
+        console.warn('Zähler konnte nicht geladen werden:', e);
+        el.textContent = '–';
+        if (metaWrap) metaWrap.hidden = true;
       }
     }
-  }
 
-  // Initial laden + alle 60s aktualisieren
-  loadCounter();
-  setInterval(loadCounter, 60000);
-</script>
+    loadCounter();
+  </script>
 </body>
 </html>
+
+
 
