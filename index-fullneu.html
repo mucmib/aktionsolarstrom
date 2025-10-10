@@ -13,69 +13,41 @@
     .page { display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr; }
     .middle { grid-column:2; padding:16px; }
 
-    /* ---------- HERO mit Hintergrundbild + Overlay + Weißer Card ---------- */
-    .hero {
-      position: relative;
-      display:flex; align-items:center; justify-content:center;
-      padding:44px 16px 28px;
-      text-align:center; color:#0a7d32;
-      border-radius:0 0 16px 16px;
-      min-height: 260px;
+    /* HERO: Foto + halbtransparentes grünes Panel */
+.hero{
+  position:relative;
+  display:flex; align-items:center; justify-content:center;
+  min-height: 360px; padding: 36px 16px 26px;
+  border-radius:0 0 16px 16px; overflow:hidden;
+  background: url('assets/Bundestag.jpg') center 35% / cover no-repeat;
+}
+/* dunkle Vignette, damit das Foto ruhiger ist */
+.hero::before{
+  content:""; position:absolute; inset:0;
+  background: radial-gradient(140% 100% at 50% 20%, rgba(0,0,0,.15), rgba(0,0,0,.45));
+}
+/* das grüne Panel */
+.hero-panel{
+  position:relative; z-index:1;
+  background: rgba(10,125,50,.82);           /* <-- Transparenz hier anpassen */
+  color:#fff; border-radius:22px;
+  padding: 20px 24px; max-width:min(92vw,720px); width:fit-content;
+  box-shadow: 0 18px 48px rgba(0,0,0,.35);
+  text-align:center;
+}
+.hero .logo img{
+  width: clamp(220px, 48vw, 520px); height:auto; display:block;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,.25));
+  margin-inline:auto;
+}
+.tagline{ margin:8px 0 0; font-size:1.05rem; opacity:.95; }
+.cta{ display:inline-block; margin-top:12px; padding:10px 16px; background:#fff; color:#0a7d32; text-decoration:none; border-radius:10px; font-weight:700; }
 
-      background: url('assets/Bundestag.jpg') center/cover no-repeat;
-      background-color:#0a7d32; /* Fallback */
-      overflow:hidden;
-    }
-    /* dunkler Verlauf, damit Foto “ruhend” wirkt */
-    .hero::before{
-      content:"";
-      position:absolute; inset:0;
-      background: radial-gradient(120% 80% at 50% 10%, rgba(0,0,0,.15), rgba(0,0,0,.35));
-      mix-blend-mode: multiply;
-    }
-    /* Card mit Logo + Text */
-    .hero-card{
-      position:relative; z-index:1;
-      background:#ffffffee; /* leicht transparent */
-      backdrop-filter: blur(2px);
-      border-radius:18px;
-      box-shadow: 0 18px 40px rgba(0,0,0,.25);
-      padding:18px 22px;
-      display:flex; flex-direction:column; align-items:center; gap:10px;
-      max-width:min(92vw, 620px);
-    }
-    .hero .logo img{
-      width: clamp(220px, 60vw, 500px);
-      height:auto; display:block;
-      filter: drop-shadow(0 3px 10px rgba(0,0,0,.15));
-    }
-    .tagline { margin:2px 0 0; font-size:1.02rem; color:#0a7d32; }
-    .cta { display:inline-block; margin-top:6px; padding:10px 16px; background:#0a7d32; color:#fff; text-decoration:none; border-radius:10px; font-weight:700; }
-    .cta.secondary { background:#e9f5f1; color:#0a7d32; }
-
-    @media (max-width:720px){
-      .hero { padding:28px 12px 18px; background-position:center 35%; }
-      .hero-card { padding:14px 16px; border-radius:14px; }
-      .tagline { font-size:.98rem; }
-    }
-
-    main.middle > section { margin:22px 0; }
-    fieldset { border:1px solid #e6e6e6; border-radius:12px; padding:16px; margin:18px 0; }
-    legend { padding:0 6px; font-weight:700; color:#0b4d25; }
-    label { display:block; font-weight:600; margin:12px 0 6px; }
-    input[type="text"], input[type="email"], select, textarea { width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid #cfcfcf; border-radius:8px; font:inherit; background:#fff; }
-    textarea { min-height: 260px; }
-    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
-    @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
-    .actions { margin-top:16px; display:flex; gap:12px; align-items:center; }
-    button[type="submit"]{ padding:12px 18px; border:0; border-radius:10px; background:#0a7d32; color:#fff; font-weight:800; cursor:pointer; }
-    .success { display:none; margin-top:10px; padding:10px 12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:8px; color:#145214; }
-    .notice, .hint { font-size:.92rem; color:var(--muted); }
-    footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
-    footer a { color:#333; }
-    .shipbox { display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; background:#f9fafb; border:1px dashed #cbd5e1; border-radius:12px; padding:12px; }
-    .shipbox .opt { display:flex; align-items:center; gap:10px; }
-    .shipbox strong { font-weight:800; }
+@media (max-width:720px){
+  .hero{ min-height: 300px; padding: 26px 12px 18px; background-position:center 40%; }
+  .hero-panel{ border-radius:16px; padding:16px; }
+  .tagline{ font-size:.98rem; }
+}
 
     /* Zusatz-Empfänger */
     .extra-recipients { margin-top:12px; padding:12px; border:1px solid #e5e7eb; border-radius:12px; background:#f9fafb; }
@@ -88,16 +60,16 @@
 <body>
   <div class="page">
     <header class="site-header middle">
-      <div class="hero">
-        <div class="hero-card" role="banner" aria-label="Kampagnen-Intro">
-          <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
-            <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
-          </a>
-          <p class="tagline">Sie schreiben den Brief – wir übernehmen Ausdruck und Postversand an die Abgeordneten.</p>
-          <a class="cta" href="#brief">Brief einreichen</a>
-        </div>
-      </div>
-    </header>
+  <div class="hero">
+    <div class="hero-panel" role="banner" aria-label="Kampagnen-Intro">
+      <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
+        <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+      </a>
+      <p class="tagline">Sie schreiben den Brief – wir übernehmen Ausdruck und Postversand an die Abgeordneten.</p>
+      <a class="cta" href="#brief">Brief einreichen</a>
+    </div>
+  </div>
+</header>
 
     <main class="middle">
       <section class="explainer">
@@ -609,6 +581,7 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
 
 
 
