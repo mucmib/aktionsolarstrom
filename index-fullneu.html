@@ -8,14 +8,55 @@
   <link rel="stylesheet" href="assets/styles.css">
   <style>
     :root { --maxw: 960px; --brand:#0a7d32; --muted:#6b7280; }
+
     body { margin:0; font:16px/1.5 system-ui, Arial, sans-serif; color:#111; background:#fff; }
     .page { display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr; }
     .middle { grid-column:2; padding:16px; }
-    .hero { display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; padding:28px 0 10px; text-align:center; background:linear-gradient(180deg,#0a7d32,#065f26); color:#fff; border-radius:0 0 16px 16px; }
+
+    /* ---------- HERO mit Hintergrundbild + grünem Overlay ---------- */
+    .hero {
+      position: relative;
+      display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap;
+      padding:34px 16px 18px;
+      text-align:center; color:#fff;
+      border-radius:0 0 16px 16px;
+
+      /* Bundestag-Hintergrund */
+      background: url('assets/bundestag.jpg') center/cover no-repeat;
+      /* Fallback-Farbe falls Bild noch lädt */
+      background-color:#0a7d32;
+      min-height: 220px;
+      overflow: hidden; /* für runde Ecken + Overlay */
+    }
+    /* grünes Verlaufs-Overlay */
+    .hero::before{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(10,125,50,.62), rgba(6,95,38,.62));
+      /* macht den Grün-Look; Stärke per alpha anpassen */
+    }
+    /* Inhalt über dem Overlay rendern */
+    .hero > * { position: relative; z-index: 1; }
+
     .hero a.logo { display:inline-block }
-    .hero img { width:min(95vw, 540px); height:auto; display:block; filter:drop-shadow(0 6px 18px rgba(0,0,0,.25)); }
-    .tagline { margin:8px 0 0; font-size:1.1rem; opacity:.95; }
+    .hero img {
+      width:min(95vw, 540px);
+      max-width:540px;
+      height:auto; display:block;
+      filter:drop-shadow(0 6px 18px rgba(0,0,0,.25));
+    }
+
+    .tagline { margin:8px 0 0; font-size:1.1rem; opacity:.98; text-shadow:0 1px 2px rgba(0,0,0,.25); }
     .cta { display:inline-block; margin-top:10px; padding:10px 16px; background:#fff; color:#0a7d32; text-decoration:none; border-radius:10px; font-weight:700; }
+
+    /* Mobile-Optimierung: stärkeres Overlay & kleinere Abstände/Bild */
+    @media (max-width:720px){
+      .hero { padding:22px 12px 14px; background-position:center 35%; }
+      .hero::before{ background: linear-gradient(180deg, rgba(10,125,50,.70), rgba(6,95,38,.70)); }
+      .hero img { width: clamp(200px, 70vw, 360px); }
+      .tagline { font-size:1rem; }
+    }
+
     main.middle > section { margin:22px 0; }
     fieldset { border:1px solid #e6e6e6; border-radius:12px; padding:16px; margin:18px 0; }
     legend { padding:0 6px; font-weight:700; color:#0b4d25; }
@@ -351,11 +392,9 @@ Mit freundlichen Grüßen
   })();
   </script>
 
-  <!-- Zusatz-Empfänger (Bundesland/Partei + optional Fraktionsvorsitzende/Kanzler) -->
+  <!-- Zusatz-Empfänger -->
   <script type="module">
     async function loadJSON(p){ return fetch(p,{cache:'no-store'}).then(r=>r.json()); }
-
-    // robust laden (assets/… und Fallback)
     async function loadSeries(paths){
       for (const p of paths){ try { const j = await loadJSON(p); if (j) return j; } catch(e){} }
       return {};
@@ -374,7 +413,6 @@ Mit freundlichen Grüßen
     const $addFaction = document.getElementById('add-faction-leads');
     const $list = document.getElementById('extra-list');
 
-    // Dropdowns füllen
     Object.keys(byState).filter(Boolean).sort().forEach(s=>{
       const o=document.createElement('option'); o.value=s; o.textContent=s; $state.appendChild(o);
     });
@@ -382,18 +420,11 @@ Mit freundlichen Grüßen
       const o=document.createElement('option'); o.value=p; o.textContent=p; $party.appendChild(o);
     });
 
-    // Brücke für Hauptempfänger
     let primaryRecipient = null;
-    window.setPrimaryRecipient = function(mdbEntry){
-      primaryRecipient = mdbEntry || null;
-    };
-    window.getPrimaryRecipient = function(){
-      return primaryRecipient && !primaryRecipient.placeholder ? primaryRecipient : null;
-    };
+    window.setPrimaryRecipient = function(mdbEntry){ primaryRecipient = mdbEntry || null; };
+    window.getPrimaryRecipient = function(){ return primaryRecipient && !primaryRecipient.placeholder ? primaryRecipient : null; };
 
-    // interne Liste (klick-aktivierbare Chips)
     let extraRecipients = [];
-
     function uniquePush(list, entry){
       if(!entry || !entry.mdb_name) return;
       const key=(entry.mdb_name+'|'+(entry.fraktion||'')+'|'+(entry.bundesland||'')).toLowerCase();
@@ -436,7 +467,6 @@ Mit freundlichen Grüßen
       }
     }
 
-    // Filterevents
     $state.addEventListener('change', ()=>{
       extraRecipients = [];
       const state=$state.value;
@@ -464,7 +494,6 @@ Mit freundlichen Grüßen
       renderExtraList();
     });
 
-    // Exponiere Auswahl für den Submit – nur aktive Chips gehen mit
     window.getSelectedRecipients = function(){
       const result=[];
       if(primaryRecipient && !primaryRecipient.placeholder && !primaryRecipient.excluded) result.push(primaryRecipient);
@@ -485,7 +514,6 @@ Mit freundlichen Grüßen
     const topPLZ=()=>($('#plz')?.value||'').trim();
     const topCity=()=>($('#city')?.value||'').trim();
 
-    // ZIP-Checkbox abhängig von "Kopie an mich"
     const copyCB = document.getElementById('copy_to_self');
     const zipCB  = document.getElementById('copy_zip_to_self');
     function toggleZipEnable(){
@@ -548,16 +576,15 @@ Mit freundlichen Grüßen
       const payload={};
       fd.forEach((v,k)=>payload[k]=v);
       payload.copy_to_self     = fd.has('copy_to_self');
-      payload.copy_zip_to_self = fd.has('copy_zip_to_self'); /* NEU */
+      payload.copy_zip_to_self = fd.has('copy_zip_to_self');
       payload.consent_print    = fd.has('consent_print');
       payload.message          = finalMsg;
 
-      // Extra-Empfänger & Primary mitsenden (Fan-out ready)
       try{
         if (window.getSelectedRecipients) {
           const recips = window.getSelectedRecipients() || [];
           if (Array.isArray(recips) && recips.length) {
-            payload.extra_recipients = recips.filter((_,i)=>i>0); // alles außer primary
+            payload.extra_recipients = recips.filter((_,i)=>i>0);
           }
         }
         if (window.getPrimaryRecipient) {
@@ -587,6 +614,8 @@ Mit freundlichen Grüßen
   </script>
 </body>
 </html>
+
+
 
 
 
