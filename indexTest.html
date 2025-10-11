@@ -52,7 +52,6 @@
     .hero{
       display:flex; align-items:center; justify-content:center;
       text-align:center; color:#fff;
-      /* kompakter: vorher 90px / 120px */
       padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px);
     }
     .hero-panel{
@@ -63,7 +62,6 @@
       backdrop-filter: blur(2px);
     }
     .hero .logo{
-      /* kompakter: vorher clamp(220px, 50vw, 480px) */
       width: clamp(170px, 36vw, 380px);
       height:auto; display:block; margin:0 auto 8px;
       filter: drop-shadow(0 3px 8px rgba(0,0,0,.35));
@@ -80,12 +78,11 @@
     .cta.secondary{ background:#fff; color:#0a7d32; border:1px solid #cfe7d8; }
     .cta:hover{ transform:translateY(-1px); }
 
-    /* ===== Zähler – kompakt & angedockt ===== */
+    /* ===== Zähler ===== */
     .stats-wrap{
       display:flex; justify-content:center;
-      /* näher an den Hero gerückt */
       transform: translateY(-44px);
-      margin-bottom: -28px; /* kompensiert das Translate im Flow */
+      margin-bottom: -28px;
     }
     .stats-banner{
       display:flex; align-items:center; gap:10px;
@@ -94,7 +91,6 @@
       color:#fff; border-radius:12px; box-shadow:0 12px 28px rgba(10,124,91,.28);
     }
     .stats-iconbox{ width:34px; height:34px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.15); border-radius:8px; }
-    .stats-icon{ font-size:1.1rem; }
     .stats-text{ line-height:1.1; }
     .stats-label{ font-size:.85rem; opacity:.9; }
     .stats-value{ font-size:1.6rem; font-weight:800; }
@@ -122,7 +118,7 @@
     .card h3 { margin-top:0 }
     .callout { border-left: 4px solid var(--accent); background:#fff8e1; padding:14px 16px; border-radius: 8px; }
 
-    /* ===== YouTube: groß & responsiv ===== */
+    /* ===== Video ===== */
     .video-wrap {
       position: relative;
       width: 100%;
@@ -135,78 +131,41 @@
       box-shadow: 0 6px 24px rgba(0,0,0,.15);
     }
     .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-    @media (max-width:600px){ .video-wrap{ max-width:95vw; margin-bottom:16px; } }
 
     /* ===== Partner ===== */
     .partner { border:1px solid rgba(0,0,0,.08); border-radius:12px; padding:18px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.04); }
-    .partner h2 { margin-top:0; }
     .orgs { display:grid; gap:18px; grid-template-columns:1fr; align-items:start; }
     @media (min-width:780px){ .orgs{ grid-template-columns:1fr 1fr } }
     .org { display:grid; grid-template-columns:80px 1fr; gap:14px; align-items:start; }
     .org .logoBox { display:flex; align-items:center; justify-content:center; background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; padding:10px; }
     .org img { max-width:100%; height:auto; display:block; }
 
-    /* Footer */
     footer .legal { text-align:center; display:block; }
 
-    /* Reveal Animation */
     .reveal{ opacity:0; transform: translateY(12px); }
     .reveal.is-visible{ opacity:1; transform: translateY(0); transition: opacity .55s ease, transform .55s ease; }
+
     /* ==== THEMES ==== */
-/* Default (neutral, was du quasi hast) */
-:root{
-  --bg-2: #ffffff;
-  --surface: var(--card);
-  --border: rgba(0,0,0,.06);
-}
-
-/* Hellgrün – „Solar Mint“ */
-body.theme-mint{
-  --bg: #eef7f1;         /* Seitenhintergrund */
-  --bg-2: #ffffff;       /* helle Flächen */
-  --surface: #ffffff;    /* Karten/Partner */
-  --border: rgba(0,0,0,.06);
-  background: linear-gradient(180deg,#f6fbf7 0%, #ffffff 55%, #eef7f1 100%);
-}
-
-/* Warm/Beige – „Solar Warm“ */
-body.theme-warm{
-  --bg: #f9f7f2;
-  --bg-2: #ffffff;
-  --surface: #ffffff;
-  --border: rgba(120,84,0,.10);
-  background: linear-gradient(180deg,#fbf9f4 0%, #ffffff 60%, #f9f7f2 100%);
-}
-
-/* Hellgrau – „Neutral Light“ */
-body.theme-neutral{
-  --bg: #f5f5f5;
-  --bg-2: #ffffff;
-  --surface: #ffffff;
-  --border: rgba(0,0,0,.08);
-  background: linear-gradient(180deg,#f7f7f7 0%, #ffffff 60%, #f3f3f3 100%);
-}
-
-/* Bläulich – „Tech Mist“ */
-body.theme-mist{
-  --bg: #edf3f7;
-  --bg-2: #ffffff;
-  --surface: #ffffff;
-  --border: rgba(0,40,80,.08);
-  background: linear-gradient(180deg,#f2f6f9 0%, #ffffff 60%, #edf3f7 100%);
-}
-
-/* Komponenten binden die Variablen automatisch */
-.card, .partner { background: var(--surface); border-color: var(--border); }
-.org .logoBox{ background:#f9fafb; border:1px solid var(--border); }
-
+    body.theme-mint {
+      --bg: #eef7f1;
+      background: linear-gradient(180deg,#f6fbf7 0%, #ffffff 55%, #eef7f1 100%) !important;
+    }
+    body.theme-warm {
+      --bg: #f9f7f2;
+      background: linear-gradient(180deg,#fbf9f4 0%, #ffffff 60%, #f9f7f2 100%) !important;
+    }
+    body.theme-neutral {
+      --bg: #f5f5f5;
+      background: linear-gradient(180deg,#f7f7f7 0%, #ffffff 60%, #f3f3f3 100%) !important;
+    }
+    body.theme-mist {
+      --bg: #edf3f7;
+      background: linear-gradient(180deg,#f2f6f9 0%, #ffffff 60%, #edf3f7 100%) !important;
+    }
   </style>
 </head>
-<body>
-<!--  <body class="theme-mint">        <!-- hellgrün -->
-<!-- <body class="theme-warm">  --> <!-- beige/warm -->
-<!-- <body class="theme-neutral">--> <!-- hellgrau -->
-<body class="theme-mist">   --> <!-- tech-bläulich -->
+
+<body class="theme-mint">
   <div class="page">
     <!-- ===== HERO ===== -->
     <header class="site-header middle">
@@ -215,9 +174,7 @@ body.theme-mist{
           <div class="hero-panel reveal">
             <img class="logo" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
             <h1>Solarstrom statt Erdgas-Strom</h1>
-            <p class="tagline">
-              Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken &amp; versenden physisch.
-            </p>
+            <p class="tagline">Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken &amp; versenden physisch.</p>
             <div class="cta-row">
               <a class="cta primary" href="#mitmachen">Jetzt mitmachen</a>
               <a class="cta secondary" href="#material">Materialien</a>
@@ -225,8 +182,6 @@ body.theme-mist{
           </div>
         </div>
       </div>
-
-      <!-- Zähler: eigene Zeile, “angedockt” -->
       <div class="stats-wrap reveal">
         <div class="stats-banner" role="status" aria-live="polite">
           <div class="stats-iconbox"><div class="stats-icon" aria-hidden="true">📄</div></div>
@@ -244,132 +199,45 @@ body.theme-mist{
 
     <!-- ===== CONTENT ===== -->
     <main class="middle">
-
-      <!-- Einleitung -->
       <section id="intro">
         <div class="lead">
           Wirtschaftsministerin Reiche und Bundeskanzler Friedrich Merz sprechen von Technologieoffenheit und Wirtschaftlichkeit. Mit ihren konkreten Forderungen werden aber einseitig fossile Kraftwerke begünstigt und der Ausbau günstiger Erneuerbaren gebremst. 
-          Weniger Ausbau bedeutet: Bürger und Unternehmen mit höheren Stromkosten belasten, den Wirtschaftsstandort Deutschland schwächen, die Abhängigkeit von fossilen Importen aus unzuverlässigen Staaten verlängern und das Klimaziel gefährden.
-          Weniger Ausbau steht zudem im Gegensatz zum Wahlprogramm 2025 der Union: <em>„Für uns ist klar: Energie muss bezahlbar, sicher und sauber sein“</em>.
         </div>
         <div class="callout" style="margin-top:12px;">
           <strong>Kernaussage:</strong> Solarstrom senkt Kosten, erhöht Versorgungssicherheit und schützt Klima &amp; Gesundheit.
         </div>
       </section>
 
-      <!-- Aktuelle Sendung -->
       <section id="sendung">
         <h2 class="section-title">Der Kampagnenstart</h2>
         <div class="video-wrap">
-          <iframe
-            src="https://www.youtube-nocookie.com/embed/lzq9l2sW6Lo"
-            title="Solarstrom statt Erdgas-Strom – Der Kampagnenstart"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen></iframe>
-        </div>
-
-        <p style="margin-top:10px">
-          <a class="cta secondary" href="https://youtu.be/hrUNTbE8zKQ" target="_blank" rel="noopener">
-            Auf YouTube ansehen
-          </a>
-        </p>
-
-        <h3 style="margin-top:30px;">Weitere Beiträge der Aktion</h3>
-        <div class="video-wrap">
-          <iframe
-            src="https://www.youtube-nocookie.com/embed/videoseries?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc"
-            title="YouTube-Playlist: Aktion Solarstrom statt Erdgas-Strom"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen></iframe>
+          <iframe src="https://www.youtube-nocookie.com/embed/lzq9l2sW6Lo" title="Solarstrom statt Erdgas-Strom – Der Kampagnenstart" allowfullscreen></iframe>
         </div>
         <p style="margin-top:10px">
-          <a class="cta secondary" href="https://www.youtube.com/playlist?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc" target="_blank" rel="noopener">
-            Ganze Playlist auf YouTube ansehen
-          </a>
+          <a class="cta secondary" href="https://youtu.be/hrUNTbE8zKQ" target="_blank" rel="noopener">Auf YouTube ansehen</a>
         </p>
       </section>
 
-      <!-- Ziele -->
       <section id="ziele">
         <h2 class="section-title">Kernforderungen</h2>
         <div class="grid2">
-          <div class="card">
-            <h3>1. Keine neuen Erdgaskraftwerke</h3>
-            <p>Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.</p>
-          </div>
-          <div class="card">
-            <h3>2. Ausbau Erneuerbarer beschleunigen</h3>
-            <p>und netzdienliche Erzeugung belohnen.</p>
-          </div>
-          <div class="card">
-            <h3>3. Feste Einspeisevergütung beibehalten</h3>
-            <p>bis Smart Meter flächendeckend eine einfache, flexible Vergütung erlauben.</p>
-          </div>
-          <div class="card">
-            <h3>4. Bestandsschutz</h3>
-            <p>und keine Zusatzbelastung für erneuerbare Stromerzeugung.</p>
-          </div>
+          <div class="card"><h3>1. Keine neuen Erdgaskraftwerke</h3><p>Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.</p></div>
+          <div class="card"><h3>2. Ausbau Erneuerbarer beschleunigen</h3><p>und netzdienliche Erzeugung belohnen.</p></div>
+          <div class="card"><h3>3. Feste Einspeisevergütung beibehalten</h3><p>bis Smart Meter flächendeckend eine einfache, flexible Vergütung erlauben.</p></div>
+          <div class="card"><h3>4. Bestandsschutz</h3><p>und keine Zusatzbelastung für erneuerbare Stromerzeugung.</p></div>
         </div>
       </section>
 
-      <!-- Hintergrund -->
-      <section id="hintergrund">
-        <h2 class="section-title">Hintergrund &amp; Argumente</h2>
-        <h3>Kosten, Klima &amp; Sicherheit</h3>
-        <ul>
-          <li>Solarstrom senkt Stromgestehungskosten und Risiken fossiler Preise.</li>
-          <li>Direktnutzung reduziert Netzbelastung und Verluste.</li>
-          <li>Dezentrale Anlagen erhöhen die Resilienz.</li>
-        </ul>
-      </section>
-
-      <!-- Materialien -->
-      <section id="material">
-        <h2 class="section-title">Materialien</h2>
-        <p>Hier finden Sie die Begründung für unsere Forderungen – zum Nachlesen und Weitergeben.</p>
-        <p>
-          <a class="cta secondary" href="Solarstrom statt Erdgasstrom - Die Argumente.pdf" download>📄 Positionspapier</a>
-        </p>
-      </section>
-
-      <!-- Mitmachen -->
-      <section id="mitmachen">
-        <h2 class="section-title">Mitmachen</h2>
-        <div class="grid2">
-          <div class="card">
-            <h3>Brief an Abgeordnete</h3>
-            <p>Schreiben Sie Ihren Brief – wir übernehmen Ausdruck und Postversand an die zuständige Bundestagsabgeordnete/den zuständigen Abgeordneten.</p>
-            <a class="cta primary" href="index-full.html">Brief einreichen</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Träger -->
       <section id="partner" class="partner">
         <h2 class="section-title">Träger der Kampagne</h2>
-        <p>Die Kampagne wird von dem VEEG e.V. und der EWG durchgeführt.</p>
         <div class="orgs">
           <article class="org">
-            <div class="logoBox">
-              <img src="assets/veeglogo.svg" alt="VEEG e. V. – Verband EnergieErzeugende Gebäude">
-            </div>
-            <div>
-              <h3>VEEG e. V. – Verband EnergieErzeugende Gebäude</h3>
-              <p>Der VEEG e. V. fördert Gebäude als aktive Energieproduzenten – also solche, die ihren Energiebedarf selbst erzeugen, möglichst energiekostenfrei werden und Klimaschutz praktisch mitdenken.</p>
-              <p><a href="https://ve-eg.de/" target="_blank" rel="noopener">ve-eg.de</a></p>
-            </div>
+            <div class="logoBox"><img src="assets/veeglogo.svg" alt="VEEG e. V."></div>
+            <div><h3>VEEG e. V.</h3><p>Der Verband EnergieErzeugende Gebäude fördert Gebäude als aktive Energieproduzenten.</p></div>
           </article>
           <article class="org">
-            <div class="logoBox">
-              <img src="assets/energywatchgroup.png" alt="Energy Watch Group (EWG)">
-            </div>
-            <div>
-              <h3>Energy Watch Group (EWG)</h3>
-              <p>Die Energy Watch Group (EWG) ist ein gemeinnütziger Think Tank, der sich dem Ziel verschrieben hat, die Klimakrise zu stoppen und die Erdatmosphäre wieder abzukühlen.</p>
-              <p><a href="https://energywatchgroup.org/" target="_blank" rel="noopener">energywatchgroup.org</a></p>
-            </div>
+            <div class="logoBox"><img src="assets/energywatchgroup.png" alt="Energy Watch Group"></div>
+            <div><h3>Energy Watch Group</h3><p>Gemeinnütziger Think Tank zur wissenschaftlichen Politikberatung in der Energiewende.</p></div>
           </article>
         </div>
       </section>
@@ -384,92 +252,53 @@ body.theme-mist{
   </div>
 
   <script>
-    // Smooth Scrolling für In-Page-Links
-    document.addEventListener('click', (e) => {
-      const a = e.target.closest('a[href^="#"]'); if(!a) return;
-      const el = document.querySelector(a.getAttribute('href'));
-      if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+    // Smooth Scrolling
+    document.addEventListener('click', e=>{
+      const a=e.target.closest('a[href^="#"]');
+      if(!a)return;
+      const el=document.querySelector(a.getAttribute('href'));
+      if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'});}
     });
 
-    // ---- Live-Zähler-Logik (PDFs) ----
-    const STATS_URL = '/api/stats.json';
-
-    function countUp(el, to, duration = 1200) {
-      const fmt = new Intl.NumberFormat('de-DE');
-      if (!('requestAnimationFrame' in window) || duration <= 0) {
-        el.textContent = fmt.format(Math.max(0, Number(to)||0));
-        return;
-      }
-      const start = performance.now();
-      const from = 0;
-      function frame(now) {
-        const t = Math.min(1, (now - start) / duration);
-        const eased = 1 - Math.pow(1 - t, 3);
-        const val = Math.round(from + (to - from) * eased);
-        el.textContent = fmt.format(val);
-        if (t < 1) requestAnimationFrame(frame);
+    // Counter
+    const STATS_URL='/api/stats.json';
+    function countUp(el,to,duration=1200){
+      const fmt=new Intl.NumberFormat('de-DE');
+      const start=performance.now();
+      function frame(now){
+        const t=Math.min(1,(now-start)/duration);
+        el.textContent=fmt.format(Math.round(to*t));
+        if(t<1)requestAnimationFrame(frame);
       }
       requestAnimationFrame(frame);
     }
-
-    function formatStandText(isoString) {
-      if (!isoString) return null;
-      const d = new Date(isoString);
-      if (isNaN(d)) return null;
-      const fmtDate = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
-      const fmtTime = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
-      return `Stand: ${fmtDate}, ${fmtTime} Uhr`;
+    async function loadCounter(){
+      const el=document.getElementById('pdfCount');
+      try{
+        const res=await fetch(STATS_URL+`?nocache=${Date.now()}`,{cache:'no-store'});
+        const data=await res.json();
+        const val=Number(data.pdfs_generated??data.count??0);
+        countUp(el,val);
+      }catch{el.textContent='–';}
     }
-
-    async function loadCounter() {
-      const el = document.getElementById('pdfCount');
-      const metaWrap = document.getElementById('statsMeta');
-      const metaText = document.getElementById('statsTime');
-      if (!el) return;
-
-      try {
-        const res = await fetch(STATS_URL + `?nocache=${Date.now()}`, { cache: 'no-store' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
-
-        // Zahl (neuer Key pdfs_generated, Fallbacks bleiben)
-        const raw = Number(data.pdfs_generated ?? data.count ?? data.sent_emails ?? 0);
-        const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
-        countUp(el, value);
-
-        // Zeitstempel anzeigen (neuer/alte Keys)
-        const stand = formatStandText(data.last_update || data.stats_updated_at || data.sent_emails_last_update);
-        if (stand && metaWrap && metaText) {
-          metaText.textContent = stand;
-          metaWrap.hidden = false;
-        } else if (metaWrap) {
-          metaWrap.hidden = true;
-        }
-      } catch (e) {
-        console.warn('Zähler konnte nicht geladen werden:', e);
-        el.textContent = '–';
-        if (metaWrap) metaWrap.hidden = true;
-      }
-    }
-
     loadCounter();
-  </script>
 
-  <script>
-    // Reveal on load / scroll
+    // Reveal Animation
     (function(){
-      const els = document.querySelectorAll('.reveal');
-      if(!('IntersectionObserver' in window)){ els.forEach(e=>e.classList.add('is-visible')); return; }
-      const io = new IntersectionObserver((entries)=>{
+      const els=document.querySelectorAll('.reveal');
+      if(!('IntersectionObserver'in window)){els.forEach(e=>e.classList.add('is-visible'));return;}
+      const io=new IntersectionObserver(entries=>{
         entries.forEach(ent=>{
-          if(ent.isIntersecting){ ent.target.classList.add('is-visible'); io.unobserve(ent.target); }
+          if(ent.isIntersecting){ent.target.classList.add('is-visible');io.unobserve(ent.target);}
         });
-      }, {rootMargin: '0px 0px -10% 0px', threshold: .12});
+      },{rootMargin:'0px 0px -10% 0px',threshold:.12});
       els.forEach(e=>io.observe(e));
     })();
   </script>
 </body>
 </html>
+
+
 
 
 
