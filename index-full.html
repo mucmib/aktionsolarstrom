@@ -105,7 +105,16 @@ input[type="submit"][disabled] {
   box-shadow: none;        /* kein Hover-Schatten */
   filter: grayscale(40%);  /* optional: leicht entsättigt */
 }
-    
+  /* Betreff-Feld erzwingen: volle Breite & angenehme Höhe */
+#subject {
+  display: block;
+  width: 100% !important;
+  box-sizing: border-box;
+  min-height: 44px;          /* angenehme Klick-/Lesefläche */
+  padding: 12px 14px;        /* wie die anderen Felder */
+  font: inherit;             /* gleiche Schrift wie überall */
+}
+  
   </style>
   
 </head>
@@ -673,6 +682,7 @@ Mit freundlichen Grüßen
 
 </body>
 </html>
+
 
 
 
