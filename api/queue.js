@@ -1,4 +1,4 @@
-// /api/queue.js – Vercel Serverless Function (Fan-out + ZIP + Dedupe/RL)
+// /api/queue.js – Serverless Handler (PDF/ZIP + E-Mail via Brevo)
 import Brevo from "@getbrevo/brevo";
 import PDFDocument from "pdfkit";
 import { kv } from "@vercel/kv";
@@ -6,7 +6,7 @@ import archiver from "archiver";
 import { PassThrough } from "stream";
 import crypto from "crypto";
 
-/** --- CORS --- */
+/* ---------------- CORS ---------------- */
 const allowCors = (fn) => async (req, res) => {
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
@@ -16,7 +16,7 @@ const allowCors = (fn) => async (req, res) => {
   return await fn(req, res);
 };
 
-/** --- kleine Helfer --- */
+/* --------------- Helpers --------------- */
 const must = (v) => v && String(v).trim() !== "";
 const esc = (s = "") =>
   String(s)
@@ -33,10 +33,8 @@ function readBody(req) {
 }
 const toBool = (v) => ["true", "on", "1", "yes"].includes(String(v).toLowerCase());
 
-/** --- Layout-Konstanten --- */
+/* --------------- Layout --------------- */
 const WINDOW = { left: mm(20), topFromTop: mm(45), width: mm(90), height: mm(45) };
-
-/** Schriftgrößen zentral */
 const FONT = { header: 12, body: 11, senderLine: 7.5 };
 
 function drawSenderLine(doc, senderLine) {
@@ -51,14 +49,10 @@ function drawSenderLine(doc, senderLine) {
   doc.text(String(senderLine), x, y, { width: w, ellipsis: true });
   doc.restore();
 }
-
-/** Datum auf Deutsch */
 function formatDateDE(d = new Date()) {
   const m = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
   return `${d.getDate()}. ${m[d.getMonth()]} ${d.getFullYear()}`;
 }
-
-/** Adresse/Anrede evtl. aus Nutzertext entfernen (doppelt vermeiden) */
 function stripRecipientParagraph(txt = "") {
   const parts = String(txt).trim().split(/\n{2,}/);
   if (!parts.length) return txt;
@@ -73,8 +67,6 @@ function stripRecipientParagraph(txt = "") {
 function stripLeadingSalutation(txt = "") {
   return String(txt).replace(/^\s*Sehr\s+geehrte[^\n]*\n\s*\n?/i, "");
 }
-
-/** Anrede-Helfer */
 const FEMALE=new Set(["anna","sabine","ursula","katrin","claudia","renate","petra","britta","heike","stefanie","julia","christine","lisa","marie","monika","andrea","martina","sandra","nicole","angelika","eva","kathrin","karin","bettina","svenja","ricarda","elisabeth","maria","linda","sarah"]);
 const MALE  =new Set(["hans","peter","wolfgang","thomas","michael","stefan","andreas","markus","martin","frank","jürgen","juergen","klaus","christian","alexander","lars","tobias","sebastian","uwe","ulrich","paul","max","jan","georg","rolf","rainer","christoph","bernd"]);
 function splitName(full = "") {
@@ -97,7 +89,7 @@ function buildPoliteSalutation(name = "", fallback = "Sehr geehrte Damen und Her
   return withComma(fallback.replace(/,\s*$/, ""));
 }
 
-/** --- PDF-Erstellung --- */
+/* --------------- PDF --------------- */
 async function buildLetterPDF({ queueId, sender, recipient, subject, bodyText, salutation }) {
   const doc = new PDFDocument({
     size: "A4",
@@ -154,24 +146,22 @@ async function buildLetterPDF({ queueId, sender, recipient, subject, bodyText, s
   // Textstart nach Anschrift
   const bodyStartY = addressY + doc.heightOfString(recipientBlock, { width: addressW }) + mm(10);
 
-  // Betreff (ohne moveDown; absolut positioniert)
+  // Betreff
   if (must(subject)) {
     doc.font("Times-Bold").fontSize(FONT.body)
        .text(subject, usableLeft, bodyStartY, { width: usableWidth });
     doc.font("Times-Roman");
   }
 
-  // Fließtext – Anrede sauber behandeln
+  // Fließtext
   let cleanBody = stripRecipientParagraph(bodyText || "");
   cleanBody = stripLeadingSalutation(cleanBody);
   if (!/^\s*Sehr\s+geehrte/i.test(cleanBody)) {
     const sal = salutation && String(salutation).trim() ? salutation : "Sehr geehrte Damen und Herren,";
     cleanBody = `${sal}\n\n${cleanBody}`;
   }
-  // optional: Mehrfachleerzeilen straffen
   cleanBody = cleanBody.replace(/\n{3,}/g, "\n\n");
 
-  // FIX: mehr Abstand zwischen Betreff und Anrede/Body
   const yAfterSubject = must(subject)
     ? bodyStartY + doc.heightOfString(subject, { width: usableWidth }) + mm(8)
     : bodyStartY;
@@ -179,14 +169,14 @@ async function buildLetterPDF({ queueId, sender, recipient, subject, bodyText, s
   doc.fontSize(FONT.body).text(cleanBody, usableLeft, yAfterSubject, {
     width: usableWidth,
     align: "left",
-    lineGap: 3, // etwas luftiger
+    lineGap: 3,
   });
 
   doc.end();
   return pdfDone;
 }
 
-/** ZIP aus Buffern erstellen */
+/* --------------- ZIP --------------- */
 function zipBuffers(files /* [{name, buffer}] */) {
   return new Promise((resolve, reject) => {
     const archive = archiver("zip", { zlib: { level: 9 } });
@@ -201,7 +191,7 @@ function zipBuffers(files /* [{name, buffer}] */) {
   });
 }
 
-/** ---- Deduping / Rate-Limits Helfer ---- */
+/* ------------- Normalize text (dupe) ------------- */
 function normalizeText(s = "") {
   return String(s)
     .replace(/\u00A0/g, " ")
@@ -210,7 +200,19 @@ function normalizeText(s = "") {
     .toLowerCase();
 }
 
-/** ---- API ---- */
+/* --------------- Email (Brevo) --------------- */
+function brevoClient() {
+  const api = new Brevo.TransactionalEmailsApi();
+  const key = process.env.BREVO_API_KEY || "";
+  if (!key) throw new Error("BREVO_API_KEY missing");
+  api.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, key);
+  return api;
+}
+function toBase64(buf) {
+  return Buffer.isBuffer(buf) ? buf.toString("base64") : Buffer.from(buf).toString("base64");
+}
+
+/* --------------- API Handler --------------- */
 export default allowCors(async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ ok:false, error:"method_not_allowed" });
@@ -244,12 +246,12 @@ export default allowCors(async function handler(req, res) {
     return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
   }
 
-  // Pflicht: Einwilligung zum ausschließlichen Postversand
+  // Pflicht: Einwilligung zum Postversand
   if (!body.consent_print) {
     return res.status(400).json({ ok:false, error:"CONSENT_REQUIRED", message:"Einwilligung zum Postversand fehlt." });
   }
 
-  // Empfängerliste
+  // Empfänger sammeln (Primary + Extra, AfD/Werteunion ausfiltern)
   const recipients = [];
   const isExcludedParty = (p="") => /^(afd|werteunion)$/i.test(String(p).trim());
   function pushRecipient(r) {
@@ -272,38 +274,32 @@ export default allowCors(async function handler(req, res) {
     pushRecipient({ mdb_name: body.mp_name, bundestag_address: "Platz der Republik 1\n11011 Berlin" });
   }
 
-  // ---------- Dedupe + Rate Limits ----------
+  // ---- Rate Limits (KV) ----
   try {
     const ip = String(req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "")
       .split(",")[0].trim().toLowerCase();
     const emailKey = `rl:email:${(body.email || "").toLowerCase()}`;
     const ipKey    = ip ? `rl:ip:${ip}` : null;
 
-    // 1) pro E-Mail max. 3 Vorgänge / 60 Min
     const emailCount = await kv.incr(emailKey);
     if (emailCount === 1) await kv.expire(emailKey, 60 * 60);
     if (emailCount > 3) {
-      console.warn("Dupe/RL", { email: body.email, ip, reason: "rate_limited_email" });
-      return res.status(429).json({ ok:false, error:"rate_limited", message:"Bitte versuchen Sie es später erneut." });
+      return res.status(429).json({ ok:false, error:"rate_limited_email", message:"Bitte versuchen Sie es später erneut." });
     }
 
-    // 2) pro IP max. 10 Vorgänge / 60 Min
     if (ipKey) {
       const ipCount = await kv.incr(ipKey);
       if (ipCount === 1) await kv.expire(ipKey, 60 * 60);
       if (ipCount > 10) {
-        console.warn("Dupe/RL", { email: body.email, ip, reason: "rate_limited_ip" });
-        return res.status(429).json({ ok:false, error:"rate_limited", message:"Bitte versuchen Sie es später erneut." });
+        return res.status(429).json({ ok:false, error:"rate_limited_ip", message:"Bitte versuchen Sie es später erneut." });
       }
     }
   } catch (e) {
     console.warn("KV RL warn:", e?.message || e);
   }
-  // ---------- Ende Dedupe + Rate Limits ----------
 
+  // Vorgangs-ID & Absender
   const queueId = Math.random().toString(36).slice(2, 8).toUpperCase();
-  const today   = new Date().toISOString().slice(0,10);
-
   const senderData = {
     name: `${body.first_name} ${body.last_name}`.trim(),
     street: body.street,
@@ -318,7 +314,6 @@ export default allowCors(async function handler(req, res) {
     const salForThis = (r.anrede && r.anrede.trim())
       ? r.anrede
       : buildPoliteSalutation(r.name, "Sehr geehrte Damen und Herren,");
-
     let msgForThis = String(body.message || "");
     msgForThis = stripRecipientParagraph(msgForThis);
     msgForThis = stripLeadingSalutation(msgForThis);
@@ -348,10 +343,25 @@ export default allowCors(async function handler(req, res) {
     pdfFiles.push({ name: filename, buffer: pdfBuffer });
   }
 
-  // Mails
+  // Anhang vorbereiten
+  let attachmentName, attachmentBuffer;
+  if (pdfFiles.length === 1) {
+    attachmentName   = pdfFiles[0].name;
+    attachmentBuffer = pdfFiles[0].buffer;
+  } else {
+    attachmentName   = `Briefe_${queueId}.zip`;
+    attachmentBuffer = await zipBuffers(pdfFiles);
+  }
+  const attachment = { name: attachmentName, content: toBase64(attachmentBuffer) };
+
+  // Mails senden
+  const api = brevoClient();
+  const FROM_EMAIL = process.env.SENDER_EMAIL || "noreply@example.com";
+  const FROM_NAME  = process.env.SENDER_NAME  || "Kampagne";
+  const TEAM_EMAIL = process.env.TEAM_EMAIL   || "";
+
   const teamHtml = `
     <h2>Neue Einreichung – ${esc(queueId)}</h2>
-    <p><b>Datum:</b> ${esc(today)}</p>
     <p><b>Absender:in</b><br>
       ${esc(body.first_name)} ${esc(body.last_name)}<br>
       ${esc(body.street)}<br>
@@ -363,39 +373,47 @@ export default allowCors(async function handler(req, res) {
     </p>
     <p><b>Betreff:</b> ${esc(body.subject)}</p>
   `;
-
   const userHtml = `
     <p>Danke – wir haben Ihren Brief übernommen und bereiten den Postversand vor.</p>
     <p><b>Vorgangs-ID:</b> ${esc(queueId)}</p>
+    <p>Sie erhalten diesen Brief im Anhang als Kopie.</p>
   `;
 
   try {
-    // Beispiel-Versand via Brevo etc. – bestehende Logik beibehalten
-    // ... (Hier bleibt eure vorhandene Mail-/Queue-Implementierung)
+    // 1) Team-Mail (immer)
+    if (TEAM_EMAIL) {
+      await api.sendTransacEmail({
+        sender: { email: FROM_EMAIL, name: FROM_NAME },
+        to: [{ email: TEAM_EMAIL }],
+        subject: `Neue Einreichung ${queueId} (${recipients.length} Empf.)`,
+        htmlContent: teamHtml,
+        attachment: [{ name: attachment.name, content: attachment.content }],
+      });
+    }
+
+    // 2) Nutzer-Mail (optional, wenn Kopie gewünscht)
+    if (body.copy_to_self && must(body.email)) {
+      await api.sendTransacEmail({
+        sender: { email: FROM_EMAIL, name: FROM_NAME },
+        to: [{ email: body.email, name: senderData.name }],
+        subject: `Ihre Brief-Einreichung – Vorgangs-ID ${queueId}`,
+        htmlContent: userHtml,
+        attachment: [{ name: attachment.name, content: attachment.content }],
+      });
+    }
   } catch (e) {
-    console.error("Mail/Queue error:", e?.message || e);
+    console.error("Brevo send error:", e?.message || e);
+    return res.status(502).json({ ok:false, error:"email_send_failed", message:"E-Mail-Versand fehlgeschlagen." });
   }
 
-  // Wenn mehrere PDFs: ZIP
-  let payloadBuffer;
-  let payloadName;
-  if (pdfFiles.length === 1) {
-    payloadBuffer = pdfFiles[0].buffer;
-    payloadName   = pdfFiles[0].name;
-  } else {
-    payloadBuffer = await zipBuffers(pdfFiles);
-    payloadName   = `Briefe_${queueId}.zip`;
-  }
-
-  // Minimal-Response
+  // Erfolg
   res.status(200).json({
     ok: true,
     queueId,
     files: pdfFiles.map(f => f.name),
-    zipped: pdfFiles.length > 1 ? payloadName : null
+    zipped: pdfFiles.length > 1 ? attachment.name : null
   });
 });
-
 
 
 
