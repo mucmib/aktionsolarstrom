@@ -39,6 +39,16 @@ const WINDOW = { left: mm(20), topFromTop: mm(45), width: mm(90), height: mm(45)
 /** Schriftgrößen zentral */
 const FONT = { header: 12, body: 11, senderLine: 7.5 };
 
+/** >>> ADD: Nur verkleinern – keine Kürzung. Sucht die größte Schriftgröße ≤ base, die in die Höhe passt. */
+function bestFontSizeToFit(doc, text, width, maxHeight, baseSize = 11, minSize = 9, lineGap = 2) {
+  for (let s = baseSize; s >= minSize; s -= 0.5) {
+    doc.fontSize(s);
+    const h = doc.heightOfString(text, { width, lineGap });
+    if (h <= maxHeight) return s;
+  }
+  return minSize; // notfalls kleinste Größe; wenn es dann noch nicht passt, darf es auf Seite 2 laufen
+}
+
 function drawSenderLine(doc, senderLine) {
   if (!senderLine) return;
   const padX = mm(2);
@@ -143,7 +153,7 @@ async function buildLetterPDF({ queueId, sender, recipient, subject, bodyText, s
   const addr = String(recipient.address || "").replace(/\s*\n\s*/g, "\n").trim();
   const hasBundestag = /Deutscher Bundestag/i.test(addr);
   if (!hasBundestag) addrLines.push("Deutscher Bundestag");
-  if (addr) addrLines.push(...addr.split("\n")); // FIX: Spread statt Tippfehler
+  if (addr) addrLines.push(...addr.split("\n"));
   const recipientBlock = addrLines.join("\n");
 
   const addressX = usableLeft;
@@ -168,19 +178,22 @@ async function buildLetterPDF({ queueId, sender, recipient, subject, bodyText, s
     const sal = salutation && String(salutation).trim() ? salutation : "Sehr geehrte Damen und Herren,";
     cleanBody = `${sal}\n\n${cleanBody}`;
   }
-  // optional: Mehrfachleerzeilen straffen
   cleanBody = cleanBody.replace(/\n{3,}/g, "\n\n");
 
-  // FIX: mehr Abstand zwischen Betreff und Anrede/Body
+  // Abstand zwischen Betreff und Body
   const yAfterSubject = must(subject)
     ? bodyStartY + doc.heightOfString(subject, { width: usableWidth }) + mm(8)
     : bodyStartY;
 
-  doc.fontSize(FONT.body).text(cleanBody, usableLeft, yAfterSubject, {
+  // >>> ADD: Nur verkleinern, nie kürzen – bestmögliche Schriftgröße ermitteln
+  const availableHeight = (doc.page.height - doc.page.margins.bottom) - yAfterSubject;
+  const chosenSize = bestFontSizeToFit(doc, cleanBody, usableWidth, availableHeight, FONT.body, 9, 2);
+  doc.fontSize(chosenSize).text(cleanBody, usableLeft, yAfterSubject, {
     width: usableWidth,
     align: "left",
-    lineGap: 3, // etwas luftiger
+    lineGap: 2
   });
+  // <<< END ADD
 
   doc.end();
   return pdfDone;
@@ -351,6 +364,8 @@ export default allowCors(async function handler(req, res) {
     let msgForThis = String(body.message || "");
     msgForThis = stripRecipientParagraph(msgForThis);
     msgForThis = stripLeadingSalutation(msgForThis);
+    // (keine Kürzung mehr; nur Verkleinern passiert in buildLetterPDF)
+
     msgForThis = msgForThis
       .replace(/\{Anrede\}/g, salForThis)
       .replace(/\{Anrede_Name\}/g, r.name || "")
@@ -427,7 +442,6 @@ export default allowCors(async function handler(req, res) {
     try {
       const added = recipients.length;
       await kv.incrby("pdfs_generated", added);
-      // beide Keys setzen, damit /api/stats.json die Zeit sicher findet
       const nowISO = new Date().toISOString();
       await kv.set("stats_updated_at", nowISO);
       await kv.set("last_update", nowISO);
@@ -456,6 +470,7 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
 
 
 
