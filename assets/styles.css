@@ -10,13 +10,14 @@ input, select, textarea { width:100%; padding:10px; border:1px solid #ccc; borde
 .actions { margin:16px 0; }
 button { padding:10px 16px; border:0; border-radius:10px; background:#0a6; color:#fff; font-weight:600; cursor:pointer; }
 button:hover { filter: brightness(0.95); }
+button[disabled]{ opacity:.55; cursor:not-allowed; filter:none; }
 .site-header { background:var(--bg); color:var(--text); }
 .site-header a.cta { background:var(--brand); color:#222; padding:8px 12px; border-radius:999px; text-decoration:none; font-weight:700; }
 .site-footer { margin:40px 0; color:#555; }
 .site-footer a { color:inherit; }
 /* Zusatz: Tagline in Weiß */
 .site-header  .tagline {
-  color: #ffffff; important;
+  color: #ffffff !important;
 }
 /* hübscher Consent-Block */
 .consent-card{
@@ -28,6 +29,7 @@ button:hover { filter: brightness(0.95); }
   box-shadow:0 1px 6px rgba(0,0,0,.04);
   margin-top:16px;
 }
+.consent-card legend{ font-weight:800; }
 .consent-card h4{
   margin:0 0 10px;
   font-size:1.05rem;
