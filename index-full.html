@@ -96,7 +96,18 @@
     .extra-controls label span { display:block; font-weight:600; margin:0 0 4px; }
     .chip { display:inline-block; padding:6px 10px; border-radius:999px; background:#eef6f1; border:1px solid #cfe7d8; margin:6px 6px 0 0; font-size:.92rem; user-select:none; cursor:pointer; }
     .chip[data-active="1"] { background:#d1fae5; border-color:#9ee3c4; }
+
+    /* === Button-Optik, wenn deaktiviert === */
+button[disabled],
+input[type="submit"][disabled] {
+  opacity: 0.55;           /* leicht ausgegraut */
+  cursor: not-allowed;     /* kein Handzeiger */
+  box-shadow: none;        /* kein Hover-Schatten */
+  filter: grayscale(40%);  /* optional: leicht entsättigt */
+}
+    
   </style>
+  
 </head>
 <body>
   <div class="page">
@@ -632,8 +643,37 @@ Mit freundlichen Grüßen
     });
   })();
   </script>
+  <script>
+(function(){
+  // NUR die Einwilligungs-Logik, keine anderen Funktionen werden berührt
+  const form   = document.getElementById('letterForm') || document.querySelector('form');
+  if (!form) return;
+  const consent = form.querySelector('#consent_print');
+  const submit  = form.querySelector('button[type="submit"], input[type="submit"]');
+  if (!consent || !submit) return;
+
+  function sync(){ submit.disabled = !consent.checked; }
+
+  // initial: Button „tot“, bis Häkchen gesetzt
+  sync();
+  consent.addEventListener('change', sync);
+
+  // Extra-Sicherheit beim Absenden (falls jemand den Button manuell reaktiviert)
+  form.addEventListener('submit', function(e){
+    if (!consent.checked) {
+      e.preventDefault();
+      // kurzes, natives Validierungsfeedback für die Checkbox
+      consent.setCustomValidity('Bitte bestätigen Sie den physischen Postversand.');
+      form.reportValidity();
+      setTimeout(()=>consent.setCustomValidity(''), 0);
+    }
+  }, true);
+})();
+</script>
+
 </body>
 </html>
+
 
 
 
