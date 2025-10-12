@@ -1,4 +1,3 @@
-<!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8">
@@ -8,15 +7,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
-  <link rel="stylesheet" href="styles.css">
   <style>
     :root { --maxw: 960px; --brand:#0a7d32; --brand2:#0bbd54; --muted:#6b7280; --card:#fff; --bg:#f6f9f7; --radius:16px; --shadow:0 6px 28px rgba(0,0,0,.08); }
+
+    /* Base */
     *{box-sizing:border-box}
     body{margin:0; font:16px/1.6 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111; background:var(--bg);}
     a{color:inherit}
     .page{display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr;}
     .middle{grid-column:2; padding:16px;}
 
+    /* HERO: Foto + Panel */
     .hero-wrap{
       position:relative; overflow:hidden; border-radius:0 0 var(--radius) var(--radius);
       background:
@@ -36,38 +37,60 @@
     .cta{ display:inline-block; margin-top:12px; padding:10px 16px; background:#fff; color:#0a7d32; text-decoration:none; border-radius:12px; font-weight:700; }
     @media (max-width:720px){ .hero{padding:46px 12px 40px} .hero-panel{border-radius:16px; padding:16px} .tagline{font-size:.98rem} }
 
+    /* Cards / Layout */
     main.middle > section { margin:22px 0; }
     fieldset { border:1px solid #e6e6e6; border-radius:14px; padding:16px; margin:18px 0; background:var(--card); box-shadow: var(--shadow); }
     legend { padding:0 8px; font-weight:800; color:#0b4d25; }
     label { display:block; font-weight:600; margin:12px 0 6px; }
     input[type="text"], input[type="email"], select, textarea {
-      width:100%; padding:12px 14px; border:1px solid #cfd8d3; border-radius:10px; font:inherit; background:#fff;
+      width:100%; box-sizing:border-box; padding:12px 14px; border:1px solid #cfd8d3; border-radius:10px; font:inherit; background:#fff;
     }
     .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
     @media (max-width:720px){ .grid{grid-template-columns:1fr} }
 
-    textarea#message{ min-height: 460px; line-height: 1.55; font-size: 1rem; resize: vertical; }
-    @media (max-width:720px){ textarea#message{ min-height: 360px; } }
+    /* Große, angenehm lesbare Textarea */
+    textarea#message{
+      min-height: 460px;      /* Desktop */
+      line-height: 1.55;
+      font-size: 1rem;
+      resize: vertical;       /* Nutzer darf höher ziehen */
+      tab-size: 2;
+    }
+    @media (max-width:720px){
+      textarea#message{ min-height: 360px; font-size: 1rem; }
+    }
 
     .actions { margin-top:16px; display:flex; gap:12px; align-items:center; }
     button[type="submit"]{
       padding:12px 18px; border:0; border-radius:12px; background:linear-gradient(135deg,var(--brand),var(--brand2));
       color:#fff; font-weight:800; cursor:pointer; box-shadow:0 10px 20px rgba(11,189,84,.25);
     }
-    button[disabled]{ opacity:.55; cursor:not-allowed; box-shadow:none; }
-
+    button[disabled]{ opacity:.55; cursor:not-allowed; box-shadow:none; } /* neu: disabled-Style */
+    .success { display:none; margin-top:10px; padding:10px 12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:10px; color:#145214; }
     .notice, .hint { font-size:.95rem; color:var(--muted); }
 
+    footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
+    footer a { color:#333; }
+
+    /* Versand-Box + Checkboxes schön ausgerichtet */
     .shipbox {
       display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start;
       background:#f9fafb; border:1px dashed #cbd5e1; border-radius:12px; padding:12px;
     }
     @media (max-width:720px){ .shipbox{ grid-template-columns:1fr } }
 
-    .opt { display:flex; align-items:flex-start; gap:10px; line-height:1.4; }
-    .opt input[type="checkbox"]{ margin-top:3px; width: 18px; height: 18px; }
+    .opt {
+      display:flex; align-items:flex-start; gap:10px; /* Checkbox links, Text rechts */
+      line-height:1.4;
+    }
+    .opt input[type="checkbox"]{
+      margin-top:3px; /* optisch vertikal bündig bei 2-zeiligen Texten */
+      flex: 0 0 auto;
+      width: 18px; height: 18px;
+    }
     .opt strong{ font-weight:800; }
 
+    /* Zusatz-Empfänger */
     .extra-recipients { margin-top:12px; padding:12px; border:1px solid #e5e7eb; border-radius:12px; background:#f9fafb; }
     .extra-controls { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
     .extra-controls label span { display:block; font-weight:600; margin:0 0 4px; }
@@ -84,7 +107,7 @@
             <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
               <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
             </a>
-            <p class="tagline">Sie schreiben den Brief – wir übernehmen den weiteren Ablauf: Ausdruck und Zustellung an die Abgeordneten des Deutschen Bundestages. <strong>Kein E-Mail-Versand, ausschließlich Postversand.</strong></p>
+            <p class="tagline">Sie schreiben den Brief – wir übernehmen den weiteren Ablauf: Ausdruck und Zustellung an die Abgeordneten des Deutschen Bundestages.</p>
             <a class="cta" href="#brief">Brief einreichen</a>
           </div>
         </div>
@@ -97,7 +120,7 @@
         <ol>
           <li>Sie verfassen Ihren Brief und geben Ihre <strong>Absenderadresse</strong> an.</li>
           <li>Der Brief geht <strong>an uns</strong> und landet in der Druck-&amp;-Post-Warteschlange.</li>
-          <li>Wir drucken, kuvertieren und versenden physisch an die zuständige/n MdB. <em>Es erfolgt kein Versand per E-Mail.</em></li>
+          <li>Wir drucken, kuvertieren und versenden physisch an die zuständige/n MdB.</li>
         </ol>
       </section>
 
@@ -112,98 +135,531 @@
               <div><label for="city">Ort *</label><input id="city" name="city" required></div>
             </div>
             <label for="abgeordneter">Name der/s Abgeordneten (optional)</label>
-            <input id="abgeordneter" name="mp">
+            <input id="abgeordneter" name="mp_name" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="(wird automatisch ermittelt – nur aus Dropdown wählen)">
+            <div id="mpSelectWrap" style="display:none; margin-top:8px;">
+              <label for="mp_select">Treffer in Ihrem Ort</label>
+              <select id="mp_select"></select>
+              <div class="hint" id="mp_hint"></div>
+            </div>
+          </fieldset>
+
+          <!-- Zusatz-Empfänger -->
+          <fieldset class="extra-recipients">
+            <legend>Weitere Empfänger (optional)</legend>
+            <div class="extra-controls">
+              <label>
+                <span>Bundesland</span>
+                <select id="filter-bundesland"><option value="">– Bundesland wählen –</option></select>
+              </label>
+              <label>
+                <span>Partei</span>
+                <select id="filter-partei"><option value="">– Partei wählen –</option></select>
+              </label>
+              <label class="opt" style="margin-left:auto;">
+                <input type="checkbox" id="add-faction-leads">
+                <span>Zusätzlich: Fraktionsvorsitzende/r</span>
+              </label>
+            </div>
+            <div id="extra-list" class="hint" style="margin-top:8px;">Keine zusätzlichen Empfänger ausgewählt.</div>
           </fieldset>
 
           <fieldset>
-            <legend>Absender</legend>
+            <legend>Ihre Angaben</legend>
             <div class="grid">
-              <div><label for="name">Name *</label><input id="name" name="name" required></div>
-              <div><label for="email">E-Mail (für Rückfragen/Kopie, optional)</label><input id="email" type="email" name="email"></div>
+              <div><label for="first_name">Vorname *</label><input id="first_name" name="first_name" required></div>
+              <div><label for="last_name">Nachname *</label><input id="last_name" name="last_name" required></div>
             </div>
+            <label for="email">E-Mail *</label><input id="email" name="email" type="email" required>
+            <label for="street">Straße &amp; Nr. *</label><input id="street" name="street" required>
             <div class="grid">
-              <div><label for="street">Straße &amp; Nr. *</label><input id="street" name="street" required></div>
-              <div><label for="city2">PLZ/Ort *</label>
-                <div class="grid" style="grid-template-columns:120px 1fr; gap:8px;">
-                  <input id="zip2" name="zip2" pattern="\d{5}" placeholder="PLZ" required>
-                  <input id="city2" name="city2" placeholder="Ort" required>
-                </div>
-              </div>
+              <div><label for="sender_zip">PLZ *</label><input id="sender_zip" name="sender_zip" required></div>
+              <div><label for="sender_city">Ort *</label><input id="sender_city" name="sender_city" required></div>
             </div>
-            <p class="hint">Bitte schreiben Sie <strong>keine zusätzliche Adresse ans Briefende</strong>. Ihre Anschrift wird automatisch korrekt im Briefkopf platziert.</p>
           </fieldset>
 
           <fieldset>
             <legend>Brief</legend>
             <label for="subject">Betreff *</label>
-            <input id="subject" name="subject" required>
+            <input id="subject" name="subject" required value="Sonnenstrom statt Erdgasstrom – bitte setzen Sie klare Prioritäten">
 
-            <label for="message">Ihr Text *</label>
-            <textarea id="message" name="message" required></textarea>
+            <label for="message">Brieftext *</label>
+            <textarea id="message" name="message" required>
+{MdB_Name_und_Adresse}
+
+{Anrede}
+
+heute wende ich mich an Sie mit einem Thema, das für viele Bürgerinnen, Bürger und Unternehmen in Ihrem Wahlkreis sehr relevant ist: Die Fortsetzung der Energiewende.
+
+Bürgerinnen und Bürger, Unternehmen und Kommunen investieren mit Photovoltaik und Speicher in die Energiewende und den Klimaschutz. Die so produzierte Energie nutzen sie zu einem guten Teil selbst. Sie sparen damit Stromkosten und tragen zu unseren Klimazielen bei. 
+
+Doch jetzt ist diese erfolgreiche Entwicklung bedroht. Bundesministerin Reiche möchte die Energiewende drosseln, die feste Einspeisevergütung abschaffen und neue Erdgaskraftwerke bauen. Außerdem bereitet die Bundesnetzagentur mit ihrem Diskussionspapier AgNes eine massive Verschlechterung der Wirtschaftlichkeit für Produzenten von erneuerbarem Strom vor. 
+
+Deshalb möchte ich Sie für die Forderungen der Initiative „Sonnenstrom statt Erdgasstrom“ gewinnen, die die deutschen Stromkunden und das Klima entlasten: 
+
+1. Keine neuen Erdgaskraftwerke. Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.
+
+2. Ausbau Erneuerbarer beschleunigen – und netzdienliche Erzeugung belohnen.
+
+3. Feste Einspeisevergütung beibehalten bis Smart Meter flächendeckend eine einfache, flexible Vergütung erlauben.
+
+4. Bestandsschutz und keine Zusatzbelastung für erneuerbare Stromerzeugung.
+
+Dieser Brief entstand mit der Aktion „Sonnenstrom statt Erdgasstrom“. Weitere Informationen zu den Plänen von Frau Reiche und der BNetzA finden Sie auf https://www.aktionsolarstrom.de.
+
+Vielen Dank für Ihre Aufmerksamkeit. Es würde mich sehr freuen, von Ihnen zu hören.
+
+Mit freundlichen Grüßen
+
+{Vorname} {Nachname}
+{Straße}
+{PLZ} {Ort}
+            </textarea>
+            <p class="notice">
+              <strong>Hinweis:</strong> Sie können den Brieftext anpassen. Ihre Änderungen werden genau so übernommen.
+              Bitte prüfen Sie die Kopie, die wir Ihnen per E-Mail zusenden, auf eventuelle Fehler und melden Sie uns Abweichungen
+              in einer separaten E-Mail an <em>webmaster(at)muc-mib.de</em>.
+            </p>
           </fieldset>
 
-          <fieldset class="consent-card" aria-labelledby="consent-title">
-            <legend id="consent-title">Versand &amp; Einwilligung</legend>
-            <div class="opt">
-              <input id="consent_post" type="checkbox" name="consent_post" required>
-              <label for="consent_post">
-                <strong>Ich willige ein, dass mein Brief ausschließlich per Post versendet wird.</strong><br>
-                Es findet <u>kein</u> Versand per E-Mail statt.
+          <fieldset>
+            <legend>Versand &amp; Benachrichtigung</legend>
+            <div class="shipbox">
+              <label class="opt">
+                <input id="consent_print" name="consent_print" type="checkbox" required>
+                <span><strong>Ich willige ein,</strong> dass mein Brief <strong>physisch versendet</strong> wird.</span>
               </label>
-            </div>
-            <div class="opt" style="margin-top:10px">
-              <input id="consent_privacy" type="checkbox" name="consent_privacy" required>
-              <label for="consent_privacy">
-                <strong>Ich habe die <a href="Datenschutz.html" target="_blank" rel="noopener">Datenschutzhinweise</a> gelesen.</strong>
+              <label class="opt">
+                <input id="copy_to_self" name="copy_to_self" type="checkbox" checked>
+                <span><strong>Kopie an mich</strong> per E-Mail senden</span>
               </label>
+              <label class="opt">
+                <input id="copy_zip_to_self" name="copy_zip_to_self" type="checkbox" disabled>
+                <span>Falls mehrere Empfänger: <strong>alle Briefe als ZIP</strong> an mich</span>
+              </label>
+              <div class="hint" style="grid-column:1 / -1">
+                Wir verwenden Ihre Angaben ausschließlich zur Zustellung des Briefes. Details siehe <a href="Datenschutz.html">Datenschutz</a>.
+              </div>
             </div>
           </fieldset>
 
           <div class="actions">
-            <button id="submitBtn" type="submit" disabled>Brief einreichen</button>
-            <span class="notice">Der Button wird aktiv, sobald alle Pflichtfelder und Einwilligungen gesetzt sind.</span>
+            <button type="submit" id="submitBtn" disabled>In Druckwarteschlange einreichen</button>
+            <div id="successMessage" class="success"></div>
           </div>
-
-          <div id="success" class="success" role="status">Vielen Dank! Ihr Brief ist in der Warteschlange.</div>
         </form>
       </section>
-
-      <footer class="site-footer">
-        <p class="legal">© Media International Bader · <a href="Datenschutz.html">Datenschutz</a> · <a href="Impressum.html">Impressum</a></p>
-      </footer>
     </main>
+
+    <footer class="site-footer middle">
+      <nav class="legal">
+        <a href="https://www.aktionsolarstrom.de/">Zur Startseite</a> ·
+        <a href="Impressum.html">Impressum</a> ·
+        <a href="Datenschutz.html">Datenschutz</a>
+      </nav>
+    </footer>
   </div>
 
+  <!-- MdB Lookup (wie gehabt) -->
   <script>
-    (function () {
-      const form = document.getElementById('letterForm');
-      const submit = document.getElementById('submitBtn');
-      const requiredInputs = Array.from(form.querySelectorAll('[required]'));
+  (function(){
+    const $ = (s)=>document.querySelector(s);
+    const elMSG=$('#message'), elMP=$('#abgeordneter'), elPLZ=$('#plz'), elCity=$('#city');
+    const selWrap=$('#mpSelectWrap'), elSel=$('#mp_select'), elHint=$('#mp_hint');
 
-      function updateButton() {
-        // HTML5 validity + beide Checkboxen
-        submit.disabled = !form.checkValidity();
+    const clean=s=>String(s||'').replace(/^\s*nan\s+/i,'').trim();
+    const norm=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+
+    const female=new Set(['anna','sabine','ursula','katrin','claudia','renate','petra','britta','heike','stefanie','julia','christine','lisa','marie','monika','andrea','martina','sandra','nicole','angelika','eva','kathrin','karin','bettina','svenja','ricarda']);
+    const male  =new Set(['hans','peter','wolfgang','thomas','michael','stefan','andreas','markus','martin','frank','jürgen','klaus','christian','alexander','lars','tobias','sebastian','uwe','ulrich','paul','max','jan']);
+
+    function splitName(full){ let s=(full||'').replace(/\b(Dr\.?|Prof\.?|MdB)\b/gi,'').replace(/\s+/g,' ').trim(); const p=s.split(' '); return {first:p[0]||'', last:p[p.length-1]||'', raw:s}; }
+    function guessGender(first){ const f=(first||'').toLowerCase(); if(female.has(f))return'f'; if(male.has(f))return'm'; return null; }
+    function salutation(name,fallback){
+      const addComma=s=>/,\s*$/.test(s)?s:(s+',');
+      const {first,last}=splitName(name||''); const g=guessGender(first);
+      if(g==='m') return addComma('Sehr geehrter Herr '+(last||first));
+      if(g==='f') return addComma('Sehr geehrte Frau '+(last||first));
+      return addComma(fallback||'Sehr geehrte Damen und Herren');
+    }
+
+    async function loadTry(urls){ let err; for(const u of urls){ try{ const r=await fetch(u,{cache:'no-store'}); if(r.ok) return r.json(); err=new Error('HTTP '+r.status+' '+u);}catch(e){err=e;} } throw err; }
+    const loadPLZ2WK=()=>loadTry(['assets/data/plz_to_wk.json','plz_to_wk.json']);
+    const loadWK2MDB=()=>loadTry(['assets/data/wk_to_mdb.json','wk_to_mdb.json']);
+    const loadORT2WK=()=>loadTry(['assets/data/ort_to_wk.json','ort_to_wk.json']);
+
+    async function findCandidates(plz,cityRaw){
+      const [plzMap,wkMap,ortMap]=await Promise.all([loadPLZ2WK(),loadWK2MDB(),loadORT2WK()]);
+      let wks=[];
+      if(plzMap[plz]) wks=wks.concat([].concat(plzMap[plz]));
+      const key=norm(cityRaw);
+      if(!wks.length && key){
+        if(ortMap[key]) wks=wks.concat([].concat(ortMap[key]));
+        if(!wks.length){ for(const [k,arr] of Object.entries(ortMap)){ if(norm(k).startsWith(key)) wks=wks.concat([].concat(arr)); } }
+      }
+      wks=Array.from(new Set(wks.map(String)));
+
+      const byName=new Map();
+      for(const wk of wks){
+        const m=wkMap[String(wk)]; if(!m) continue;
+        const name=clean(m.mdb_name); if(!name) continue;
+        const anrede=salutation(name, clean(m.anrede));
+        const address=(m.bundestag_address||'Platz der Republik 1\n11011 Berlin').replace(/\s*\n\s*/g,'\n').trim();
+        if(!byName.has(name)){ byName.set(name,{name,anrede,address,party:clean(m.fraktion||m.party||''), wk:String(m.wk_nr||m.wk||wk)}); }
+      }
+      return { candidates:[...byName.values()], wks };
+    }
+
+    function normalizeBtAddr(addr){
+      const lines=String(addr||'').split('\n').map(s=>s.trim()).filter(Boolean);
+      const hasHeader=lines.some(l=>/^deutscher\s+bundestag$/i.test(l));
+      const body = hasHeader ? lines : ['Deutscher Bundestag', ...lines];
+      const out=[]; for(const l of body){ if(out[out.length-1]!==l) out.push(l); }
+      return out.join('\n');
+    }
+
+    function setIntro(anrede, addr, name){
+      const addrNorm = normalizeBtAddr(addr || 'Platz der Republik 1\n11011 Berlin');
+      const newAddr  = (name?name+'\n':'') + addrNorm;
+      const newSal   = /,\s*$/.test(anrede||'') ? anrede : ((anrede||'Sehr geehrte Damen und Herren')+',');
+
+      const hasTokens = /\{MdB_Name_und_Adresse\}|\{MdB_Adresse\}|\{Anrede\}/.test(elMSG.value||'');
+      let txt = String(elMSG.value||'');
+
+      if (hasTokens) {
+        txt = txt.replace('{MdB_Name_und_Adresse}', newAddr)
+                 .replace('{MdB_Adresse}',         newAddr)
+                 .replace('{Anrede}',              newSal);
+      } else {
+        const prevAddr = elMSG.dataset.recipientAddr || '';
+        const prevSal  = elMSG.dataset.salutation    || '';
+        if (prevAddr && txt.includes(prevAddr)) txt = txt.replace(prevAddr, newAddr);
+        if (prevSal  && txt.includes(prevSal))  txt = txt.replace(prevSal,  newSal);
       }
 
-      requiredInputs.forEach(el => {
-        el.addEventListener('input', updateButton);
-        el.addEventListener('change', updateButton);
-      });
-      updateButton();
+      elMSG.value = txt;
+      elMSG.dataset.recipientAddr = newAddr;
+      elMSG.dataset.salutation    = newSal;
 
-      form.addEventListener('submit', (e) => {
-        if (submit.disabled) {
-          e.preventDefault();
-          form.reportValidity();
-        }
+      if (window.setPrimaryRecipient) {
+        window.setPrimaryRecipient({
+          mdb_name: name || '',
+          anrede: newSal.replace(/,\s*$/,''),
+          fraktion: '',
+          bundesland: '',
+          bundestag_address: addrNorm,
+          placeholder: !name
+        });
+      }
+    }
+
+    function hideSelect(){ selWrap.style.display='none'; elSel.innerHTML=''; elHint.textContent=''; }
+    function showSelect(cands,wks){
+      elSel.innerHTML='';
+      const o0=document.createElement('option'); o0.value=''; o0.textContent='Bitte Abgeordnete:n auswählen …'; elSel.appendChild(o0);
+      cands.forEach(c=>{ const o=document.createElement('option'); o.value=c.name; o.textContent=c.name+(c.party?' – '+c.party:''); o.dataset.anrede=c.anrede; o.dataset.address=c.address; elSel.appendChild(o); });
+      elHint.textContent=(wks&&wks.length>1)?('Mehrere Wahlkreise erkannt: '+wks.join(', ')):'Treffer im Ort';
+      selWrap.style.display='block';
+    }
+
+    function chooseByName(name){
+      const opt=[...elSel.options].find(o=>o.value===name);
+      if(!opt) return;
+      setIntro(opt.dataset.anrede || 'Sehr geehrte Damen und Herren,', opt.dataset.address || 'Platz der Republik 1\n11011 Berlin', name);
+      elMP.value=name;
+    }
+
+    elSel.addEventListener('change',()=>{ if(elSel.value) chooseByName(elSel.value); });
+    elMP .addEventListener('blur', ()=>{
+      const dropdownVisible = selWrap && selWrap.style.display !== 'none' && elSel.options.length > 0;
+      if(!dropdownVisible) return;
+      const n=(elMP.value||'').trim();
+      const isValid=[...elSel.options].some(o=>o.value===n);
+      if(isValid){ chooseByName(n); }
+      else{
+        elMP.value='';
+        setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin','');
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', ()=>{ elMP.value=''; });
+
+    let t=null; const debounce=(fn,ms)=>{ clearTimeout(t); t=setTimeout(fn,ms); };
+    async function runLookup(){
+      hideSelect();
+      const plz=(elPLZ.value||'').trim(); const city=(elCity.value||'').trim();
+      if(!/^\d{5}$/.test(plz) && city.length<2){
+        setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin','');
+        return;
+      }
+      try{
+        const {candidates,wks}=await findCandidates(plz,city);
+        if(candidates.length>1){ setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin',''); showSelect(candidates,wks); }
+        else if(candidates.length===1){ const c=candidates[0]; setIntro(c.anrede,c.address,c.name); elMP.value=c.name; hideSelect(); }
+        else { setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin',''); hideSelect(); }
+      }catch(e){
+        console.error(e);
+        setIntro('Sehr geehrte Damen und Herren,','Platz der Republik 1\n11011 Berlin','');
+        hideSelect();
+      }
+    }
+    elPLZ .addEventListener('input',()=>debounce(runLookup, (/^\d{5}$/.test(elPLZ.value||''))?0:300));
+    elCity.addEventListener('input',()=>debounce(runLookup,300));
+    ['change','blur'].forEach(ev=>{ elPLZ.addEventListener(ev,runLookup); elCity.addEventListener(ev,runLookup); });
+    document.addEventListener('DOMContentLoaded', runLookup);
+  })();
+  </script>
+
+  <!-- Zusatz-Empfänger -->
+  <script type="module">
+    async function loadJSON(p){ return fetch(p,{cache:'no-store'}).then(r=>r.json()); }
+    async function loadSeries(paths){ for (const p of paths){ try { const j = await loadJSON(p); if (j) return j; } catch(e){} } return {}; }
+    const byState = await loadSeries(['assets/data/mdb_by_state.json','/assets/data/mdb_by_state.json','mdb_by_state.json']);
+    const byParty = await loadSeries(['assets/data/mdb_by_party.json','/assets/data/mdb_by_party.json','mdb_by_party.json']);
+
+    async function loadExtras(){
+      const x = await loadSeries(['assets/data/mdb_extras.json','/assets/data/mdb_extras.json','/data/mdb_extras.json','mdb_extras.json']);
+      return Array.isArray(x) ? x : (Array.isArray(x.items) ? x.items : []);
+    }
+    const extras = await loadExtras();
+
+    const $state = document.getElementById('filter-bundesland');
+    const $party = document.getElementById('filter-partei');
+    const $addFaction = document.getElementById('add-faction-leads');
+    const $list = document.getElementById('extra-list');
+
+    Object.keys(byState).filter(Boolean).sort().forEach(s=>{
+      const o=document.createElement('option'); o.value=s; o.textContent=s; $state.appendChild(o);
+    });
+    Object.keys(byParty).filter(Boolean).sort().forEach(p=>{
+      const o=document.createElement('option'); o.value=p; o.textContent=p; $party.appendChild(o);
+    });
+
+    // Bridge für Hauptempfänger
+    let primaryRecipient = null;
+    window.setPrimaryRecipient = function(mdbEntry){ primaryRecipient = mdbEntry || null; };
+    window.getPrimaryRecipient = function(){ return primaryRecipient && !primaryRecipient.placeholder ? primaryRecipient : null; };
+
+    // interne Liste
+    let extraRecipients = [];
+    function uniquePush(list, entry){
+      if(!entry || !entry.mdb_name) return;
+      const key=(entry.mdb_name+'|'+(entry.fraktion||'')+'|'+(entry.bundesland||'')).toLowerCase();
+      if(!list.some(e => (e.mdb_name+'|'+(e.fraktion||'')+'|'+(e.bundesland||'')).toLowerCase()===key)){
+        list.push({...entry, active:false});
+      }
+    }
+
+    function renderExtraList(){
+      if(!extraRecipients.length){
+        $list.textContent='Keine zusätzlichen Empfänger ausgewählt.';
+        return;
+      }
+      $list.innerHTML = '<strong>Zusätzliche Empfänger ('+extraRecipients.filter(e=>e.active).length+'/'+extraRecipients.length+')</strong><br>';
+      extraRecipients.forEach(e=>{
+        const chip=document.createElement('span');
+        chip.className='chip';
+        chip.textContent=`${e.mdb_name}${e.fraktion? ' · '+e.fraktion : ''}${e.bundesland? ' · '+e.bundesland : ''}`;
+        chip.dataset.active = e.active ? '1' : '0';
+        chip.addEventListener('click',()=>{ e.active = !e.active; renderExtraList(); });
+        $list.appendChild(chip);
       });
+    }
+
+    function addFactionLeads(list, partyOrNull){
+      if(!extras.length) return;
+      const filtered = extras.filter(x=>{
+        const role = (x.rolle || '');
+        const isLead = /(fraktionsvorsitz|vorsitzender|vorsitzende|bundeskanzler|kanzler)/i.test(role);
+        if(!isLead) return false;
+        if(partyOrNull && (x.fraktion||'').toLowerCase() !== partyOrNull.toLowerCase()) return false;
+        return !/(afd|werteunion|alternative f[üu]r deutschland)/i.test(x.fraktion||'');
+      });
+      filtered.forEach(x=>uniquePush(list,x));
+    }
+
+    function removeFactionLeads(list){
+      for(let i=list.length-1;i>=0;i--){
+        if(/(fraktionsvorsitz|vorsitzender|vorsitzende|bundeskanzler|kanzler)/i.test(list[i].rolle||'')) list.splice(i,1);
+      }
+    }
+
+    $state.addEventListener('change', ()=>{
+      extraRecipients = [];
+      const state=$state.value;
+      if(state && byState[state]) byState[state].forEach(e=>uniquePush(extraRecipients,e));
+      const party=$party.value;
+      if(party) extraRecipients = extraRecipients.filter(e => (e.fraktion||'').toLowerCase()===party.toLowerCase());
+      if($addFaction.checked) addFactionLeads(extraRecipients, $party.value || null);
+      renderExtraList();
+    });
+
+    $party.addEventListener('change', ()=>{
+      extraRecipients = [];
+      const party=$party.value;
+      if(party && byParty[party]) byParty[party].forEach(e=>uniquePush(extraRecipients,e));
+      const state=$state.value;
+      if(state) extraRecipients = extraRecipients.filter(e => (e.bundesland||'')===state);
+      if($addFaction.checked) addFactionLeads(extraRecipients, party || null);
+      renderExtraList();
+    });
+
+    $addFaction.addEventListener('change', ()=>{
+      const party = $party.value || null;
+      if($addFaction.checked) addFactionLeads(extraRecipients, party);
+      else removeFactionLeads(extraRecipients);
+      renderExtraList();
+    });
+
+    // Exponiere Auswahl
+    window.getSelectedRecipients = function(){
+      const result=[];
+      if(primaryRecipient && !primaryRecipient.placeholder && !primaryRecipient.excluded) result.push(primaryRecipient);
+      extraRecipients.filter(e=>e.active).forEach(e=>result.push(e));
+      return result;
+    };
+
+    // Erst-Render (leer)
+    renderExtraList();
+  </script>
+
+  <!-- Button-Enable nur bei gültigem Formular -->
+  <script>
+    (function(){
+      const form = document.getElementById('letterForm');
+      if (!form) return;
+      const submitBtn = document.getElementById('submitBtn');
+      if (!submitBtn) return;
+
+      function updateState(){ submitBtn.disabled = !form.checkValidity(); }
+      updateState();
+      form.addEventListener('input', updateState, true);
+      form.addEventListener('change', updateState, true);
     })();
+  </script>
+
+  <!-- Tokens & Submit -->
+  <script>
+  (function(){
+    const $=(s)=>document.querySelector(s);
+    const form=$('#letterForm');
+    const msg=$('#message');
+    const F={'{Vorname}':'#first_name','{Nachname}':'#last_name','{Straße}':'#street','{PLZ}':'#sender_zip','{Ort}':'#sender_city'};
+    const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    const cleanStreet=v=>String(v||'').replace(/\s*,\s*(?=\d)/g,' ').replace(/\s{2,}/g,' ').trim();
+    const topPLZ=()=>($('#plz')?.value||'').trim();
+    const topCity=()=>($('#city')?.value||'').trim();
+
+    // ZIP-Checkbox abhängig von "Kopie an mich"
+    const copyCB = document.getElementById('copy_to_self');
+    const zipCB  = document.getElementById('copy_zip_to_self');
+    function toggleZipEnable(){
+      if(!zipCB) return;
+      zipCB.disabled = !copyCB.checked;
+      if(zipCB.disabled) zipCB.checked = false;
+    }
+    copyCB?.addEventListener('change', toggleZipEnable);
+    document.addEventListener('DOMContentLoaded', toggleZipEnable);
+
+    function vals(){
+      const m={};
+      for(const [t,sel] of Object.entries(F)){
+        let v=($(sel)?.value||'').trim();
+        if(t==='{Straße}') v=cleanStreet(v);
+        if(t==='{PLZ}' && !v) v=topPLZ();
+        if(t==='{Ort}' && !v) v=topCity();
+        m[t]=v;
+      }
+      return m;
+    }
+    function apply(base,map){
+      let out=String(base||'');
+      for(const [t,v] of Object.entries(map)){ out=out.replace(new RegExp(esc(t),'g'),v); }
+      return out.replace(/\n{3,}/g,'\n\n').trimEnd();
+    }
+
+    const TOKENS=['{Vorname}','{Nachname}','{Straße}','{PLZ}','{Ort}'];
+    function renderSenderPreview(){
+      if(!msg) return;
+      const map=vals(); let txt=String(msg.value||'');
+      for(const t of TOKENS){ const v=map[t]&&map[t].length?map[t]:t; txt=txt.replace(new RegExp(esc(t),'g'),v); }
+      msg.value=txt;
+    }
+    ['#first_name','#last_name','#street','#sender_zip','#sender_city','#plz','#city'].forEach(sel=>$(sel)?.addEventListener('blur',renderSenderPreview));
+    document.addEventListener('DOMContentLoaded',renderSenderPreview);
+
+    form?.addEventListener('submit', async (e)=>{
+      // NEU: harte Validierung, inkl. consent_print required
+      if (!form.checkValidity()) {
+        e.preventDefault();
+        form.reportValidity();
+        return;
+      }
+
+      e.preventDefault();
+      const sal  = msg?.dataset?.salutation    || 'Sehr geehrte Damen und Herren,';
+      const raddr= msg?.dataset?.recipientAddr || 'Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin';
+
+      let userText = msg?.value || '';
+      userText = userText
+        .replace('{Anrede}', sal)
+        .replace('{MdB_Name_und_Adresse}', raddr)
+        .replace('{MdB_Adresse}', raddr);
+
+      const finalMsg = apply(userText, vals());
+
+      if (/\{Vorname\}|\{Nachname\}|\{Straße\}|\{PLZ\}|\{Ort\}/.test(finalMsg)) {
+        alert('Bitte füllen Sie Absenderfelder vollständig aus.');
+        return;
+      }
+
+      const btn=form.querySelector('button[type="submit"]');
+      btn?.setAttribute('disabled','');
+
+      const fd=new FormData(form);
+      const payload={};
+      fd.forEach((v,k)=>payload[k]=v);
+      payload.copy_to_self     = fd.has('copy_to_self');
+      payload.copy_zip_to_self = fd.has('copy_zip_to_self');
+      payload.consent_print    = fd.has('consent_print');
+      payload.message          = finalMsg;
+
+      // Extra-Empfänger & Primary mitsenden
+      try{
+        if (window.getSelectedRecipients) {
+          const recips = window.getSelectedRecipients() || [];
+          if (Array.isArray(recips) && recips.length) {
+            payload.extra_recipients = recips.filter((_,i)=>i>0); // alles außer primary
+          }
+        }
+        if (window.getPrimaryRecipient) {
+          const primary = window.getPrimaryRecipient();
+          if (primary) payload.primary_recipient = primary;
+        }
+      }catch{}
+
+      try{
+        const res=await fetch(form.action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        const text=await res.text();
+        let data; try{ data=JSON.parse(text); } catch{ throw new Error(text.slice(0,200)||'Serverantwort kein JSON'); }
+        if(data.ok){
+          const box=document.getElementById('successMessage');
+          if(box){ box.textContent='Danke! Ihr Brief wurde erfolgreich eingereicht. Vorgangs-ID: '+(data.queueId||''); box.style.display='block'; }
+          form.reset(); renderSenderPreview(); document.getElementById('submitBtn').disabled = true;
+          // ZIP-Enable neu kalkulieren
+          const zipCB = document.getElementById('copy_zip_to_self'); if (zipCB){ zipCB.disabled = true; zipCB.checked = false; }
+        }else{
+          alert('Fehler: '+(data.error||'Unbekannt'));
+        }
+      }catch(err){
+        alert('Verbindungsfehler: '+err.message);
+      }finally{
+        document.getElementById('submitBtn').disabled = !form.checkValidity();
+      }
+    });
+  })();
   </script>
 </body>
 </html>
-
-
-
 
 
 
