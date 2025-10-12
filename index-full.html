@@ -1,4 +1,3 @@
-
 <html lang="de">
 <head>
   <meta charset="utf-8">
@@ -115,10 +114,81 @@ input[type="submit"][disabled] {
   font: inherit;             /* gleiche Schrift wie überall */
 }
   
+    /* ========================= */
+    /* OPTISCHE ERGÄNZUNGEN WIE STARTSEITE */
+    /* ========================= */
+
+    /* Warmes Seiten-Theme */
+    body.theme-warm{
+      --bg: #f6f1e8;
+      background: linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%) !important;
+    }
+
+    /* Eco-Texture (CSS-only, sehr dezent) */
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none; z-index:-1;
+      background:
+        radial-gradient(1px 1px at 25% 15%, rgba(0,0,0,.04) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 60% 40%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 80% 70%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 40% 85%, rgba(0,0,0,.02) 0, rgba(0,0,0,0) 60%);
+      opacity:.28;
+      mix-blend-mode:multiply;
+    }
+
+    /* Warme Tönung + Solar Glow im Hero */
+    .hero-wrap::before{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background: linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02));
+      mix-blend-mode: soft-light;
+    }
+    .hero-wrap::after{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%);
+    }
+
+    /* Solar-Highlight unter dem Panel */
+    .hero-panel{ position:relative; overflow:hidden; }
+    .hero-panel::after{
+      content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
+      background: linear-gradient(90deg, #f6b10a, #ffd84a);
+    }
+
+    /* CTA-Finishing (Link im Hero) */
+    .cta{
+      box-shadow:0 4px 15px rgba(10,125,50,.20);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .cta:hover{
+      transform: translateY(-2px);
+      box-shadow:0 6px 22px rgba(10,125,50,.30);
+      text-decoration:none;
+    }
+
+    /* CTA-Finishing (Submit-Button) */
+    button[type="submit"]{
+      transition: transform .25s ease, box-shadow .25s ease, opacity .2s ease;
+    }
+    button[type="submit"]:hover:not(:disabled){
+      transform: translateY(-2px);
+      box-shadow:0 14px 28px rgba(11,189,84,.28);
+    }
+
+    /* Feldsets leicht warm abtönen (analog zu Cards auf Startseite) */
+    fieldset{
+      background:#fffdf8;
+      transition: box-shadow .2s ease, transform .2s ease;
+    }
+    fieldset:hover{
+      box-shadow:0 8px 24px rgba(0,0,0,.10);
+      transform: translateY(-2px);
+    }
   </style>
   
 </head>
-<body>
+<body class="theme-warm">
   <div class="page">
     <header class="site-header middle">
       <div class="hero-wrap">
@@ -682,7 +752,6 @@ Mit freundlichen Grüßen
 
 </body>
 </html>
-
 
 
 
