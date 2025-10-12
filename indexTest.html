@@ -49,6 +49,14 @@
         linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)),
         url('assets/Bundestag.jpg') center 45%/cover no-repeat;
     }
+    /* Warme, sehr subtile Tönung über dem Foto */
+    .hero-wrap::before{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02));
+      mix-blend-mode: soft-light;
+      pointer-events:none;
+    }
     /* Solar Glow hinter dem Hero */
     .hero-wrap::after{
       content:"";
@@ -95,6 +103,15 @@
     .cta.primary{ background:linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; }
     .cta.secondary{ background:#fff; color:#0a7d32; border:1px solid #cfe7d8; }
     .cta:hover{ transform:translateY(-1px); }
+    /* CTA Finishing (Primärbutton) */
+    .cta.primary{
+      box-shadow:0 4px 15px rgba(10,125,50,.25);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .cta.primary:hover{
+      transform: translateY(-2px);
+      box-shadow:0 6px 22px rgba(10,125,50,.35);
+    }
 
     /* ===== Zähler – kompakt & angedockt ===== */
     .stats-wrap{
@@ -486,5 +503,7 @@
   </script>
 </body>
 </html>
+
+
 
 
