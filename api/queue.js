@@ -20,7 +20,7 @@ const allowCors = (fn) => async (req, res) => {
 const must = (v) => v && String(v).trim() !== "";
 const esc = (s = "") =>
   String(s)
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/&/g, "&amp;").replace(/<//g, "&lt;")
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 const mm = (x) => (x * 72) / 25.4;
 
@@ -73,6 +73,26 @@ function stripRecipientParagraph(txt = "") {
 function stripLeadingSalutation(txt = "") {
   return String(txt).replace(/^\s*Sehr\s+geehrte[^\n]*\n\s*\n?/i, "");
 }
+
+/** >>> ADD: Entferne am Briefende manuell eingetippte Absenderadresse */
+function stripTrailingSenderAddress(txt = "", sender) {
+  const t = String(txt).trimEnd();
+  const parts = t.split(/\n{2,}/);
+  if (!parts.length) return t;
+
+  const last = parts[parts.length - 1] || "";
+  const looksLikeSender =
+    /straße|str\./i.test(last) &&
+    /\b\d{5}\s+\S/.test(last);
+
+  if (!looksLikeSender) return t;
+
+  // Egal ob echte oder falsche Adresse – am Briefende nicht nochmals abbilden,
+  // weil die Absenderadresse ohnehin automatisch im Kopf erscheint.
+  parts.pop();
+  return parts.join("\n\n").trim();
+}
+/** --- Ende Helfer --- */
 
 /** Anrede-Helfer */
 const FEMALE=new Set(["anna","sabine","ursula","katrin","claudia","renate","petra","britta","heike","stefanie","julia","christine","lisa","marie","monika","andrea","martina","sandra","nicole","angelika","eva","kathrin","karin","bettina","svenja","ricarda","elisabeth","maria","linda","sarah"]);
@@ -263,6 +283,15 @@ export default allowCors(async function handler(req, res) {
     return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
   }
 
+  /** >>> ADD: Harte Pflicht – ohne Einwilligung kein Versand */
+  if (!body.consent_print) {
+    return res.status(400).json({
+      ok:false,
+      error:"CONSENT_REQUIRED",
+      message:"Einwilligung zum Postversand fehlt."
+    });
+  }
+
   // Empfängerliste
   const recipients = [];
   const isExcludedParty = (p="") => /^(afd|werteunion)$/i.test(String(p).trim());
@@ -351,6 +380,10 @@ export default allowCors(async function handler(req, res) {
     let msgForThis = String(body.message || "");
     msgForThis = stripRecipientParagraph(msgForThis);
     msgForThis = stripLeadingSalutation(msgForThis);
+    /** >>> ADD: Trailing-Absenderadresse entfernen */
+    msgForThis = stripTrailingSenderAddress(msgForThis, senderData);
+    /** <<< END ADD */
+
     msgForThis = msgForThis
       .replace(/\{Anrede\}/g, salForThis)
       .replace(/\{Anrede_Name\}/g, r.name || "")
