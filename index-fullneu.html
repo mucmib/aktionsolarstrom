@@ -28,6 +28,7 @@
     .hero-panel{
       background: rgba(10,125,50,.82); color:#fff; border-radius:22px; padding:22px 24px;
       max-width:min(92vw,820px); width:fit-content; text-align:center; box-shadow:0 18px 48px rgba(0,0,0,.18);
+      position:relative; overflow:hidden; /* für Solar-Highlight */
     }
     .hero .logo img{
       width: clamp(220px, 48vw, 520px); height:auto; display:block; margin:0 auto 6px;
@@ -97,31 +98,36 @@
     .chip[data-active="1"] { background:#d1fae5; border-color:#9ee3c4; }
 
     /* === Button-Optik, wenn deaktiviert === */
-button[disabled],
-input[type="submit"][disabled] {
-  opacity: 0.55;           /* leicht ausgegraut */
-  cursor: not-allowed;     /* kein Handzeiger */
-  box-shadow: none;        /* kein Hover-Schatten */
-  filter: grayscale(40%);  /* optional: leicht entsättigt */
-}
-  /* Betreff-Feld erzwingen: volle Breite & angenehme Höhe */
-#subject {
-  display: block;
-  width: 100% !important;
-  box-sizing: border-box;
-  min-height: 44px;          /* angenehme Klick-/Lesefläche */
-  padding: 12px 14px;        /* wie die anderen Felder */
-  font: inherit;             /* gleiche Schrift wie überall */
-}
-  
+    button[disabled],
+    input[type="submit"][disabled] {
+      opacity: 0.55;           /* leicht ausgegraut */
+      cursor: not-allowed;     /* kein Handzeiger */
+      box-shadow: none;        /* kein Hover-Schatten */
+      filter: grayscale(40%);  /* optional: leicht entsättigt */
+    }
+    /* Betreff-Feld erzwingen: volle Breite & angenehme Höhe */
+    #subject {
+      display: block;
+      width: 100% !important;
+      box-sizing: border-box;
+      min-height: 44px;          /* angenehme Klick-/Lesefläche */
+      padding: 12px 14px;        /* wie die anderen Felder */
+      font: inherit;             /* gleiche Schrift wie überall */
+    }
+
     /* ========================= */
     /* OPTISCHE ERGÄNZUNGEN WIE STARTSEITE */
     /* ========================= */
 
-    /* Warmes Seiten-Theme */
+    /* Warmes Seiten-Theme (Solar) */
     body.theme-warm{
       --bg: #f6f1e8;
       background: linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%) !important;
+    }
+    /* Neutrales Theme (sachlich) */
+    body.theme-neutral{
+      --bg: #f7faf9;
+      background: #ffffff !important;
     }
 
     /* Eco-Texture (CSS-only, sehr dezent) */
@@ -150,7 +156,6 @@ input[type="submit"][disabled] {
     }
 
     /* Solar-Highlight unter dem Panel */
-    .hero-panel{ position:relative; overflow:hidden; }
     .hero-panel::after{
       content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
       background: linear-gradient(90deg, #f6b10a, #ffd84a);
@@ -185,6 +190,51 @@ input[type="submit"][disabled] {
       box-shadow:0 8px 24px rgba(0,0,0,.10);
       transform: translateY(-2px);
     }
+
+    /* -------------------- */
+    /* Gut sichtbarer Fokus */
+    /* -------------------- */
+    :focus{ outline: none; }
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      box-shadow:
+        0 0 0 3px rgba(246,177,10,.95),
+        0 0 0 5px rgba(0,0,0,.25);
+      border-color: #e6b400;
+      transition: box-shadow .15s ease;
+    }
+
+    /* ------------------------------ */
+    /* Partner-Hover (für Logos/Boxen) */
+    /* ------------------------------ */
+    .partner .logoBox img{
+      filter: grayscale(100%);
+      transition: filter .25s ease, transform .25s ease, box-shadow .25s ease;
+    }
+    .partner .logoBox:hover img{
+      filter: none;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0,0,0,.12);
+    }
+
+    /* ------------------------------ */
+    /* Theme-Toggle (fixiert, dezent) */
+    /* ------------------------------ */
+    .theme-toggle{
+      position: fixed; right: 14px; bottom: 14px; z-index: 1000;
+      background:#ffffff; color:#0a7d32; border:1px solid #dbe7df; border-radius: 999px;
+      padding: 8px 12px; font-weight:700; box-shadow: 0 8px 20px rgba(0,0,0,.12);
+      display:flex; align-items:center; gap:8px; cursor:pointer; text-decoration:none;
+    }
+    .theme-toggle .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: #f6b10a; box-shadow: inset 0 0 0 2px rgba(0,0,0,.08);
+    }
+    .theme-toggle:hover{ transform: translateY(-1px); }
+    .theme-toggle:focus-visible{ box-shadow: 0 0 0 3px rgba(246,177,10,.95), 0 0 0 5px rgba(0,0,0,.25); }
   </style>
   
 </head>
@@ -332,7 +382,7 @@ Mit freundlichen Grüßen
 
           <div class="actions">
             <button type="submit">In Druckwarteschlange einreichen</button>
-            <div id="successMessage" class="success"></div>
+            <div id="successMessage" class="success" role="status" aria-live="polite"></div>
           </div>
         </form>
       </section>
@@ -346,6 +396,11 @@ Mit freundlichen Grüßen
       </nav>
     </footer>
   </div>
+
+  <!-- Dual-Theme Toggle (fixiert, dezent) -->
+  <button id="themeToggle" class="theme-toggle" type="button" aria-label="Darstellung wechseln">
+    <span class="dot" aria-hidden="true"></span><span id="themeLabel">Solar</span>
+  </button>
 
   <!-- MdB Lookup (wie gehabt) -->
   <script>
@@ -722,44 +777,59 @@ Mit freundlichen Grüßen
     });
   })();
   </script>
+
+  <!-- Consent-Logik (unverändert) -->
   <script>
-(function(){
-  // NUR die Einwilligungs-Logik, keine anderen Funktionen werden berührt
-  const form   = document.getElementById('letterForm') || document.querySelector('form');
-  if (!form) return;
-  const consent = form.querySelector('#consent_print');
-  const submit  = form.querySelector('button[type="submit"], input[type="submit"]');
-  if (!consent || !submit) return;
+  (function(){
+    const form   = document.getElementById('letterForm') || document.querySelector('form');
+    if (!form) return;
+    const consent = form.querySelector('#consent_print');
+    const submit  = form.querySelector('button[type="submit"], input[type="submit"]');
+    if (!consent || !submit) return;
 
-  function sync(){ submit.disabled = !consent.checked; }
+    function sync(){ submit.disabled = !consent.checked; }
+    sync();
+    consent.addEventListener('change', sync);
 
-  // initial: Button „tot“, bis Häkchen gesetzt
-  sync();
-  consent.addEventListener('change', sync);
+    form.addEventListener('submit', function(e){
+      if (!consent.checked) {
+        e.preventDefault();
+        consent.setCustomValidity('Bitte bestätigen Sie den physischen Postversand.');
+        form.reportValidity();
+        setTimeout(()=>consent.setCustomValidity(''), 0);
+      }
+    }, true);
+  })();
+  </script>
 
-  // Extra-Sicherheit beim Absenden (falls jemand den Button manuell reaktiviert)
-  form.addEventListener('submit', function(e){
-    if (!consent.checked) {
-      e.preventDefault();
-      // kurzes, natives Validierungsfeedback für die Checkbox
-      consent.setCustomValidity('Bitte bestätigen Sie den physischen Postversand.');
-      form.reportValidity();
-      setTimeout(()=>consent.setCustomValidity(''), 0);
+  <!-- Theme-Schalter & Lazy-YouTube -->
+  <script>
+  (function(){
+    // Theme init
+    const key='theme';
+    const body=document.body;
+    const btn=document.getElementById('themeToggle');
+    const label=document.getElementById('themeLabel');
+
+    function applyTheme(t){
+      body.classList.remove('theme-warm','theme-neutral');
+      body.classList.add(t==='neutral'?'theme-neutral':'theme-warm');
+      label.textContent = t==='neutral' ? 'Neutral' : 'Solar';
+      localStorage.setItem(key, t);
     }
-  }, true);
-})();
-</script>
+    const saved=localStorage.getItem(key);
+    applyTheme(saved==='neutral'?'neutral':'warm');
+    btn?.addEventListener('click',()=>{
+      const curr=body.classList.contains('theme-neutral')?'neutral':'warm';
+      applyTheme(curr==='neutral'?'warm':'neutral');
+    });
 
+    // Lazy YouTube (falls vorhanden)
+    document.querySelectorAll('iframe[src*="youtube"], iframe[src*="youtu.be"]').forEach(ifr=>{
+      ifr.setAttribute('loading','lazy');
+    });
+  })();
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
+      
