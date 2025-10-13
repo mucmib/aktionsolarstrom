@@ -22,6 +22,7 @@
       --shadow: 0 6px 28px rgba(0,0,0,.08);
       --shadow-lg: 0 18px 48px rgba(0,0,0,.12);
       --maxw: 960px;
+      --focus-ring: 2px solid #f6b10a; /* Focus Ring */
     }
 
     /* === Base === */
@@ -32,13 +33,48 @@
       font: 16px/1.7 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
+      text-rendering: optimizeLegibility;
+      font-synthesis-weight: none;
     }
     img { max-width: 100%; display: block; }
     a { color: var(--brand); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
+    /* Accessible Focus Ring (sichtbar & konsistent) */
+    :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
     .page { display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr; min-height:100dvh; }
     .middle { grid-column:2; width:100%; padding: 0 16px; }
+
+    /* ===== Theme: neutral vs. warm ===== */
+    /* Neutral (sachlich) */
+    body.theme-neutral{
+      --bg: #f7faf9;
+      background: var(--bg) !important;
+    }
+    /* Warm (Solar) */
+    body.theme-warm {
+      --bg: #f6f1e8;
+      background: linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%) !important;
+    }
+
+    /* Eco-Texture (CSS-only) */
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none; z-index:-1;
+      background:
+        radial-gradient(1px 1px at 25% 15%, rgba(0,0,0,.04) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 60% 40%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 80% 70%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 40% 85%, rgba(0,0,0,.02) 0, rgba(0,0,0,0) 60%);
+      opacity:.28;
+      mix-blend-mode:multiply;
+    }
 
     /* ===== HERO mit Hintergrundbild ===== */
     .hero-wrap{
@@ -49,26 +85,20 @@
         linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)),
         url('assets/Bundestag.jpg') center 45%/cover no-repeat;
     }
-    /* Warme, sehr subtile Tönung über dem Foto */
+    /* Warme Tönung + Solar Glow */
     .hero-wrap::before{
-      content:"";
-      position:absolute; inset:0;
+      content:""; position:absolute; inset:0; pointer-events:none;
       background: linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02));
       mix-blend-mode: soft-light;
-      pointer-events:none;
     }
-    /* Solar Glow hinter dem Hero */
     .hero-wrap::after{
-      content:"";
-      position:absolute; inset:0;
+      content:""; position:absolute; inset:0; pointer-events:none;
       background: radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%);
-      pointer-events:none;
     }
 
     .hero{
       display:flex; align-items:center; justify-content:center;
       text-align:center; color:#fff;
-      /* kompakter: vorher 90px / 120px */
       padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px);
       position:relative;
     }
@@ -80,14 +110,13 @@
       backdrop-filter: blur(2px);
       position:relative; overflow:hidden;
     }
-    /* Solar Highlight unter dem Panel */
+    /* Solar Highlight */
     .hero-panel::after{
       content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
       background: linear-gradient(90deg, #f6b10a, #ffd84a);
     }
 
     .hero .logo{
-      /* kompakter: vorher clamp(220px, 50vw, 480px) */
       width: clamp(170px, 36vw, 380px);
       height:auto; display:block; margin:0 auto 8px;
       filter: drop-shadow(0 3px 8px rgba(0,0,0,.35));
@@ -113,12 +142,11 @@
       box-shadow:0 6px 22px rgba(10,125,50,.35);
     }
 
-    /* ===== Zähler – kompakt & angedockt ===== */
+    /* ===== Zähler ===== */
     .stats-wrap{
       display:flex; justify-content:center;
-      /* näher an den Hero gerückt */
       transform: translateY(-44px);
-      margin-bottom: -28px; /* kompensiert das Translate im Flow */
+      margin-bottom: -28px;
     }
     .stats-banner{
       display:flex; align-items:center; gap:10px;
@@ -155,19 +183,18 @@
       border:1px solid rgba(0,0,0,.06);
       border-radius: var(--radius);
       padding:18px;
-      background:#fffdf8; /* Solar Contrast */
+      background:#fffdf8; /* warm abgetönt */
       box-shadow: var(--shadow);
       transition: transform .2s ease, box-shadow .2s ease;
     }
     .card h3 { margin-top:0; font-weight:700; }
-    /* Floating Cards */
     .card:hover{
       transform: translateY(-3px);
       box-shadow: 0 6px 24px rgba(0,0,0,.12);
     }
     .callout { border-left: 4px solid var(--accent); background:#fff8e1; padding:14px 16px; border-radius: 8px; }
 
-    /* ===== YouTube: groß & responsiv ===== */
+    /* ===== YouTube responsiv ===== */
     .video-wrap {
       position: relative;
       width: 100%;
@@ -178,18 +205,21 @@
       overflow: hidden;
       background: #000;
       box-shadow: 0 6px 24px rgba(0,0,0,.15);
+      contain: content;
     }
     .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
     @media (max-width:600px){ .video-wrap{ max-width:95vw; margin-bottom:16px; } }
 
-    /* ===== Partner ===== */
+    /* ===== Partner (Hover-Effekt) ===== */
     .partner { border:1px solid rgba(0,0,0,.08); border-radius:12px; padding:18px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.04); }
     .partner h2 { margin-top:0; }
     .orgs { display:grid; gap:18px; grid-template-columns:1fr; align-items:start; }
     @media (min-width:780px){ .orgs{ grid-template-columns:1fr 1fr } }
     .org { display:grid; grid-template-columns:80px 1fr; gap:14px; align-items:start; }
-    .org .logoBox { display:flex; align-items:center; justify-content:center; background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; padding:10px; }
-    .org img { max-width:100%; height:auto; display:block; }
+    .org .logoBox { display:flex; align-items:center; justify-content:center; background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; padding:10px; transition: transform .2s ease, box-shadow .2s ease; }
+    .org img { max-width:100%; height:auto; display:block; filter: grayscale(100%); transition: filter .2s ease; }
+    .org .logoBox:hover { transform: translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.08); }
+    .org .logoBox:hover img { filter: none; }
 
     /* Footer */
     footer .legal { text-align:center; display:block; }
@@ -197,27 +227,6 @@
     /* Reveal Animation */
     .reveal{ opacity:0; transform: translateY(12px); }
     .reveal.is-visible{ opacity:1; transform: translateY(0); transition: opacity .55s ease, transform .55s ease; }
-
-    /* ==== THEMES ==== */
-    body.theme-warm {
-      --bg: #f6f1e8;
-      background: linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%) !important;
-    }
-
-    /* ==== ECO TEXTURE (CSS-only) ==== */
-    body::before{
-      content:"";
-      position:fixed; inset:0;
-      pointer-events:none; z-index:-1;
-      /* Sehr subtile Körnung via mehrere Radialverläufe */
-      background:
-        radial-gradient(1px 1px at 25% 15%, rgba(0,0,0,.04) 0, rgba(0,0,0,0) 60%),
-        radial-gradient(1px 1px at 60% 40%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
-        radial-gradient(1px 1px at 80% 70%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
-        radial-gradient(1px 1px at 40% 85%, rgba(0,0,0,.02) 0, rgba(0,0,0,0) 60%);
-      opacity:.28;
-      mix-blend-mode:multiply;
-    }
 
     /* ==== Sticky CTA (mobil) ==== */
     @media (max-width:700px){
@@ -232,10 +241,31 @@
         font-weight:700; text-decoration:none; box-shadow:0 8px 20px rgba(10,125,50,.25);
       }
     }
+
+    /* ===== Theme Toggle Button ===== */
+    .theme-toggle{
+      position: fixed; top: 12px; right: 12px; z-index: 1500;
+      display:flex; align-items:center; gap:8px;
+      background:#ffffffcc; backdrop-filter: blur(6px);
+      border:1px solid #e5e7eb; border-radius:999px; padding:6px 10px;
+      box-shadow:0 6px 18px rgba(0,0,0,.08);
+    }
+    .theme-toggle button{
+      background:#fff; border:1px solid #d1d5db; border-radius:999px; padding:6px 10px; cursor:pointer; font-weight:700;
+    }
+    .theme-toggle button[aria-pressed="true"]{
+      background: linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; border-color:transparent;
+    }
   </style>
 </head>
 <body class="theme-warm">
   <div class="page">
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" role="group" aria-label="Darstellung">
+      <button id="btnNeutral" type="button" aria-pressed="false">Sachlich</button>
+      <button id="btnWarm" type="button" aria-pressed="true">Solar</button>
+    </div>
+
     <!-- ===== HERO ===== -->
     <header class="site-header middle">
       <div class="hero-wrap">
@@ -294,7 +324,8 @@
             title="Solarstrom statt Erdgas-Strom – Der Kampagnenstart"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen></iframe>
+            allowfullscreen
+            loading="lazy"></iframe>
         </div>
 
         <p style="margin-top:10px">
@@ -310,7 +341,8 @@
             title="YouTube-Playlist: Aktion Solarstrom statt Erdgas-Strom"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen></iframe>
+            allowfullscreen
+            loading="lazy"></iframe>
         </div>
         <p style="margin-top:10px">
           <a class="cta secondary" href="https://www.youtube.com/playlist?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc" target="_blank" rel="noopener">
@@ -417,6 +449,38 @@
   </div>
 
   <script>
+    // Theme Toggle (neutral ↔ warm) mit localStorage
+    (function(){
+      const KEY='theme-mode';
+      const body=document.body;
+      const btnNeutral=document.getElementById('btnNeutral');
+      const btnWarm=document.getElementById('btnWarm');
+      function apply(mode){
+        if(mode==='neutral'){
+          body.classList.remove('theme-warm');
+          body.classList.add('theme-neutral');
+          btnNeutral.setAttribute('aria-pressed','true');
+          btnWarm.setAttribute('aria-pressed','false');
+        }else{
+          body.classList.remove('theme-neutral');
+          body.classList.add('theme-warm');
+          btnNeutral.setAttribute('aria-pressed','false');
+          btnWarm.setAttribute('aria-pressed','true');
+        }
+        try{ localStorage.setItem(KEY, mode); }catch(e){}
+      }
+      // Initial
+      try{
+        const saved=localStorage.getItem(KEY);
+        if(saved==='neutral') apply('neutral'); else apply('warm');
+      }catch(e){ apply('warm'); }
+
+      btnNeutral?.addEventListener('click', ()=>apply('neutral'));
+      btnWarm?.addEventListener('click', ()=>apply('warm'));
+    })();
+  </script>
+
+  <script>
     // Smooth Scrolling für In-Page-Links
     document.addEventListener('click', (e) => {
       const a = e.target.closest('a[href^="#"]'); if(!a) return;
@@ -465,12 +529,10 @@
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
 
-        // Zahl (neuer Key pdfs_generated, Fallbacks bleiben)
         const raw = Number(data.pdfs_generated ?? data.count ?? data.sent_emails ?? 0);
         const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
         countUp(el, value);
 
-        // Zeitstempel anzeigen (neuer/alte Keys)
         const stand = formatStandText(data.last_update || data.stats_updated_at || data.sent_emails_last_update);
         if (stand && metaWrap && metaText) {
           metaText.textContent = stand;
@@ -503,9 +565,6 @@
   </script>
 </body>
 </html>
-
-
-
 
 
 
