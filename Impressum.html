@@ -7,8 +7,8 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
-  <meta property="og:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
+  <meta property="og:title" content="Solarstrom statt Erdgas-Strom – Impressum">
+  <meta property="og:description" content="Impressum der Kampagne Solarstrom statt Erdgas-Strom – getragen von Leben mit der Energiewende, VEEG und Energy Watch Group.">
   <meta property="og:url" content="https://www.aktionsolarstrom.de/Impressum.html">
   <meta property="og:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
   <meta property="og:image:width" content="1200">
@@ -16,11 +16,11 @@
 
   <!-- Twitter (X) -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
-  <meta name="twitter:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
+  <meta name="twitter:title" content="Solarstrom statt Erdgas-Strom – Impressum">
+  <meta name="twitter:description" content="Impressum der Kampagne Solarstrom statt Erdgas-Strom.">
   <meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
 
-  <meta name="description" content="Impressum der Kampagne Solarstrom statt Erdgas-Strom – getragen von Leben mit der Energiewende, VEEG und Energy Watch Group. Diensteanbieter: Media International Bader.">
+  <meta name="description" content="Impressum der Kampagne Solarstrom statt Erdgas-Strom – getragen von Leben mit der Energiewende, VEEG und Energy Watch Group.">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,107 +28,78 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
 
   <style>
-    /* === Design-Token (wie Startseite) === */
     :root{
-      --brand:#0a7d32; --brand-2:#0bbd54; --bg:#f7faf9; --card:#fff; --text:#1f2937;
-      --muted:#6b7280; --accent:#f6b10a; --radius:14px; --shadow:0 6px 28px rgba(0,0,0,.08);
-      --shadow-lg:0 18px 48px rgba(0,0,0,.12); --maxw:960px; --focus-ring:2px solid #f6b10a;
+      --brand:#0a7d32;
+      --brand2:#0bbd54;
+      --accent:#f6b10a;
+      --bg:#f7faf9;
+      --card:#fff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --radius:14px;
+      --shadow:0 6px 28px rgba(0,0,0,.08);
+      --maxw:960px;
+      --focus-ring:2px solid #f6b10a;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font:16px/1.7 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:var(--bg); color:var(--text); text-rendering:optimizeLegibility; font-synthesis-weight:none;
-    }
-    img{max-width:100%; display:block}
-    a{color:var(--brand); text-decoration:none}
-    a:hover{text-decoration:underline}
-    :where(a,button,input,select,textarea,[tabindex]):focus-visible{ outline:var(--focus-ring); outline-offset:2px; border-radius:6px; }
-    .page{display:grid; grid-template-columns:1fr minmax(0,var(--maxw)) 1fr; min-height:100dvh}
-    .middle{grid-column:2; width:100%; padding:0 16px}
+    *{box-sizing:border-box;}
+    body{margin:0;font:16px/1.7 "Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);}
+    a{color:var(--brand);text-decoration:none;} a:hover{text-decoration:underline;}
+    :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:var(--focus-ring);outline-offset:2px;border-radius:6px;}
+    .page{display:grid;grid-template-columns:1fr minmax(0,var(--maxw)) 1fr;min-height:100dvh;}
+    .middle{grid-column:2;padding:0 16px;}
 
-    /* Themes (neutral/warm) */
-    body.theme-neutral{ --bg:#f7faf9; background:var(--bg)!important; }
-    body.theme-warm{ --bg:#f6f1e8; background:linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%) !important; }
+    /* ===== HERO ===== */
+    .hero-wrap{position:relative;overflow:hidden;border-radius:0 0 var(--radius) var(--radius);
+      background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.55)),url('assets/Bundestag.jpg') center 45%/cover no-repeat;}
+    .hero{display:flex;align-items:center;justify-content:center;padding:68px 16px 54px;color:#fff;text-align:center;}
+    .hero-panel{background:rgba(10,125,50,.78);border-radius:22px;padding:22px 24px;max-width:min(92vw,820px);
+      box-shadow:0 18px 48px rgba(0,0,0,.18);}
+    .hero-panel::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;
+      background:linear-gradient(90deg,#f6b10a,#ffd84a);}
+    .hero .logo img{width:clamp(220px,48vw,520px);margin:0 auto 6px;display:block;filter:drop-shadow(0 3px 8px rgba(0,0,0,.25));}
+    .hero h1{margin:8px 0 0;font-size:2rem;color:#fff;}
 
-    /* Eco-Texture */
-    body::before{
-      content:""; position:fixed; inset:0; pointer-events:none; z-index:-1;
-      background:
-        radial-gradient(1px 1px at 25% 15%, rgba(0,0,0,.04) 0, rgba(0,0,0,0) 60%),
-        radial-gradient(1px 1px at 60% 40%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
-        radial-gradient(1px 1px at 80% 70%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
-        radial-gradient(1px 1px at 40% 85%, rgba(0,0,0,.02) 0, rgba(0,0,0,0) 60%);
-      opacity:.28; mix-blend-mode:multiply;
-    }
+    /* ===== Inhalt ===== */
+    main.middle>section{margin:32px 0;}
+    .card{border:1px solid #e5e7eb;border-radius:14px;padding:22px;background:var(--card);box-shadow:var(--shadow);}
+    h2{margin-top:1.6em;font-size:1.18rem;}
+    .muted{color:var(--muted);font-size:.95em;}
 
-    /* HERO */
-    .hero-wrap{
-      position:relative; overflow:hidden; border-radius:0 0 16px 16px;
-      background: linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)), url('assets/Bundestag.jpg') center 45%/cover no-repeat;
+    /* ===== Partner-Hover-Grid ===== */
+    .partnersGrid{
+      display:grid;gap:18px;grid-template-columns:repeat(3,minmax(0,1fr));
     }
-    .hero-wrap::before{ content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02)); mix-blend-mode:soft-light; }
-    .hero-wrap::after{ content:""; position:absolute; inset:0; background: radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%); }
-    .hero{ display:flex; align-items:center; justify-content:center; text-align:center; color:#fff; padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px); position:relative; }
-    .hero-panel{ background: rgba(10,125,50,.78); border-radius:22px; padding:18px 22px; width:min(92vw, 760px); box-shadow:0 18px 48px rgba(0,0,0,.28); backdrop-filter: blur(2px); position:relative; overflow:hidden; }
-    .hero-panel::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:6px; background: linear-gradient(90deg, #f6b10a, #ffd84a); }
-    .hero .logo{ width: clamp(170px, 36vw, 380px); margin:0 auto 8px; filter: drop-shadow(0 3px 8px rgba(0,0,0,.35)); }
-    .hero h1{ margin:8px 0 4px; font-size: clamp(1.6rem, 2.2vw + 1rem, 2.2rem); font-weight:800; color:#fff; }
-
-    /* Theme Toggle */
-    .theme-toggle{
-      position: fixed; top: 12px; right: 12px; z-index: 1500;
-      display:flex; gap:8px; background:#ffffffcc; backdrop-filter: blur(6px);
-      border:1px solid #e5e7eb; border-radius:999px; padding:6px 10px; box-shadow:0 6px 18px rgba(0,0,0,.08);
-    }
-    .theme-toggle button{
-      background:#fff; border:1px solid #d1d5db; border-radius:999px; padding:6px 10px; cursor:pointer; font-weight:700;
-    }
-    .theme-toggle button[aria-pressed="true"]{ background: linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; border-color:transparent; }
-
-    /* Karten / Text */
-    main.middle > section { margin:32px 0; }
-    .card{ border:1px solid rgba(0,0,0,.06); border-radius:var(--radius); padding:18px; background:#fffdf8; box-shadow:var(--shadow); }
-    h2{ margin:14px 0 10px; font-size:1.18rem; }
-    .small{ font-size:.96rem; }
-    .sep{ height:1px; background:#e5e7eb; margin:20px 0; }
-
-    /* Partner-Grid (neu) */
-    .partnersGrid{ display:grid; gap:18px; grid-template-columns: repeat(3, minmax(0,1fr)); }
-    @media (max-width: 900px){ .partnersGrid{ grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 560px){ .partnersGrid{ grid-template-columns: 1fr; } }
-    .partnerCard{
-      background:#fff; border:1px solid rgba(0,0,0,.08);
-      border-radius:12px; padding:16px; text-align:center; box-shadow: var(--shadow);
-    }
-    .partnerCard .logoBox{
-      height:92px; display:flex; align-items:center; justify-content:center;
-      background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; margin-bottom:10px;
-    }
-    .partnerCard img{
-      max-height:66px; max-width:100%; width:auto; object-fit:contain; display:block;
-      filter: grayscale(100%); transition: filter .2s ease;
-    }
-    .partnerCard:hover img{ filter:none; }
-    .partnerCard h3{ margin:6px 0 0; font-size:1rem; }
+    @media(max-width:900px){.partnersGrid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:560px){.partnersGrid{grid-template-columns:1fr;}}
+    .partnerCard{position:relative;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;overflow:hidden;text-align:center;
+      box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease;}
+    .partnerCard:hover{transform:translateY(-3px);box-shadow:0 8px 26px rgba(0,0,0,.12);}
+    .partnerCard .logoBox{height:120px;display:flex;align-items:center;justify-content:center;background:#f9fafb;border-bottom:1px solid #e5e7eb;}
+    .partnerCard img{max-height:72px;width:auto;object-fit:contain;filter:grayscale(100%);transition:filter .3s ease;}
+    .partnerCard:hover img{filter:none;}
+    .partnerCard .info{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+      background:linear-gradient(to top,rgba(10,125,50,.9)0%,rgba(10,125,50,.2)60%,transparent 100%);
+      color:#fff;padding:16px;opacity:0;transition:opacity .35s ease;backdrop-filter:blur(4px);}
+    .partnerCard:hover .info{opacity:1;}
+    .partnerCard .info h3{margin:0 0 4px;font-size:1rem;font-weight:700;}
+    .partnerCard .info p{margin:0;font-size:.9rem;line-height:1.4;opacity:.95;}
+    .partnerCard .info a{color:#ffd84a;font-weight:600;text-decoration:none;}
+    .partnerCard .info a:hover{text-decoration:underline;}
 
     /* Footer */
-    footer .legal{ text-align:center; display:block; }
+    footer .legal{text-align:center;display:block;margin:24px 0 10px;}
+    footer a{color:#333;}
   </style>
 </head>
-<body class="theme-warm">
+<body>
   <div class="page">
-    <!-- Theme Toggle -->
-    <div class="theme-toggle" role="group" aria-label="Darstellung">
-      <button id="btnNeutral" type="button" aria-pressed="false">Sachlich</button>
-      <button id="btnWarm" type="button" aria-pressed="true">Solar</button>
-    </div>
-
-    <header class="site-header middle">
+    <header class="middle">
       <div class="hero-wrap">
         <div class="hero">
-          <div class="hero-panel" role="banner" aria-label="Impressum – Kampagne Solarstrom statt Erdgas-Strom">
-            <img class="logo" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+          <div class="hero-panel">
+            <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
+              <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+            </a>
             <h1>Impressum</h1>
           </div>
         </div>
@@ -136,99 +107,66 @@
     </header>
 
     <main class="middle">
-      <section class="card" aria-labelledby="getragen-von">
-        <h2 id="getragen-von">Diese Kampagne wird getragen von</h2>
-
+      <section class="card">
+        <h2>Diese Kampagne wird getragen von</h2>
         <div class="partnersGrid" aria-label="Partnerorganisationen">
           <article class="partnerCard">
             <div class="logoBox"><img src="assets/LEWLOGOKLEIN.png" alt="Leben mit der Energiewende"></div>
-            <h3>Leben mit der Energiewende</h3>
+            <div class="info">
+              <h3>Leben mit der Energiewende</h3>
+              <p>Plattform &amp; TV-Magazin für die Energiewende in Bürgerhand.</p>
+              <a href="https://www.lebenmitderenergiewende.de/" target="_blank" rel="noopener">lebenmitderenergiewende.de</a>
+            </div>
           </article>
           <article class="partnerCard">
-            <div class="logoBox"><img src="assets/veeglogo.svg" alt="VEEG – Verein Energie Erzeugende Gebäude e. V."></div>
-            <h3>VEEG – Verein Energie Erzeugende Gebäude e. V.</h3>
+            <div class="logoBox"><img src="assets/veeglogo.svg" alt="VEEG – Verein EnergieErzeugende Gebäude e. V."></div>
+            <div class="info">
+              <h3>VEEG e. V. – Verband EnergieErzeugende Gebäude</h3>
+              <p>Fördert Gebäude als aktive Energieproduzenten – energieautark, klimafreundlich, zukunftsweisend.</p>
+              <a href="https://ve-eg.de/" target="_blank" rel="noopener">ve-eg.de</a>
+            </div>
           </article>
           <article class="partnerCard">
-            <div class="logoBox"><img src="assets/energywatchgroup.png" alt="Energy Watch Group"></div>
-            <h3>Energy Watch Group</h3>
+            <div class="logoBox"><img src="assets/energywatchgroup.png" alt="Energy Watch Group (EWG)"></div>
+            <div class="info">
+              <h3>Energy Watch Group (EWG)</h3>
+              <p>Gemeinnütziger Think Tank für globale Energiewende und Klimastabilisierung.</p>
+              <a href="https://energywatchgroup.org/" target="_blank" rel="noopener">energywatchgroup.org</a>
+            </div>
           </article>
         </div>
 
-        <div class="sep" role="separator" aria-hidden="true"></div>
+        <hr style="margin:30px 0;border:none;border-top:1px solid #e5e7eb;">
 
         <h2>Diensteanbieter gemäß § 5 TMG / Verantwortlich i. S. d. § 18 Abs. 2 MStV</h2>
-        <p class="small">
-          <strong>Media International Bader (M.I.B.) – Hans Leo Bader</strong><br>
-          Heisenbergstr. 2b · 80937 München<br>
-          Telefon: +49 (89) 33 04 05 06 · Mobil: +49 (177) 76 06 66 0<br>
-          E-Mail: webmaster(at)muc-mib.de<br>
-          Vertretungsberechtigt: Hans Leo Bader
-        </p>
-
-        <div class="sep" role="separator" aria-hidden="true"></div>
+        <p><strong>Media International Bader (M.I.B.) – Hans Leo Bader</strong><br>
+        Heisenbergstr. 2b · 80937 München<br>
+        Telefon +49 (89) 33 04 05 06 · Mobil +49 (177) 76 06 66 0<br>
+        E-Mail webmaster(at)muc-mib.de<br>
+        Vertretungsberechtigt: Hans Leo Bader</p>
 
         <h2>Gestaltung &amp; Umsetzung</h2>
-        <p class="small">
-          <strong>Konzeption &amp; Design:</strong> Frank Farenski<br>
-          <strong>Technische Infrastruktur &amp; Betrieb:</strong> Media International Bader (M.I.B.)
-        </p>
+        <p><strong>Konzeption &amp; Design:</strong> Frank Farenski<br>
+        <strong>Technische Infrastruktur &amp; Betrieb:</strong> Media International Bader (M.I.B.)</p>
 
-        <div class="sep" role="separator" aria-hidden="true"></div>
-
-        <h2>Haftung für Inhalte</h2>
-        <p class="small">
-          Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für Richtigkeit, Vollständigkeit und
-          Aktualität übernehmen wir keine Gewähr. Nach § 7 Abs. 1 TMG sind wir für eigene Inhalte verantwortlich;
-          nach den §§ 8–10 TMG jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu
-          überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen
-          zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben davon unberührt.
-        </p>
-
-        <h2>Haftung für Links</h2>
-        <p class="small">
-          Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben.
-          Deshalb können wir für diese fremden Inhalte keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten
-          ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Rechtswidrige Inhalte waren zum Zeitpunkt
-          der Verlinkung nicht erkennbar.
-        </p>
+        <h2>Haftung für Inhalte &amp; Links</h2>
+        <p>Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für Richtigkeit, Vollständigkeit und Aktualität übernehmen wir keine Gewähr. Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für diese fremden Inhalte ist stets der jeweilige Anbieter verantwortlich. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.</p>
       </section>
     </main>
 
-    <footer class="site-footer middle">
-      <nav class="legal">
-        <a href="https://www.aktionsolarstrom.de/">Startseite</a> ·
-        <a href="Datenschutz.html">Datenschutz</a> ·
-        <a href="Impressum.html" aria-current="page">Impressum</a>
-      </nav>
-      <p style="text-align:center">© Kampagne „Solarstrom statt Erdgas-Strom”</p>
+    <footer class="middle">
+      <p class="legal">
+        <a href="https://www.aktionsolarstrom.de/">Startseite</a>
+        · <a href="Datenschutz.html">Datenschutz</a>
+        · <a href="Impressum.html" aria-current="page">Impressum</a>
+      </p>
+      <p class="muted">Eine Kampagne von Leben mit der Energiewende, VEEG und Energy Watch Group · Diensteanbieter: Media International Bader</p>
+      <p class="muted">© Media International Bader</p>
     </footer>
   </div>
-
-  <!-- Theme Toggle Script -->
-  <script>
-    (function(){
-      const KEY='theme-mode';
-      const body=document.body;
-      const btnNeutral=document.getElementById('btnNeutral');
-      const btnWarm=document.getElementById('btnWarm');
-      function apply(mode){
-        if(mode==='neutral'){
-          body.classList.remove('theme-warm'); body.classList.add('theme-neutral');
-          btnNeutral?.setAttribute('aria-pressed','true'); btnWarm?.setAttribute('aria-pressed','false');
-        }else{
-          body.classList.remove('theme-neutral'); body.classList.add('theme-warm');
-          btnNeutral?.setAttribute('aria-pressed','false'); btnWarm?.setAttribute('aria-pressed','true');
-        }
-        try{ localStorage.setItem(KEY, mode); }catch(e){}
-      }
-      try{ const saved=localStorage.getItem(KEY); if(saved==='neutral') apply('neutral'); else apply('warm'); }
-      catch(e){ apply('warm'); }
-      btnNeutral?.addEventListener('click', ()=>apply('neutral'));
-      btnWarm?.addEventListener('click', ()=>apply('warm'));
-    })();
-  </script>
 </body>
 </html>
+
 
 
 
