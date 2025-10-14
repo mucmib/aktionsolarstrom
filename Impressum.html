@@ -4,55 +4,104 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Impressum – Solarstrom statt Erdgas-Strom</title>
-  <!-- Open Graph -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
-<meta property="og:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
-<meta property="og:url" content="https://www.aktionsolarstrom.de/">
-<meta property="og:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 
-<!-- Twitter (X) Fallback -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
-<meta name="twitter:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
-<meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
+  <meta property="og:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
+  <meta property="og:url" content="https://www.aktionsolarstrom.de/">
+  <meta property="og:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter (X) -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
+  <meta name="twitter:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
+  <meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
 
   <meta name="description" content="Impressum der Kampagne Solarstrom statt Erdgas-Strom – getragen von Leben mit der Energiewende, VEEG und Energy Watch Group. Diensteanbieter: Media International Bader.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+
   <style>
-    :root{ --maxw: 920px; --brand:#0a7c5b; --ink:#111; --muted:#6b7280; --border:#e5e7eb; }
-    html,body{margin:0;padding:0}
-    body{font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:#fff}
-    .page{display:grid;grid-template-columns:1fr minmax(0,var(--maxw)) 1fr;min-height:100dvh}
-    .middle{grid-column:2;padding:20px}
+    :root{
+      --maxw: 960px;
+      --brand:#0a7d32;
+      --brand2:#0bbd54;
+      --bg:#f6f9f7;
+      --card:#fff;
+      --muted:#6b7280;
+      --radius:16px;
+      --shadow:0 6px 28px rgba(0,0,0,.08);
+      --border:#e5e7eb;
+    }
 
-    header{padding:28px 0 20px;text-align:center;background:#000;color:#fff}
-    header a.logo{display:inline-block}
-    header img{width:min(90vw,320px);height:auto;margin-bottom:12px}
-    header h1{margin:0;font-size:2rem;font-weight:700;color:#fff}
+    /* Base */
+    *{box-sizing:border-box}
+    body{margin:0; font:16px/1.6 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111; background:var(--bg);}
+    a{color:inherit}
+    .page{display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr;}
+    .middle{grid-column:2; padding:16px;}
+    main.middle > section{ margin:22px 0; }
 
-    h2{margin:28px 0 10px;font-size:1.175rem}
-    .card{border:1px solid var(--border);border-radius:12px;padding:18px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.04)}
-    .muted{color:var(--muted)}
-    .partners{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
-    .partners img{height:42px;width:auto}
-    .list-clean{margin:8px 0 0 0;padding:0;list-style:none}
-    .list-clean li{margin:2px 0}
-    .sep{height:1px;background:var(--border);margin:22px 0}
-    footer{margin:36px 0 16px;text-align:center;color:var(--muted);font-size:.95rem}
-    footer a{color:inherit;text-decoration:none}
-    footer a:hover{text-decoration:underline}
-    .small{font-size:.95rem}
+    /* HERO */
+    .hero-wrap{
+      position:relative; overflow:hidden; border-radius:0 0 var(--radius) var(--radius);
+      background:
+        linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.55)),
+        url('assets/Bundestag.jpg') center 40%/cover no-repeat;
+    }
+    .hero{display:flex; align-items:center; justify-content:center; padding:68px 16px 54px; color:#fff;}
+    .hero-panel{
+      background: rgba(10,125,50,.82); color:#fff; border-radius:22px; padding:22px 24px;
+      max-width:min(92vw,820px); text-align:center; box-shadow:0 18px 48px rgba(0,0,0,.18);
+    }
+    .hero .logo img{
+      width: clamp(220px, 48vw, 520px); height:auto; display:block; margin:0 auto 6px;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,.25));
+    }
+    .hero h1{margin:8px 0 0; font-size:2rem;}
+    @media (max-width:720px){
+      .hero{padding:46px 12px 40px}
+      .hero-panel{border-radius:16px; padding:16px}
+      .hero h1{font-size:1.6rem}
+    }
+
+    /* Cards / Text */
+    .card{ border:1px solid var(--border); border-radius:14px; padding:18px; background:var(--card); box-shadow:var(--shadow); }
+    h2{ margin:14px 0 10px; font-size:1.18rem; }
+    .muted{ color:var(--muted); }
+    .list-clean{ margin:8px 0 0; padding:0; list-style:none; }
+    .list-clean li{ margin:3px 0; }
+    .sep{ height:1px; background:var(--border); margin:20px 0; }
+    .small{ font-size:.96rem; }
+
+    /* Partner-Logos */
+    .partners{ display:flex; gap:18px; flex-wrap:wrap; align-items:center; }
+    .partners img{ height:42px; width:auto; }
+
+    /* Footer */
+    footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
+    footer a { color:#333; }
   </style>
 </head>
 <body>
   <div class="page">
     <header class="middle">
-      <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
-        <img src="assets/logo.png" alt="Solarstrom statt Erdgas-Strom – Logo" loading="lazy" decoding="async">
-      </a>
-      <h1>Impressum</h1>
+      <div class="hero-wrap">
+        <div class="hero">
+          <div class="hero-panel" role="banner" aria-label="Impressum – Kampagne Solarstrom statt Erdgas-Strom">
+            <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
+              <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+            </a>
+            <h1>Impressum</h1>
+          </div>
+        </div>
+      </div>
     </header>
 
     <main class="middle">
@@ -70,7 +119,7 @@
           <img src="assets/energywatchgroup.png" alt="Logo: Energy Watch Group" loading="lazy" decoding="async">
         </div>
 
-        <div class="sep"></div>
+        <div class="sep" role="separator" aria-hidden="true"></div>
 
         <h2>Diensteanbieter gemäß § 5 TMG / Verantwortlich i. S. d. § 18 Abs. 2 MStV</h2>
         <p class="small">
@@ -83,15 +132,15 @@
           Vertretungsberechtigt: Hans Leo Bader
         </p>
 
-        <div class="sep"></div>
+        <div class="sep" role="separator" aria-hidden="true"></div>
 
-        <h2>Gestaltung & Umsetzung</h2>
+        <h2>Gestaltung &amp; Umsetzung</h2>
         <p class="small">
           <strong>Konzeption &amp; Design:</strong> Frank Farenski<br>
           <strong>Technische Infrastruktur &amp; Betrieb:</strong> Media International Bader (M.I.B.)
         </p>
 
-        <div class="sep"></div>
+        <div class="sep" role="separator" aria-hidden="true"></div>
 
         <h2>Haftung für Inhalte</h2>
         <p class="small">
@@ -113,7 +162,7 @@
     </main>
 
     <footer class="middle">
-      <p>
+      <p class="legal">
         <a href="https://www.aktionsolarstrom.de/">Startseite</a>
         · <a href="Datenschutz.html">Datenschutz</a>
         · <a href="Impressum.html" aria-current="page">Impressum</a>
@@ -124,4 +173,6 @@
   </div>
 </body>
 </html>
+
+
 
