@@ -89,6 +89,50 @@
     /* Footer */
     footer .legal{text-align:center;display:block;margin:24px 0 10px;}
     footer a{color:#333;}
+    /* === Partner-Overlay: Kontrast-Fix === */
+.partnerCard .info{
+  /* dunkler, homogener Hintergrund statt sehr transparenter Verlauf */
+  background: linear-gradient(
+    to top,
+    rgba(7, 34, 18, .90) 0%,
+    rgba(7, 34, 18, .82) 60%,
+    rgba(7, 34, 18, .50) 100%
+  );
+  color:#fff;
+  text-shadow: 0 1px 1px rgba(0,0,0,.45);  /* hebt Weiß deutlich ab */
+  padding: 16px 16px 14px;
+}
+.partnerCard .info h3{
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+.partnerCard .info p{
+  font-size: .92rem;
+  line-height: 1.45;
+  opacity: .98;               /* mehr Lesbarkeit als .95 */
+}
+
+/* Link gut sichtbar als „Pill“ */
+.partnerCard .info a{
+  display:inline-block;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #ffd84a;        /* Solar-Gelb */
+  color: #0b3d16;             /* sehr dunkles Grün für 7:1 Kontrast */
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,.22);
+}
+.partnerCard .info a:hover{
+  filter: brightness(.95);
+}
+
+/* etwas dunkleres Logo-Panel, damit der Übergang stimmig wirkt */
+.partnerCard .logoBox{
+  background:#eef3ef;
+}
+
   </style>
 </head>
 <body>
@@ -166,6 +210,7 @@
   </div>
 </body>
 </html>
+
 
 
 
