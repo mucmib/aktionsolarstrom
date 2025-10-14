@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Datenschutzerklärung – Solarstrom statt Erdgas-Strom</title>
-
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Solarstrom statt Erdgas-Strom – Datenschutzerklärung">
@@ -13,113 +12,114 @@
   <meta property="og:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-
-  <!-- Twitter (X) -->
+  <!-- Twitter (X) Fallback -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Solarstrom statt Erdgas-Strom – Datenschutzerklärung">
   <meta name="twitter:description" content="Informationen zum Datenschutz im Rahmen der Kampagne Solarstrom statt Erdgas-Strom.">
   <meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
-
   <meta name="description" content="Datenschutzerklärung der Kampagne Solarstrom statt Erdgas-Strom – getragen von Leben mit der Energiewende, VEEG und Energy Watch Group.">
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
-
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
   <style>
+    /* === Design-Token (aus Startseite) === */
     :root{
-      --maxw:960px;
-      --brand:#0a7d32;
-      --brand2:#0bbd54;
-      --bg:#f6f9f7;
-      --card:#fff;
-      --ink:#111;
-      --muted:#6b7280;
-      --border:#e5e7eb;
-      --radius:16px;
-      --shadow:0 6px 28px rgba(0,0,0,.08);
-      --link:#0a7d32;
+      --brand:#0a7d32; --brand-2:#0bbd54; --bg:#f7faf9; --card:#fff; --text:#1f2937;
+      --muted:#6b7280; --accent:#f6b10a; --radius:14px; --shadow:0 6px 28px rgba(0,0,0,.08);
+      --shadow-lg:0 18px 48px rgba(0,0,0,.12); --maxw:960px; --focus-ring:2px solid #f6b10a;
     }
-
-    @media (prefers-color-scheme: dark) {
-      :root{
-        --bg:#0b0f0d;
-        --card:#1a1f1c;
-        --ink:#e8f0e9;
-        --muted:#9ba8a0;
-        --border:#2a322c;
-        --shadow:0 6px 28px rgba(0,0,0,.4);
-        --link:#9ef29c;
-      }
-    }
-
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
+    html,body{height:100%}
     body{
-      font:16px/1.6 "Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--ink);
-      background:var(--bg);
-      transition:background-color .3s,color .3s;
+      margin:0; font:16px/1.7 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:var(--bg); color:var(--text); text-rendering:optimizeLegibility; font-synthesis-weight:none;
     }
-    a{color:var(--link);text-decoration:none}
+    img{max-width:100%; display:block}
+    a{color:var(--brand); text-decoration:none}
     a:hover{text-decoration:underline}
-    .page{display:grid;grid-template-columns:1fr minmax(0,var(--maxw)) 1fr;}
-    .middle{grid-column:2;padding:16px;}
-    main.middle>section{margin:22px 0;}
-    .muted{color:var(--muted);font-size:.95em}
+    :where(a,button,input,select,textarea,[tabindex]):focus-visible{
+      outline:var(--focus-ring); outline-offset:2px; border-radius:6px;
+    }
+    .page{display:grid; grid-template-columns:1fr minmax(0,var(--maxw)) 1fr; min-height:100dvh}
+    .middle{grid-column:2; width:100%; padding:0 16px}
+
+    /* Themes */
+    body.theme-neutral{ --bg:#f7faf9; background:var(--bg)!important; }
+    body.theme-warm{
+      --bg:#f6f1e8;
+      background:linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%) !important;
+    }
+    body::before{
+      content:""; position:fixed; inset:0; pointer-events:none; z-index:-1;
+      background:
+        radial-gradient(1px 1px at 25% 15%, rgba(0,0,0,.04) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 60% 40%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 80% 70%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 40% 85%, rgba(0,0,0,.02) 0, rgba(0,0,0,0) 60%);
+      opacity:.28; mix-blend-mode:multiply;
+    }
 
     /* HERO */
     .hero-wrap{
-      position:relative;overflow:hidden;border-radius:0 0 var(--radius) var(--radius);
-      background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.55)),url('assets/Bundestag.jpg') center 40%/cover no-repeat;
+      position:relative; overflow:hidden; border-radius:0 0 16px 16px;
+      background: linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)),
+                  url('assets/Bundestag.jpg') center 45%/cover no-repeat;
     }
-    .hero{display:flex;align-items:center;justify-content:center;padding:68px 16px 54px;color:#fff;}
+    .hero-wrap::before{
+      content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02)); mix-blend-mode:soft-light;
+    }
+    .hero-wrap::after{
+      content:""; position:absolute; inset:0;
+      background:radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%);
+    }
+    .hero{ display:flex; align-items:center; justify-content:center; text-align:center; color:#fff;
+      padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px); position:relative; }
     .hero-panel{
-      background:rgba(10,125,50,.82);color:#fff;border-radius:22px;padding:22px 24px;
-      max-width:min(92vw,820px);text-align:center;box-shadow:0 18px 48px rgba(0,0,0,.18);
-      transition:background .3s;
+      background:rgba(10,125,50,.78); border-radius:22px; padding:18px 22px;
+      width:min(92vw,760px); box-shadow:0 18px 48px rgba(0,0,0,.28); backdrop-filter:blur(2px);
+      position:relative; overflow:hidden;
     }
-    .hero .logo img{
-      width:clamp(220px,48vw,520px);height:auto;display:block;margin:0 auto 6px;
-      filter:drop-shadow(0 3px 8px rgba(0,0,0,.25));
-    }
-    .hero h1{margin:8px 0 0;font-size:2rem;}
-    @media(max-width:720px){
-      .hero{padding:46px 12px 40px}
-      .hero-panel{border-radius:16px;padding:16px}
-      .hero h1{font-size:1.6rem}
-    }
+    .hero-panel::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
+      background:linear-gradient(90deg,#f6b10a,#ffd84a); }
+    .hero .logo{ width:clamp(170px,36vw,380px); margin:0 auto 8px; filter:drop-shadow(0 3px 8px rgba(0,0,0,.35)); }
+    .hero h1{ margin:8px 0 4px; font-size:clamp(1.6rem, 2.2vw + 1rem, 2.2rem); font-weight:800; color:#fff; }
 
-    /* Card */
+    /* Theme Toggle */
+    .theme-toggle{
+      position:fixed; top:12px; right:12px; z-index:1500; display:flex; gap:8px;
+      background:#ffffffcc; backdrop-filter:blur(6px); border:1px solid #e5e7eb; border-radius:999px; padding:6px 10px;
+      box-shadow:0 6px 18px rgba(0,0,0,.08);
+    }
+    .theme-toggle button{
+      background:#fff; border:1px solid #d1d5db; border-radius:999px; padding:6px 10px; cursor:pointer; font-weight:700;
+    }
+    .theme-toggle button[aria-pressed="true"]{ background:linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; border-color:transparent; }
+
+    /* Cards */
+    main.middle > section { margin:32px 0; }
     .card{
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:22px;
-      background:var(--card);
-      box-shadow:var(--shadow);
-      transition:background .3s,color .3s,border-color .3s;
+      border:1px solid rgba(0,0,0,.06); border-radius:var(--radius); padding:22px;
+      background:#fffdf8; box-shadow:var(--shadow); transition:transform .2s ease, box-shadow .2s ease;
     }
-    h2{margin-top:1.6em;font-size:1.18rem;}
-    ul{padding-left:18px;}
-    code{background:#f4f6f5;padding:2px 4px;border-radius:4px;}
-
-    /* Footer */
-    footer{margin:40px 0 16px;text-align:center;font-size:.95rem;}
-    footer a{color:var(--link);}
-    footer .muted{color:var(--muted);}
+    .card:hover{ transform:translateY(-3px); box-shadow:0 6px 24px rgba(0,0,0,.12); }
+    h2{ margin-top:1.6em; font-size:1.18rem; }
+    ul{ padding-left:18px; }
+    .muted{ color:var(--muted); font-size:.95em; }
   </style>
 </head>
-
-<body>
+<body class="theme-warm">
   <div class="page">
-    <header class="middle">
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" role="group" aria-label="Darstellung">
+      <button id="btnNeutral" type="button" aria-pressed="false">Sachlich</button>
+      <button id="btnWarm" type="button" aria-pressed="true">Solar</button>
+    </div>
+
+    <header class="site-header middle">
       <div class="hero-wrap">
         <div class="hero">
-          <div class="hero-panel" role="banner" aria-label="Datenschutzerklärung – Kampagne Solarstrom statt Erdgas-Strom">
-            <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
-              <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
-            </a>
+          <div class="hero-panel">
+            <img class="logo" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
             <h1>Datenschutzerklärung</h1>
           </div>
         </div>
@@ -187,31 +187,54 @@
       </section>
     </main>
 
-    <footer class="middle">
-      <p class="legal">
-        <a href="https://www.aktionsolarstrom.de/">Startseite</a> · 
-        <a href="Datenschutz.html" aria-current="page">Datenschutz</a> · 
+    <footer class="site-footer middle">
+      <nav class="legal">
+        <a href="https://www.aktionsolarstrom.de/">Startseite</a> ·
+        <a href="Datenschutz.html" aria-current="page">Datenschutz</a> ·
         <a href="Impressum.html">Impressum</a>
-      </p>
-      <p class="muted">Eine Kampagne von Leben mit der Energiewende, VEEG und Energy Watch Group · Diensteanbieter: Media International Bader</p>
-      <p class="muted">© Media International Bader</p>
+      </nav>
+      <p style="text-align:center">© Kampagne „Solarstrom statt Erdgas-Strom”</p>
     </footer>
   </div>
 
+  <!-- Theme Toggle Script -->
   <script>
-    window.addEventListener('DOMContentLoaded',()=>{
-      const el=document.getElementById('last-updated');
-      if(el){
-        el.textContent=new Date().toLocaleDateString('de-DE',{
-          day:'2-digit',
-          month:'long',
-          year:'numeric'
+    (function(){
+      const KEY='theme-mode';
+      const body=document.body;
+      const btnNeutral=document.getElementById('btnNeutral');
+      const btnWarm=document.getElementById('btnWarm');
+      function apply(mode){
+        if(mode==='neutral'){
+          body.classList.remove('theme-warm'); body.classList.add('theme-neutral');
+          btnNeutral?.setAttribute('aria-pressed','true'); btnWarm?.setAttribute('aria-pressed','false');
+        }else{
+          body.classList.remove('theme-neutral'); body.classList.add('theme-warm');
+          btnNeutral?.setAttribute('aria-pressed','false'); btnWarm?.setAttribute('aria-pressed','true');
+        }
+        try{ localStorage.setItem(KEY, mode); }catch(e){}
+      }
+      try{ const saved=localStorage.getItem(KEY); if(saved==='neutral') apply('neutral'); else apply('warm'); }
+      catch(e){ apply('warm'); }
+      btnNeutral?.addEventListener('click', ()=>apply('neutral'));
+      btnWarm?.addEventListener('click', ()=>apply('warm'));
+    })();
+  </script>
+
+  <!-- Stand-Datum (DE lang) -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const el = document.getElementById('last-updated');
+      if (el) {
+        el.textContent = new Date().toLocaleDateString('de-DE', {
+          day: '2-digit', month: 'long', year: 'numeric'
         });
       }
     });
   </script>
 </body>
 </html>
+
 
 
 
