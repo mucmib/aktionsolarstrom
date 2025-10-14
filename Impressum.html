@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Impressum – Solarstrom statt Erdgas-Strom</title>
+
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
@@ -12,17 +13,22 @@
   <meta property="og:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <!-- Twitter (X) Fallback -->
+
+  <!-- Twitter (X) -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
   <meta name="twitter:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
   <meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
+
   <meta name="description" content="Impressum der Kampagne Solarstrom statt Erdgas-Strom – getragen von Leben mit der Energiewende, VEEG und Energy Watch Group. Diensteanbieter: Media International Bader.">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+
   <style>
-    /* === Design-Token (aus Startseite) === */
+    /* === Design-Token (wie Startseite) === */
     :root{
       --brand:#0a7d32; --brand-2:#0bbd54; --bg:#f7faf9; --card:#fff; --text:#1f2937;
       --muted:#6b7280; --accent:#f6b10a; --radius:14px; --shadow:0 6px 28px rgba(0,0,0,.08);
@@ -37,18 +43,13 @@
     img{max-width:100%; display:block}
     a{color:var(--brand); text-decoration:none}
     a:hover{text-decoration:underline}
-    :where(a,button,input,select,textarea,[tabindex]):focus-visible{
-      outline:var(--focus-ring); outline-offset:2px; border-radius:6px;
-    }
+    :where(a,button,input,select,textarea,[tabindex]):focus-visible{ outline:var(--focus-ring); outline-offset:2px; border-radius:6px; }
     .page{display:grid; grid-template-columns:1fr minmax(0,var(--maxw)) 1fr; min-height:100dvh}
     .middle{grid-column:2; width:100%; padding:0 16px}
 
-    /* ==== Themes (neutral / warm) ==== */
+    /* Themes (neutral/warm) */
     body.theme-neutral{ --bg:#f7faf9; background:var(--bg)!important; }
-    body.theme-warm{
-      --bg:#f6f1e8;
-      background:linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%) !important;
-    }
+    body.theme-warm{ --bg:#f6f1e8; background:linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%) !important; }
 
     /* Eco-Texture */
     body::before{
@@ -64,65 +65,52 @@
     /* HERO */
     .hero-wrap{
       position:relative; overflow:hidden; border-radius:0 0 16px 16px;
-      background: linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)),
-                  url('assets/Bundestag.jpg') center 45%/cover no-repeat;
+      background: linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)), url('assets/Bundestag.jpg') center 45%/cover no-repeat;
     }
-    .hero-wrap::before{
-      content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02)); mix-blend-mode:soft-light;
-    }
-    .hero-wrap::after{
-      content:""; position:absolute; inset:0;
-      background:radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%);
-    }
-    .hero{
-      display:flex; align-items:center; justify-content:center; text-align:center; color:#fff;
-      padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px);
-      position:relative;
-    }
-    .hero-panel{
-      background:rgba(10,125,50,.78); border-radius:22px; padding:18px 22px;
-      width:min(92vw,760px); box-shadow:0 18px 48px rgba(0,0,0,.28); backdrop-filter:blur(2px);
-      position:relative; overflow:hidden;
-    }
-    .hero-panel::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
-      background:linear-gradient(90deg,#f6b10a,#ffd84a); }
-    .hero .logo{ width:clamp(170px,36vw,380px); margin:0 auto 8px; filter:drop-shadow(0 3px 8px rgba(0,0,0,.35)); }
-    .hero h1{ margin:8px 0 4px; font-size:clamp(1.6rem, 2.2vw + 1rem, 2.2rem); font-weight:800; color:#fff; }
+    .hero-wrap::before{ content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02)); mix-blend-mode:soft-light; }
+    .hero-wrap::after{ content:""; position:absolute; inset:0; background: radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%); }
+    .hero{ display:flex; align-items:center; justify-content:center; text-align:center; color:#fff; padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px); position:relative; }
+    .hero-panel{ background: rgba(10,125,50,.78); border-radius:22px; padding:18px 22px; width:min(92vw, 760px); box-shadow:0 18px 48px rgba(0,0,0,.28); backdrop-filter: blur(2px); position:relative; overflow:hidden; }
+    .hero-panel::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:6px; background: linear-gradient(90deg, #f6b10a, #ffd84a); }
+    .hero .logo{ width: clamp(170px, 36vw, 380px); margin:0 auto 8px; filter: drop-shadow(0 3px 8px rgba(0,0,0,.35)); }
+    .hero h1{ margin:8px 0 4px; font-size: clamp(1.6rem, 2.2vw + 1rem, 2.2rem); font-weight:800; color:#fff; }
 
     /* Theme Toggle */
     .theme-toggle{
-      position:fixed; top:12px; right:12px; z-index:1500; display:flex; gap:8px;
-      background:#ffffffcc; backdrop-filter:blur(6px); border:1px solid #e5e7eb; border-radius:999px; padding:6px 10px;
-      box-shadow:0 6px 18px rgba(0,0,0,.08);
+      position: fixed; top: 12px; right: 12px; z-index: 1500;
+      display:flex; gap:8px; background:#ffffffcc; backdrop-filter: blur(6px);
+      border:1px solid #e5e7eb; border-radius:999px; padding:6px 10px; box-shadow:0 6px 18px rgba(0,0,0,.08);
     }
     .theme-toggle button{
       background:#fff; border:1px solid #d1d5db; border-radius:999px; padding:6px 10px; cursor:pointer; font-weight:700;
     }
-    .theme-toggle button[aria-pressed="true"]{ background:linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; border-color:transparent; }
+    .theme-toggle button[aria-pressed="true"]{ background: linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; border-color:transparent; }
 
     /* Karten / Text */
     main.middle > section { margin:32px 0; }
-    .card{
-      border:1px solid rgba(0,0,0,.06); border-radius:var(--radius); padding:18px;
-      background:#fffdf8; box-shadow:var(--shadow); transition:transform .2s ease, box-shadow .2s ease;
-    }
-    .card:hover{ transform:translateY(-3px); box-shadow:0 6px 24px rgba(0,0,0,.12); }
+    .card{ border:1px solid rgba(0,0,0,.06); border-radius:var(--radius); padding:18px; background:#fffdf8; box-shadow:var(--shadow); }
     h2{ margin:14px 0 10px; font-size:1.18rem; }
-    .muted{ color:var(--muted); }
-    .list-clean{ margin:8px 0 0; padding:0; list-style:none; }
-    .list-clean li{ margin:3px 0; }
-    .sep{ height:1px; background:#e5e7eb; margin:20px 0; }
     .small{ font-size:.96rem; }
+    .sep{ height:1px; background:#e5e7eb; margin:20px 0; }
 
-    /* Partner-Logos */
-    .orgs{ display:grid; gap:18px; grid-template-columns:1fr 1fr; }
-    .org .logoBox{
-      display:flex; align-items:center; justify-content:center; background:#f9fafb;
-      border:1px solid #e5e7eb; border-radius:10px; padding:10px; transition:transform .2s ease, box-shadow .2s ease;
+    /* Partner-Grid (neu) */
+    .partnersGrid{ display:grid; gap:18px; grid-template-columns: repeat(3, minmax(0,1fr)); }
+    @media (max-width: 900px){ .partnersGrid{ grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 560px){ .partnersGrid{ grid-template-columns: 1fr; } }
+    .partnerCard{
+      background:#fff; border:1px solid rgba(0,0,0,.08);
+      border-radius:12px; padding:16px; text-align:center; box-shadow: var(--shadow);
     }
-    .org img{ max-width:100%; filter:grayscale(100%); transition:filter .2s ease; }
-    .org .logoBox:hover{ transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.08); }
-    .org .logoBox:hover img{ filter:none; }
+    .partnerCard .logoBox{
+      height:92px; display:flex; align-items:center; justify-content:center;
+      background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; margin-bottom:10px;
+    }
+    .partnerCard img{
+      max-height:66px; max-width:100%; width:auto; object-fit:contain; display:block;
+      filter: grayscale(100%); transition: filter .2s ease;
+    }
+    .partnerCard:hover img{ filter:none; }
+    .partnerCard h3{ margin:6px 0 0; font-size:1rem; }
 
     /* Footer */
     footer .legal{ text-align:center; display:block; }
@@ -139,7 +127,7 @@
     <header class="site-header middle">
       <div class="hero-wrap">
         <div class="hero">
-          <div class="hero-panel">
+          <div class="hero-panel" role="banner" aria-label="Impressum – Kampagne Solarstrom statt Erdgas-Strom">
             <img class="logo" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
             <h1>Impressum</h1>
           </div>
@@ -150,18 +138,19 @@
     <main class="middle">
       <section class="card" aria-labelledby="getragen-von">
         <h2 id="getragen-von">Diese Kampagne wird getragen von</h2>
-        <div class="orgs">
-          <article class="org">
+
+        <div class="partnersGrid" aria-label="Partnerorganisationen">
+          <article class="partnerCard">
             <div class="logoBox"><img src="assets/LEWLOGOKLEIN.png" alt="Leben mit der Energiewende"></div>
-            <div><strong>Leben mit der Energiewende</strong></div>
+            <h3>Leben mit der Energiewende</h3>
           </article>
-          <article class="org">
+          <article class="partnerCard">
             <div class="logoBox"><img src="assets/veeglogo.svg" alt="VEEG – Verein Energie Erzeugende Gebäude e. V."></div>
-            <div><strong>VEEG – Verein Energie Erzeugende Gebäude e. V.</strong></div>
+            <h3>VEEG – Verein Energie Erzeugende Gebäude e. V.</h3>
           </article>
-          <article class="org">
+          <article class="partnerCard">
             <div class="logoBox"><img src="assets/energywatchgroup.png" alt="Energy Watch Group"></div>
-            <div><strong>Energy Watch Group</strong></div>
+            <h3>Energy Watch Group</h3>
           </article>
         </div>
 
@@ -215,7 +204,7 @@
     </footer>
   </div>
 
-  <!-- Theme Toggle Script (aus Startseite) -->
+  <!-- Theme Toggle Script -->
   <script>
     (function(){
       const KEY='theme-mode';
@@ -240,6 +229,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
