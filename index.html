@@ -380,6 +380,35 @@
   line-height: 1.5;
 }
 
+/* === Lazy YouTube === */
+.yt-lazy{ position:relative; border-radius:12px; overflow:hidden; background:#000; box-shadow:0 6px 24px rgba(0,0,0,.15); }
+.yt-lazy .yt-play{
+  position:relative; display:block; width:100%; aspect-ratio:16/9;
+  border:0; padding:0; background:none; cursor:pointer;
+}
+.yt-lazy img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.9) contrast(1.05); }
+.yt-lazy .yt-badge{
+  position:absolute; left:12px; top:12px; z-index:2;
+  background:#ffffffcc; backdrop-filter:blur(6px); color:#0a7d32;
+  font-weight:700; padding:4px 8px; border-radius:8px; font-size:.85rem;
+}
+.yt-lazy .yt-icon{
+  position:absolute; inset:auto; left:50%; top:50%; transform:translate(-50%,-50%);
+  display:inline-grid; place-items:center; width:74px; height:74px; border-radius:999px;
+  background:linear-gradient(135deg,#0a7d32,#0bbd54); box-shadow:0 10px 30px rgba(10,125,50,.35);
+}
+.yt-lazy .yt-icon::before{
+  content:""; display:block; width:0; height:0; border-left:18px solid #fff; border-top:12px solid transparent; border-bottom:12px solid transparent; margin-left:4px;
+}
+.yt-lazy .yt-caption{
+  position:absolute; left:0; right:0; bottom:0; padding:10px 12px; color:#fff; font-weight:600;
+  background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.55) 70%, rgba(0,0,0,.75) 100%);
+  text-shadow:0 1px 1px rgba(0,0,0,.5);
+}
+/* Keyboard focus */
+.yt-lazy .yt-play:focus-visible{ outline: var(--focus-ring); outline-offset:4px; border-radius:12px; }
+
+    
   </style>
   
 </head>
@@ -440,48 +469,33 @@
         </div>
       </section>
 
-    <!-- === Highlight: Studiogast Nina Scheer (mit aktivem Link & erweitertem Text) === -->
+   <!-- === Rückblick: Gespräch mit Dr. Nina Scheer (Lazy YouTube) === -->
 <section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
-  <h2 style="margin-top:0;">Heute Abend im Studio</h2>
+  <h2 style="margin-top:0;">Jetzt ansehen: Gespräch mit Dr. Nina Scheer (SPD)</h2>
 
   <p>
-    <strong>Dr. Nina Scheer (SPD)</strong> – energiepolitische Sprecherin der Bundestagsfraktion – 
-    im Gespräch über den Ausstieg aus Erdgas-Strom und den beschleunigten Ausbau von Solarenergie in Bürgerhand.
+    Nina Scheer, energiepolitische Sprecherin der SPD-Bundestagsfraktion, bezieht klar Stellung zu den fossilen
+    Rollback-Plänen von Bundeswirtschaftsministerin Reiche. Sie macht deutlich: Der Koalitionsvertrag lässt keinen
+    „Neustart der Energiewende“ im Sinne von Ministerin Reiche (CDU) zu. Die SPD hält an Ausbau der Erneuerbaren,
+    Bestandsschutz und an keiner neuen Abhängigkeit von fossilem Gas fest. Auch eine Streichung der festen
+    Einspeisevergütung findet sich nicht im Vertrag – und zusätzliche Abgaben für Bürger-Solar lehnt sie ab.
   </p>
 
-  <p>
-    Nina Scheer, energiepolitische Sprecherin der SPD-Bundestagsfraktion, bezieht klar Stellung zu den 
-    fossilen Rollback-Plänen von Bundeswirtschaftsministerin Reiche.
-  </p>
-
-  <p>
-    Im Gespräch macht sie deutlich: Der Koalitionsvertrag lässt keinen „Neustart der Energiewende“ 
-    im Sinne von Ministerin Reiche (CDU) zu. Die SPD hält an den vereinbarten Zielen fest – 
-    Ausbau der Erneuerbaren, Bestandsschutz für bestehende Anlagen und keine neue Abhängigkeit von fossilem Gas.
-  </p>
-
-  <p>
-    Scheer betont, dass der Automatismus hin zu neuen Erdgaskraftwerken nicht gegeben ist. 
-    Auch die von Reiche ins Spiel gebrachte Streichung der festen Einspeisevergütung lehnt sie entschieden ab – 
-    sie findet sich nicht im Koalitionsvertrag.
-  </p>
-
-  <p>
-    Ebenso erteilt die SPD-Energieexpertin den Plänen der Bundesnetzagentur, Bürgerinnen und Bürger 
-    mit Solaranlagen durch zusätzliche Abgaben zu belasten, eine klare Absage. 
-    Ihr Bekenntnis: <strong>Klares Ja zum Bestandsschutz und zur Bürgerenergiewende.</strong>
-  </p>
-
-  <p>
-    Das vollständige Interview jetzt exklusiv bei <strong>Leben mit der Energiewende TV</strong>.
-  </p>
-
-  <p style="margin:18px 0 0;">
-    <a href="https://youtu.be/3gfFihpfzHo" target="_blank" rel="noopener"
-       style="display:inline-block; background:linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; text-decoration:none; font-weight:700; padding:10px 18px; border-radius:10px; box-shadow:0 6px 18px rgba(10,125,50,.25); transition:all .25s ease;">
-       🎥 Jetzt ansehen auf YouTube
-    </a>
-  </p>
+  <!-- Lazy-YouTube: lädt erst beim Klick -->
+  <div class="video-wrap yt-lazy" data-ytid="3gfFihpfzHo" aria-label="YouTube: Gespräch mit Dr. Nina Scheer">
+    <button class="yt-play" type="button" aria-label="Video abspielen">
+      <span class="yt-badge">LMdE TV</span>
+      <img src="https://i.ytimg.com/vi/3gfFihpfzHo/hqdefault.jpg" loading="lazy"
+           alt="Vorschaubild – Gespräch mit Dr. Nina Scheer">
+      <span class="yt-icon" aria-hidden="true"></span>
+      <div class="yt-caption">🎥 Jetzt ansehen auf YouTube</div>
+    </button>
+    <noscript>
+      <p><a class="cta secondary" href="https://youtu.be/3gfFihpfzHo" target="_blank" rel="noopener">
+        Video auf YouTube öffnen
+      </a></p>
+    </noscript>
+  </div>
 </section>
 
 
@@ -745,8 +759,27 @@
       els.forEach(e=>io.observe(e));
     })();
   </script>
+
+<script>
+  // Lazy-YouTube: ersetzt Platzhalter beim Klick durch nocookie-iframe mit Autoplay
+  document.addEventListener('click', function(e){
+    const btn = e.target.closest('.yt-lazy .yt-play'); if(!btn) return;
+    const wrap = btn.closest('.yt-lazy'); const id = wrap?.dataset.ytid; if(!id) return;
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('title','YouTube Video Player');
+    iframe.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    iframe.setAttribute('allowfullscreen','');
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+    iframe.style.width = '100%'; iframe.style.height = '100%'; iframe.style.border = '0';
+    wrap.replaceChildren(iframe);        // tauscht das Placeholder-Element aus
+  }, {passive:true});
+</script>
+
+  
 </body>
 </html>
+
 
 
 
