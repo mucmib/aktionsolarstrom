@@ -29,66 +29,97 @@
 
   <style>
     :root{
-      --maxw: 960px;
+      --maxw:960px;
       --brand:#0a7d32;
       --brand2:#0bbd54;
       --bg:#f6f9f7;
       --card:#fff;
+      --ink:#111;
       --muted:#6b7280;
+      --border:#e5e7eb;
       --radius:16px;
       --shadow:0 6px 28px rgba(0,0,0,.08);
-      --border:#e5e7eb;
+      --link:#0a7d32;
     }
 
-    /* Base */
+    @media (prefers-color-scheme: dark) {
+      :root{
+        --bg:#0b0f0d;
+        --card:#1a1f1c;
+        --ink:#e8f0e9;
+        --muted:#9ba8a0;
+        --border:#2a322c;
+        --shadow:0 6px 28px rgba(0,0,0,.4);
+        --link:#9ef29c;
+      }
+    }
+
     *{box-sizing:border-box}
-    body{margin:0; font:16px/1.6 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111; background:var(--bg);}
-    a{color:inherit}
-    .page{display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr;}
-    .middle{grid-column:2; padding:16px;}
-    main.middle > section{ margin:22px 0; }
+    html,body{margin:0;padding:0}
+    body{
+      font:16px/1.6 "Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background:var(--bg);
+      transition:background-color .3s,color .3s;
+    }
+    a{color:var(--link);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .page{display:grid;grid-template-columns:1fr minmax(0,var(--maxw)) 1fr;}
+    .middle{grid-column:2;padding:16px;}
+    main.middle>section{margin:22px 0;}
 
     /* HERO */
     .hero-wrap{
-      position:relative; overflow:hidden; border-radius:0 0 var(--radius) var(--radius);
-      background:
-        linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.55)),
-        url('assets/Bundestag.jpg') center 40%/cover no-repeat;
+      position:relative;overflow:hidden;border-radius:0 0 var(--radius) var(--radius);
+      background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.55)),url('assets/Bundestag.jpg') center 40%/cover no-repeat;
     }
-    .hero{display:flex; align-items:center; justify-content:center; padding:68px 16px 54px; color:#fff;}
+    .hero{display:flex;align-items:center;justify-content:center;padding:68px 16px 54px;color:#fff;}
     .hero-panel{
-      background: rgba(10,125,50,.82); color:#fff; border-radius:22px; padding:22px 24px;
-      max-width:min(92vw,820px); text-align:center; box-shadow:0 18px 48px rgba(0,0,0,.18);
+      background:rgba(10,125,50,.82);color:#fff;border-radius:22px;padding:22px 24px;
+      max-width:min(92vw,820px);text-align:center;box-shadow:0 18px 48px rgba(0,0,0,.18);
+      transition:background .3s;
     }
     .hero .logo img{
-      width: clamp(220px, 48vw, 520px); height:auto; display:block; margin:0 auto 6px;
-      filter: drop-shadow(0 3px 8px rgba(0,0,0,.25));
+      width:clamp(220px,48vw,520px);height:auto;display:block;margin:0 auto 6px;
+      filter:drop-shadow(0 3px 8px rgba(0,0,0,.25));
     }
-    .hero h1{margin:8px 0 0; font-size:2rem;}
+    .hero h1{margin:8px 0 0;font-size:2rem;}
     @media (max-width:720px){
       .hero{padding:46px 12px 40px}
-      .hero-panel{border-radius:16px; padding:16px}
+      .hero-panel{border-radius:16px;padding:16px}
       .hero h1{font-size:1.6rem}
     }
 
-    /* Cards / Text */
-    .card{ border:1px solid var(--border); border-radius:14px; padding:18px; background:var(--card); box-shadow:var(--shadow); }
-    h2{ margin:14px 0 10px; font-size:1.18rem; }
-    .muted{ color:var(--muted); }
-    .list-clean{ margin:8px 0 0; padding:0; list-style:none; }
-    .list-clean li{ margin:3px 0; }
-    .sep{ height:1px; background:var(--border); margin:20px 0; }
-    .small{ font-size:.96rem; }
+    /* Card / Text */
+    .card{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:18px;
+      background:var(--card);
+      box-shadow:var(--shadow);
+      transition:background .3s,color .3s,border-color .3s;
+    }
+    h2{margin:14px 0 10px;font-size:1.18rem;}
+    .muted{color:var(--muted);}
+    .list-clean{margin:8px 0 0;padding:0;list-style:none;}
+    .list-clean li{margin:3px 0;}
+    .sep{height:1px;background:var(--border);margin:20px 0;}
+    .small{font-size:.96rem;}
 
     /* Partner-Logos */
-    .partners{ display:flex; gap:18px; flex-wrap:wrap; align-items:center; }
-    .partners img{ height:42px; width:auto; }
+    .partners{display:flex;gap:18px;flex-wrap:wrap;align-items:center;}
+    .partners img{height:42px;width:auto;filter:brightness(1);}
+    @media (prefers-color-scheme: dark){
+      .partners img{filter:brightness(0.9) saturate(1.2);}
+    }
 
     /* Footer */
-    footer .legal { text-align:center; display:block; margin: 24px 0 10px; }
-    footer a { color:#333; }
+    footer{margin:40px 0 16px;text-align:center;font-size:.95rem;}
+    footer a{color:var(--link);}
+    footer .muted{color:var(--muted);}
   </style>
 </head>
+
 <body>
   <div class="page">
     <header class="middle">
@@ -134,10 +165,10 @@
 
         <div class="sep" role="separator" aria-hidden="true"></div>
 
-        <h2>Gestaltung &amp; Umsetzung</h2>
+        <h2>Gestaltung & Umsetzung</h2>
         <p class="small">
-          <strong>Konzeption &amp; Design:</strong> Frank Farenski<br>
-          <strong>Technische Infrastruktur &amp; Betrieb:</strong> Media International Bader (M.I.B.)
+          <strong>Konzeption & Design:</strong> Frank Farenski<br>
+          <strong>Technische Infrastruktur & Betrieb:</strong> Media International Bader (M.I.B.)
         </p>
 
         <div class="sep" role="separator" aria-hidden="true"></div>
@@ -146,7 +177,7 @@
         <p class="small">
           Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für Richtigkeit, Vollständigkeit und
           Aktualität übernehmen wir keine Gewähr. Nach § 7 Abs. 1 TMG sind wir für eigene Inhalte verantwortlich;
-          nach den §§ 8–10 TMG jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu
+          nach §§ 8–10 TMG jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu
           überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen
           zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben davon unberührt.
         </p>
@@ -163,16 +194,21 @@
 
     <footer class="middle">
       <p class="legal">
-        <a href="https://www.aktionsolarstrom.de/">Startseite</a>
-        · <a href="Datenschutz.html">Datenschutz</a>
-        · <a href="Impressum.html" aria-current="page">Impressum</a>
+        <a href="https://www.aktionsolarstrom.de/">Startseite</a> · 
+        <a href="Datenschutz.html">Datenschutz</a> · 
+        <a href="Impressum.html" aria-current="page">Impressum</a>
       </p>
-      <p class="muted">Eine Kampagne von Leben mit der Energiewende, VEEG und Energy Watch Group · Diensteanbieter: Media International Bader</p>
+      <p class="muted">
+        Eine Kampagne von Leben mit der Energiewende, VEEG und Energy Watch Group · 
+        Diensteanbieter: Media International Bader
+      </p>
       <p class="muted">© Media International Bader</p>
     </footer>
   </div>
 </body>
 </html>
+
+
 
 
 
