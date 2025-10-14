@@ -4,81 +4,143 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Datenschutzerklärung – Solarstrom statt Erdgas-Strom</title>
-  <link rel="stylesheet" href="assets/styles.css">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Solarstrom statt Erdgas-Strom – Datenschutzerklärung">
+  <meta property="og:description" content="Informationen zum Datenschutz im Rahmen der Kampagne Solarstrom statt Erdgas-Strom.">
+  <meta property="og:url" content="https://www.aktionsolarstrom.de/Datenschutz.html">
+  <meta property="og:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter (X) -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Solarstrom statt Erdgas-Strom – Datenschutzerklärung">
+  <meta name="twitter:description" content="Informationen zum Datenschutz im Rahmen der Kampagne Solarstrom statt Erdgas-Strom.">
+  <meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
+
+  <meta name="description" content="Datenschutzerklärung der Kampagne Solarstrom statt Erdgas-Strom – getragen von Leben mit der Energiewende, VEEG und Energy Watch Group.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+
   <style>
-    main { max-width: 920px; margin: 0 auto; padding: 20px; background:#fff; color:#0b0f0d; border:1px solid #e2e8e4; border-radius:12px; }
-    h1 { margin-top:0; }
-    h2 { margin-top: 1.6em; }
-    ul { padding-left: 18px; }
-    code { background:#f4f6f5; padding:2px 4px; border-radius:4px; }
-    .muted { color:#5a6460; font-size:0.95em; }
+    :root{
+      --maxw:960px;
+      --brand:#0a7d32;
+      --brand2:#0bbd54;
+      --bg:#f6f9f7;
+      --card:#fff;
+      --muted:#6b7280;
+      --radius:16px;
+      --shadow:0 6px 28px rgba(0,0,0,.08);
+      --border:#e5e7eb;
+    }
+
+    *{box-sizing:border-box}
+    body{margin:0;font:16px/1.6 "Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#111;background:var(--bg);}
+    a{color:inherit}
+    .page{display:grid;grid-template-columns:1fr minmax(0,var(--maxw)) 1fr;}
+    .middle{grid-column:2;padding:16px;}
+    main.middle>section{margin:22px 0;}
+    .muted{color:var(--muted);font-size:.95em}
+
+    /* HERO */
+    .hero-wrap{
+      position:relative;overflow:hidden;border-radius:0 0 var(--radius) var(--radius);
+      background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.55)),url('assets/Bundestag.jpg') center 40%/cover no-repeat;
+    }
+    .hero{display:flex;align-items:center;justify-content:center;padding:68px 16px 54px;color:#fff;}
+    .hero-panel{
+      background:rgba(10,125,50,.82);color:#fff;border-radius:22px;padding:22px 24px;
+      max-width:min(92vw,820px);text-align:center;box-shadow:0 18px 48px rgba(0,0,0,.18);
+    }
+    .hero .logo img{
+      width:clamp(220px,48vw,520px);height:auto;display:block;margin:0 auto 6px;
+      filter:drop-shadow(0 3px 8px rgba(0,0,0,.25));
+    }
+    .hero h1{margin:8px 0 0;font-size:2rem;}
+    @media(max-width:720px){
+      .hero{padding:46px 12px 40px}
+      .hero-panel{border-radius:16px;padding:16px}
+      .hero h1{font-size:1.6rem}
+    }
+
+    /* Card */
+    .card{border:1px solid var(--border);border-radius:14px;padding:22px;background:var(--card);box-shadow:var(--shadow);}
+    h2{margin-top:1.6em;font-size:1.18rem;}
+    ul{padding-left:18px;}
+    code{background:#f4f6f5;padding:2px 4px;border-radius:4px;}
+
+    /* Footer */
+    footer .legal{text-align:center;display:block;margin:24px 0 10px;}
+    footer a{color:#333;}
   </style>
 </head>
+
 <body>
-  <main>
-    <h1>Datenschutzerklärung</h1>
-    <p class="muted">Stand: <span id="last-updated">—</span></p>
+  <div class="page">
+    <header class="middle">
+      <div class="hero-wrap">
+        <div class="hero">
+          <div class="hero-panel" role="banner" aria-label="Datenschutzerklärung – Kampagne Solarstrom statt Erdgas-Strom">
+            <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
+              <img src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+            </a>
+            <h1>Datenschutzerklärung</h1>
+          </div>
+        </div>
+      </div>
+    </header>
 
-    <h2>1. Verantwortlicher</h2>
-    <p>
-      <strong>Leben mit der Energiewende</strong><br>
-      Hans Leo Bader<br>
-      Heisenbergstraße 2b<br>
-      80937 München<br>
-      E-Mail: <a href="mailto:mucmib@googlemail.com">mucmib@googlemail.com</a>
-    </p>
+    <main class="middle">
+      <section class="card">
+        <p class="muted">Stand: <span id="last-updated">—</span></p>
 
-    <h2>2. Datenschutz-Kontakt</h2>
-    <p>Für Fragen zum Datenschutz kontaktiere uns bitte unter <a href="mailto:mucmib@googlemail.com">mucmib@googlemail.com</a>.</p>
+        <h2>1. Verantwortlicher</h2>
+        <p>
+          <strong>Leben mit der Energiewende</strong><br>
+          Hans Leo Bader<br>
+          Heisenbergstraße 2b<br>
+          80937 München<br>
+          E-Mail: <a href="mailto:mucmib@googlemail.com">mucmib@googlemail.com</a>
+        </p>
 
-    <h2>3. Zweck der Datenverarbeitung, Rechtsgrundlagen</h2>
-    <p>Wir verarbeiten die von dir eingegebenen personenbezogenen Daten ausschließlich, um deinen Brief im Rahmen der Kampagne „Solarstrom statt Erdgas-Strom“ auszudrucken, zu kuvertieren und <strong>physisch</strong> an die zuständige Bundestagsabgeordnete zu versenden. Außerdem nutzen wir deine E-Mail für Rückfragen und – wenn gewünscht – für eine Kopie deines Briefs.</p>
-    <ul>
-      <li><strong>Art. 6 Abs. 1 lit. a DSGVO:</strong> Einwilligung (z. B. Versand des Briefs in deinem Namen).</li>
-      <li><strong>Art. 6 Abs. 1 lit. f DSGVO:</strong> Berechtigtes Interesse (z. B. Missbrauchserkennung, Betrieb & Sicherheit der Systeme).</li>
-    </ul>
+        <h2>2. Datenschutz-Kontakt</h2>
+        <p>Für Fragen zum Datenschutz kontaktiere uns bitte unter <a href="mailto:mucmib@googlemail.com">mucmib@googlemail.com</a>.</p>
 
-    <h2>4. Verarbeitete Daten</h2>
-    <ul>
-      <li>Vor- und Nachname, Anschrift, PLZ/Ort</li>
-      <li>E-Mail-Adresse</li>
-      <li>Briefinhalte (Betreff, Nachrichtentext)</li>
-      <li>PLZ/Ort zur Zuordnung der Abgeordneten</li>
-      <li>Prozessdaten (Vorgangs-ID, Datum, technische Protokolle)</li>
-    </ul>
+        <h2>3. Zweck der Datenverarbeitung, Rechtsgrundlagen</h2>
+        <p>Wir verarbeiten die von dir eingegebenen personenbezogenen Daten ausschließlich, um deinen Brief im Rahmen der Kampagne „Solarstrom statt Erdgas-Strom“ auszudrucken, zu kuvertieren und <strong>physisch</strong> an die zuständige Bundestagsabgeordnete zu versenden. Außerdem nutzen wir deine E-Mail für Rückfragen und – wenn gewünscht – für eine Kopie deines Briefs.</p>
+        <ul>
+          <li><strong>Art. 6 Abs. 1 lit. a DSGVO:</strong> Einwilligung (z. B. Versand des Briefs in deinem Namen).</li>
+          <li><strong>Art. 6 Abs. 1 lit. f DSGVO:</strong> Berechtigtes Interesse (z. B. Missbrauchserkennung, Betrieb & Sicherheit der Systeme).</li>
+        </ul>
 
-    <h2>5. Empfänger</h2>
-    <ul>
-      <li><strong>Brevo (Sendinblue SAS)</strong> – Versand transaktionaler E-Mails (Sitz: Frankreich/EU)</li>
-      <li><strong>Vercel Inc.</strong> – Hosting/Serverless-Ausführung (Sitz: USA)</li>
-      <li><strong>Postdienstleister</strong> – physischer Versand deines Briefs</li>
-      <li><strong>Unser Team</strong> – ausschließlich für Druck & Versand</li>
-    </ul>
+        <h2>4. Verarbeitete Daten</h2>
+        <ul>
+          <li>Vor- und Nachname, Anschrift, PLZ/Ort</li>
+          <li>E-Mail-Adresse</li>
+          <li>Briefinhalte (Betreff, Nachrichtentext)</li>
+          <li>PLZ/Ort zur Zuordnung der Abgeordneten</li>
+          <li>Prozessdaten (Vorgangs-ID, Datum, technische Protokolle)</li>
+        </ul>
 
-    <h2>6. Speicherdauer</h2>
-    <p>Wir speichern deine Daten nur so lange, wie es für die Abwicklung des Postversands und für einen kurzen Nachweiszeitraum (ca. 90 Tage) erforderlich ist. Danach werden sie gelöscht oder anonymisiert, soweit keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
+        <h2>5. Empfänger</h2>
+        <ul>
+          <li><strong>Brevo (Sendinblue SAS)</strong> – Versand transaktionaler E-Mails (Sitz: Frankreich/EU)</li>
+          <li><strong>Vercel Inc.</strong> – Hosting/Serverless-Ausführung (Sitz: USA)</li>
+          <li><strong>Postdienstleister</strong> – physischer Versand deines Briefs</li>
+          <li><strong>Unser Team</strong> – ausschließlich für Druck & Versand</li>
+        </ul>
 
-    <h2>7. Rechte</h2>
-    <p>Du hast nach DSGVO das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Außerdem hast du das Recht, erteilte Einwilligungen jederzeit zu widerrufen. Bitte wende dich dazu an <a href="mailto:mucmib@googlemail.com">mucmib@googlemail.com</a>. Zudem hast du ein Beschwerderecht bei einer Datenschutzaufsichtsbehörde.</p>
+        <h2>6. Speicherdauer</h2>
+        <p>Wir speichern deine Daten nur so lange, wie es für die Abwicklung des Postversands und für einen kurzen Nachweiszeitraum (ca. 90 Tage) erforderlich ist. Danach werden sie gelöscht oder anonymisiert, soweit keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
 
-    <h2>8. Sicherheit & Cookies</h2>
-    <ul>
-      <li>Unsere Seite wird verschlüsselt über TLS/HTTPS ausgeliefert.</li>
-      <li>Es werden nur technisch notwendige Cookies eingesetzt; kein Drittanbieter-Tracking.</li>
-      <li>Zum Schutz vor Missbrauch können wir Captcha- oder Rate-Limit-Mechanismen einsetzen.</li>
-    </ul>
+        <h2>7. Rechte</h2>
+        <p>Du hast nach DSGVO das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Außerdem das Recht,
 
-    <h2>9. Änderungen</h2>
-    <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, wenn sich gesetzliche Vorgaben oder technische Änderungen ergeben. Die jeweils aktuelle Version ist immer hier abrufbar.</p>
 
-    <hr>
-    <p class="muted">Hinweis: Diese Erklärung wurde auf die Kampagne „Solarstrom statt Erdgas-Strom“ zugeschnitten. Bitte überprüfe sie regelmäßig und ergänze ggf. Details zu Speicherfristen oder AV-Verträgen.</p>
-  </main>
-
-  <script>
-    document.getElementById('last-updated').textContent =
-      new Date().toLocaleDateString('de-DE', { year: 'numeric', month: '2-digit', day: '2-digit' });
-  </script>
-</body>
-</html>
 
