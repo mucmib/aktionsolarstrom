@@ -37,7 +37,7 @@
       --shadow: 0 6px 28px rgba(0,0,0,.08);
       --shadow-lg: 0 18px 48px rgba(0,0,0,.12);
       --maxw: 960px;
-      --focus-ring: 2px solid #f6b10a;
+      --focus-ring: 2px solid #f6b10a; /* Focus Ring */
     }
 
     /* === Base === */
@@ -55,6 +55,7 @@
     a { color: var(--brand); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
+    /* Accessible Focus Ring */
     :where(a, button, input, select, textarea, [tabindex]):focus-visible {
       outline: var(--focus-ring);
       outline-offset: 2px;
@@ -74,7 +75,7 @@
       background: linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%) !important;
     }
 
-    /* Eco-Texture */
+    /* Eco-Texture (CSS-only) */
     body::before{
       content:"";
       position:fixed; inset:0;
@@ -88,7 +89,7 @@
       mix-blend-mode:multiply;
     }
 
-    /* ===== HERO ===== */
+    /* ===== HERO mit Hintergrundbild ===== */
     .hero-wrap{
       position:relative;
       overflow:hidden;
@@ -97,6 +98,7 @@
         linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)),
         url('assets/Bundestag.jpg') center 45%/cover no-repeat;
     }
+    /* Warme Tönung + Solar Glow */
     .hero-wrap::before{
       content:""; position:absolute; inset:0; pointer-events:none;
       background: linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02));
@@ -106,6 +108,7 @@
       content:""; position:absolute; inset:0; pointer-events:none;
       background: radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%);
     }
+
     .hero{
       display:flex; align-items:center; justify-content:center;
       text-align:center; color:#fff;
@@ -120,10 +123,12 @@
       backdrop-filter: blur(2px);
       position:relative; overflow:hidden;
     }
+    /* Solar Highlight */
     .hero-panel::after{
       content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
       background: linear-gradient(90deg, #f6b10a, #ffd84a);
     }
+
     .hero .logo{
       width: clamp(170px, 36vw, 380px);
       height:auto; display:block; margin:0 auto 8px;
@@ -140,13 +145,25 @@
     .cta.primary{ background:linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; }
     .cta.secondary{ background:#fff; color:#0a7d32; border:1px solid #cfe7d8; }
     .cta:hover{ transform:translateY(-1px); }
-    .cta.primary{ box-shadow:0 4px 15px rgba(10,125,50,.25); transition: transform .25s ease, box-shadow .25s ease; }
-    .cta.primary:hover{ transform: translateY(-2px); box-shadow:0 6px 22px rgba(10,125,50,.35); }
+    /* CTA Finishing (Primärbutton) */
+    .cta.primary{
+      box-shadow:0 4px 15px rgba(10,125,50,.25);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .cta.primary:hover{
+      transform: translateY(-2px);
+      box-shadow:0 6px 22px rgba(10,125,50,.35);
+    }
 
     /* ===== Zähler ===== */
-    .stats-wrap{ display:flex; justify-content:center; transform: translateY(-44px); margin-bottom: -28px; }
+    .stats-wrap{
+      display:flex; justify-content:center;
+      transform: translateY(-44px);
+      margin-bottom: -28px;
+    }
     .stats-banner{
-      display:flex; align-items:center; gap:10px; padding:10px 16px; min-width:230px;
+      display:flex; align-items:center; gap:10px;
+      padding:10px 16px; min-width:230px;
       background:linear-gradient(135deg,#0a7c5b 0%,#12a37d 50%,#0a7c5b 100%);
       color:#fff; border-radius:12px; box-shadow:0 12px 28px rgba(10,124,91,.28);
     }
@@ -179,47 +196,84 @@
       border:1px solid rgba(0,0,0,.06);
       border-radius: var(--radius);
       padding:18px;
-      background:#fffdf8;
+      background:#fffdf8; /* warm abgetönt */
       box-shadow: var(--shadow);
       transition: transform .2s ease, box-shadow .2s ease;
     }
     .card h3 { margin-top:0; font-weight:700; }
-    .card:hover{ transform: translateY(-3px); box-shadow: 0 6px 24px rgba(0,0,0,.12); }
+    .card:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 6px 24px rgba(0,0,0,.12);
+    }
     .callout { border-left: 4px solid var(--accent); background:#fff8e1; padding:14px 16px; border-radius: 8px; }
 
-    /* ===== Video ===== */
+    /* ===== YouTube responsiv ===== */
     .video-wrap {
-      position: relative; width: 100%; max-width: 800px; margin: 0 auto 20px;
-      aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #000;
-      box-shadow: 0 6px 24px rgba(0,0,0,.15); contain: content;
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto 20px;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 6px 24px rgba(0,0,0,.15);
+      contain: content;
     }
     .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
     @media (max-width:600px){ .video-wrap{ max-width:95vw; margin-bottom:16px; } }
 
-    /* ===== Partner-Grid (neu) ===== */
+    /* ===== Partner-Grid mit Hover-Overlay ===== */
     .partnersGrid{
       display:grid; gap:18px;
       grid-template-columns: repeat(3, minmax(0,1fr));
     }
-    @media (max-width: 900px){ .partnersGrid{ grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 560px){ .partnersGrid{ grid-template-columns: 1fr; } }
+    @media (max-width:900px){ .partnersGrid{grid-template-columns:repeat(2,1fr);} }
+    @media (max-width:560px){ .partnersGrid{grid-template-columns:1fr;} }
 
     .partnerCard{
+      position:relative;
       background:#fff; border:1px solid rgba(0,0,0,.08);
-      border-radius:12px; padding:16px; text-align:center;
-      box-shadow: var(--shadow);
+      border-radius:12px; padding:0; text-align:center;
+      box-shadow:var(--shadow); overflow:hidden;
+      transition:transform .2s ease, box-shadow .2s ease;
     }
+    .partnerCard:hover{
+      transform:translateY(-3px);
+      box-shadow:0 8px 26px rgba(0,0,0,.12);
+    }
+
+    /* Logo-Box */
     .partnerCard .logoBox{
-      height:92px; display:flex; align-items:center; justify-content:center;
-      background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px;
-      margin-bottom:10px;
+      height:120px; display:flex; align-items:center; justify-content:center;
+      background:#f9fafb; border-bottom:1px solid #e5e7eb;
     }
     .partnerCard img{
-      max-height:66px; max-width:100%; width:auto; object-fit:contain; display:block;
-      filter: grayscale(100%); transition: filter .2s ease;
+      max-height:72px; width:auto; object-fit:contain;
+      filter:grayscale(100%); transition:filter .3s ease;
     }
-    .partnerCard:hover img{ filter:none; }
-    .partnerCard h3{ margin:6px 0 0; font-size:1rem; }
+    .partnerCard:hover img{filter:none;}
+
+    /* Overlay-Text */
+    .partnerCard .info{
+      position:absolute; inset:0;
+      display:flex; flex-direction:column; justify-content:flex-end;
+      background:linear-gradient(to top, rgba(10,125,50,.9) 0%, rgba(10,125,50,.2) 60%, transparent 100%);
+      color:#fff; padding:16px; opacity:0; transition:opacity .35s ease;
+      backdrop-filter:blur(4px);
+    }
+    .partnerCard:hover .info{opacity:1;}
+
+    .partnerCard .info h3{
+      margin:0 0 4px; font-size:1rem; font-weight:700; color:#fff;
+    }
+    .partnerCard .info p{
+      margin:0; font-size:.9rem; line-height:1.4; opacity:.95;
+    }
+    .partnerCard .info a{
+      color:#ffd84a; font-weight:600; text-decoration:none;
+    }
+    .partnerCard .info a:hover{text-decoration:underline;}
 
     /* Footer */
     footer .legal { text-align:center; display:block; }
@@ -228,12 +282,21 @@
     .reveal{ opacity:0; transform: translateY(12px); }
     .reveal.is-visible{ opacity:1; transform: translateY(0); transition: opacity .55s ease, transform .55s ease; }
 
-    /* Sticky CTA (mobil) */
+    /* ==== Sticky CTA (mobil) ==== */
     @media (max-width:700px){
-      .sticky-cta{ position:fixed; left:0; right:0; bottom:12px; z-index:1000; display:flex; justify-content:center; pointer-events:none; }
-      .sticky-cta a{ pointer-events:auto; background:linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; padding:10px 18px; border-radius:10px; font-weight:700; text-decoration:none; box-shadow:0 8px 20px rgba(10,125,50,.25); }
+      .sticky-cta{
+        position:fixed; left:0; right:0; bottom:12px; z-index:1000;
+        display:flex; justify-content:center; pointer-events:none;
+      }
+      .sticky-cta a{
+        pointer-events:auto;
+        background:linear-gradient(135deg,#0a7d32,#0bbd54);
+        color:#fff; padding:10px 18px; border-radius:10px;
+        font-weight:700; text-decoration:none; box-shadow:0 8px 20px rgba(10,125,50,.25);
+      }
     }
-    /* Theme Toggle */
+
+    /* ===== Theme Toggle Button ===== */
     .theme-toggle{
       position: fixed; top: 12px; right: 12px; z-index: 1500;
       display:flex; align-items:center; gap:8px;
@@ -257,14 +320,16 @@
       <button id="btnWarm" type="button" aria-pressed="true">Solar</button>
     </div>
 
-    <!-- HERO -->
+    <!-- ===== HERO ===== -->
     <header class="site-header middle">
       <div class="hero-wrap">
         <div class="hero">
           <div class="hero-panel reveal">
             <img class="logo" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
             <h1>Solarstrom statt Erdgas-Strom</h1>
-            <p class="tagline">Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken &amp; versenden physisch.</p>
+            <p class="tagline">
+              Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken &amp; versenden physisch.
+            </p>
             <div class="cta-row">
               <a class="cta primary" href="#mitmachen">Jetzt mitmachen</a>
               <a class="cta secondary" href="#material">Materialien</a>
@@ -273,6 +338,7 @@
         </div>
       </div>
 
+      <!-- Zähler: eigene Zeile, “angedockt” -->
       <div class="stats-wrap reveal">
         <div class="stats-banner" role="status" aria-live="polite">
           <div class="stats-iconbox"><div class="stats-icon" aria-hidden="true">📄</div></div>
@@ -288,8 +354,10 @@
       </div>
     </header>
 
-    <!-- CONTENT -->
+    <!-- ===== CONTENT ===== -->
     <main class="middle">
+
+      <!-- Einleitung -->
       <section id="intro">
         <div class="lead">
           Wirtschaftsministerin Reiche und Bundeskanzler Friedrich Merz sprechen von Technologieoffenheit und Wirtschaftlichkeit. Mit ihren konkreten Forderungen werden aber einseitig fossile Kraftwerke begünstigt und der Ausbau günstiger Erneuerbaren gebremst. 
@@ -301,14 +369,17 @@
         </div>
       </section>
 
-      <!-- Highlight -->
+      <!-- === Highlight: Studiogast Nina Scheer (ohne Link aktiv) === -->
       <section class="card" style="border-left:6px solid #0a7d32; padding:18px 20px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
         <h2 style="margin-top:0;">Heute Abend im Studio</h2>
-        <p><strong>Dr. Nina Scheer (SPD)</strong> – energiepolitische Sprecherin der Bundestagsfraktion – 
-          im Gespräch über den Ausstieg aus Erdgas-Strom und den beschleunigten Ausbau von Solarenergie in Bürgerhand.</p>
+        <p>
+          <strong>Dr. Nina Scheer (SPD)</strong> – energiepolitische Sprecherin der Bundestagsfraktion – 
+          im Gespräch über den Ausstieg aus Erdgas-Strom und den beschleunigten Ausbau von Solarenergie in Bürgerhand.
+        </p>
         <p style="margin:12px 0 0;">
-          <a href="javascript:void(0)" style="display:inline-block; background:#b8c8b9; color:#fff; text-decoration:none; font-weight:700; padding:10px 16px; border-radius:10px; cursor:default; opacity:.7;">
-            🎥 Livestream-Link folgt
+          <a href="javascript:void(0)" 
+             style="display:inline-block; background:#b8c8b9; color:#fff; text-decoration:none; font-weight:700; padding:10px 16px; border-radius:10px; cursor:default; opacity:.7;">
+             🎥 Livestream-Link folgt
           </a>
         </p>
       </section>
@@ -317,20 +388,30 @@
       <section id="sendung">
         <h2 class="section-title">Der Kampagnenstart</h2>
         <div class="video-wrap">
-          <iframe src="https://www.youtube-nocookie.com/embed/lzq9l2sW6Lo" title="Solarstrom statt Erdgas-Strom – Der Kampagnenstart"
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/lzq9l2sW6Lo"
+            title="Solarstrom statt Erdgas-Strom – Der Kampagnenstart"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy"></iframe>
         </div>
+
         <p style="margin-top:10px">
-          <a class="cta secondary" href="https://youtu.be/hrUNTbE8zKQ" target="_blank" rel="noopener">Auf YouTube ansehen</a>
+          <a class="cta secondary" href="https://youtu.be/hrUNTbE8zKQ" target="_blank" rel="noopener">
+            Auf YouTube ansehen
+          </a>
         </p>
 
         <h3 style="margin-top:30px;">Weitere Beiträge der Aktion</h3>
         <div class="video-wrap">
-          <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc"
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/videoseries?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc"
             title="YouTube-Playlist: Aktion Solarstrom statt Erdgas-Strom"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy"></iframe>
         </div>
         <p style="margin-top:10px">
           <a class="cta secondary" href="https://www.youtube.com/playlist?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc" target="_blank" rel="noopener">
@@ -343,10 +424,22 @@
       <section id="ziele">
         <h2 class="section-title">Kernforderungen</h2>
         <div class="grid2">
-          <div class="card"><h3>1. Keine neuen Erdgaskraftwerke</h3><p>Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.</p></div>
-          <div class="card"><h3>2. Ausbau Erneuerbarer beschleunigen</h3><p>und netzdienliche Erzeugung belohnen.</p></div>
-          <div class="card"><h3>3. Feste Einspeisevergütung beibehalten</h3><p>bis Smart Meter flächendeckend eine einfache, flexible Vergütung erlauben.</p></div>
-          <div class="card"><h3>4. Bestandsschutz</h3><p>und keine Zusatzbelastung für erneuerbare Stromerzeugung.</p></div>
+          <div class="card">
+            <h3>1. Keine neuen Erdgaskraftwerke</h3>
+            <p>Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.</p>
+          </div>
+          <div class="card">
+            <h3>2. Ausbau Erneuerbarer beschleunigen</h3>
+            <p>und netzdienliche Erzeugung belohnen.</p>
+          </div>
+          <div class="card">
+            <h3>3. Feste Einspeisevergütung beibehalten</h3>
+            <p>bis Smart Meter flächendeckend eine einfache, flexible Vergütung erlauben.</p>
+          </div>
+          <div class="card">
+            <h3>4. Bestandsschutz</h3>
+            <p>und keine Zusatzbelastung für erneuerbare Stromerzeugung.</p>
+          </div>
         </div>
       </section>
 
@@ -365,7 +458,9 @@
       <section id="material">
         <h2 class="section-title">Materialien</h2>
         <p>Hier finden Sie die Begründung für unsere Forderungen – zum Nachlesen und Weitergeben.</p>
-        <p><a class="cta secondary" href="Solarstrom statt Erdgasstrom - Die Argumente.pdf" download>📄 Positionspapier</a></p>
+        <p>
+          <a class="cta secondary" href="Solarstrom statt Erdgasstrom - Die Argumente.pdf" download>📄 Positionspapier</a>
+        </p>
       </section>
 
       <!-- Mitmachen -->
@@ -380,7 +475,7 @@
         </div>
       </section>
 
-      <!-- Träger (NEU: Partner-Grid) -->
+      <!-- Träger (NEU: Partner-Grid mit Hover-Overlay) -->
       <section id="partner" class="partner">
         <h2 class="section-title">Träger der Kampagne</h2>
         <p>Die Kampagne wird von dem VEEG e.V. und der EWG durchgeführt.</p>
@@ -390,21 +485,33 @@
             <div class="logoBox">
               <img src="assets/LEWLOGOKLEIN.png" alt="Leben mit der Energiewende">
             </div>
-            <h3>Leben mit der Energiewende</h3>
+            <div class="info">
+              <h3>Leben mit der Energiewende</h3>
+              <p>Plattform &amp; TV-Magazin für die Energiewende in Bürgerhand.</p>
+              <a href="https://www.lebenmitderenergiewende.de/" target="_blank" rel="noopener">lebenmitderenergiewende.de</a>
+            </div>
           </article>
 
           <article class="partnerCard">
             <div class="logoBox">
               <img src="assets/veeglogo.svg" alt="VEEG – Verein Energie Erzeugende Gebäude e. V.">
             </div>
-            <h3>VEEG – Verein Energie Erzeugende Gebäude e. V.</h3>
+            <div class="info">
+              <h3>VEEG e. V. – Verband EnergieErzeugende Gebäude</h3>
+              <p>Fördert Gebäude als aktive Energieproduzenten – energieautark, klimafreundlich, zukunftsweisend.</p>
+              <a href="https://ve-eg.de/" target="_blank" rel="noopener">ve-eg.de</a>
+            </div>
           </article>
 
           <article class="partnerCard">
             <div class="logoBox">
               <img src="assets/energywatchgroup.png" alt="Energy Watch Group">
             </div>
-            <h3>Energy Watch Group</h3>
+            <div class="info">
+              <h3>Energy Watch Group (EWG)</h3>
+              <p>Gemeinnütziger Think Tank für globale Energiewende und Klimastabilisierung.</p>
+              <a href="https://energywatchgroup.org/" target="_blank" rel="noopener">energywatchgroup.org</a>
+            </div>
           </article>
         </div>
       </section>
@@ -455,15 +562,16 @@
   </script>
 
   <script>
-    // Smooth Scrolling
+    // Smooth Scrolling für In-Page-Links
     document.addEventListener('click', (e) => {
       const a = e.target.closest('a[href^="#"]'); if(!a) return;
       const el = document.querySelector(a.getAttribute('href'));
       if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
     });
 
-    // Live-Zähler
+    // ---- Live-Zähler-Logik (PDFs) ----
     const STATS_URL = '/api/stats.json';
+
     function countUp(el, to, duration = 1200) {
       const fmt = new Intl.NumberFormat('de-DE');
       if (!('requestAnimationFrame' in window) || duration <= 0) {
@@ -481,35 +589,45 @@
       }
       requestAnimationFrame(frame);
     }
+
     function formatStandText(isoString) {
       if (!isoString) return null;
       const d = new Date(isoString);
       if (isNaN(d)) return null;
       const fmtDate = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
       const fmtTime = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
-      return Stand: ${fmtDate}, ${fmtTime} Uhr;
+      return `Stand: ${fmtDate}, ${fmtTime} Uhr`;
     }
+
     async function loadCounter() {
       const el = document.getElementById('pdfCount');
       const metaWrap = document.getElementById('statsMeta');
       const metaText = document.getElementById('statsTime');
       if (!el) return;
+
       try {
-        const res = await fetch(STATS_URL + ?nocache=${Date.now()}, { cache: 'no-store' });
+        const res = await fetch(STATS_URL + `?nocache=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
+
         const raw = Number(data.pdfs_generated ?? data.count ?? data.sent_emails ?? 0);
         const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
         countUp(el, value);
+
         const stand = formatStandText(data.last_update || data.stats_updated_at || data.sent_emails_last_update);
         if (stand && metaWrap && metaText) {
-          metaText.textContent = stand; metaWrap.hidden = false;
-        } else if (metaWrap) { metaWrap.hidden = true; }
+          metaText.textContent = stand;
+          metaWrap.hidden = false;
+        } else if (metaWrap) {
+          metaWrap.hidden = true;
+        }
       } catch (e) {
         console.warn('Zähler konnte nicht geladen werden:', e);
-        el.textContent = '–'; if (metaWrap) metaWrap.hidden = true;
+        el.textContent = '–';
+        if (metaWrap) metaWrap.hidden = true;
       }
     }
+
     loadCounter();
   </script>
 
@@ -528,6 +646,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
