@@ -1945,6 +1945,13 @@
     "fraktion": "CDU/CSU (CDU)",
     "bundesland": "Niedersachsen"
   },
+  "286": {
+    "mdb_name": "Derya Türk-Nachbaur",
+    "anrede": "Sehr geehrte Frau Türk-NAchbaur",
+    "bundestag_address": "Platz der Republik 1\n11011 Berlin",
+    "fraktion": "SPD",
+    "bundesland": "Baden-Württemberg"
+  },
   "17": {
     "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
     "fraktion": "",
@@ -2105,7 +2112,7 @@
     "bundestag_address": "Deutscher Bundestag\nPlatz der Republik 1\n11011 Berlin",
     "placeholder": true
   },
-  "290": {
+    "290": {
     "mdb_name": "Bundestagsabgeordnete*r (Platzhalter)",
     "fraktion": "",
     "bundesland": "",
