@@ -538,6 +538,23 @@
   </script>
 </section>
 <!-- === /EVENT-EINSCHUB === -->
+
+<script>
+  (function(){
+    var link = document.getElementById('eventMailto');
+    if (!link) return;
+    link.addEventListener('click', function(e){
+      var url = link.getAttribute('href') || '';
+      // iOS/Android WebViews mögen manchmal kein target/new window bei mailto
+      if (url.startsWith('mailto:')) {
+        // Sicherstellen, dass kein neues Fenster erzwungen wird
+        link.removeAttribute('target');
+        try { window.location.href = url; } catch (_) { /* still okay */ }
+        // Kein preventDefault – Browser darf normal weiter machen
+      }
+    }, { passive:true });
+  })();
+</script>
       
    <!-- === Rückblick: Gespräch mit Dr. Nina Scheer (Lazy YouTube) === -->
 <section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
@@ -849,6 +866,7 @@
   
 </body>
 </html>
+
 
 
 
