@@ -503,10 +503,10 @@
       </ul>
 
       <div class="event-cta">
-  <button type="button" class="cta primary"
-    onclick="window.location.href='mailto:farenski%40lebenmitderenergiewende.de?subject=Anmeldung%3A%20Roth%2020.11.2025%20%E2%80%93%20Teurer%20Erdgasstrom%20statt%20Solarstrom%3F&body=Hallo%2C%0A%0Aich%20melde%20mich%20zur%20Veranstaltung%20am%2020.11.2025%20in%20Roth%20an.%0A%0AName%3A%20_%0APersonenzahl%3A%20_%0AKontakt%20%28E-Mail%2FTelefon%29%3A%20_%0ABemerkungen%3A%20_%0A%0ADanke%21%0A';">
+  <a class="cta primary"
+     href="mailto:farenski%40lebenmitderenergiewende.de?subject=Anmeldung%3A%20Roth%2020.11.2025%20%E2%80%93%20Teurer%20Erdgasstrom%20statt%20Solarstrom%3F&body=Hallo%2C%0A%0Aich%20melde%20mich%20zur%20Veranstaltung%20am%2020.11.2025%20in%20Roth%20an.%0A%0AName%3A%20_%0APersonenzahl%3A%20_%0AKontakt%20%28E-Mail%2FTelefon%29%3A%20_%0ABemerkungen%3A%20_%0A%0ADanke%21%0A">
     Anmelden per E-Mail
-  </button>
+  </a>
 
   <a class="cta secondary"
      href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Teurer%20Erdgasstrom%20statt%20Solarstrom%3F&details=Infoabend%20mit%20Briefaktion%20an%20Bundestagsabgeordnete.&location=GLASHAUS%2C%20M%C3%BCnchener%20Stra%C3%9Fe%2045%2C%2091154%20Roth&dates=20251120T173000Z/20251120T193000Z"
@@ -747,10 +747,12 @@
   <script>
     // Smooth Scrolling für In-Page-Links
     document.addEventListener('click', (e) => {
-      const a = e.target.closest('a[href^="#"]'); if(!a) return;
-      const el = document.querySelector(a.getAttribute('href'));
-      if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
-    });
+  const a = e.target.closest('a'); if (!a) return;
+  const href = a.getAttribute('href') || '';
+  if (!href.startsWith('#')) return;   // ← ignoriert mailto:, http(s), etc.
+  const el = document.querySelector(href);
+  if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+});
 
     // ---- Live-Zähler-Logik (PDFs) ----
     const STATS_URL = '/api/stats.json';
@@ -847,6 +849,7 @@
   
 </body>
 </html>
+
 
 
 
