@@ -504,10 +504,7 @@
 
       <div class="event-cta">
         <!-- 🔧 HIER EURE MAIL-ADRESSE EINTRAGEN -->
-        <a class="cta primary"
-   href="mailto:farenski%40lebenmitderenergiewende.de?subject=Anmeldung%3A%20Roth%2020.11.2025%20%E2%80%93%20Teurer%20Erdgasstrom%20statt%20Solarstrom%3F&body=Hallo%2C%0A%0Aich%20melde%20mich%20zur%20Veranstaltung%20am%2020.11.2025%20in%20Roth%20an.%0A%0AName%3A%20_%0APersonenzahl%3A%20_%0AKontakt%20%28E-Mail%2FTelefon%29%3A%20_%0ABemerkungen%3A%20_%0A%0ADanke%21%0A">
-  Anmelden per E-Mail
-</a>
+        <a id="eventMailto" class="cta primary" href="#">Anmelden per E-Mail</a>
 
         <!-- Kalenderlink (optional, kann so bleiben) -->
         <a class="cta secondary"
@@ -539,20 +536,30 @@
 <!-- === /EVENT-EINSCHUB === -->
 
 <script>
-  (function(){
-    var link = document.getElementById('eventMailto');
-    if (!link) return;
-    link.addEventListener('click', function(e){
-      var url = link.getAttribute('href') || '';
-      // iOS/Android WebViews mögen manchmal kein target/new window bei mailto
-      if (url.startsWith('mailto:')) {
-        // Sicherstellen, dass kein neues Fenster erzwungen wird
-        link.removeAttribute('target');
-        try { window.location.href = url; } catch (_) { /* still okay */ }
-        // Kein preventDefault – Browser darf normal weiter machen
-      }
-    }, { passive:true });
-  })();
+(function(){
+  var a = document.getElementById('eventMailto');
+  if(!a) return;
+
+  var to = 'farenski@lebenmitderenergiewende.de';
+  var subject = 'Anmeldung: Roth 20.11.2025 – Teurer Erdgasstrom statt Solarstrom?';
+  var body =
+'Hallo,\n\n' +
+'ich melde mich zur Veranstaltung am 20.11.2025 in Roth an.\n\n' +
+'Name: _\n' +
+'Personenzahl: _\n' +
+'Kontakt (E-Mail/Telefon): _\n' +
+'Bemerkungen: _\n\n' +
+'Danke!';
+
+  var href = 'mailto:' + encodeURIComponent(to)
+           + '?subject=' + encodeURIComponent(subject)
+           + '&body=' + encodeURIComponent(body);
+
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    try { window.location.href = href; } catch(e){}
+  }, {passive:false});
+})();
 </script>
       
    <!-- === Rückblick: Gespräch mit Dr. Nina Scheer (Lazy YouTube) === -->
@@ -865,6 +872,7 @@
   
 </body>
 </html>
+
 
 
 
