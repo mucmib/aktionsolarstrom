@@ -503,16 +503,17 @@
       </ul>
 
       <div class="event-cta">
-        <!-- 🔧 HIER EURE MAIL-ADRESSE EINTRAGEN -->
-        <a id="eventMailto" class="cta primary" href="#">Anmelden per E-Mail</a>
+  <button type="button" class="cta primary"
+    onclick="window.location.href='mailto:farenski%40lebenmitderenergiewende.de?subject=Anmeldung%3A%20Roth%2020.11.2025%20%E2%80%93%20Teurer%20Erdgasstrom%20statt%20Solarstrom%3F&body=Hallo%2C%0A%0Aich%20melde%20mich%20zur%20Veranstaltung%20am%2020.11.2025%20in%20Roth%20an.%0A%0AName%3A%20_%0APersonenzahl%3A%20_%0AKontakt%20%28E-Mail%2FTelefon%29%3A%20_%0ABemerkungen%3A%20_%0A%0ADanke%21%0A';">
+    Anmelden per E-Mail
+  </button>
 
-        <!-- Kalenderlink (optional, kann so bleiben) -->
-        <a class="cta secondary"
-           href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Teurer%20Erdgasstrom%20statt%20Solarstrom%3F&details=Infoabend%20mit%20Briefaktion%20an%20Bundestagsabgeordnete.&location=GLASHAUS%2C%20M%C3%BCnchener%20Stra%C3%9Fe%2045%2C%2091154%20Roth&dates=20251120T173000Z/20251120T193000Z"
-           target="_blank" rel="noopener">
-           Zum Kalender hinzufügen
-        </a>
-      </div>
+  <a class="cta secondary"
+     href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Teurer%20Erdgasstrom%20statt%20Solarstrom%3F&details=Infoabend%20mit%20Briefaktion%20an%20Bundestagsabgeordnete.&location=GLASHAUS%2C%20M%C3%BCnchener%20Stra%C3%9Fe%2045%2C%2091154%20Roth&dates=20251120T173000Z/20251120T193000Z"
+     target="_blank" rel="noopener">
+     Zum Kalender hinzufügen
+  </a>
+</div>
 
       <p class="event-note">Vor Ort können Sie direkt einen Brief an Ihre Bundestagsabgeordnete/Ihren Abgeordneten verschicken – wir übernehmen Druck &amp; Versand.</p>
     </div>
@@ -535,32 +536,6 @@
 </section>
 <!-- === /EVENT-EINSCHUB === -->
 
-<script>
-(function(){
-  var a = document.getElementById('eventMailto');
-  if(!a) return;
-
-  var to = 'farenski@lebenmitderenergiewende.de';
-  var subject = 'Anmeldung: Roth 20.11.2025 – Teurer Erdgasstrom statt Solarstrom?';
-  var body =
-'Hallo,\n\n' +
-'ich melde mich zur Veranstaltung am 20.11.2025 in Roth an.\n\n' +
-'Name: _\n' +
-'Personenzahl: _\n' +
-'Kontakt (E-Mail/Telefon): _\n' +
-'Bemerkungen: _\n\n' +
-'Danke!';
-
-  var href = 'mailto:' + encodeURIComponent(to)
-           + '?subject=' + encodeURIComponent(subject)
-           + '&body=' + encodeURIComponent(body);
-
-  a.addEventListener('click', function(e){
-    e.preventDefault();
-    try { window.location.href = href; } catch(e){}
-  }, {passive:false});
-})();
-</script>
       
    <!-- === Rückblick: Gespräch mit Dr. Nina Scheer (Lazy YouTube) === -->
 <section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
@@ -872,6 +847,7 @@
   
 </body>
 </html>
+
 
 
 
