@@ -335,6 +335,57 @@
       <p>© Kampagne „Solarstrom statt Erdgas-Strom”</p>
     </footer>
   </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("pureswitchForm");
+  const successBox = document.getElementById("successMessage");
+  if (!form) return;
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault(); // verhindert den Seitenwechsel zu /api/queue
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Wird gesendet …";
+    }
+
+    // Formulardaten einsammeln
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const json = await response.json();
+
+      if (json && json.ok) {
+        // Formular zurücksetzen + Bestätigung anzeigen
+        form.reset();
+        if (successBox) {
+          successBox.style.display = "block";
+          successBox.textContent = "Vielen Dank! Ihre Anfrage wurde übermittelt.";
+        }
+        window.scrollTo({ top: form.offsetTop - 60, behavior: "smooth" });
+      } else {
+        alert("Es gab ein Problem bei der Übermittlung. Bitte versuchen Sie es erneut.");
+      }
+    } catch (err) {
+      console.error("pureSwitch submit error", err);
+      alert("Es gab ein Verbindungsproblem. Bitte versuchen Sie es später erneut.");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Anfrage absenden";
+      }
+    }
+  });
+});
+</script>
 </body>
 </html>
 
