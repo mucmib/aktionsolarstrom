@@ -189,7 +189,7 @@
       color:#fff;
       font-weight:700;
       cursor:pointer;
-      box-shadow:0 10px 24px rgba(10,125,50,.2);
+      box-shadow:0 10px 24px rgba(0,0,0,.2);
     }
     button[type="submit"]:hover{
       filter:brightness(.96);
@@ -251,7 +251,11 @@
           </div>
         </div>
 
-        <form id="pureswitchForm" method="post" action="/api/pureswitch-contact">
+        <!-- WICHTIG: action jetzt /api/queue und hidden source -->
+        <form id="pureswitchForm" method="post" action="/api/queue">
+          <input type="hidden" name="source" value="pureswitch-kontakt">
+          <input type="hidden" name="subject" value="Neue pureSwitch-Anfrage über aktionsolarstrom.de">
+
           <fieldset>
             <legend>Wer sind Sie?</legend>
             <p class="hint">Bitte wählen Sie aus, ob Sie als Endkunde oder als Solarteur anfragen.</p>
@@ -333,3 +337,4 @@
   </div>
 </body>
 </html>
+
