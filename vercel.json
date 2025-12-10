@@ -1,0 +1,20 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        { "type": "host", "value": "energiekostentausch.com" }
+      ],
+      "destination": "/energiekostentausch.html",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        { "type": "host", "value": "www.energiekostentausch.com" }
+      ],
+      "destination": "/energiekostentausch.html",
+      "permanent": true
+    }
+  ]
+}
