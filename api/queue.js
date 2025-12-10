@@ -335,6 +335,102 @@ async function handlePureSwitch(raw, res) {
 }
 /** <<< pureSwitch Ende */
 
+/** >>> Energiekostentausch: eigener Handler-Zweig */
+async function handleEnergiekostentausch(raw, res) {
+  const data = {
+    first_name:   raw.first_name || raw.vorname || "",
+    last_name:    raw.last_name  || raw.nachname || "",
+    email:        raw.email || "",
+    phone:        raw.phone || "",
+    zip:          raw.zip || raw.plz || "",
+    city:         raw.city || raw.ort || "",
+    consumption:  raw.consumption || "",
+    monthly_cost: raw.monthly_cost || "",
+    message:      raw.message || "",
+    subject:      raw.subject || "Energiekostentausch-Anfrage über aktionsolarstrom.de",
+    source:       raw.source || "energiekostentausch-kontakt",
+  };
+
+  const missing = ["first_name","last_name","email","zip","city"]
+    .filter((k) => !must(data[k]));
+  if (missing.length) {
+    return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
+  }
+
+  try {
+    const api = new Brevo.TransactionalEmailsApi();
+    api.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
+
+    const html = `
+      <h2>Neue Energiekostentausch-Anfrage</h2>
+      <p><b>Name:</b> ${esc(data.first_name)} ${esc(data.last_name)}</p>
+      <p><b>E-Mail:</b> ${esc(data.email)}<br>
+         <b>Telefon:</b> ${esc(data.phone || "–")}</p>
+      <p><b>PLZ / Ort:</b> ${esc(data.zip)} ${esc(data.city)}</p>
+      <p><b>Jährlicher Stromverbrauch (kWh):</b> ${esc(data.consumption || "–")}</p>
+      <p><b>Monatlicher Stromabschlag (Euro):</b> ${esc(data.monthly_cost || "–")}</p>
+      <p><b>Hinweise:</b><br>${esc(data.message || "").replace(/\n/g,"<br>")}</p>
+      <p><b>Quelle:</b> ${esc(data.source)}</p>
+    `;
+
+    await api.sendTransacEmail({
+      to: [
+        {
+          email: process.env.EKT_INBOX || process.env.TEAM_INBOX,
+          name: "Energiekostentausch-Anfragen"
+        }
+      ],
+      sender: {
+        email: process.env.FROM_EMAIL,
+        name: "Aktionsolarstrom – Energiekostentausch Formular"
+      },
+      replyTo: {
+        email: data.email,
+        name: `${data.first_name} ${data.last_name}`
+      },
+      subject: data.subject,
+      htmlContent: html
+    });
+
+    // Optional: Kontakt in Brevo-Liste "Energiekostentausch-Anfragen" eintragen
+    const listIdRaw = process.env.BREVO_EKT_LIST_ID;
+    const listId = listIdRaw ? Number(listIdRaw) : 0;
+    if (listId && !Number.isNaN(listId)) {
+      try {
+        const contactsApi = new Brevo.ContactsApi();
+        contactsApi.setApiKey(Brevo.ContactsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
+
+        await contactsApi.createContact({
+          email: data.email,
+          listIds: [listId],
+          attributes: {
+            FIRSTNAME:    data.first_name,
+            LASTNAME:     data.last_name,
+            ZIP:          data.zip,
+            CITY:         data.city,
+            SOURCE:       "Energiekostentausch",
+            CONSUMPTION:  data.consumption,
+            MONTHLY_COST: data.monthly_cost
+          },
+          updateEnabled: true
+        });
+      } catch (e) {
+        console.error("Brevo contact create failed (EKT, non-blocking):", e?.message || e);
+      }
+    }
+
+    res.setHeader("Cache-Control", "no-store");
+    return res.status(200).json({ ok:true, type:"energiekostentausch", message:"stored_and_mailed" });
+  } catch (err) {
+    const status = err?.response?.status;
+    let detail   = err?.response?.text || err?.message || String(err);
+    if (err?.response?.body) { try { detail = JSON.stringify(err.response.body); } catch {} }
+    console.error("Brevo send failed (EKT):", status, detail);
+    return res.status(502).json({ ok:false, error:"brevo_send_failed_ekt", status, detail });
+  }
+}
+/** <<< Energiekostentausch Ende */
+
 /** --- Handler --- */
 export default allowCors(async function handler(req, res) {
   if (req.method !== "POST") {
@@ -343,12 +439,17 @@ export default allowCors(async function handler(req, res) {
 
   const raw = readBody(req);
 
-  // >>> pureSwitch-Branch: wenn von deiner neuen Unterseite, dann hier raus
+  // pureSwitch-Branch
   if (raw.source === "pureswitch-kontakt") {
     return await handlePureSwitch(raw, res);
   }
-  // <<< alle anderen Anfragen laufen weiter wie bisher (Briefformular)
 
+  // Energiekostentausch-Branch
+  if (raw.source === "energiekostentausch-kontakt") {
+    return await handleEnergiekostentausch(raw, res);
+  }
+
+  // ab hier: bestehender Briefformular-Flow
   const body = {
     zip:            raw.zip ?? raw.plz ?? "",
     city:           raw.city ?? raw.ort ?? "",
@@ -570,4 +671,5 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
+
 
