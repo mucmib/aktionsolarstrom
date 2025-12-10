@@ -234,6 +234,28 @@
     footer a:hover{
       text-decoration:underline;
     }
+    .video-wrap{
+  margin-top: 12px;
+}
+
+.video-16by9{
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 */
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 26px rgba(0,0,0,.25);
+  background:#000;
+}
+
+.video-16by9 iframe{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
   </style>
 </head>
 <body>
@@ -279,12 +301,23 @@
         </div>
 
         <div class="yt-block">
-          <p><strong>Mehr dazu in dieser YouTube-Sendung von "Leben mit der Energiewende TV".</strong></p>
-          <p>In dieser YouTube-Sendung wird das Prinzip des Energiekostentauschs ausführlich und transparent mit Beispielen und Hintergründen erläutert und es gibt Antworten auf häufige Fragen.</p>
-          <!-- YouTube-Link bitte mit der echten URL ersetzen -->
-          <a class="yt-link" href="https://youtu.be/1yJn9GKrp4E" target="_blank" rel="noopener">
-            Jetzt Sendung ansehen
-          </a>
+          <h2>Mehr dazu in dieser YouTube-Sendung von „Leben mit der Energiewende TV“</h2>
+  <p>
+    In dieser Sendung wird das Prinzip des Energiekostentauschs ausführlich und transparent erklärt –
+    mit Beispielen, Hintergründen und Antworten auf häufige Fragen.
+  </p>
+
+  <div class="video-wrap">
+    <div class="video-16by9">
+      <iframe
+        src="https://www.youtube.com/embed/1yJn9GKrp4E"
+        title="Energiekostentausch – Leben mit der Energiewende TV"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
         </div>
 
         <hr style="margin:20px 0; border:none; border-top:1px solid #e5e7eb;">
