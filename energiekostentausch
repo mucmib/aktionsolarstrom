@@ -1,1 +1,434 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Energiekostentausch – Eigene PV-Anlage und Stromspeicher | Solarstrom statt Erdgas-Strom</title>
+  <meta name="description" content="Energiekostentausch von Pure Energien: Statt steigender Stromkosten in eigene Photovoltaik- und Speichertechnik investieren. Jetzt prüfen, ob das Modell für Ihr Zuhause passt.">
+
+  <style>
+    :root{
+      --maxw: 920px;
+      --brand:#0a7d32;
+      --ink:#111;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --bg:#f6f9f7;
+      --card:#fff;
+    }
+
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background:var(--bg);
+    }
+
+    .page{
+      display:grid;
+      grid-template-columns:1fr minmax(0,var(--maxw)) 1fr;
+      min-height:100dvh;
+    }
+    .middle{grid-column:2;padding:20px;}
+
+    header.site-header{
+      padding:28px 0 20px;
+      text-align:center;
+      background:#000;
+      color:#fff;
+    }
+    header .logo{
+      display:inline-block;
+    }
+    header .logo img{
+      width:min(90vw,320px);
+      height:auto;
+      margin-bottom:12px;
+    }
+    header h1{
+      margin:0;
+      font-size:2rem;
+      font-weight:700;
+    }
+    header p.tagline{
+      margin:6px 0 0;
+      font-size:1rem;
+      color:#e5e7eb;
+    }
+
+    main{margin-bottom:30px;}
+    h2{margin:0 0 10px;font-size:1.3rem;}
+    .card{
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px 18px 22px;
+      background:var(--card);
+      box-shadow:0 4px 18px rgba(0,0,0,.06);
+    }
+
+    .intro{
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px;
+      align-items:flex-start;
+      margin-bottom:16px;
+    }
+    .intro-logo{
+      flex:0 0 auto;
+    }
+    .intro-logo img{
+      max-width:200px;
+      height:auto;
+      display:block;
+    }
+    .intro-text{
+      flex:1 1 260px;
+    }
+
+    .intro-text p{margin:4px 0;}
+    .intro-text ul{margin:6px 0 10px 1.2rem;padding:0;}
+    .intro-text li{margin-bottom:4px;}
+
+    .yt-block{
+      margin:18px 0 10px;
+      padding:14px 14px 16px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#f9fafb;
+    }
+    .yt-block p{margin:4px 0;}
+    .yt-link{
+      display:inline-block;
+      margin-top:8px;
+      padding:9px 14px;
+      border-radius:999px;
+      background:#dc2626;
+      color:#fff;
+      font-weight:600;
+      text-decoration:none;
+      font-size:.95rem;
+    }
+    .yt-link:hover{filter:brightness(.96);}
+
+    form{
+      margin-top:16px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    fieldset{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:14px 14px 16px;
+      margin:0;
+    }
+    legend{
+      padding:0 6px;
+      font-weight:700;
+      color:#0b4d25;
+      font-size:1rem;
+    }
+
+    label{
+      display:block;
+      font-weight:600;
+      margin:10px 0 4px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea{
+      width:100%;
+      padding:10px 12px;
+      border:1px solid #cbd5e1;
+      border-radius:10px;
+      font:inherit;
+      background:#fff;
+    }
+    textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+
+    .grid2{
+      display:grid;
+      gap:12px 16px;
+      grid-template-columns:1fr 1fr;
+    }
+    @media (max-width:640px){
+      .grid2{grid-template-columns:1fr;}
+    }
+
+    .hint{
+      font-size:.9rem;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    .checkbox-inline{
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      margin:0;
+      padding:10px 12px;
+      background:#f9fafb;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      font-size:.9rem;
+    }
+    .checkbox-inline input{
+      margin-top:3px;
+    }
+
+    .actions{
+      margin-top:6px;
+      display:flex;
+      justify-content:flex-start;
+    }
+    button[type="submit"]{
+      padding:11px 18px;
+      border:0;
+      border-radius:12px;
+      background:linear-gradient(135deg,#0a7d32,#11b15a);
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 10px 24px rgba(0,0,0,.2);
+    }
+    button[type="submit"]:hover{
+      filter:brightness(.96);
+    }
+
+    .success{
+      display:none;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid #bfe3bf;
+      background:#eefeef;
+      color:#145214;
+      font-size:.92rem;
+    }
+
+    .footnote{
+      margin-top:10px;
+      font-size:.85rem;
+      color:var(--muted);
+    }
+
+    footer.site-footer{
+      margin:10px 0 20px;
+      text-align:center;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+    footer .legal{
+      margin-bottom:6px;
+    }
+    footer a{
+      color:inherit;
+      text-decoration:none;
+    }
+    footer a:hover{
+      text-decoration:underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="site-header middle">
+      <a class="logo" href="https://www.aktionsolarstrom.de/" aria-label="Zur Startseite">
+        <img src="assets/logo.png" alt="Solarstrom statt Erdgas-Strom - Logo" loading="lazy" decoding="async">
+      </a>
+      <h1>Energiekostentausch jetzt</h1>
+      <p class="tagline">Eigene PV-Anlage und Stromspeicher statt steigender Stromkosten</p>
+    </header>
+
+    <main class="middle">
+      <section class="card" aria-labelledby="ekt-kontakt">
+        <div class="intro">
+          <div class="intro-logo">
+            <!-- hier später das Pure-Energien Logo oder Energiekostentausch-Grafik einfügen -->
+            <img src="assets/pure-energien-logo.png" alt="Pure Energien - Logo">
+          </div>
+          <div class="intro-text">
+            <h2 id="ekt-kontakt">Energiekostentausch von Pure Energien</h2>
+
+            <p>Steigende Strompreise, unsichere Tarife und immer höhere Abschläge - viele Haushalte zahlen Monat für Monat an den Energieversorger, ohne dauerhaft etwas davon zu haben.</p>
+
+            <p>Mit dem Energiekostentausch von Pure Energien können Sie einen anderen Weg gehen:</p>
+            <ul>
+              <li>Statt ausschließlich Strom zu kaufen, investieren Sie einen Teil Ihres bisherigen Stromkostenabschlags in Ihre eigene Photovoltaik- und Speicherlösung.</li>
+              <li>So fließt ein Teil Ihrer monatlichen Zahlung nicht mehr an den Stromversorger, sondern in Ihre eigene Energietechnik.</li>
+            </ul>
+
+            <p><strong>Was bedeutet Energiekostentausch konkret?</strong></p>
+            <ul>
+              <li>Pure Energien organisiert die Planung, Umsetzung und Finanzierung Ihrer PV- und Speicheranlage mit.</li>
+              <li>Ein Teil Ihres bisherigen Stromabschlags kann für die monatliche Rate genutzt werden.</li>
+              <li>Sie erzeugen künftig einen Teil Ihres Stroms selbst und machen sich unabhängiger von künftigen Preissteigerungen.</li>
+              <li>Für zusätzlich benötigten Strom können dynamische Tarife genutzt werden.</li>
+            </ul>
+
+            <p class="hint">
+              Ob und in welchem Umfang das Modell für Sie passt, hängt unter anderem von Verbrauch, Anlagenkonfiguration und Bonität ab.
+            </p>
+          </div>
+        </div>
+
+        <div class="yt-block">
+          <p><strong>Mehr dazu in dieser YouTube-Sendung von "Leben mit der Energiewende TV".</strong></p>
+          <p>In dieser YouTube-Sendung wird das Prinzip des Energiekostentauschs ausführlich und transparent mit Beispielen und Hintergründen erläutert und es gibt Antworten auf häufige Fragen.</p>
+          <!-- YouTube-Link bitte mit der echten URL ersetzen -->
+          <a class="yt-link" href="https://www.youtube.com/watch?v=DEINE_VIDEO_ID" target="_blank" rel="noopener">
+            Jetzt Sendung ansehen
+          </a>
+        </div>
+
+        <hr style="margin:20px 0; border:none; border-top:1px solid #e5e7eb;">
+
+        <h2>Kontakt</h2>
+        <p>Sie möchten wissen, ob der Energiekostentausch auch für Ihr Zuhause sinnvoll ist? Hinterlassen Sie einfach Ihre Kontaktdaten im Formular.</p>
+        <p>Pure Energien meldet sich bei Ihnen, prüft Ihre Ausgangssituation und erstellt ein unverbindliches, individuelles Angebot. Wenn Sie mögen, können Sie Informationen über Ihren Energieverbrauch und aktuelle Abschlagskosten vorab übermitteln, das ist aber nicht unbedingt erforderlich.</p>
+
+        <!-- Formular: nutzt wieder /api/queue mit eigener source -->
+        <form id="ektForm" method="post" action="/api/queue">
+          <input type="hidden" name="source" value="energiekostentausch-kontakt">
+          <input type="hidden" name="subject" value="Energiekostentausch-Anfrage über aktionsolarstrom.de">
+
+          <fieldset>
+            <legend>Kontaktdaten</legend>
+            <div class="grid2">
+              <div>
+                <label for="first_name">Vorname *</label>
+                <input id="first_name" name="first_name" required>
+              </div>
+              <div>
+                <label for="last_name">Nachname *</label>
+                <input id="last_name" name="last_name" required>
+              </div>
+            </div>
+
+            <label for="email">E-Mail *</label>
+            <input id="email" name="email" type="email" required>
+
+            <label for="phone">Telefon (optional)</label>
+            <input id="phone" name="phone" type="tel" placeholder="+49 ...">
+
+            <div class="grid2">
+              <div>
+                <label for="zip">PLZ *</label>
+                <input id="zip" name="zip" required>
+              </div>
+              <div>
+                <label for="city">Ort *</label>
+                <input id="city" name="city" required>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Angaben zum Stromverbrauch (optional)</legend>
+
+            <label for="consumption">Jährlicher Stromverbrauch in kWh (geschätzt oder laut Abrechnung)</label>
+            <input id="consumption" name="consumption" type="text" placeholder="z. B. 4.000">
+
+            <label for="monthly_cost">Monatlicher Stromabschlag in Euro</label>
+            <input id="monthly_cost" name="monthly_cost" type="text" placeholder="z. B. 150">
+
+            <label for="message">Weitere Hinweise (optional)</label>
+            <textarea id="message" name="message"
+              placeholder="Zum Beispiel: Anzahl Personen im Haushalt, vorhandene oder geplante PV-Anlage, Dachfläche ..."></textarea>
+
+            <p class="hint">
+              Diese Angaben helfen Pure Energien, schneller einzuschätzen, wie ein möglicher Energiekostentausch bei Ihnen aussehen könnte.
+            </p>
+          </fieldset>
+
+          <fieldset>
+            <legend>Datenschutz</legend>
+            <label class="checkbox-inline">
+              <input id="consent" name="consent" type="checkbox" required>
+              <span>Ich willige ein, dass meine Angaben zur Kontaktaufnahme und Zuordnung für diese Anfrage gespeichert und von Pure Energien genutzt werden. Details siehe <a href="Datenschutz.html" target="_blank" rel="noopener">Datenschutz</a>.</span>
+            </label>
+          </fieldset>
+
+          <div class="actions">
+            <button type="submit">Jetzt Kontaktdaten eintragen</button>
+          </div>
+          <div id="ektSuccess" class="success" role="status" aria-live="polite">
+            Vielen Dank! Ihre Anfrage wurde übermittelt.
+          </div>
+
+          <p class="footnote">
+            Hinweis: Dieses Formular stellt noch keinen Auftrag dar. Pure Energien nimmt Kontakt mit Ihnen auf und bespricht alle Details in Ruhe mit Ihnen.
+          </p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer middle">
+      <nav class="legal">
+        <a href="https://www.aktionsolarstrom.de/">Zur Startseite</a> ·
+        <a href="Impressum.html">Impressum</a> ·
+        <a href="Datenschutz.html">Datenschutz</a>
+      </nav>
+      <p>© Kampagne "Solarstrom statt Erdgas-Strom"</p>
+    </footer>
+  </div>
+
+  <!-- JS: verhindert Seitenwechsel, nutzt /api/queue wie beim pureSwitch-Formular -->
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("ektForm");
+    const successBox = document.getElementById("ektSuccess");
+    if (!form) return;
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Wird gesendet ...";
+      }
+
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const json = await response.json();
+
+        if (json && json.ok) {
+          form.reset();
+          if (successBox) {
+            successBox.style.display = "block";
+            successBox.textContent = "Vielen Dank! Ihre Anfrage wurde übermittelt.";
+          }
+          window.scrollTo({ top: form.offsetTop - 60, behavior: "smooth" });
+        } else {
+          alert("Es gab ein Problem bei der Übermittlung. Bitte versuchen Sie es erneut.");
+        }
+      } catch (err) {
+        console.error("Energiekostentausch submit error", err);
+        alert("Es gab ein Verbindungsproblem. Bitte versuchen Sie es später erneut.");
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Jetzt Kontaktdaten eintragen";
+        }
+      }
+    });
+  });
+  </script>
+</body>
+</html>
 
