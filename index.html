@@ -897,21 +897,30 @@
   // Lazy-YouTube: ersetzt Platzhalter beim Klick durch nocookie-iframe mit Autoplay
   document.addEventListener('click', function(e){
     const btn = e.target.closest('.yt-lazy .yt-play'); if(!btn) return;
-    const wrap = btn.closest('.yt-lazy'); const id = wrap?.dataset.ytid; if(!id) return;
+    const wrap = btn.closest('.yt-lazy'); if(!wrap) return;
+
+    // akzeptiert beide Varianten: data-ytid ODER data-youtube-id
+    const id = wrap.dataset.ytid || wrap.dataset.youtubeId;
+    if(!id) return;
+
+    const title = wrap.dataset.youtubeTitle || 'YouTube Video Player';
+
     const iframe = document.createElement('iframe');
-    iframe.setAttribute('title','YouTube Video Player');
+    iframe.setAttribute('title', title);
     iframe.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
     iframe.setAttribute('allowfullscreen','');
+    iframe.setAttribute('loading','lazy');
     iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
-    iframe.style.width = '100%'; iframe.style.height = '100%'; iframe.style.border = '0';
-    wrap.replaceChildren(iframe);        // tauscht das Placeholder-Element aus
+    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+
+    wrap.replaceChildren(iframe);
   }, {passive:true});
 </script>
 
   
 </body>
 </html>
+
 
 
 
