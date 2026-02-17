@@ -492,21 +492,24 @@
     <span style="opacity:.85; font-size:.95rem;">(Diese Sendung wird finanziell vom VEEG e.V. unterstützt.)</span>
   </p>
 
-  <!-- Lazy YouTube -->
-  <div class="video-wrap yt-lazy"
-       data-youtube-id="EhXTxk16xBI"
-       data-youtube-title="NETZPAKET: WIRTSCHAFT KAPUTT - BÜRGER ZAHLEN DIE ZECHE"
-       aria-label="YouTube-Video: Netzpaket – Klick zum Abspielen">
-    <button class="yt-play" type="button" aria-label="Video abspielen"></button>
-    <noscript>
-      <p style="padding:12px; color:#fff;">
-        JavaScript ist deaktiviert. Video hier ansehen:
-        <a href="https://youtu.be/EhXTxk16xBI?si=hSiDDZXqnEw3Ijgh" target="_blank" rel="noopener" style="color:#fff; text-decoration:underline;">
-          YouTube öffnen
-        </a>
-      </p>
-    </noscript>
-  </div>
+  <!-- Lazy-YouTube: lädt erst beim Klick -->
+<div class="video-wrap yt-lazy" data-ytid="EhXTxk16xBI" aria-label="YouTube: Netzpaket – Klick zum Abspielen">
+  <button class="yt-play" type="button" aria-label="Video abspielen">
+    <span class="yt-badge">LMdE TV</span>
+    <img src="https://i.ytimg.com/vi/EhXTxk16xBI/hqdefault.jpg"
+         loading="lazy"
+         decoding="async"
+         alt="Vorschaubild – Netzpaket: Wirtschaft kaputt, Bürger zahlen die Zeche">
+    <span class="yt-icon" aria-hidden="true"></span>
+    <div class="yt-caption">🎥 Jetzt ansehen auf YouTube</div>
+  </button>
+
+  <noscript>
+    <p><a class="cta secondary" href="https://youtu.be/EhXTxk16xBI?si=hSiDDZXqnEw3Ijgh" target="_blank" rel="noopener">
+      Video auf YouTube öffnen
+    </a></p>
+  </noscript>
+</div>
 
   <p style="margin:10px 0 0;">
     <a class="cta secondary" href="https://youtu.be/EhXTxk16xBI?si=hSiDDZXqnEw3Ijgh" target="_blank" rel="noopener">
@@ -920,6 +923,7 @@
   
 </body>
 </html>
+
 
 
 
