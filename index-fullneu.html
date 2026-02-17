@@ -3,6 +3,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Solarstrom statt Erdgas-Strom – Brief einreichen</title>
+  <!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
+<meta property="og:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
+<meta property="og:url" content="https://www.aktionsolarstrom.de/">
+<meta property="og:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Twitter (X) Fallback -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
+<meta name="twitter:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
+<meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
+
   <meta name="description" content="Reichen Sie Ihren Brief ein – wir drucken, kuvertieren und versenden physisch an die zuständige Bundestagsabgeordnete.">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
@@ -28,7 +43,6 @@
     .hero-panel{
       background: rgba(10,125,50,.82); color:#fff; border-radius:22px; padding:22px 24px;
       max-width:min(92vw,820px); width:fit-content; text-align:center; box-shadow:0 18px 48px rgba(0,0,0,.18);
-      position:relative; overflow:hidden; /* für Solar-Highlight */
     }
     .hero .logo img{
       width: clamp(220px, 48vw, 520px); height:auto; display:block; margin:0 auto 6px;
@@ -98,36 +112,31 @@
     .chip[data-active="1"] { background:#d1fae5; border-color:#9ee3c4; }
 
     /* === Button-Optik, wenn deaktiviert === */
-    button[disabled],
-    input[type="submit"][disabled] {
-      opacity: 0.55;           /* leicht ausgegraut */
-      cursor: not-allowed;     /* kein Handzeiger */
-      box-shadow: none;        /* kein Hover-Schatten */
-      filter: grayscale(40%);  /* optional: leicht entsättigt */
-    }
-    /* Betreff-Feld erzwingen: volle Breite & angenehme Höhe */
-    #subject {
-      display: block;
-      width: 100% !important;
-      box-sizing: border-box;
-      min-height: 44px;          /* angenehme Klick-/Lesefläche */
-      padding: 12px 14px;        /* wie die anderen Felder */
-      font: inherit;             /* gleiche Schrift wie überall */
-    }
-
+button[disabled],
+input[type="submit"][disabled] {
+  opacity: 0.55;           /* leicht ausgegraut */
+  cursor: not-allowed;     /* kein Handzeiger */
+  box-shadow: none;        /* kein Hover-Schatten */
+  filter: grayscale(40%);  /* optional: leicht entsättigt */
+}
+  /* Betreff-Feld erzwingen: volle Breite & angenehme Höhe */
+#subject {
+  display: block;
+  width: 100% !important;
+  box-sizing: border-box;
+  min-height: 44px;          /* angenehme Klick-/Lesefläche */
+  padding: 12px 14px;        /* wie die anderen Felder */
+  font: inherit;             /* gleiche Schrift wie überall */
+}
+  
     /* ========================= */
     /* OPTISCHE ERGÄNZUNGEN WIE STARTSEITE */
     /* ========================= */
 
-    /* Warmes Seiten-Theme (Solar) */
+    /* Warmes Seiten-Theme */
     body.theme-warm{
       --bg: #f6f1e8;
       background: linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%) !important;
-    }
-    /* Neutrales Theme (sachlich) */
-    body.theme-neutral{
-      --bg: #f7faf9;
-      background: #ffffff !important;
     }
 
     /* Eco-Texture (CSS-only, sehr dezent) */
@@ -156,6 +165,7 @@
     }
 
     /* Solar-Highlight unter dem Panel */
+    .hero-panel{ position:relative; overflow:hidden; }
     .hero-panel::after{
       content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
       background: linear-gradient(90deg, #f6b10a, #ffd84a);
@@ -190,51 +200,6 @@
       box-shadow:0 8px 24px rgba(0,0,0,.10);
       transform: translateY(-2px);
     }
-
-    /* -------------------- */
-    /* Gut sichtbarer Fokus */
-    /* -------------------- */
-    :focus{ outline: none; }
-    a:focus-visible,
-    button:focus-visible,
-    input:focus-visible,
-    select:focus-visible,
-    textarea:focus-visible {
-      box-shadow:
-        0 0 0 3px rgba(246,177,10,.95),
-        0 0 0 5px rgba(0,0,0,.25);
-      border-color: #e6b400;
-      transition: box-shadow .15s ease;
-    }
-
-    /* ------------------------------ */
-    /* Partner-Hover (für Logos/Boxen) */
-    /* ------------------------------ */
-    .partner .logoBox img{
-      filter: grayscale(100%);
-      transition: filter .25s ease, transform .25s ease, box-shadow .25s ease;
-    }
-    .partner .logoBox:hover img{
-      filter: none;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(0,0,0,.12);
-    }
-
-    /* ------------------------------ */
-    /* Theme-Toggle (fixiert, dezent) */
-    /* ------------------------------ */
-    .theme-toggle{
-      position: fixed; right: 14px; bottom: 14px; z-index: 1000;
-      background:#ffffff; color:#0a7d32; border:1px solid #dbe7df; border-radius: 999px;
-      padding: 8px 12px; font-weight:700; box-shadow: 0 8px 20px rgba(0,0,0,.12);
-      display:flex; align-items:center; gap:8px; cursor:pointer; text-decoration:none;
-    }
-    .theme-toggle .dot{
-      width:10px; height:10px; border-radius:50%;
-      background: #f6b10a; box-shadow: inset 0 0 0 2px rgba(0,0,0,.08);
-    }
-    .theme-toggle:hover{ transform: translateY(-1px); }
-    .theme-toggle:focus-visible{ box-shadow: 0 0 0 3px rgba(246,177,10,.95), 0 0 0 5px rgba(0,0,0,.25); }
   </style>
   
 </head>
@@ -328,23 +293,25 @@
 
 {Anrede}
 
-ich wende mich an Sie als Bürger bzw. Bürgerin Ihres Wahlkreises mit einem Anliegen, das viele Menschen und Betriebe vor Ort betrifft: die Zukunft der Energiewende.
-              
-Bundesministerin Reiche plant, den Ausbau der Erneuerbaren zu drosseln, die feste Einspeisevergütung abzuschaffen und stattdessen neue Erdgaskraftwerke zu bauen. Gleichzeitig bereitet die Bundesnetzagentur mit ihrem Diskussionspapier AgNes neue Belastungen für Erzeuger von erneuerbarem Strom vor.
-Zusätzlich sieht das geplante Netzpaket Maßnahmen vor, die Investitionen in Solar- und Windanlagen massiv erschweren würden. Bürgerinnen und Bürger würden geplante Solaranlagen nicht mehr bauen, Unternehmen würden Investitionen verschieben, und zahlreiche Handwerksbetriebe im Solarbereich verlören ihre Aufträge.
+heute wende ich mich an Sie mit einem Thema, das für viele Bürgerinnen, Bürger und Unternehmen in Ihrem Wahlkreis sehr relevant ist: Die Fortsetzung der Energiewende.
 
-Deshalb unterstütze ich die Forderungen der Initiative „Sonnenstrom statt Erdgasstrom“, die Bürger, Wirtschaft und Klima entlasten:
-1.	Den bisherigen Entwurf des Netzpakets zurückziehen, weil er Investitionen in erneuerbare Energien massiv gefährdet.
-2.	Keine neuen Erdgaskraftwerke. Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.
-3.	Ausbau der Erneuerbaren beschleunigen statt durch neue Hürden auszubremsen.
-4.	Feste Einspeisevergütung beibehalten, bis Smart Meter flächendeckend flexible Vergütungen ermöglichen.
-5.	Bestandsschutz und keine Zusatzbelastungen für erneuerbare Stromerzeugung.
-              
-Ich bitte Sie, sich im Bundestag dafür einzusetzen, dass die Energiewende nicht ausgebremst, sondern weiter vorangebracht wird.
-Dieser Brief entstand im Rahmen der Aktion „Sonnenstrom statt Erdgasstrom“.
-Weitere Informationen finden Sie unter:
-www.aktionsolarstrom.de
-Vielen Dank für Ihre Aufmerksamkeit. Über eine Rückmeldung würde ich mich sehr freuen.
+Bürgerinnen und Bürger, Unternehmen und Kommunen investieren mit Photovoltaik und Speicher in die Energiewende und den Klimaschutz. Die so produzierte Energie nutzen sie zu einem guten Teil selbst. Sie sparen damit Stromkosten und tragen zu unseren Klimazielen bei. 
+
+Doch jetzt ist diese erfolgreiche Entwicklung bedroht. Bundesministerin Reiche möchte die Energiewende drosseln, die feste Einspeisevergütung abschaffen und neue Erdgaskraftwerke bauen. Außerdem bereitet die Bundesnetzagentur mit ihrem Diskussionspapier AgNes eine massive Verschlechterung der Wirtschaftlichkeit für Produzenten von erneuerbarem Strom vor. 
+
+Deshalb möchte ich Sie für die Forderungen der Initiative „Sonnenstrom statt Erdgasstrom“ gewinnen, die die deutschen Stromkunden und das Klima entlasten: 
+
+1. Keine neuen Erdgaskraftwerke. Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.
+
+2. Ausbau Erneuerbarer beschleunigen – und netzdienliche Erzeugung belohnen.
+
+3. Feste Einspeisevergütung beibehalten bis Smart Meter flächendeckend eine einfache, flexible Vergütung erlauben.
+
+4. Bestandsschutz und keine Zusatzbelastung für erneuerbare Stromerzeugung.
+
+Dieser Brief entstand mit der Aktion „Sonnenstrom statt Erdgasstrom“. Weitere Informationen zu den Plänen von Frau Reiche und der BNetzA finden Sie auf https://www.aktionsolarstrom.de.
+
+Vielen Dank für Ihre Aufmerksamkeit. Es würde mich sehr freuen, von Ihnen zu hören.
 
 Mit freundlichen Grüßen
 
@@ -380,7 +347,7 @@ Mit freundlichen Grüßen
 
           <div class="actions">
             <button type="submit">In Druckwarteschlange einreichen</button>
-            <div id="successMessage" class="success" role="status" aria-live="polite"></div>
+            <div id="successMessage" class="success"></div>
           </div>
         </form>
       </section>
@@ -394,11 +361,6 @@ Mit freundlichen Grüßen
       </nav>
     </footer>
   </div>
-
-  <!-- Dual-Theme Toggle (fixiert, dezent) -->
-  <button id="themeToggle" class="theme-toggle" type="button" aria-label="Darstellung wechseln">
-    <span class="dot" aria-hidden="true"></span><span id="themeLabel">Solar</span>
-  </button>
 
   <!-- MdB Lookup (wie gehabt) -->
   <script>
@@ -775,61 +737,37 @@ Mit freundlichen Grüßen
     });
   })();
   </script>
-
-  <!-- Consent-Logik (unverändert) -->
   <script>
-  (function(){
-    const form   = document.getElementById('letterForm') || document.querySelector('form');
-    if (!form) return;
-    const consent = form.querySelector('#consent_print');
-    const submit  = form.querySelector('button[type="submit"], input[type="submit"]');
-    if (!consent || !submit) return;
+(function(){
+  // NUR die Einwilligungs-Logik, keine anderen Funktionen werden berührt
+  const form   = document.getElementById('letterForm') || document.querySelector('form');
+  if (!form) return;
+  const consent = form.querySelector('#consent_print');
+  const submit  = form.querySelector('button[type="submit"], input[type="submit"]');
+  if (!consent || !submit) return;
 
-    function sync(){ submit.disabled = !consent.checked; }
-    sync();
-    consent.addEventListener('change', sync);
+  function sync(){ submit.disabled = !consent.checked; }
 
-    form.addEventListener('submit', function(e){
-      if (!consent.checked) {
-        e.preventDefault();
-        consent.setCustomValidity('Bitte bestätigen Sie den physischen Postversand.');
-        form.reportValidity();
-        setTimeout(()=>consent.setCustomValidity(''), 0);
-      }
-    }, true);
-  })();
-  </script>
+  // initial: Button „tot“, bis Häkchen gesetzt
+  sync();
+  consent.addEventListener('change', sync);
 
-  <!-- Theme-Schalter & Lazy-YouTube -->
-  <script>
-  (function(){
-    // Theme init
-    const key='theme';
-    const body=document.body;
-    const btn=document.getElementById('themeToggle');
-    const label=document.getElementById('themeLabel');
-
-    function applyTheme(t){
-      body.classList.remove('theme-warm','theme-neutral');
-      body.classList.add(t==='neutral'?'theme-neutral':'theme-warm');
-      label.textContent = t==='neutral' ? 'Neutral' : 'Solar';
-      localStorage.setItem(key, t);
+  // Extra-Sicherheit beim Absenden (falls jemand den Button manuell reaktiviert)
+  form.addEventListener('submit', function(e){
+    if (!consent.checked) {
+      e.preventDefault();
+      // kurzes, natives Validierungsfeedback für die Checkbox
+      consent.setCustomValidity('Bitte bestätigen Sie den physischen Postversand.');
+      form.reportValidity();
+      setTimeout(()=>consent.setCustomValidity(''), 0);
     }
-    const saved=localStorage.getItem(key);
-    applyTheme(saved==='neutral'?'neutral':'warm');
-    btn?.addEventListener('click',()=>{
-      const curr=body.classList.contains('theme-neutral')?'neutral':'warm';
-      applyTheme(curr==='neutral'?'warm':'neutral');
-    });
+  }, true);
+})();
+</script>
 
-    // Lazy YouTube (falls vorhanden)
-    document.querySelectorAll('iframe[src*="youtube"], iframe[src*="youtu.be"]').forEach(ifr=>{
-      ifr.setAttribute('loading','lazy');
-    });
-  })();
-  </script>
 </body>
 </html>
       
+
 
 
