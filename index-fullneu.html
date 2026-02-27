@@ -3,25 +3,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Solarstrom statt Erdgas-Strom – Brief einreichen</title>
-  <!-- Open Graph -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
-<meta property="og:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
-<meta property="og:url" content="https://www.aktionsolarstrom.de/">
-<meta property="og:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 
-<!-- Twitter (X) Fallback -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
-<meta name="twitter:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
-<meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
+  <meta property="og:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
+  <meta property="og:url" content="https://www.aktionsolarstrom.de/">
+  <meta property="og:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter (X) Fallback -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
+  <meta name="twitter:description" content="Alle Infos zur Kampagne: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
+  <meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
 
   <meta name="description" content="Reichen Sie Ihren Brief ein – wir drucken, kuvertieren und versenden physisch an die zuständige Bundestagsabgeordnete.">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+
   <style>
     :root { --maxw: 960px; --brand:#0a7d32; --brand2:#0bbd54; --muted:#6b7280; --card:#fff; --bg:#f6f9f7; --radius:16px; --shadow:0 6px 28px rgba(0,0,0,.08); }
 
@@ -65,10 +67,10 @@
 
     /* Große, angenehm lesbare Textarea */
     textarea#message{
-      min-height: 460px;      /* Desktop */
+      min-height: 460px;
       line-height: 1.55;
       font-size: 1rem;
-      resize: vertical;       /* Nutzer darf höher ziehen */
+      resize: vertical;
       tab-size: 2;
     }
     @media (max-width:720px){
@@ -94,11 +96,11 @@
     @media (max-width:720px){ .shipbox{ grid-template-columns:1fr } }
 
     .opt {
-      display:flex; align-items:flex-start; gap:10px; /* Checkbox links, Text rechts */
+      display:flex; align-items:flex-start; gap:10px;
       line-height:1.4;
     }
     .opt input[type="checkbox"]{
-      margin-top:3px; /* optisch vertikal bündig bei 2-zeiligen Texten */
+      margin-top:3px;
       flex: 0 0 auto;
       width: 18px; height: 18px;
     }
@@ -112,34 +114,33 @@
     .chip[data-active="1"] { background:#d1fae5; border-color:#9ee3c4; }
 
     /* === Button-Optik, wenn deaktiviert === */
-button[disabled],
-input[type="submit"][disabled] {
-  opacity: 0.55;           /* leicht ausgegraut */
-  cursor: not-allowed;     /* kein Handzeiger */
-  box-shadow: none;        /* kein Hover-Schatten */
-  filter: grayscale(40%);  /* optional: leicht entsättigt */
-}
-  /* Betreff-Feld erzwingen: volle Breite & angenehme Höhe */
-#subject {
-  display: block;
-  width: 100% !important;
-  box-sizing: border-box;
-  min-height: 44px;          /* angenehme Klick-/Lesefläche */
-  padding: 12px 14px;        /* wie die anderen Felder */
-  font: inherit;             /* gleiche Schrift wie überall */
-}
-  
+    button[disabled],
+    input[type="submit"][disabled] {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+      filter: grayscale(40%);
+    }
+
+    /* Betreff-Feld erzwingen */
+    #subject {
+      display: block;
+      width: 100% !important;
+      box-sizing: border-box;
+      min-height: 44px;
+      padding: 12px 14px;
+      font: inherit;
+    }
+
     /* ========================= */
     /* OPTISCHE ERGÄNZUNGEN WIE STARTSEITE */
     /* ========================= */
 
-    /* Warmes Seiten-Theme */
     body.theme-warm{
       --bg: #f6f1e8;
       background: linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%) !important;
     }
 
-    /* Eco-Texture (CSS-only, sehr dezent) */
     body::before{
       content:"";
       position:fixed; inset:0;
@@ -153,7 +154,6 @@ input[type="submit"][disabled] {
       mix-blend-mode:multiply;
     }
 
-    /* Warme Tönung + Solar Glow im Hero */
     .hero-wrap::before{
       content:""; position:absolute; inset:0; pointer-events:none;
       background: linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02));
@@ -164,14 +164,12 @@ input[type="submit"][disabled] {
       background: radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%);
     }
 
-    /* Solar-Highlight unter dem Panel */
     .hero-panel{ position:relative; overflow:hidden; }
     .hero-panel::after{
       content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
       background: linear-gradient(90deg, #f6b10a, #ffd84a);
     }
 
-    /* CTA-Finishing (Link im Hero) */
     .cta{
       box-shadow:0 4px 15px rgba(10,125,50,.20);
       transition: transform .25s ease, box-shadow .25s ease;
@@ -182,7 +180,6 @@ input[type="submit"][disabled] {
       text-decoration:none;
     }
 
-    /* CTA-Finishing (Submit-Button) */
     button[type="submit"]{
       transition: transform .25s ease, box-shadow .25s ease, opacity .2s ease;
     }
@@ -191,7 +188,6 @@ input[type="submit"][disabled] {
       box-shadow:0 14px 28px rgba(11,189,84,.28);
     }
 
-    /* Feldsets leicht warm abtönen (analog zu Cards auf Startseite) */
     fieldset{
       background:#fffdf8;
       transition: box-shadow .2s ease, transform .2s ease;
@@ -200,9 +196,57 @@ input[type="submit"][disabled] {
       box-shadow:0 8px 24px rgba(0,0,0,.10);
       transform: translateY(-2px);
     }
+
+    /* ========================= */
+    /* SUPPORT BOX (nur 1x, elegant) */
+    /* ========================= */
+    .support-note{
+      margin-top:14px;
+      border:1px solid #eadfcd;
+      background: linear-gradient(180deg, rgba(255,248,234,.95), rgba(255,255,255,.92));
+      border-radius:14px;
+      padding:14px 14px;
+      box-shadow: 0 10px 26px rgba(0,0,0,.06);
+    }
+    .support-note strong{ color:#0b4d25; }
+    .support-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:12px 0 8px;
+    }
+    .support-btn{
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:800;
+      border:1px solid rgba(10,125,50,.22);
+      background:#fff;
+      color:#0a7d32;
+      box-shadow: 0 6px 16px rgba(10,125,50,.12);
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .support-btn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(10,125,50,.18);
+    }
+    .support-btn.primary{
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      color:#fff;
+      border:0;
+    }
+    .support-btn.disabled{
+      background:#e5e7eb;
+      color:#555;
+      border:1px solid #d1d5db;
+      box-shadow:none;
+      cursor:not-allowed;
+      pointer-events:none;
+    }
   </style>
-  
 </head>
+
 <body class="theme-warm">
   <div class="page">
     <header class="site-header middle">
@@ -227,6 +271,10 @@ input[type="submit"][disabled] {
           <li>Der Brief geht <strong>an uns</strong> und landet in der Druck-&amp;-Post-Warteschlange.</li>
           <li>Wir drucken, kuvertieren und versenden physisch an die zuständige/n MdB.</li>
         </ol>
+
+        <div class="support-note" role="note" aria-label="Hinweis Finanzierung">
+          <strong>Hinweis:</strong> Aktion Solarstrom finanziert Druck, Kuvertierung, Porto, Hosting und die Weiterentwicklung der Kampagne durch freiwillige Beiträge. DIe Möglichkeit dazu finden Sie unten nach dem Formular. Vielen Dank für Ihre Unterstützung!
+        </div>
       </section>
 
       <section id="brief">
@@ -293,14 +341,14 @@ input[type="submit"][disabled] {
 
 {Anrede}
 
-Sehr geehrte Damen und Herren,
+
 ich wende mich an Sie als Bürger bzw. Bürgerin Ihres Wahlkreises mit einem Anliegen, das viele Menschen und Betriebe vor Ort betrifft: die Zukunft der Energiewende.
 
 Bundesministerin Reiche plant, den Ausbau der Erneuerbaren zu drosseln, die feste Einspeisevergütung abzuschaffen und stattdessen neue Erdgaskraftwerke zu bauen. Gleichzeitig bereitet die Bundesnetzagentur mit ihrem Diskussionspapier AgNes neue Belastungen für Erzeuger von erneuerbarem Strom vor.
 Zusätzlich sieht das geplante Netzpaket Maßnahmen vor, die Investitionen in Solar- und Windanlagen massiv erschweren würden. Bürgerinnen und Bürger würden geplante Solaranlagen nicht mehr bauen, Unternehmen würden Investitionen verschieben, und zahlreiche Handwerksbetriebe im Solarbereich verlören ihre Aufträge.
 
 Deshalb unterstütze ich die Forderungen der Initiative „Sonnenstrom statt Erdgasstrom“, die Bürger, Wirtschaft und Klima entlasten:
-              
+
 1. Den bisherigen Entwurf des Netzpakets zurückziehen, weil er Investitionen in erneuerbare Energien massiv gefährdet.
 2. Keine neuen Erdgaskraftwerke. Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.
 3. Ausbau der Erneuerbaren beschleunigen statt durch neue Hürden auszubremsen.
@@ -308,7 +356,7 @@ Deshalb unterstütze ich die Forderungen der Initiative „Sonnenstrom statt Erd
 5. Bestandsschutz und keine Zusatzbelastungen für erneuerbare Stromerzeugung.
 
 Ich bitte Sie, sich im Bundestag dafür einzusetzen, dass die Energiewende nicht ausgebremst, sondern weiter vorangebracht wird. Dieser Brief entstand im Rahmen der Aktion „Sonnenstrom statt Erdgasstrom“.
-              
+
 Weitere Informationen finden Sie unter: www.aktionsolarstrom.de
 Vielen Dank für Ihre Aufmerksamkeit. Über eine Rückmeldung würde ich mich sehr freuen.
 
@@ -316,6 +364,7 @@ Mit freundlichen Grüßen
 
 {Vorname} {Nachname}
             </textarea>
+
             <p class="notice">
               <strong>Hinweis:</strong> Sie können den Brieftext anpassen. Ihre Änderungen werden genau so übernommen.
               Bitte prüfen Sie die Kopie, die wir Ihnen per E-Mail zusenden, auf eventuelle Fehler und melden Sie uns Abweichungen
@@ -342,6 +391,32 @@ Mit freundlichen Grüßen
                 Wir verwenden Ihre Angaben ausschließlich zur Zustellung des Briefes. Details siehe <a href="Datenschutz.html">Datenschutz</a>.
               </div>
             </div>
+          </fieldset>
+
+          <!-- EINMALIGE Unterstützungsbox: direkt vor dem Absenden -->
+          <fieldset>
+            <legend>Kurz bevor Sie den Brief abschicken</legend>
+
+            <p style="margin:0 0 10px;">
+              Wenn Sie wollen: Einmalig  1 oder 2 Euro, damit wir mehr Briefe real auf Papier ins System bringen.
+              Alternativ können Sie uns auch mit 1 oder 2 Euro monatlich  auf Patreon unterstützen.
+            </p>
+
+            <div class="support-actions" aria-label="Unterstützung auswählen">
+              <a class="support-btn primary" href="https://buy.stripe.com/6oU5kDfHaeFW6Ut3Hhg7e02" target="_blank" rel="noopener">
+                1 Euro einmalig
+              </a>
+              <a class="support-btn" href="https://buy.stripe.com/aFa28r7aE69q92B91Bg7e03" target="_blank" rel="noopener">
+                2 Euro einmalig
+              </a>
+              <a class="support-btn" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
+  Monatlich via Patreon
+</a>
+            </div>
+
+            <p class="hint" style="margin:0;">
+              Wichtig: Unterstützung ist freiwillig. Der Brief funktioniert auch ohne.
+            </p>
           </fieldset>
 
           <div class="actions">
@@ -620,7 +695,6 @@ Mit freundlichen Grüßen
       return result;
     };
 
-    // Erst-Render (leer)
     renderExtraList();
   </script>
 
@@ -636,7 +710,6 @@ Mit freundlichen Grüßen
     const topPLZ=()=>($('#plz')?.value||'').trim();
     const topCity=()=>($('#city')?.value||'').trim();
 
-    // ZIP-Checkbox abhängig von "Kopie an mich"
     const copyCB = document.getElementById('copy_to_self');
     const zipCB  = document.getElementById('copy_zip_to_self');
     function toggleZipEnable(){
@@ -703,12 +776,11 @@ Mit freundlichen Grüßen
       payload.consent_print    = fd.has('consent_print');
       payload.message          = finalMsg;
 
-      // Extra-Empfänger & Primary mitsenden
       try{
         if (window.getSelectedRecipients) {
           const recips = window.getSelectedRecipients() || [];
           if (Array.isArray(recips) && recips.length) {
-            payload.extra_recipients = recips.filter((_,i)=>i>0); // alles außer primary
+            payload.extra_recipients = recips.filter((_,i)=>i>0);
           }
         }
         if (window.getPrimaryRecipient) {
@@ -736,42 +808,30 @@ Mit freundlichen Grüßen
     });
   })();
   </script>
+
   <script>
-(function(){
-  // NUR die Einwilligungs-Logik, keine anderen Funktionen werden berührt
-  const form   = document.getElementById('letterForm') || document.querySelector('form');
-  if (!form) return;
-  const consent = form.querySelector('#consent_print');
-  const submit  = form.querySelector('button[type="submit"], input[type="submit"]');
-  if (!consent || !submit) return;
+  (function(){
+    const form   = document.getElementById('letterForm') || document.querySelector('form');
+    if (!form) return;
+    const consent = form.querySelector('#consent_print');
+    const submit  = form.querySelector('button[type="submit"], input[type="submit"]');
+    if (!consent || !submit) return;
 
-  function sync(){ submit.disabled = !consent.checked; }
+    function sync(){ submit.disabled = !consent.checked; }
 
-  // initial: Button „tot“, bis Häkchen gesetzt
-  sync();
-  consent.addEventListener('change', sync);
+    sync();
+    consent.addEventListener('change', sync);
 
-  // Extra-Sicherheit beim Absenden (falls jemand den Button manuell reaktiviert)
-  form.addEventListener('submit', function(e){
-    if (!consent.checked) {
-      e.preventDefault();
-      // kurzes, natives Validierungsfeedback für die Checkbox
-      consent.setCustomValidity('Bitte bestätigen Sie den physischen Postversand.');
-      form.reportValidity();
-      setTimeout(()=>consent.setCustomValidity(''), 0);
-    }
-  }, true);
-})();
-</script>
+    form.addEventListener('submit', function(e){
+      if (!consent.checked) {
+        e.preventDefault();
+        consent.setCustomValidity('Bitte bestätigen Sie den physischen Postversand.');
+        form.reportValidity();
+        setTimeout(()=>consent.setCustomValidity(''), 0);
+      }
+    }, true);
+  })();
+  </script>
 
 </body>
 </html>
-      
-
-
-
-
-
-
-
-
