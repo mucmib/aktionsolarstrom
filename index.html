@@ -110,7 +110,10 @@
     }
 
     .hero{
-      display:flex; align-items:center; justify-content:center;
+      display:flex;
+      flex-direction: column; /* FIX: Panel + Unterbuttons sauber untereinander */
+      align-items:center;
+      justify-content:center;
       text-align:center; color:#fff;
       padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px);
       position:relative;
@@ -154,6 +157,95 @@
       transform: translateY(-2px);
       box-shadow:0 6px 22px rgba(10,125,50,.35);
     }
+
+    /* === Buttons unter dem grünen Hero-Kasten (FIX: echtes CSS, keine Verschachtelung) === */
+    .hero-under-ctas{
+      display:flex;
+      gap:12px;
+      justify-content:space-between;
+      align-items:stretch;
+      width:min(92vw, 760px);
+      max-width:760px;
+      margin:14px auto 0;
+    }
+
+    .hero-under-btn{
+      flex:1 1 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:12px 14px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:800;
+      background:#ffffff;
+      color:#0a7d32;
+      border:1px solid rgba(255,255,255,.65);
+      box-shadow:0 10px 22px rgba(0,0,0,.16);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .hero-under-btn:hover{
+      transform: translateY(-2px);
+      box-shadow:0 14px 28px rgba(0,0,0,.20);
+      text-decoration:none;
+    }
+
+    .hero-under-btn--mid{
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color:#fff;
+      border:0;
+    }
+
+    @media (max-width:720px){
+      .hero-under-ctas{
+        flex-direction:column;
+      }
+      .hero-under-btn{
+        width:100%;
+      }
+    }
+
+/* === Hinweistext unter den Unterstützen-Buttons === */
+.hero-under-note{
+  width:min(92vw, 760px);
+  max-width:760px;
+  margin:10px auto 0;
+  padding:10px 14px;
+  border-radius:12px;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.22);
+  color: rgba(255,255,255,.92);
+  font-size: .95rem;
+  line-height: 1.45;
+  box-shadow: 0 10px 22px rgba(0,0,0,.12);
+  backdrop-filter: blur(2px);
+}
+
+.hero-under-note strong{
+  color:#fff;
+  font-weight:800;
+}
+
+.hero-under-note a{
+  color:#ffd84a;
+  font-weight:800;
+  text-decoration:none;
+  border-bottom: 1px solid rgba(255,216,74,.45);
+}
+
+.hero-under-note a:hover{
+  text-decoration:none;
+  border-bottom-color: rgba(255,216,74,.85);
+}
+
+@media (max-width:600px){
+  .hero-under-note{
+    font-size:.92rem;
+    padding:10px 12px;
+  }
+}
 
     /* ===== Zähler ===== */
     .stats-wrap{
@@ -310,121 +402,117 @@
     .theme-toggle button[aria-pressed="true"]{
       background: linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; border-color:transparent;
     }
+
     /* === Partner-Overlay: Kontrast-Fix === */
-.partnerCard .info{
-  /* dunkler, homogener Hintergrund statt sehr transparenter Verlauf */
-  background: linear-gradient(
-    to top,
-    rgba(7, 34, 18, .90) 0%,
-    rgba(7, 34, 18, .82) 60%,
-    rgba(7, 34, 18, .50) 100%
-  );
-  color:#fff;
-  text-shadow: 0 1px 1px rgba(0,0,0,.45);  /* hebt Weiß deutlich ab */
-  padding: 16px 16px 14px;
-}
-.partnerCard .info h3{
-  font-size: 1.05rem;
-  margin-bottom: 6px;
-}
-.partnerCard .info p{
-  font-size: .92rem;
-  line-height: 1.45;
-  opacity: .98;               /* mehr Lesbarkeit als .95 */
-}
+    .partnerCard .info{
+      background: linear-gradient(
+        to top,
+        rgba(7, 34, 18, .90) 0%,
+        rgba(7, 34, 18, .82) 60%,
+        rgba(7, 34, 18, .50) 100%
+      );
+      color:#fff;
+      text-shadow: 0 1px 1px rgba(0,0,0,.45);
+      padding: 16px 16px 14px;
+    }
+    .partnerCard .info h3{
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+    }
+    .partnerCard .info p{
+      font-size: .92rem;
+      line-height: 1.45;
+      opacity: .98;
+    }
 
-/* Link gut sichtbar als „Pill“ */
-.partnerCard .info a{
-  display:inline-block;
-  margin-top: 8px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: #ffd84a;        /* Solar-Gelb */
-  color: #0b3d16;             /* sehr dunkles Grün für 7:1 Kontrast */
-  font-weight: 800;
-  text-decoration: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,.22);
-}
-.partnerCard .info a:hover{
-  filter: brightness(.95);
-}
+    /* Link gut sichtbar als „Pill“ */
+    .partnerCard .info a{
+      display:inline-block;
+      margin-top: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #ffd84a;
+      color: #0b3d16;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,.22);
+    }
+    .partnerCard .info a:hover{
+      filter: brightness(.95);
+    }
 
-/* etwas dunkleres Logo-Panel, damit der Übergang stimmig wirkt */
-.partnerCard .logoBox{
-  background:#eef3ef;
-}
-/* === Partner-Logos größer + Overlay luftig === */
-.partnerCard .logoBox {
-  height: 250px;                /* vorher 120px */
-  background: #f4f6f5;
-}
+    /* etwas dunkleres Logo-Panel, damit der Übergang stimmig wirkt */
+    .partnerCard .logoBox{
+      background:#eef3ef;
+    }
 
-.partnerCard img {
-  max-height: 110px;            /* Logos dürfen größer werden */
-}
+    /* === Partner-Logos größer + Overlay luftig === */
+    .partnerCard .logoBox {
+      height: 250px;
+      background: #f4f6f5;
+    }
+    .partnerCard img {
+      max-height: 110px;
+    }
 
-/* Overlay anpassen */
-.partnerCard .info {
-  justify-content: center;      /* Text in der Mitte statt unten */
-  padding: 20px 18px;
-  font-size: 1rem;
-}
+    /* Overlay anpassen */
+    .partnerCard .info {
+      justify-content: center;
+      padding: 20px 18px;
+      font-size: 1rem;
+    }
+    .partnerCard .info h3 {
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+    }
+    .partnerCard .info p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
 
-.partnerCard .info h3 {
-  font-size: 1.15rem;
-  margin-bottom: 8px;
-}
+    /* === Lazy YouTube === */
+    .yt-lazy{ position:relative; border-radius:12px; overflow:hidden; background:#000; box-shadow:0 6px 24px rgba(0,0,0,.15); }
+    .yt-lazy .yt-play{
+      position:relative; display:block; width:100%; aspect-ratio:16/9;
+      border:0; padding:0; background:none; cursor:pointer;
+    }
+    .yt-lazy img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.9) contrast(1.05); }
+    .yt-lazy .yt-badge{
+      position:absolute; left:12px; top:12px; z-index:2;
+      background:#ffffffcc; backdrop-filter:blur(6px); color:#0a7d32;
+      font-weight:700; padding:4px 8px; border-radius:8px; font-size:.85rem;
+    }
+    .yt-lazy .yt-icon{
+      position:absolute; inset:auto; left:50%; top:50%; transform:translate(-50%,-50%);
+      display:inline-grid; place-items:center; width:74px; height:74px; border-radius:999px;
+      background:linear-gradient(135deg,#0a7d32,#0bbd54); box-shadow:0 10px 30px rgba(10,125,50,.35);
+    }
+    .yt-lazy .yt-icon::before{
+      content:""; display:block; width:0; height:0; border-left:18px solid #fff; border-top:12px solid transparent; border-bottom:12px solid transparent; margin-left:4px;
+    }
+    .yt-lazy .yt-caption{
+      position:absolute; left:0; right:0; bottom:0; padding:10px 12px; color:#fff; font-weight:600;
+      background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.55) 70%, rgba(0,0,0,.75) 100%);
+      text-shadow:0 1px 1px rgba(0,0,0,.5);
+    }
+    .yt-lazy .yt-play:focus-visible{ outline: var(--focus-ring); outline-offset:4px; border-radius:12px; }
 
-.partnerCard .info p {
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
+    /* Event-Einschub */
+    .event-announcement{ background:#fffef8; }
+    .event-grid{ display:grid; gap:18px; grid-template-columns: 1fr 1.3fr; align-items:start; }
+    .event-media{ margin:0; }
+    .event-media img{ border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.08); }
+    .event-body .event-lead{ margin:.2rem 0 1rem; font-weight:600; }
+    .event-facts{ margin:.4rem 0 1rem; padding-left:1.1rem; }
+    .event-facts li{ margin:.2rem 0; }
+    .event-cta{ display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 6px; }
+    .event-note{ font-size:.95rem; color:var(--muted); }
 
-/* === Lazy YouTube === */
-.yt-lazy{ position:relative; border-radius:12px; overflow:hidden; background:#000; box-shadow:0 6px 24px rgba(0,0,0,.15); }
-.yt-lazy .yt-play{
-  position:relative; display:block; width:100%; aspect-ratio:16/9;
-  border:0; padding:0; background:none; cursor:pointer;
-}
-.yt-lazy img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.9) contrast(1.05); }
-.yt-lazy .yt-badge{
-  position:absolute; left:12px; top:12px; z-index:2;
-  background:#ffffffcc; backdrop-filter:blur(6px); color:#0a7d32;
-  font-weight:700; padding:4px 8px; border-radius:8px; font-size:.85rem;
-}
-.yt-lazy .yt-icon{
-  position:absolute; inset:auto; left:50%; top:50%; transform:translate(-50%,-50%);
-  display:inline-grid; place-items:center; width:74px; height:74px; border-radius:999px;
-  background:linear-gradient(135deg,#0a7d32,#0bbd54); box-shadow:0 10px 30px rgba(10,125,50,.35);
-}
-.yt-lazy .yt-icon::before{
-  content:""; display:block; width:0; height:0; border-left:18px solid #fff; border-top:12px solid transparent; border-bottom:12px solid transparent; margin-left:4px;
-}
-.yt-lazy .yt-caption{
-  position:absolute; left:0; right:0; bottom:0; padding:10px 12px; color:#fff; font-weight:600;
-  background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.55) 70%, rgba(0,0,0,.75) 100%);
-  text-shadow:0 1px 1px rgba(0,0,0,.5);
-}
-/* Keyboard focus */
-.yt-lazy .yt-play:focus-visible{ outline: var(--focus-ring); outline-offset:4px; border-radius:12px; }
-
-/* Event-Einschub */
-.event-announcement{ background:#fffef8; }
-.event-grid{ display:grid; gap:18px; grid-template-columns: 1fr 1.3fr; align-items:start; }
-.event-media{ margin:0; }
-.event-media img{ border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.08); }
-.event-body .event-lead{ margin:.2rem 0 1rem; font-weight:600; }
-.event-facts{ margin:.4rem 0 1rem; padding-left:1.1rem; }
-.event-facts li{ margin:.2rem 0; }
-.event-cta{ display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 6px; }
-.event-note{ font-size:.95rem; color:var(--muted); }
-
-@media (max-width:900px){
-  .event-grid{ grid-template-columns:1fr; }
-}
-    
+    @media (max-width:900px){
+      .event-grid{ grid-template-columns:1fr; }
+    }
   </style>
-  
+
 </head>
 <body class="theme-warm">
   <div class="page">
@@ -438,6 +526,7 @@
     <header class="site-header middle">
       <div class="hero-wrap">
         <div class="hero">
+
           <div class="hero-panel reveal">
             <img class="logo" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
             <h1>Solarstrom statt Erdgas-Strom</h1>
@@ -449,6 +538,27 @@
               <a class="cta secondary" href="#material">Materialien</a>
             </div>
           </div>
+
+          <!-- NEU: Unterstützen-Buttons unter dem grünen Kasten -->
+          <div class="hero-under-ctas reveal" aria-label="Unterstützen">
+            <a class="hero-under-btn" href="https://buy.stripe.com/6oU5kDfHaeFW6Ut3Hhg7e02" target="_blank" rel="noopener">
+              1 Euro einmalig
+            </a>
+
+            <a class="hero-under-btn hero-under-btn--mid" href="https://buy.stripe.com/aFa28r7aE69q92B91Bg7e03" target="_blank" rel="noopener">
+              2 Euro einmalig
+            </a>
+
+            <a class="hero-under-btn" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
+              Monatlich via Patreon
+            </a>
+          </div>
+
+<div class="hero-under-note reveal">
+  <strong>Nur wenn Sie mögen:</strong> freiwillig 1 oder 2 Euro einmalig, damit wir mehr Briefe real auf Papier ins System bringen.
+  Alternativ 1 oder 2 Euro monatlich via <a href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">Patreon</a>.
+</div>
+
         </div>
       </div>
 
@@ -474,7 +584,7 @@
       <!-- Einleitung -->
       <section id="intro">
         <div class="lead">
-          Wirtschaftsministerin Reiche und Bundeskanzler Friedrich Merz sprechen von Technologieoffenheit und Wirtschaftlichkeit. Mit ihren konkreten Forderungen werden aber einseitig fossile Kraftwerke begünstigt und der Ausbau günstiger Erneuerbaren gebremst. 
+          Wirtschaftsministerin Reiche und Bundeskanzler Friedrich Merz sprechen von Technologieoffenheit und Wirtschaftlichkeit. Mit ihren konkreten Forderungen werden aber einseitig fossile Kraftwerke begünstigt und der Ausbau günstiger Erneuerbaren gebremst.
           Weniger Ausbau bedeutet: Bürger und Unternehmen mit höheren Stromkosten belasten, den Wirtschaftsstandort Deutschland schwächen, die Abhängigkeit von fossilen Importen aus unzuverlässigen Staaten verlängern und das Klimaziel gefährden.
           Weniger Ausbau steht zudem im Gegensatz zum Wahlprogramm 2025 der Union: <em>„Für uns ist klar: Energie muss bezahlbar, sicher und sauber sein“</em>.
         </div>
@@ -484,133 +594,131 @@
       </section>
 
       <!-- === RÜCKBLICK: Roth 20.11.2025 (mit Aufzeichnung) === -->
-<section id="event-roth" class="card event-announcement reveal" style="border-left:6px solid #f6b10a;">
-  <div class="event-grid">
-    <figure class="event-media">
-      <img src="assets/event-roth-2025.jpg" alt="Rückblick: Teurer Erdgasstrom statt Solarstrom? – Veranstaltungsposter Roth">
-    </figure>
+      <section id="event-roth" class="card event-announcement reveal" style="border-left:6px solid #f6b10a;">
+        <div class="event-grid">
+          <figure class="event-media">
+            <img src="assets/event-roth-2025.jpg" alt="Rückblick: Teurer Erdgasstrom statt Solarstrom? – Veranstaltungsposter Roth">
+          </figure>
 
-    <div class="event-body">
-      <h2 style="margin:0 0 6px;">
-        Rückblick: <span style="white-space:nowrap">„Teurer Erdgasstrom statt Solarstrom?“</span>
-      </h2>
-      <p class="event-lead">
-        Infoabend zur Energiewende in der Region – mit Diskussion zu Kosten, Investitions- &amp; Bestandsschutz.
-      </p>
+          <div class="event-body">
+            <h2 style="margin:0 0 6px;">
+              Rückblick: <span style="white-space:nowrap">„Teurer Erdgasstrom statt Solarstrom?“</span>
+            </h2>
+            <p class="event-lead">
+              Infoabend zur Energiewende in der Region – mit Diskussion zu Kosten, Investitions- &amp; Bestandsschutz.
+            </p>
 
-      <ul class="event-facts" aria-label="Veranstaltungsdetails">
-        <li><strong>Datum:</strong> Donnerstag, 20.11.2025, <strong>18:30 Uhr</strong></li>
-        <li><strong>Ort:</strong> GLASHAUS, Münchener Straße 45 · 91154 Roth</li>
-        <li><strong>Gäste:</strong> u.a. Hans-Josef Fell (EWG)</li>
-        <li><strong>Themen:</strong> Kosten, Einspeisevergütung, Eigenverbrauch, Investitions- &amp; Bestandsschutz</li>
-      </ul>
+            <ul class="event-facts" aria-label="Veranstaltungsdetails">
+              <li><strong>Datum:</strong> Donnerstag, 20.11.2025, <strong>18:30 Uhr</strong></li>
+              <li><strong>Ort:</strong> GLASHAUS, Münchener Straße 45 · 91154 Roth</li>
+              <li><strong>Gäste:</strong> u.a. Hans-Josef Fell (EWG)</li>
+              <li><strong>Themen:</strong> Kosten, Einspeisevergütung, Eigenverbrauch, Investitions- &amp; Bestandsschutz</li>
+            </ul>
 
-      <!-- Aufzeichnung (kleines Lazy-Video) -->
-      <div class="video-wrap yt-lazy"
-           style="max-width:520px; margin: 10px 0 8px;"
-           data-ytid="b27hVTwddcg"
-           aria-label="YouTube-Aufzeichnung: Veranstaltung Roth – Klick zum Abspielen">
-        <button class="yt-play" type="button" aria-label="Aufzeichnung abspielen">
-          <span class="yt-badge">Aufzeichnung</span>
-          <img src="https://i.ytimg.com/vi/b27hVTwddcg/hqdefault.jpg"
-               loading="lazy"
-               decoding="async"
-               alt="Vorschaubild – Aufzeichnung der Veranstaltung in Roth">
-          <span class="yt-icon" aria-hidden="true"></span>
-          <div class="yt-caption">🎥 Aufzeichnung ansehen</div>
-        </button>
+            <!-- Aufzeichnung (kleines Lazy-Video) -->
+            <div class="video-wrap yt-lazy"
+                 style="max-width:520px; margin: 10px 0 8px;"
+                 data-ytid="b27hVTwddcg"
+                 aria-label="YouTube-Aufzeichnung: Veranstaltung Roth – Klick zum Abspielen">
+              <button class="yt-play" type="button" aria-label="Aufzeichnung abspielen">
+                <span class="yt-badge">Aufzeichnung</span>
+                <img src="https://i.ytimg.com/vi/b27hVTwddcg/hqdefault.jpg"
+                     loading="lazy"
+                     decoding="async"
+                     alt="Vorschaubild – Aufzeichnung der Veranstaltung in Roth">
+                <span class="yt-icon" aria-hidden="true"></span>
+                <div class="yt-caption">🎥 Aufzeichnung ansehen</div>
+              </button>
 
-        <noscript>
-          <p style="margin:10px 0 0;">
-            <a class="cta secondary" href="https://youtu.be/b27hVTwddcg?si=hh1sHuA0kOpDp-Yq" target="_blank" rel="noopener">
-              Aufzeichnung auf YouTube öffnen
-            </a>
-          </p>
-        </noscript>
-      </div>
+              <noscript>
+                <p style="margin:10px 0 0;">
+                  <a class="cta secondary" href="https://youtu.be/b27hVTwddcg?si=hh1sHuA0kOpDp-Yq" target="_blank" rel="noopener">
+                    Aufzeichnung auf YouTube öffnen
+                  </a>
+                </p>
+              </noscript>
+            </div>
 
-      <p style="margin:8px 0 0;">
-        <a class="cta secondary" href="https://youtu.be/b27hVTwddcg?si=hh1sHuA0kOpDp-Yq" target="_blank" rel="noopener">
-          Aufzeichnung auf YouTube ansehen
-        </a>
-      </p>
+            <p style="margin:8px 0 0;">
+              <a class="cta secondary" href="https://youtu.be/b27hVTwddcg?si=hh1sHuA0kOpDp-Yq" target="_blank" rel="noopener">
+                Aufzeichnung auf YouTube ansehen
+              </a>
+            </p>
 
-      <p class="event-note" style="margin-top:10px;">
-        Hinweis: Die Veranstaltung liegt in der Vergangenheit – hier ist die Aufzeichnung zur Dokumentation und Weitergabe.
-      </p>
-    </div>
-  </div>
+            <p class="event-note" style="margin-top:10px;">
+              Hinweis: Die Veranstaltung liegt in der Vergangenheit – hier ist die Aufzeichnung zur Dokumentation und Weitergabe.
+            </p>
+          </div>
+        </div>
 
-  <!-- Strukturierte Daten: Event (abgeschlossen) + Video -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Event",
-    "name":"Teurer Erdgasstrom statt Solarstrom?",
-    "startDate":"2025-11-20T18:30:00+01:00",
-    "endDate":"2025-11-20T20:30:00+01:00",
-    "eventStatus":"https://schema.org/EventCompleted",
-    "eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
-    "location":{
-      "@type":"Place",
-      "name":"GLASHAUS",
-      "address":{
-        "@type":"PostalAddress",
-        "streetAddress":"Münchener Straße 45",
-        "postalCode":"91154",
-        "addressLocality":"Roth",
-        "addressCountry":"DE"
-      }
-    },
-    "image":["https://www.aktionsolarstrom.de/assets/event-roth-2025.jpg"],
-    "description":"Rückblick auf den Infoabend zu Kosten, Einspeisevergütung, Eigenverbrauch sowie Investitions- und Bestandsschutz. Aufzeichnung verfügbar.",
-    "organizer":{"@type":"Organization","name":"VEEG e. V. & Energy Watch Group"}
-  }
-  </script>
+        <!-- Strukturierte Daten: Event (abgeschlossen) + Video -->
+        <script type="application/ld+json">
+        {
+          "@context":"https://schema.org",
+          "@type":"Event",
+          "name":"Teurer Erdgasstrom statt Solarstrom?",
+          "startDate":"2025-11-20T18:30:00+01:00",
+          "endDate":"2025-11-20T20:30:00+01:00",
+          "eventStatus":"https://schema.org/EventCompleted",
+          "eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
+          "location":{
+            "@type":"Place",
+            "name":"GLASHAUS",
+            "address":{
+              "@type":"PostalAddress",
+              "streetAddress":"Münchener Straße 45",
+              "postalCode":"91154",
+              "addressLocality":"Roth",
+              "addressCountry":"DE"
+            }
+          },
+          "image":["https://www.aktionsolarstrom.de/assets/event-roth-2025.jpg"],
+          "description":"Rückblick auf den Infoabend zu Kosten, Einspeisevergütung, Eigenverbrauch sowie Investitions- und Bestandsschutz. Aufzeichnung verfügbar.",
+          "organizer":{"@type":"Organization","name":"VEEG e. V. & Energy Watch Group"}
+        }
+        </script>
 
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"VideoObject",
-    "name":"Aufzeichnung: Teurer Erdgasstrom statt Solarstrom? (Roth, 20.11.2025)",
-    "thumbnailUrl":["https://i.ytimg.com/vi/b27hVTwddcg/hqdefault.jpg"],
-    "embedUrl":"https://www.youtube-nocookie.com/embed/b27hVTwddcg",
-    "url":"https://youtu.be/b27hVTwddcg?si=hh1sHuA0kOpDp-Yq"
-  }
-  </script>
-</section>
-<!-- === /RÜCKBLICK === -->
+        <script type="application/ld+json">
+        {
+          "@context":"https://schema.org",
+          "@type":"VideoObject",
+          "name":"Aufzeichnung: Teurer Erdgasstrom statt Solarstrom? (Roth, 20.11.2025)",
+          "thumbnailUrl":["https://i.ytimg.com/vi/b27hVTwddcg/hqdefault.jpg"],
+          "embedUrl":"https://www.youtube-nocookie.com/embed/b27hVTwddcg",
+          "url":"https://youtu.be/b27hVTwddcg?si=hh1sHuA0kOpDp-Yq"
+        }
+        </script>
+      </section>
+      <!-- === /RÜCKBLICK === -->
 
-      
-  <!-- === Rückblick: Gespräch mit Dr. Nina Scheer (Lazy YouTube) === -->
-<section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
-  <h2 style="margin-top:0;">Jetzt ansehen: Gespräch mit Dr. Nina Scheer (SPD)</h2>
+      <!-- === Rückblick: Gespräch mit Dr. Nina Scheer (Lazy YouTube) === -->
+      <section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
+        <h2 style="margin-top:0;">Jetzt ansehen: Gespräch mit Dr. Nina Scheer (SPD)</h2>
 
-  <p>
-    Nina Scheer, energiepolitische Sprecherin der SPD-Bundestagsfraktion, bezieht klar Stellung zu den fossilen
-    Rollback-Plänen von Bundeswirtschaftsministerin Reiche. Sie macht deutlich: Der Koalitionsvertrag lässt keinen
-    „Neustart der Energiewende“ im Sinne von Ministerin Reiche (CDU) zu. Die SPD hält an Ausbau der Erneuerbaren,
-    Bestandsschutz und an keiner neuen Abhängigkeit von fossilem Gas fest. Auch eine Streichung der festen
-    Einspeisevergütung findet sich nicht im Vertrag – und zusätzliche Abgaben für Bürger-Solar lehnt sie ab.
-  </p>
+        <p>
+          Nina Scheer, energiepolitische Sprecherin der SPD-Bundestagsfraktion, bezieht klar Stellung zu den fossilen
+          Rollback-Plänen von Bundeswirtschaftsministerin Reiche. Sie macht deutlich: Der Koalitionsvertrag lässt keinen
+          „Neustart der Energiewende“ im Sinne von Ministerin Reiche (CDU) zu. Die SPD hält an Ausbau der Erneuerbaren,
+          Bestandsschutz und an keiner neuen Abhängigkeit von fossilem Gas fest. Auch eine Streichung der festen
+          Einspeisevergütung findet sich nicht im Vertrag – und zusätzliche Abgaben für Bürger-Solar lehnt sie ab.
+        </p>
 
-  <!-- Lazy-YouTube: lädt erst beim Klick -->
-  <div class="video-wrap yt-lazy" data-ytid="teqTU9uoRqw" aria-label="YouTube: Gespräch mit Dr. Nina Scheer">
-    <button class="yt-play" type="button" aria-label="Video abspielen">
-      <span class="yt-badge">LMdE TV</span>
-      <img src="https://i.ytimg.com/vi/teqTU9uoRqw/hqdefault.jpg" loading="lazy"
-           alt="Vorschaubild – Gespräch mit Dr. Nina Scheer">
-      <span class="yt-icon" aria-hidden="true"></span>
-      <div class="yt-caption">🎥 Jetzt ansehen auf YouTube</div>
-    </button>
-    <noscript>
-      <p><a class="cta secondary" href="https://www.youtube.com/watch?v=teqTU9uoRqw" target="_blank" rel="noopener">
-        Video auf YouTube öffnen
-      </a></p>
-    </noscript>
-  </div>
-</section>
-
+        <!-- Lazy-YouTube: lädt erst beim Klick -->
+        <div class="video-wrap yt-lazy" data-ytid="teqTU9uoRqw" aria-label="YouTube: Gespräch mit Dr. Nina Scheer">
+          <button class="yt-play" type="button" aria-label="Video abspielen">
+            <span class="yt-badge">LMdE TV</span>
+            <img src="https://i.ytimg.com/vi/teqTU9uoRqw/hqdefault.jpg" loading="lazy"
+                 alt="Vorschaubild – Gespräch mit Dr. Nina Scheer">
+            <span class="yt-icon" aria-hidden="true"></span>
+            <div class="yt-caption">🎥 Jetzt ansehen auf YouTube</div>
+          </button>
+          <noscript>
+            <p><a class="cta secondary" href="https://www.youtube.com/watch?v=teqTU9uoRqw" target="_blank" rel="noopener">
+              Video auf YouTube öffnen
+            </a></p>
+          </noscript>
+        </div>
+      </section>
 
       <!-- Aktuelle Sendung -->
       <section id="sendung">
@@ -792,12 +900,12 @@
   <script>
     // Smooth Scrolling für In-Page-Links
     document.addEventListener('click', (e) => {
-  const a = e.target.closest('a'); if (!a) return;
-  const href = a.getAttribute('href') || '';
-  if (!href.startsWith('#')) return;   // ← ignoriert mailto:, http(s), etc.
-  const el = document.querySelector(href);
-  if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
-});
+      const a = e.target.closest('a'); if (!a) return;
+      const href = a.getAttribute('href') || '';
+      if (!href.startsWith('#')) return;
+      const el = document.querySelector(href);
+      if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+    });
 
     // ---- Live-Zähler-Logik (PDFs) ----
     const STATS_URL = '/api/stats.json';
@@ -875,34 +983,31 @@
     })();
   </script>
 
-<script>
-  // Lazy-YouTube: ersetzt Platzhalter beim Klick durch nocookie-iframe mit Autoplay
-  document.addEventListener('click', function(e){
-    const btn = e.target.closest('.yt-lazy .yt-play'); if(!btn) return;
-    const wrap = btn.closest('.yt-lazy'); if(!wrap) return;
+  <script>
+    // Lazy-YouTube: ersetzt Platzhalter beim Klick durch nocookie-iframe mit Autoplay
+    document.addEventListener('click', function(e){
+      const btn = e.target.closest('.yt-lazy .yt-play'); if(!btn) return;
+      const wrap = btn.closest('.yt-lazy'); if(!wrap) return;
 
-    // akzeptiert beide Varianten: data-ytid ODER data-youtube-id
-    const id = wrap.dataset.ytid || wrap.dataset.youtubeId;
-    if(!id) return;
+      const id = wrap.dataset.ytid || wrap.dataset.youtubeId;
+      if(!id) return;
 
-    const title = wrap.dataset.youtubeTitle || 'YouTube Video Player';
+      const title = wrap.dataset.youtubeTitle || 'YouTube Video Player';
 
-    const iframe = document.createElement('iframe');
-    iframe.setAttribute('title', title);
-    iframe.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-    iframe.setAttribute('allowfullscreen','');
-    iframe.setAttribute('loading','lazy');
-    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      const iframe = document.createElement('iframe');
+      iframe.setAttribute('title', title);
+      iframe.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+      iframe.setAttribute('allowfullscreen','');
+      iframe.setAttribute('loading','lazy');
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
 
-    wrap.replaceChildren(iframe);
-  }, {passive:true});
-</script>
+      wrap.replaceChildren(iframe);
+    }, {passive:true});
+  </script>
 
-  
 </body>
 </html>
-
 
 
 
