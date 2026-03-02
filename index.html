@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Solarstrom statt Erdgas-Strom – Info & Mitmachen</title>
+
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
@@ -20,9 +21,11 @@
   <meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
 
   <meta name="description" content="Alle Infos zur Kampagne Solarstrom statt Erdgas-Strom: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+
   <style>
     /* === Design-Token === */
     :root{
@@ -37,7 +40,7 @@
       --shadow: 0 6px 28px rgba(0,0,0,.08);
       --shadow-lg: 0 18px 48px rgba(0,0,0,.12);
       --maxw: 960px;
-      --focus-ring: 2px solid #f6b10a; /* Focus Ring */
+      --focus-ring: 2px solid #f6b10a;
     }
 
     /* === Base === */
@@ -98,7 +101,6 @@
         linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)),
         url('assets/Bundestag.jpg') center 45%/cover no-repeat;
     }
-    /* Warme Tönung + Solar Glow */
     .hero-wrap::before{
       content:""; position:absolute; inset:0; pointer-events:none;
       background: linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02));
@@ -111,7 +113,7 @@
 
     .hero{
       display:flex;
-      flex-direction: column; /* FIX: Panel + Unterbuttons sauber untereinander */
+      flex-direction: column;
       align-items:center;
       justify-content:center;
       text-align:center; color:#fff;
@@ -126,7 +128,6 @@
       backdrop-filter: blur(2px);
       position:relative; overflow:hidden;
     }
-    /* Solar Highlight */
     .hero-panel::after{
       content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
       background: linear-gradient(90deg, #f6b10a, #ffd84a);
@@ -148,7 +149,6 @@
     .cta.primary{ background:linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; }
     .cta.secondary{ background:#fff; color:#0a7d32; border:1px solid #cfe7d8; }
     .cta:hover{ transform:translateY(-1px); }
-    /* CTA Finishing (Primärbutton) */
     .cta.primary{
       box-shadow:0 4px 15px rgba(10,125,50,.25);
       transition: transform .25s ease, box-shadow .25s ease;
@@ -158,94 +158,185 @@
       box-shadow:0 6px 22px rgba(10,125,50,.35);
     }
 
-    /* === Buttons unter dem grünen Hero-Kasten (FIX: echtes CSS, keine Verschachtelung) === */
-    .hero-under-ctas{
-      display:flex;
-      gap:12px;
-      justify-content:space-between;
-      align-items:stretch;
+    /* =========================
+       FREI WÄHLBAR (Stripe)
+       ========================= */
+    .hero-under-custom{
       width:min(92vw, 760px);
       max-width:760px;
       margin:14px auto 0;
+      padding:12px 14px;
+      border-radius:14px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 10px 22px rgba(0,0,0,.14);
+      backdrop-filter: blur(2px);
+      color:#fff;
     }
-
-    .hero-under-btn{
-      flex:1 1 0;
+    .hero-under-custom .custom-row{
+      display:flex;
+      gap:10px;
+      align-items:stretch;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .hero-under-custom label{
+      display:block;
+      width:100%;
+      text-align:left;
+      font-weight:800;
+      margin:0 0 8px;
+      color: rgba(255,255,255,.95);
+    }
+    .custom-input{
+      flex: 1 1 220px;
       display:flex;
       align-items:center;
+      gap:10px;
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(255,255,255,.65);
+      border-radius:12px;
+      padding:10px 12px;
+      color:#0a7d32;
+      box-shadow: 0 8px 18px rgba(0,0,0,.12);
+    }
+    .custom-input span{
+      font-weight:900;
+      color:#0a7d32;
+      opacity:.95;
+      white-space:nowrap;
+    }
+    .custom-input input{
+      width:100%;
+      border:0;
+      outline:0;
+      font: 800 16px/1.2 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:#0a7d32;
+      background:transparent;
+      min-width:110px;
+    }
+    .custom-submit{
+      flex: 0 0 auto;
+      display:inline-flex;
+      align-items:center;
       justify-content:center;
-      text-align:center;
+      padding:12px 16px;
+      border-radius:12px;
+      border:0;
+      cursor:pointer;
+      font-weight:900;
+      color:#fff;
+      background: linear-gradient(135deg, #f6b10a, #ffd84a);
+      box-shadow: 0 10px 22px rgba(0,0,0,.16);
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      min-width: 210px;
+    }
+    .custom-submit:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(0,0,0,.20);
+      filter: brightness(.98);
+    }
+    .custom-submit:disabled{
+      opacity:.7;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow: 0 8px 18px rgba(0,0,0,.14);
+    }
+    .custom-hint{
+      margin:10px 0 0;
+      font-size:.92rem;
+      line-height:1.35;
+      color: rgba(255,255,255,.90);
+      text-align:left;
+    }
+    .custom-error{
+      margin:10px 0 0;
+      font-size:.92rem;
+      line-height:1.35;
+      color: #ffe6a6;
+      text-align:left;
+      font-weight:800;
+      display:none;
+    }
+    .custom-ok{
+      margin:10px 0 0;
+      font-size:.92rem;
+      line-height:1.35;
+      color: rgba(255,255,255,.92);
+      text-align:left;
+      display:none;
+    }
+
+    /* ===== Patreon Block (NEU) ===== */
+    .hero-under-patreon{
+      width:min(92vw, 760px);
+      max-width:760px;
+      margin:10px auto 0;
+      padding:12px 14px;
+      border-radius:14px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 10px 22px rgba(0,0,0,.12);
+      backdrop-filter: blur(2px);
+      color: rgba(255,255,255,.95);
+      text-align:left;
+    }
+    .hero-under-patreon .patreon-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .patreon-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
       padding:12px 14px;
       border-radius:12px;
       text-decoration:none;
-      font-weight:800;
-      background:#ffffff;
-      color:#0a7d32;
-      border:1px solid rgba(255,255,255,.65);
+      font-weight:900;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color:#fff;
       box-shadow:0 10px 22px rgba(0,0,0,.16);
+      border:0;
+      min-width: 260px;
       transition: transform .25s ease, box-shadow .25s ease;
     }
-
-    .hero-under-btn:hover{
+    .patreon-btn:hover{
       transform: translateY(-2px);
       box-shadow:0 14px 28px rgba(0,0,0,.20);
       text-decoration:none;
     }
-
-    .hero-under-btn--mid{
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      color:#fff;
-      border:0;
+    .patreon-text{
+      flex: 1 1 240px;
+      font-size:.95rem;
+      line-height:1.45;
+      color: rgba(255,255,255,.92);
+    }
+    .patreon-text strong{ color:#fff; font-weight:900; }
+    @media (max-width:600px){
+      .patreon-btn{ width:100%; min-width:unset; }
+      .patreon-text{ font-size:.92rem; }
+      .custom-submit{ width:100%; min-width:unset; }
     }
 
-    @media (max-width:720px){
-      .hero-under-ctas{
-        flex-direction:column;
-      }
-      .hero-under-btn{
-        width:100%;
-      }
+    /* ===== Danke/Abbruch Meldung nach Stripe-Rückkehr ===== */
+    .donation-msg{
+      width:min(92vw, 760px);
+      max-width:760px;
+      margin:10px auto 0;
+      padding:10px 14px;
+      border-radius:12px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      color: rgba(255,255,255,.95);
+      font-weight:800;
+      box-shadow:0 10px 22px rgba(0,0,0,.12);
+      backdrop-filter: blur(2px);
     }
-
-/* === Hinweistext unter den Unterstützen-Buttons === */
-.hero-under-note{
-  width:min(92vw, 760px);
-  max-width:760px;
-  margin:10px auto 0;
-  padding:10px 14px;
-  border-radius:12px;
-  background: rgba(255,255,255,.14);
-  border: 1px solid rgba(255,255,255,.22);
-  color: rgba(255,255,255,.92);
-  font-size: .95rem;
-  line-height: 1.45;
-  box-shadow: 0 10px 22px rgba(0,0,0,.12);
-  backdrop-filter: blur(2px);
-}
-
-.hero-under-note strong{
-  color:#fff;
-  font-weight:800;
-}
-
-.hero-under-note a{
-  color:#ffd84a;
-  font-weight:800;
-  text-decoration:none;
-  border-bottom: 1px solid rgba(255,216,74,.45);
-}
-
-.hero-under-note a:hover{
-  text-decoration:none;
-  border-bottom-color: rgba(255,216,74,.85);
-}
-
-@media (max-width:600px){
-  .hero-under-note{
-    font-size:.92rem;
-    padding:10px 12px;
-  }
-}
+    .donation-msg.ok{ border-color: rgba(11,189,84,.55); }
+    .donation-msg.err{ border-color: rgba(246,177,10,.65); }
 
     /* ===== Zähler ===== */
     .stats-wrap{
@@ -288,7 +379,7 @@
       border:1px solid rgba(0,0,0,.06);
       border-radius: var(--radius);
       padding:18px;
-      background:#fffdf8; /* warm abgetönt */
+      background:#fffdf8;
       box-shadow: var(--shadow);
       transition: transform .2s ease, box-shadow .2s ease;
     }
@@ -335,46 +426,66 @@
       box-shadow:0 8px 26px rgba(0,0,0,.12);
     }
 
-    /* Logo-Box */
     .partnerCard .logoBox{
-      height:180px; display:flex; align-items:center; justify-content:center;
-      background:#f9fafb; border-bottom:1px solid #e5e7eb;
+      height:250px;
+      background: #f4f6f5;
+      display:flex; align-items:center; justify-content:center;
+      border-bottom:1px solid #e5e7eb;
     }
     .partnerCard img{
-      max-height:72px; width:auto; object-fit:contain;
+      max-height:110px; width:auto; object-fit:contain;
       filter:grayscale(100%); transition:filter .3s ease;
     }
     .partnerCard:hover img{filter:none;}
 
-    /* Overlay-Text */
     .partnerCard .info{
       position:absolute; inset:0;
-      display:flex; flex-direction:column; justify-content:flex-end;
-      background:linear-gradient(to top, rgba(10,125,50,.9) 0%, rgba(10,125,50,.2) 60%, transparent 100%);
-      color:#fff; padding:16px; opacity:0; transition:opacity .35s ease;
+      display:flex; flex-direction:column; justify-content:center;
+      background: linear-gradient(
+        to top,
+        rgba(7, 34, 18, .90) 0%,
+        rgba(7, 34, 18, .82) 60%,
+        rgba(7, 34, 18, .50) 100%
+      );
+      color:#fff;
+      text-shadow: 0 1px 1px rgba(0,0,0,.45);
+      padding: 20px 18px;
+      font-size: 1rem;
+      opacity:0;
+      transition:opacity .35s ease;
       backdrop-filter:blur(4px);
     }
     .partnerCard:hover .info{opacity:1;}
-
     .partnerCard .info h3{
-      margin:0 0 4px; font-size:1rem; font-weight:700; color:#fff;
+      font-size: 1.15rem;
+      margin:0 0 8px;
+      font-weight:800;
+      color:#fff;
     }
     .partnerCard .info p{
-      margin:0; font-size:.9rem; line-height:1.4; opacity:.95;
+      margin:0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      opacity: .98;
     }
     .partnerCard .info a{
-      color:#ffd84a; font-weight:600; text-decoration:none;
+      display:inline-block;
+      margin-top: 10px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #ffd84a;
+      color: #0b3d16;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,.22);
     }
-    .partnerCard .info a:hover{text-decoration:underline;}
+    .partnerCard .info a:hover{ filter: brightness(.95); }
 
-    /* Footer */
     footer .legal { text-align:center; display:block; }
 
-    /* Reveal Animation */
     .reveal{ opacity:0; transform: translateY(12px); }
     .reveal.is-visible{ opacity:1; transform: translateY(0); transition: opacity .55s ease, transform .55s ease; }
 
-    /* ==== Sticky CTA (mobil) ==== */
     @media (max-width:700px){
       .sticky-cta{
         position:fixed; left:0; right:0; bottom:12px; z-index:1000;
@@ -388,7 +499,6 @@
       }
     }
 
-    /* ===== Theme Toggle Button ===== */
     .theme-toggle{
       position: fixed; top: 12px; right: 12px; z-index: 1500;
       display:flex; align-items:center; gap:8px;
@@ -401,73 +511,6 @@
     }
     .theme-toggle button[aria-pressed="true"]{
       background: linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; border-color:transparent;
-    }
-
-    /* === Partner-Overlay: Kontrast-Fix === */
-    .partnerCard .info{
-      background: linear-gradient(
-        to top,
-        rgba(7, 34, 18, .90) 0%,
-        rgba(7, 34, 18, .82) 60%,
-        rgba(7, 34, 18, .50) 100%
-      );
-      color:#fff;
-      text-shadow: 0 1px 1px rgba(0,0,0,.45);
-      padding: 16px 16px 14px;
-    }
-    .partnerCard .info h3{
-      font-size: 1.05rem;
-      margin-bottom: 6px;
-    }
-    .partnerCard .info p{
-      font-size: .92rem;
-      line-height: 1.45;
-      opacity: .98;
-    }
-
-    /* Link gut sichtbar als „Pill“ */
-    .partnerCard .info a{
-      display:inline-block;
-      margin-top: 8px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: #ffd84a;
-      color: #0b3d16;
-      font-weight: 800;
-      text-decoration: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,.22);
-    }
-    .partnerCard .info a:hover{
-      filter: brightness(.95);
-    }
-
-    /* etwas dunkleres Logo-Panel, damit der Übergang stimmig wirkt */
-    .partnerCard .logoBox{
-      background:#eef3ef;
-    }
-
-    /* === Partner-Logos größer + Overlay luftig === */
-    .partnerCard .logoBox {
-      height: 250px;
-      background: #f4f6f5;
-    }
-    .partnerCard img {
-      max-height: 110px;
-    }
-
-    /* Overlay anpassen */
-    .partnerCard .info {
-      justify-content: center;
-      padding: 20px 18px;
-      font-size: 1rem;
-    }
-    .partnerCard .info h3 {
-      font-size: 1.15rem;
-      margin-bottom: 8px;
-    }
-    .partnerCard .info p {
-      font-size: 0.95rem;
-      line-height: 1.5;
     }
 
     /* === Lazy YouTube === */
@@ -496,24 +539,9 @@
       text-shadow:0 1px 1px rgba(0,0,0,.5);
     }
     .yt-lazy .yt-play:focus-visible{ outline: var(--focus-ring); outline-offset:4px; border-radius:12px; }
-
-    /* Event-Einschub */
-    .event-announcement{ background:#fffef8; }
-    .event-grid{ display:grid; gap:18px; grid-template-columns: 1fr 1.3fr; align-items:start; }
-    .event-media{ margin:0; }
-    .event-media img{ border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.08); }
-    .event-body .event-lead{ margin:.2rem 0 1rem; font-weight:600; }
-    .event-facts{ margin:.4rem 0 1rem; padding-left:1.1rem; }
-    .event-facts li{ margin:.2rem 0; }
-    .event-cta{ display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 6px; }
-    .event-note{ font-size:.95rem; color:var(--muted); }
-
-    @media (max-width:900px){
-      .event-grid{ grid-template-columns:1fr; }
-    }
   </style>
-
 </head>
+
 <body class="theme-warm">
   <div class="page">
     <!-- Theme Toggle -->
@@ -539,30 +567,62 @@
             </div>
           </div>
 
-          <!-- NEU: Unterstützen-Buttons unter dem grünen Kasten -->
-          <div class="hero-under-ctas reveal" aria-label="Unterstützen">
-            <a class="hero-under-btn" href="https://buy.stripe.com/6oU5kDfHaeFW6Ut3Hhg7e02" target="_blank" rel="noopener">
-              1 Euro einmalig
-            </a>
+          <!-- =========================
+               EINMALIG: Betrag frei wählen (Stripe)
+               ========================= -->
+          <div class="hero-under-custom reveal" aria-label="Einmalig unterstützen – Betrag frei wählen">
+            <label for="donationAmount">Einmalig unterstützen – Betrag frei wählen:</label>
 
-            <a class="hero-under-btn hero-under-btn--mid" href="https://buy.stripe.com/aFa28r7aE69q92B91Bg7e03" target="_blank" rel="noopener">
-              2 Euro einmalig
-            </a>
+            <div class="custom-row">
+              <div class="custom-input" role="group" aria-label="Betrag eingeben">
+                <span>EUR</span>
+                <input
+                  id="donationAmount"
+                  name="donationAmount"
+                  type="number"
+                  inputmode="decimal"
+                  min="1"
+                  max="250"
+                  step="1"
+                  placeholder="z. B. 5"
+                  aria-describedby="donationHint donationError donationOk"
+                >
+              </div>
 
-            <a class="hero-under-btn" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
-              Monatlich via Patreon
-            </a>
+              <button class="custom-submit" id="donationSubmit" type="button">
+                Betrag senden
+              </button>
+            </div>
+
+            <div class="custom-hint" id="donationHint">
+              Sie werden zu Stripe weitergeleitet. Mindestbetrag 1 Euro, maximal 250 Euro.
+            </div>
+            <div class="custom-error" id="donationError" role="status" aria-live="polite"></div>
+            <div class="custom-ok" id="donationOk" role="status" aria-live="polite"></div>
           </div>
 
-<div class="hero-under-note reveal">
-  <strong>Nur wenn Sie mögen:</strong> freiwillig 1 oder 2 Euro einmalig, damit wir mehr Briefe real auf Papier ins System bringen.
-  Alternativ 1 oder 2 Euro monatlich via <a href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">Patreon</a>.
-</div>
+          <!-- ===== Danke/Abbruch nach Stripe ===== -->
+          <div id="donationMsg" class="donation-msg reveal" hidden></div>
+
+          <!-- =========================
+               MONATLICH: Patreon (NEU)
+               ========================= -->
+          <div class="hero-under-patreon reveal" aria-label="Monatlich unterstützen – Patreon">
+            <div class="patreon-row">
+              <a class="patreon-btn" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
+                Monatlich via Patreon unterstützen
+              </a>
+
+              <div class="patreon-text">
+                <strong>Für Mitglieder:</strong> 1× pro Monat ein exklusiver Livestream + Newsletter.
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>
 
-      <!-- Zähler: eigene Zeile, “angedockt” -->
+      <!-- Zähler -->
       <div class="stats-wrap reveal">
         <div class="stats-banner" role="status" aria-live="polite">
           <div class="stats-iconbox"><div class="stats-icon" aria-hidden="true">📄</div></div>
@@ -593,95 +653,88 @@
         </div>
       </section>
 
-<!-- === Aktuell: Atombombe auf die Energiewende (Lazy YouTube) === -->
-<section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
-  <h2 style="margin-top:0;">Jetzt ansehen: Atombombe auf die Energiewende</h2>
+      <!-- === Aktuell: Atombombe auf die Energiewende (Lazy YouTube) === -->
+      <section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
+        <h2 style="margin-top:0;">Jetzt ansehen: Atombombe auf die Energiewende</h2>
 
-<div style="font-size:1rem; line-height:1.75;">
-  <p style="margin:0 0 12px;">
-    Bundeswirtschaftsministerin Katherina Reiche plant ein Maßnahmenpaket, das die Grundpfeiler der Bürger-Energiewende erschüttert:
-  </p>
+        <div style="font-size:1rem; line-height:1.75;">
+          <p style="margin:0 0 12px;">
+            Bundeswirtschaftsministerin Katherina Reiche plant ein Maßnahmenpaket, das die Grundpfeiler der Bürger-Energiewende erschüttert:
+          </p>
 
-  <ul style="margin:0 0 14px; padding-left:1.1rem;">
-    <li>🔴 Abschaffung der festen Einspeisevergütung für kleine PV-Anlagen</li>
-    <li>🔴 Netzpaket mit massiven Risiken für große Solar- und Windprojekte</li>
-    <li>🔴 Wegfall von Marktprämien und Entschädigungen</li>
-    <li>🔴 Bau neuer fossiler Gaskraftwerke</li>
-    <li>🔴 Belastungen für Eigenverbraucher durch Pläne der Bundesnetzagentur</li>
-    <li>🔴 Rückbau zentraler Elemente des Gebäudeenergiegesetzes</li>
-  </ul>
+          <ul style="margin:0 0 14px; padding-left:1.1rem;">
+            <li>🔴 Abschaffung der festen Einspeisevergütung für kleine PV-Anlagen</li>
+            <li>🔴 Netzpaket mit massiven Risiken für große Solar- und Windprojekte</li>
+            <li>🔴 Wegfall von Marktprämien und Entschädigungen</li>
+            <li>🔴 Bau neuer fossiler Gaskraftwerke</li>
+            <li>🔴 Belastungen für Eigenverbraucher durch Pläne der Bundesnetzagentur</li>
+            <li>🔴 Rückbau zentraler Elemente des Gebäudeenergiegesetzes</li>
+          </ul>
 
-  <p style="margin:0 0 12px;">
-    In dieser Sendung sprechen wir mit Hans-Josef Fell, Mitautor des Erneuerbare-Energien-Gesetzes (EEG). Seine Einschätzung ist deutlich:
-    Hier geht es um den massiven Bestandsschutz für fossile Energien – Erdgas, Erdöl, Kohle – während erneuerbare Energien ausgebremst werden.
-  </p>
+          <p style="margin:0 0 12px;">
+            In dieser Sendung sprechen wir mit Hans-Josef Fell, Mitautor des Erneuerbare-Energien-Gesetzes (EEG). Seine Einschätzung ist deutlich:
+            Hier geht es um den massiven Bestandsschutz für fossile Energien – Erdgas, Erdöl, Kohle – während erneuerbare Energien ausgebremst werden.
+          </p>
 
-  <p style="margin:0 0 8px;"><strong>Was bedeutet das für:</strong></p>
-  <ul style="margin:0 0 14px; padding-left:1.1rem;">
-    <li>🏠 Hausbesitzer mit Photovoltaik</li>
-    <li>🏢 Unternehmen mit Eigenstromnutzung</li>
-    <li>🏘️ Mieterinnen und Mieter</li>
-    <li>⚡ Strompreise in Deutschland</li>
-    <li>🌍 Deutschlands Wettbewerbsfähigkeit</li>
-  </ul>
+          <p style="margin:0 0 8px;"><strong>Was bedeutet das für:</strong></p>
+          <ul style="margin:0 0 14px; padding-left:1.1rem;">
+            <li>🏠 Hausbesitzer mit Photovoltaik</li>
+            <li>🏢 Unternehmen mit Eigenstromnutzung</li>
+            <li>🏘️ Mieterinnen und Mieter</li>
+            <li>⚡ Strompreise in Deutschland</li>
+            <li>🌍 Deutschlands Wettbewerbsfähigkeit</li>
+          </ul>
 
-  <p style="margin:0 0 12px;">
-    Während China und andere Länder massiv in erneuerbare Energien investieren, droht Deutschland zurück in fossile Abhängigkeiten zu fallen –
-    mit steigenden CO₂-Kosten durch ETS2 und wachsender geopolitischer Unsicherheit.
-  </p>
+          <p style="margin:0 0 12px;">
+            Während China und andere Länder massiv in erneuerbare Energien investieren, droht Deutschland zurück in fossile Abhängigkeiten zu fallen –
+            mit steigenden CO₂-Kosten durch ETS2 und wachsender geopolitischer Unsicherheit.
+          </p>
 
-  <p style="margin:0 0 12px;">
-    👉 Es betrifft uns alle.<br>
-    👉 Es geht um Strompreise.<br>
-    👉 Es geht um Wärme.<br>
-    👉 Es geht um wirtschaftliche Zukunft.
-  </p>
+          <p style="margin:0 0 12px;">
+            👉 Es betrifft uns alle.<br>
+            👉 Es geht um Strompreise.<br>
+            👉 Es geht um Wärme.<br>
+            👉 Es geht um wirtschaftliche Zukunft.
+          </p>
 
-  <p style="margin:0;">
-    In der Aktion Solarstrom haben bereits über 22.000 Bürgerinnen und Bürger Briefe an ihre Bundestagsabgeordneten geschickt.
-    Auch Sie können dabei sein und protestieren.
-  </p>
-</div>
+          <p style="margin:0;">
+            In der Aktion Solarstrom haben bereits über 22.000 Bürgerinnen und Bürger Briefe an ihre Bundestagsabgeordneten geschickt.
+            Auch Sie können dabei sein und protestieren.
+          </p>
+        </div>
 
-    <!-- Lazy-YouTube: lädt erst beim Klick -->
-  <div class="video-wrap yt-lazy"
-       data-ytid="yHW1pEmknsk"
-       aria-label="YouTube: Atombombe auf die Energiewende – Klick zum Abspielen">
-    <button class="yt-play" type="button" aria-label="Video abspielen">
-      <span class="yt-badge">LMdE TV</span>
+        <div class="video-wrap yt-lazy"
+             data-ytid="yHW1pEmknsk"
+             aria-label="YouTube: Atombombe auf die Energiewende – Klick zum Abspielen">
+          <button class="yt-play" type="button" aria-label="Video abspielen">
+            <span class="yt-badge">LMdE TV</span>
+            <img src="https://i.ytimg.com/vi/yHW1pEmknsk/hqdefault.jpg"
+                 loading="lazy"
+                 decoding="async"
+                 alt="Vorschaubild – Atombombe auf die Energiewende">
+            <span class="yt-icon" aria-hidden="true"></span>
+            <div class="yt-caption">🎥 Jetzt ansehen auf YouTube</div>
+          </button>
 
-      <img src="https://i.ytimg.com/vi/yHW1pEmknsk/hqdefault.jpg"
-           loading="lazy"
-           decoding="async"
-           alt="Vorschaubild – Atombombe auf die Energiewende">
+          <noscript>
+            <p style="margin:10px 0 0;">
+              <a class="cta secondary"
+                 href="https://youtu.be/yHW1pEmknsk?si=nZHnSk83hMzFXsYw"
+                 target="_blank" rel="noopener">
+                Video auf YouTube öffnen
+              </a>
+            </p>
+          </noscript>
+        </div>
 
-      <span class="yt-icon" aria-hidden="true"></span>
-      <div class="yt-caption">🎥 Jetzt ansehen auf YouTube</div>
-    </button>
-
-    <noscript>
-      <p style="margin:10px 0 0;">
-        <a class="cta secondary"
-           href="https://youtu.be/yHW1pEmknsk?si=nZHnSk83hMzFXsYw"
-           target="_blank" rel="noopener">
-          Video auf YouTube öffnen
-        </a>
-      </p>
-    </noscript>
-  </div>
-
-  <p style="margin-top:10px">
-    <a class="cta secondary"
-       href="https://youtu.be/yHW1pEmknsk?si=nZHnSk83hMzFXsYw"
-       target="_blank" rel="noopener">
-      Auf YouTube ansehen
-    </a>
-  </p>
-</section>
-<!-- === /AKTUELL === -->
-
-
-      <!-- === /RÜCKBLICK === -->
+        <p style="margin-top:10px">
+          <a class="cta secondary"
+             href="https://youtu.be/yHW1pEmknsk?si=nZHnSk83hMzFXsYw"
+             target="_blank" rel="noopener">
+            Auf YouTube ansehen
+          </a>
+        </p>
+      </section>
 
       <!-- === Rückblick: Gespräch mit Dr. Nina Scheer (Lazy YouTube) === -->
       <section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
@@ -695,7 +748,6 @@
           Einspeisevergütung findet sich nicht im Vertrag – und zusätzliche Abgaben für Bürger-Solar lehnt sie ab.
         </p>
 
-        <!-- Lazy-YouTube: lädt erst beim Klick -->
         <div class="video-wrap yt-lazy" data-ytid="teqTU9uoRqw" aria-label="YouTube: Gespräch mit Dr. Nina Scheer">
           <button class="yt-play" type="button" aria-label="Video abspielen">
             <span class="yt-badge">LMdE TV</span>
@@ -803,7 +855,7 @@
         </div>
       </section>
 
-      <!-- Träger (NEU: Partner-Grid mit Hover-Overlay) -->
+      <!-- Träger -->
       <section id="partner" class="partner">
         <h2 class="section-title">Träger der Kampagne</h2>
         <p>Die Kampagne wird von dem VEEG e.V. und der EWG durchgeführt.</p>
@@ -849,7 +901,7 @@
       <nav class="legal">
         <a href="Impressum.html">Impressum</a> · <a href="Datenschutz.html">Datenschutz</a>
       </nav>
-      <p style="text-align:center">© Kampagne „Solarstrom statt Erdgas-Strom”</p>
+      <p style="text-align:center">©️ Kampagne „Solarstrom statt Erdgas-Strom”</p>
     </footer>
   </div>
 
@@ -859,7 +911,7 @@
   </div>
 
   <script>
-    // Theme Toggle (neutral ↔ warm) mit localStorage
+    // Theme Toggle (neutral ↔️ warm) mit localStorage
     (function(){
       const KEY='theme-mode';
       const body=document.body;
@@ -998,28 +1050,119 @@
     }, {passive:true});
   </script>
 
+  <script>
+    // =========================
+    // FREI WÄHLBAR (Stripe Checkout)
+    // =========================
+    (function(){
+      const input = document.getElementById('donationAmount');
+      const btn = document.getElementById('donationSubmit');
+      const err = document.getElementById('donationError');
+      const ok = document.getElementById('donationOk');
+
+      function showError(msg){
+        if(!err) return;
+        err.textContent = msg;
+        err.style.display = 'block';
+        if(ok) ok.style.display = 'none';
+      }
+      function clearError(){
+        if(!err) return;
+        err.textContent = '';
+        err.style.display = 'none';
+      }
+      function showOk(msg){
+        if(!ok) return;
+        ok.textContent = msg;
+        ok.style.display = 'block';
+        if(err) err.style.display = 'none';
+      }
+
+      async function createCheckout(){
+        clearError();
+
+        const raw = (input?.value || '').toString().trim();
+        const amount = Number(raw);
+
+        if(!Number.isFinite(amount)) return showError('Bitte einen Betrag eingeben.');
+        if(amount < 1) return showError('Mindestbetrag ist 1 Euro.');
+        if(amount > 250) return showError('Maximalbetrag ist 250 Euro.');
+
+        btn.disabled = true;
+        btn.textContent = 'Weiter zu Stripe…';
+
+        try{
+          const res = await fetch('/api/create-checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount_eur: amount,
+              source: 'indexneu-hero-custom'
+            })
+          });
+
+          const data = await res.json().catch(() => ({}));
+          if(!res.ok){
+            throw new Error(data?.error || ('HTTP ' + res.status));
+          }
+          if(!data?.url){
+            throw new Error('Keine Checkout-URL erhalten.');
+          }
+
+          showOk('Weiterleitung zu Stripe…');
+          window.location.href = data.url;
+        }catch(e){
+          console.warn(e);
+          showError('Konnte Stripe nicht starten. Bitte später nochmal versuchen.');
+          btn.disabled = false;
+          btn.textContent = 'Betrag senden';
+        }
+      }
+
+      btn?.addEventListener('click', createCheckout);
+
+      input?.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){
+          e.preventDefault();
+          createCheckout();
+        }
+      });
+    })();
+  </script>
+
+  <script>
+    // =========================
+    // STRIPE-RETURN: Danke / Abbruch anzeigen
+    // Erwartet: ?donation=success | ?donation=cancel
+    // =========================
+    (function(){
+      const el = document.getElementById('donationMsg');
+      if(!el) return;
+
+      const p = new URLSearchParams(window.location.search);
+      const status = p.get('donation');
+
+      if(status === 'success'){
+        el.textContent = 'Danke! Ihre Unterstützung ist angekommen.';
+        el.classList.add('ok');
+        el.hidden = false;
+      } else if(status === 'cancel'){
+        el.textContent = 'Zahlung abgebrochen – kein Problem. Sie können es jederzeit erneut versuchen.';
+        el.classList.add('err');
+        el.hidden = false;
+      } else {
+        return;
+      }
+
+      // URL säubern
+      p.delete('donation');
+      const clean = window.location.pathname + (p.toString() ? '?' + p.toString() : '') + window.location.hash;
+      window.history.replaceState({}, '', clean);
+    })();
+  </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
