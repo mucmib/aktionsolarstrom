@@ -40,7 +40,7 @@
       --shadow: 0 6px 28px rgba(0,0,0,.08);
       --shadow-lg: 0 18px 48px rgba(0,0,0,.12);
       --maxw: 960px;
-      --focus-ring: 2px solid #f6b10a; /* Focus Ring */
+      --focus-ring: 2px solid #f6b10a;
     }
 
     /* === Base === */
@@ -101,7 +101,6 @@
         linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)),
         url('assets/Bundestag.jpg') center 45%/cover no-repeat;
     }
-    /* Warme Tönung + Solar Glow */
     .hero-wrap::before{
       content:""; position:absolute; inset:0; pointer-events:none;
       background: linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02));
@@ -129,7 +128,6 @@
       backdrop-filter: blur(2px);
       position:relative; overflow:hidden;
     }
-    /* Solar Highlight */
     .hero-panel::after{
       content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
       background: linear-gradient(90deg, #f6b10a, #ffd84a);
@@ -160,98 +158,13 @@
       box-shadow:0 6px 22px rgba(10,125,50,.35);
     }
 
-    /* === Buttons unter dem grünen Hero-Kasten === */
-    .hero-under-ctas{
-      display:flex;
-      gap:12px;
-      justify-content:space-between;
-      align-items:stretch;
-      width:min(92vw, 760px);
-      max-width:760px;
-      margin:14px auto 0;
-    }
-
-    .hero-under-btn{
-      flex:1 1 0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:12px 14px;
-      border-radius:12px;
-      text-decoration:none;
-      font-weight:800;
-      background:#ffffff;
-      color:#0a7d32;
-      border:1px solid rgba(255,255,255,.65);
-      box-shadow:0 10px 22px rgba(0,0,0,.16);
-      transition: transform .25s ease, box-shadow .25s ease;
-    }
-
-    .hero-under-btn:hover{
-      transform: translateY(-2px);
-      box-shadow:0 14px 28px rgba(0,0,0,.20);
-      text-decoration:none;
-    }
-
-    .hero-under-btn--mid{
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      color:#fff;
-      border:0;
-    }
-
-    @media (max-width:720px){
-      .hero-under-ctas{
-        flex-direction:column;
-      }
-      .hero-under-btn{
-        width:100%;
-      }
-    }
-
-    /* === Hinweistext unter den Unterstützen-Buttons === */
-    .hero-under-note{
-      width:min(92vw, 760px);
-      max-width:760px;
-      margin:10px auto 0;
-      padding:10px 14px;
-      border-radius:12px;
-      background: rgba(255,255,255,.14);
-      border: 1px solid rgba(255,255,255,.22);
-      color: rgba(255,255,255,.92);
-      font-size: .95rem;
-      line-height: 1.45;
-      box-shadow: 0 10px 22px rgba(0,0,0,.12);
-      backdrop-filter: blur(2px);
-    }
-    .hero-under-note strong{
-      color:#fff;
-      font-weight:800;
-    }
-    .hero-under-note a{
-      color:#ffd84a;
-      font-weight:800;
-      text-decoration:none;
-      border-bottom: 1px solid rgba(255,216,74,.45);
-    }
-    .hero-under-note a:hover{
-      text-decoration:none;
-      border-bottom-color: rgba(255,216,74,.85);
-    }
-    @media (max-width:600px){
-      .hero-under-note{
-        font-size:.92rem;
-        padding:10px 12px;
-      }
-    }
-
     /* =========================
-       FREI WÄHLBAR (NEU)
+       FREI WÄHLBAR (Stripe)
        ========================= */
     .hero-under-custom{
       width:min(92vw, 760px);
       max-width:760px;
-      margin:10px auto 0;
+      margin:14px auto 0;
       padding:12px 14px;
       border-radius:14px;
       background: rgba(0,0,0,.18);
@@ -354,7 +267,61 @@
       display:none;
     }
 
-    /* ===== Danke/Abbruch Meldung nach Stripe-Rückkehr (NEU) ===== */
+    /* ===== Patreon Block (NEU) ===== */
+    .hero-under-patreon{
+      width:min(92vw, 760px);
+      max-width:760px;
+      margin:10px auto 0;
+      padding:12px 14px;
+      border-radius:14px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 10px 22px rgba(0,0,0,.12);
+      backdrop-filter: blur(2px);
+      color: rgba(255,255,255,.95);
+      text-align:left;
+    }
+    .hero-under-patreon .patreon-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .patreon-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 14px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:900;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color:#fff;
+      box-shadow:0 10px 22px rgba(0,0,0,.16);
+      border:0;
+      min-width: 260px;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .patreon-btn:hover{
+      transform: translateY(-2px);
+      box-shadow:0 14px 28px rgba(0,0,0,.20);
+      text-decoration:none;
+    }
+    .patreon-text{
+      flex: 1 1 240px;
+      font-size:.95rem;
+      line-height:1.45;
+      color: rgba(255,255,255,.92);
+    }
+    .patreon-text strong{ color:#fff; font-weight:900; }
+    @media (max-width:600px){
+      .patreon-btn{ width:100%; min-width:unset; }
+      .patreon-text{ font-size:.92rem; }
+      .custom-submit{ width:100%; min-width:unset; }
+    }
+
+    /* ===== Danke/Abbruch Meldung nach Stripe-Rückkehr ===== */
     .donation-msg{
       width:min(92vw, 760px);
       max-width:760px;
@@ -400,7 +367,6 @@
       .stats-wrap{ transform: translateY(-30px); margin-bottom:-20px; }
       .stats-banner{ padding:8px 12px; min-width:200px; }
       .stats-value{ font-size:1.45rem; }
-      .custom-submit{ width:100%; min-width:unset; }
     }
 
     /* ===== Sektionen / Karten ===== */
@@ -601,29 +567,11 @@
             </div>
           </div>
 
-          <!-- Unterstützen-Buttons -->
-          <div class="hero-under-ctas reveal" aria-label="Unterstützen">
-            <a class="hero-under-btn" href="https://buy.stripe.com/6oU5kDfHaeFW6Ut3Hhg7e02" target="_blank" rel="noopener">
-              1 Euro einmalig
-            </a>
-            <a class="hero-under-btn hero-under-btn--mid" href="https://buy.stripe.com/aFa28r7aE69q92B91Bg7e03" target="_blank" rel="noopener">
-              2 Euro einmalig
-            </a>
-            <a class="hero-under-btn" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
-              Monatlich via Patreon
-            </a>
-          </div>
-
-          <div class="hero-under-note reveal">
-            <strong>Nur wenn Sie mögen:</strong> freiwillig 1 oder 2 Euro einmalig, damit wir mehr Briefe real auf Papier ins System bringen.
-            Alternativ 1 oder 2 Euro monatlich via <a href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">Patreon</a>.
-          </div>
-
           <!-- =========================
-               FREI WÄHLBAR (NEU)
+               EINMALIG: Betrag frei wählen (Stripe)
                ========================= -->
-          <div class="hero-under-custom reveal" aria-label="Frei wählbarer Betrag">
-            <label for="donationAmount">Oder hier Einmalbeitrag frei wählen:</label>
+          <div class="hero-under-custom reveal" aria-label="Einmalig unterstützen – Betrag frei wählen">
+            <label for="donationAmount">Einmalig unterstützen – Betrag frei wählen:</label>
 
             <div class="custom-row">
               <div class="custom-input" role="group" aria-label="Betrag eingeben">
@@ -653,8 +601,23 @@
             <div class="custom-ok" id="donationOk" role="status" aria-live="polite"></div>
           </div>
 
-          <!-- ===== Danke/Abbruch nach Stripe (NEU) ===== -->
+          <!-- ===== Danke/Abbruch nach Stripe ===== -->
           <div id="donationMsg" class="donation-msg reveal" hidden></div>
+
+          <!-- =========================
+               MONATLICH: Patreon (NEU)
+               ========================= -->
+          <div class="hero-under-patreon reveal" aria-label="Monatlich unterstützen – Patreon">
+            <div class="patreon-row">
+              <a class="patreon-btn" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
+                Monatlich via Patreon unterstützen
+              </a>
+
+              <div class="patreon-text">
+                <strong>Für Mitglieder:</strong> 1× pro Monat ein exklusiver Livestream + Newsletter.
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>
@@ -1169,7 +1132,7 @@
 
   <script>
     // =========================
-    // STRIPE-RETURN: Danke / Abbruch anzeigen (NEU)
+    // STRIPE-RETURN: Danke / Abbruch anzeigen
     // Erwartet: ?donation=success | ?donation=cancel
     // =========================
     (function(){
@@ -1191,15 +1154,15 @@
         return;
       }
 
-      // URL säubern (damit beim Reload nicht wieder angezeigt wird)
+      // URL säubern
       p.delete('donation');
       const clean = window.location.pathname + (p.toString() ? '?' + p.toString() : '') + window.location.hash;
       window.history.replaceState({}, '', clean);
     })();
   </script>
+
 </body>
 </html>
-
 
 
 
