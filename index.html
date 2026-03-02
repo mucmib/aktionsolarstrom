@@ -539,6 +539,47 @@
       text-shadow:0 1px 1px rgba(0,0,0,.5);
     }
     .yt-lazy .yt-play:focus-visible{ outline: var(--focus-ring); outline-offset:4px; border-radius:12px; }
+
+/* Logo-Animation: Impuls + Stabilität */
+.logo-anim{
+  will-change: filter, transform;
+  transform: translateZ(0);
+  /* 2 Pulse beim Laden, dann Ruhe */
+  animation: logoPulse 5.8s ease-in-out 2;
+}
+
+/* Optional: bei Hover ein einzelner Impuls (kein Dauerloop) */
+@media (hover:hover){
+  .logo-anim:hover{
+    animation: logoPulse 5.8s ease-in-out 1;
+  }
+}
+
+@keyframes logoPulse{
+  0%{
+    transform: scale(1);
+    filter: drop-shadow(0 3px 8px rgba(0,0,0,.25));
+  }
+  45%{
+    transform: scale(1.012);
+    filter:
+      drop-shadow(0 3px 8px rgba(0,0,0,.25))
+      drop-shadow(0 0 14px rgba(255, 213, 77, .38));
+  }
+  100%{
+    transform: scale(1);
+    filter: drop-shadow(0 3px 8px rgba(0,0,0,.25));
+  }
+}
+
+/* Barrierefreiheit: wenn Nutzer Bewegungen reduziert, dann aus */
+@media (prefers-reduced-motion: reduce){
+  .logo-anim{
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
   </style>
 </head>
 
@@ -556,7 +597,7 @@
         <div class="hero">
 
           <div class="hero-panel reveal">
-            <img class="logo" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+           <img class="logo-anim" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
             <h1>Solarstrom statt Erdgas-Strom</h1>
             <p class="tagline">
               Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken &amp; versenden physisch.
