@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Solarstrom statt Erdgas-Strom – Info & Mitmachen</title>
+
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Solarstrom statt Erdgas-Strom – Info & Mitmachen">
@@ -20,9 +21,11 @@
   <meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
 
   <meta name="description" content="Alle Infos zur Kampagne Solarstrom statt Erdgas-Strom: Ziele, Hintergründe, Materialien und Mitmach-Möglichkeiten.">
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+
   <style>
     /* === Design-Token === */
     :root{
@@ -351,6 +354,23 @@
       display:none;
     }
 
+    /* ===== Danke/Abbruch Meldung nach Stripe-Rückkehr (NEU) ===== */
+    .donation-msg{
+      width:min(92vw, 760px);
+      max-width:760px;
+      margin:10px auto 0;
+      padding:10px 14px;
+      border-radius:12px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      color: rgba(255,255,255,.95);
+      font-weight:800;
+      box-shadow:0 10px 22px rgba(0,0,0,.12);
+      backdrop-filter: blur(2px);
+    }
+    .donation-msg.ok{ border-color: rgba(11,189,84,.55); }
+    .donation-msg.err{ border-color: rgba(246,177,10,.65); }
+
     /* ===== Zähler ===== */
     .stats-wrap{
       display:flex; justify-content:center;
@@ -553,24 +573,9 @@
       text-shadow:0 1px 1px rgba(0,0,0,.5);
     }
     .yt-lazy .yt-play:focus-visible{ outline: var(--focus-ring); outline-offset:4px; border-radius:12px; }
-
-    /* Event-Einschub */
-    .event-announcement{ background:#fffef8; }
-    .event-grid{ display:grid; gap:18px; grid-template-columns: 1fr 1.3fr; align-items:start; }
-    .event-media{ margin:0; }
-    .event-media img{ border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,.08); }
-    .event-body .event-lead{ margin:.2rem 0 1rem; font-weight:600; }
-    .event-facts{ margin:.4rem 0 1rem; padding-left:1.1rem; }
-    .event-facts li{ margin:.2rem 0; }
-    .event-cta{ display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 6px; }
-    .event-note{ font-size:.95rem; color:var(--muted); }
-
-    @media (max-width:900px){
-      .event-grid{ grid-template-columns:1fr; }
-    }
   </style>
-
 </head>
+
 <body class="theme-warm">
   <div class="page">
     <!-- Theme Toggle -->
@@ -601,11 +606,9 @@
             <a class="hero-under-btn" href="https://buy.stripe.com/6oU5kDfHaeFW6Ut3Hhg7e02" target="_blank" rel="noopener">
               1 Euro einmalig
             </a>
-
             <a class="hero-under-btn hero-under-btn--mid" href="https://buy.stripe.com/aFa28r7aE69q92B91Bg7e03" target="_blank" rel="noopener">
               2 Euro einmalig
             </a>
-
             <a class="hero-under-btn" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
               Monatlich via Patreon
             </a>
@@ -620,7 +623,7 @@
                FREI WÄHLBAR (NEU)
                ========================= -->
           <div class="hero-under-custom reveal" aria-label="Frei wählbarer Betrag">
-            <label for="donationAmount">Oder frei wählen:</label>
+            <label for="donationAmount">Oder hier Einmalbeitrag frei wählen:</label>
 
             <div class="custom-row">
               <div class="custom-input" role="group" aria-label="Betrag eingeben">
@@ -634,7 +637,7 @@
                   max="250"
                   step="1"
                   placeholder="z. B. 5"
-                  aria-describedby="donationHint donationError"
+                  aria-describedby="donationHint donationError donationOk"
                 >
               </div>
 
@@ -649,6 +652,9 @@
             <div class="custom-error" id="donationError" role="status" aria-live="polite"></div>
             <div class="custom-ok" id="donationOk" role="status" aria-live="polite"></div>
           </div>
+
+          <!-- ===== Danke/Abbruch nach Stripe (NEU) ===== -->
+          <div id="donationMsg" class="donation-msg reveal" hidden></div>
 
         </div>
       </div>
@@ -766,7 +772,6 @@
           </a>
         </p>
       </section>
-      <!-- === /AKTUELL === -->
 
       <!-- === Rückblick: Gespräch mit Dr. Nina Scheer (Lazy YouTube) === -->
       <section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
@@ -1129,7 +1134,6 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               amount_eur: amount,
-              // optional: falls du später tracken willst
               source: 'indexneu-hero-custom'
             })
           });
@@ -1163,27 +1167,38 @@
     })();
   </script>
 
+  <script>
+    // =========================
+    // STRIPE-RETURN: Danke / Abbruch anzeigen (NEU)
+    // Erwartet: ?donation=success | ?donation=cancel
+    // =========================
+    (function(){
+      const el = document.getElementById('donationMsg');
+      if(!el) return;
+
+      const p = new URLSearchParams(window.location.search);
+      const status = p.get('donation');
+
+      if(status === 'success'){
+        el.textContent = 'Danke! Ihre Unterstützung ist angekommen.';
+        el.classList.add('ok');
+        el.hidden = false;
+      } else if(status === 'cancel'){
+        el.textContent = 'Zahlung abgebrochen – kein Problem. Sie können es jederzeit erneut versuchen.';
+        el.classList.add('err');
+        el.hidden = false;
+      } else {
+        return;
+      }
+
+      // URL säubern (damit beim Reload nicht wieder angezeigt wird)
+      p.delete('donation');
+      const clean = window.location.pathname + (p.toString() ? '?' + p.toString() : '') + window.location.hash;
+      window.history.replaceState({}, '', clean);
+    })();
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
