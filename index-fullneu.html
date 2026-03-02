@@ -1,3 +1,5 @@
+
+<!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8">
@@ -25,14 +27,31 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
 
   <style>
-    :root { --maxw: 960px; --brand:#0a7d32; --brand2:#0bbd54; --muted:#6b7280; --card:#fff; --bg:#f6f9f7; --radius:16px; --shadow:0 6px 28px rgba(0,0,0,.08); }
+    :root {
+      --maxw: 960px;
+      --brand:#0a7d32;
+      --brand2:#0bbd54;
+      --muted:#6b7280;
+      --card:#fff;
+      --bg:#f6f9f7;
+      --radius:16px;
+      --shadow:0 6px 28px rgba(0,0,0,.08);
+      --focus-ring: 2px solid #f6b10a;
+    }
 
     /* Base */
     *{box-sizing:border-box}
     body{margin:0; font:16px/1.6 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111; background:var(--bg);}
     a{color:inherit}
+    img{max-width:100%; display:block;}
     .page{display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr;}
     .middle{grid-column:2; padding:16px;}
+
+    :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
 
     /* HERO: Foto + Panel */
     .hero-wrap{
@@ -45,6 +64,7 @@
     .hero-panel{
       background: rgba(10,125,50,.82); color:#fff; border-radius:22px; padding:22px 24px;
       max-width:min(92vw,820px); width:fit-content; text-align:center; box-shadow:0 18px 48px rgba(0,0,0,.18);
+      position:relative; overflow:hidden;
     }
     .hero .logo img{
       width: clamp(220px, 48vw, 520px); height:auto; display:block; margin:0 auto 6px;
@@ -81,6 +101,11 @@
     button[type="submit"]{
       padding:12px 18px; border:0; border-radius:12px; background:linear-gradient(135deg,var(--brand),var(--brand2));
       color:#fff; font-weight:800; cursor:pointer; box-shadow:0 10px 20px rgba(11,189,84,.25);
+      transition: transform .25s ease, box-shadow .25s ease, opacity .2s ease;
+    }
+    button[type="submit"]:hover:not(:disabled){
+      transform: translateY(-2px);
+      box-shadow:0 14px 28px rgba(11,189,84,.28);
     }
     .success { display:none; margin-top:10px; padding:10px 12px; border:1px solid #bfe3bf; background:#eefeef; border-radius:10px; color:#145214; }
     .notice, .hint { font-size:.95rem; color:var(--muted); }
@@ -164,7 +189,6 @@
       background: radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%);
     }
 
-    .hero-panel{ position:relative; overflow:hidden; }
     .hero-panel::after{
       content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
       background: linear-gradient(90deg, #f6b10a, #ffd84a);
@@ -180,14 +204,6 @@
       text-decoration:none;
     }
 
-    button[type="submit"]{
-      transition: transform .25s ease, box-shadow .25s ease, opacity .2s ease;
-    }
-    button[type="submit"]:hover:not(:disabled){
-      transform: translateY(-2px);
-      box-shadow:0 14px 28px rgba(11,189,84,.28);
-    }
-
     fieldset{
       background:#fffdf8;
       transition: box-shadow .2s ease, transform .2s ease;
@@ -198,7 +214,7 @@
     }
 
     /* ========================= */
-    /* SUPPORT BOX (nur 1x, elegant) */
+    /* SUPPORT BOX (NEU: frei wählbar + Patreon) */
     /* ========================= */
     .support-note{
       margin-top:14px;
@@ -209,14 +225,19 @@
       box-shadow: 0 10px 26px rgba(0,0,0,.06);
     }
     .support-note strong{ color:#0b4d25; }
+
     .support-actions{
       display:flex;
-      gap:10px;
+      gap:12px;
       flex-wrap:wrap;
       margin:12px 0 8px;
+      align-items:stretch;
     }
+
     .support-btn{
-      display:inline-block;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
       padding:10px 14px;
       border-radius:12px;
       text-decoration:none;
@@ -226,23 +247,120 @@
       color:#0a7d32;
       box-shadow: 0 6px 16px rgba(10,125,50,.12);
       transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      white-space:nowrap;
     }
     .support-btn:hover{
       transform: translateY(-1px);
       box-shadow: 0 10px 22px rgba(10,125,50,.18);
+      text-decoration:none;
     }
     .support-btn.primary{
       background: linear-gradient(135deg, var(--brand), var(--brand2));
       color:#fff;
       border:0;
     }
-    .support-btn.disabled{
-      background:#e5e7eb;
-      color:#555;
-      border:1px solid #d1d5db;
-      box-shadow:none;
+
+    /* ===== Frei wählbar (analog Startseite) ===== */
+    .support-custom{
+      width:100%;
+      border-radius:14px;
+      background: rgba(0,0,0,.03);
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 8px 18px rgba(0,0,0,.06);
+      padding:12px 12px;
+    }
+    .support-custom label{
+      margin:0 0 8px;
+      font-weight:800;
+      color:#0b4d25;
+    }
+    .custom-row{
+      display:flex;
+      gap:10px;
+      align-items:stretch;
+      flex-wrap:wrap;
+    }
+    .custom-input{
+      flex: 1 1 220px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background: rgba(255,255,255,.98);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius:12px;
+      padding:10px 12px;
+      color:#0a7d32;
+      box-shadow: 0 6px 14px rgba(0,0,0,.06);
+      min-height:44px;
+    }
+    .custom-input span{
+      font-weight:900;
+      color:#0a7d32;
+      opacity:.95;
+      white-space:nowrap;
+    }
+    .custom-input input{
+      width:100%;
+      border:0;
+      outline:0;
+      font: 800 16px/1.2 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:#0a7d32;
+      background:transparent;
+      min-width:110px;
+    }
+    .custom-submit{
+      flex: 0 0 auto;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 16px;
+      border-radius:12px;
+      border:0;
+      cursor:pointer;
+      font-weight:900;
+      color:#fff;
+      background: linear-gradient(135deg, #f6b10a, #ffd84a);
+      box-shadow: 0 10px 22px rgba(0,0,0,.12);
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      min-width: 210px;
+      min-height:44px;
+    }
+    .custom-submit:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(0,0,0,.16);
+      filter: brightness(.98);
+    }
+    .custom-submit:disabled{
+      opacity:.7;
       cursor:not-allowed;
-      pointer-events:none;
+      transform:none;
+      box-shadow: 0 8px 18px rgba(0,0,0,.10);
+    }
+    .custom-hint{
+      margin:10px 0 0;
+      font-size:.92rem;
+      line-height:1.35;
+      color: var(--muted);
+    }
+    .custom-error{
+      margin:10px 0 0;
+      font-size:.92rem;
+      line-height:1.35;
+      color: #8a5a00;
+      font-weight:800;
+      display:none;
+    }
+    .custom-ok{
+      margin:10px 0 0;
+      font-size:.92rem;
+      line-height:1.35;
+      color: #0b4d25;
+      font-weight:800;
+      display:none;
+    }
+
+    @media (max-width:600px){
+      .custom-submit{ width:100%; min-width:unset; }
     }
   </style>
 </head>
@@ -273,7 +391,8 @@
         </ol>
 
         <div class="support-note" role="note" aria-label="Hinweis Finanzierung">
-          <strong>Hinweis:</strong> Aktion Solarstrom finanziert Druck, Kuvertierung, Porto, Hosting und die Weiterentwicklung der Kampagne durch freiwillige Beiträge. DIe Möglichkeit dazu finden Sie unten nach dem Formular. Vielen Dank für Ihre Unterstützung!
+          <strong>Hinweis:</strong> Aktion Solarstrom finanziert Druck, Kuvertierung, Porto, Hosting und Weiterentwicklung durch freiwillige Beiträge.
+          Die Möglichkeit dazu finden Sie unten nach dem Formular. Danke.
         </div>
       </section>
 
@@ -393,28 +512,55 @@ Mit freundlichen Grüßen
             </div>
           </fieldset>
 
-          <!-- EINMALIGE Unterstützungsbox: direkt vor dem Absenden -->
+          <!-- Unterstützen (NEU): einmal frei wählbar + Patreon, analog Startseite -->
           <fieldset>
             <legend>Kurz bevor Sie den Brief abschicken</legend>
 
             <p style="margin:0 0 10px;">
-              Wenn Sie wollen: Einmalig  1 oder 2 Euro, damit wir mehr Briefe real auf Papier ins System bringen.
-              Alternativ können Sie uns auch mit 1 oder 2 Euro monatlich  auf Patreon unterstützen.
+              Wenn Sie mögen (freiwillig): Einmaliger Beitrag frei wählbar – damit wir mehr Briefe real auf Papier ins System bringen.
+              Alternativ: monatlich via Patreon.
             </p>
 
             <div class="support-actions" aria-label="Unterstützung auswählen">
-              <a class="support-btn primary" href="https://buy.stripe.com/6oU5kDfHaeFW6Ut3Hhg7e02" target="_blank" rel="noopener">
-                1 Euro einmalig
+              <!-- Frei wählbar -->
+              <div class="support-custom" aria-label="Einmaliger Beitrag frei wählbar">
+                <label for="donationAmount">Einmalbeitrag frei wählen:</label>
+                <div class="custom-row">
+                  <div class="custom-input" role="group" aria-label="Betrag eingeben">
+                    <span>EUR</span>
+                    <input
+                      id="donationAmount"
+                      name="donationAmount"
+                      type="number"
+                      inputmode="decimal"
+                      min="1"
+                      max="250"
+                      step="1"
+                      placeholder="z. B. 5"
+                      aria-describedby="donationHint donationError donationOk"
+                    >
+                  </div>
+                  <button class="custom-submit" id="donationSubmit" type="button">Betrag senden</button>
+                </div>
+
+                <div class="custom-hint" id="donationHint">
+                  Sie werden zu Stripe weitergeleitet. Mindestbetrag 1 Euro, maximal 250 Euro.
+                </div>
+                <div class="custom-error" id="donationError" role="status" aria-live="polite"></div>
+                <div class="custom-ok" id="donationOk" role="status" aria-live="polite"></div>
+              </div>
+
+              <!-- Patreon -->
+              <a class="support-btn primary" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
+                Monatlich via Patreon
               </a>
-              <a class="support-btn" href="https://buy.stripe.com/aFa28r7aE69q92B91Bg7e03" target="_blank" rel="noopener">
-                2 Euro einmalig
-              </a>
-              <a class="support-btn" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
-  Monatlich via Patreon
-</a>
             </div>
 
-            <p class="hint" style="margin:0;">
+            <p class="hint" style="margin:8px 0 0;">
+              Patreon: 1× pro Monat exklusiver Livestream für Mitglieder + Newsletter.
+            </p>
+
+            <p class="hint" style="margin:8px 0 0;">
               Wichtig: Unterstützung ist freiwillig. Der Brief funktioniert auch ohne.
             </p>
           </fieldset>
@@ -831,6 +977,84 @@ Mit freundlichen Grüßen
       }
     }, true);
   })();
+  </script>
+
+  <!-- SUPPORT: Frei wählbar (Stripe Checkout) -->
+  <script>
+    (function(){
+      const input = document.getElementById('donationAmount');
+      const btn = document.getElementById('donationSubmit');
+      const err = document.getElementById('donationError');
+      const ok = document.getElementById('donationOk');
+
+      function showError(msg){
+        if(!err) return;
+        err.textContent = msg;
+        err.style.display = 'block';
+        if(ok) ok.style.display = 'none';
+      }
+      function clearError(){
+        if(!err) return;
+        err.textContent = '';
+        err.style.display = 'none';
+      }
+      function showOk(msg){
+        if(!ok) return;
+        ok.textContent = msg;
+        ok.style.display = 'block';
+        if(err) err.style.display = 'none';
+      }
+
+      async function createCheckout(){
+        clearError();
+
+        const raw = (input?.value || '').toString().trim();
+        const amount = Number(raw);
+
+        if(!Number.isFinite(amount)) return showError('Bitte einen Betrag eingeben.');
+        if(amount < 1) return showError('Mindestbetrag ist 1 Euro.');
+        if(amount > 250) return showError('Maximalbetrag ist 250 Euro.');
+
+        btn.disabled = true;
+        btn.textContent = 'Weiter zu Stripe…';
+
+        try{
+          const res = await fetch('/api/create-checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount_eur: amount,
+              source: 'letterpage-support-custom'
+            })
+          });
+
+          const data = await res.json().catch(() => ({}));
+          if(!res.ok){
+            throw new Error(data?.error || ('HTTP ' + res.status));
+          }
+          if(!data?.url){
+            throw new Error('Keine Checkout-URL erhalten.');
+          }
+
+          showOk('Weiterleitung zu Stripe…');
+          window.location.href = data.url;
+        }catch(e){
+          console.warn(e);
+          showError('Konnte Stripe nicht starten. Bitte später nochmal versuchen.');
+          btn.disabled = false;
+          btn.textContent = 'Betrag senden';
+        }
+      }
+
+      btn?.addEventListener('click', createCheckout);
+
+      input?.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){
+          e.preventDefault();
+          createCheckout();
+        }
+      });
+    })();
   </script>
 
 </body>
