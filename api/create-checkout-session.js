@@ -1,5 +1,6 @@
 //api/create-checkoout-session.js
 
+console.log("Has STRIPE_SECRET_KEY:", !!process.env.STRIPE_SECRET_KEY);
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
