@@ -598,21 +598,27 @@
   </script>
 
   <script>
-    // Manuelle Fortschrittsanzeige
-    // Trage hier den aktuellen Stand ein, z.B. 3400
-    (function(){
-      const RAISED_EUR = 150; // <--- HIER EINTRAGEN
-      const GOAL_EUR = 15000;
+(async function(){
+  const raisedText = document.getElementById('raisedText');
+  const barFill = document.getElementById('barFill');
 
-      const fmt = new Intl.NumberFormat('de-DE');
-      const raisedText = document.getElementById('raisedText');
-      const barFill = document.getElementById('barFill');
+  try{
+    const res = await fetch('/api/raised', { cache: 'no-store' });
+    const data = await res.json();
 
-      const pct = Math.max(0, Math.min(100, (RAISED_EUR / GOAL_EUR) * 100));
-      if(raisedText) raisedText.textContent = fmt.format(RAISED_EUR) + " €";
-      if(barFill) barFill.style.width = pct.toFixed(1) + "%";
-    })();
-  </script>
+    const raised = (data.raised_cents || 0) / 100;
+    const goal = (data.goal_cents || 1500000) / 100;
+
+    const fmt = new Intl.NumberFormat('de-DE');
+    if(raisedText) raisedText.textContent = fmt.format(Math.round(raised)) + " €";
+
+    const pct = Math.max(0, Math.min(100, (raised / goal) * 100));
+    if(barFill) barFill.style.width = pct.toFixed(1) + "%";
+  }catch(e){
+    console.warn("Raised konnte nicht geladen werden", e);
+  }
+})();
+</script>
 
   <script>
     // Stripe Checkout: unverändert aus deiner Hauptseite übernommen
