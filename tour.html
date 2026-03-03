@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Aktion Solarstrom – Tour finanzieren</title>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Aktion Solarstrom – 5 Städte + Berlin jetzt möglich machen">
+  <meta property="og:description" content="22.000 Briefe. Jetzt bringen wir sie in fünf Städte und nach Berlin. Erste Etappe: 15.000 €.">
+  <meta property="og:url" content="https://www.aktionsolarstrom.de/tour.html">
+  <meta property="og:image" content="https://www.aktionsolarstrom.de/assets/SocialCard1.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter (X) Fallback -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Aktion Solarstrom – 5 Städte + Berlin">
+  <meta name="twitter:description" content="Erste Etappe: 15.000 €. Einmalig via Stripe oder monatlich via Patreon.">
+  <meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
+
+  <meta name="description" content="Tour-Finanzierung der Aktion Solarstrom: 5 Städte + Berlin. Einmalig unterstützen (Stripe) oder monatlich (Patreon).">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+<link rel="canonical" href="https://www.aktionsolarstrom.de/tour.html">
+  <style>
+    :root{
+      --brand: #0a7d32;
+      --brand-2: #0bbd54;
+      --bg: #f6f1e8;
+      --card: #fff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #f6b10a;
+      --radius: 14px;
+      --shadow: 0 6px 28px rgba(0,0,0,.08);
+      --shadow-lg: 0 18px 48px rgba(0,0,0,.12);
+      --maxw: 960px;
+      --focus-ring: 2px solid #f6b10a;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font: 16px/1.7 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%);
+      color: var(--text);
+      text-rendering: optimizeLegibility;
+      font-synthesis-weight: none;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    .page { display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr; min-height:100dvh; }
+    .middle { grid-column:2; width:100%; padding: 0 16px; }
+
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none; z-index:-1;
+      background:
+        radial-gradient(1px 1px at 25% 15%, rgba(0,0,0,.04) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 60% 40%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 80% 70%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 40% 85%, rgba(0,0,0,.02) 0, rgba(0,0,0,0) 60%);
+      opacity:.28;
+      mix-blend-mode:multiply;
+    }
+
+    .hero-wrap{
+      position:relative;
+      overflow:hidden;
+      border-radius:0 0 16px 16px;
+      background:
+        linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)),
+        url('assets/Bundestag.jpg') center 45%/cover no-repeat;
+    }
+    .hero-wrap::before{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background: linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02));
+      mix-blend-mode: soft-light;
+    }
+    .hero-wrap::after{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%);
+    }
+
+    .hero{
+      display:flex;
+      flex-direction: column;
+      align-items:center;
+      justify-content:center;
+      text-align:center; color:#fff;
+      padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px);
+      position:relative;
+    }
+    .hero-panel{
+      background: rgba(10,125,50,.78);
+      border-radius:22px; padding:18px 22px;
+      width:min(92vw, 760px); max-width:760px;
+      box-shadow:0 18px 48px rgba(0,0,0,.28);
+      backdrop-filter: blur(2px);
+      position:relative; overflow:hidden;
+    }
+    .hero-panel::after{
+      content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
+      background: linear-gradient(90deg, #f6b10a, #ffd84a);
+    }
+
+    .hero .logo{
+      width: clamp(170px, 36vw, 380px);
+      height:auto; display:block; margin:0 auto 8px;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,.35));
+    }
+    .hero h1{
+      margin:8px 0 4px;
+      font-size: clamp(1.6rem, 2.2vw + 1rem, 2.2rem);
+      font-weight:800; color:#fff;
+    }
+    .hero .tagline{ margin:6px 0 0; font-size:1.04rem; opacity:.96; }
+    .cta-row{ margin-top:14px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+    .cta{ display:inline-block; padding:12px 18px; border-radius:12px; font-weight:700; text-decoration:none; transition:transform .15s ease; }
+    .cta.primary{ background:linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; }
+    .cta.secondary{ background:#fff; color:#0a7d32; border:1px solid #cfe7d8; }
+    .cta:hover{ transform:translateY(-1px); }
+    .cta.primary{
+      box-shadow:0 4px 15px rgba(10,125,50,.25);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .cta.primary:hover{
+      transform: translateY(-2px);
+      box-shadow:0 6px 22px rgba(10,125,50,.35);
+    }
+
+    /* ===== TOUR-CALLOUT (neu) ===== */
+    .hero-tour{
+      width:min(92vw, 760px);
+      max-width:760px;
+      margin:12px auto 0;
+      padding:14px 14px;
+      border-radius:14px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 10px 22px rgba(0,0,0,.12);
+      backdrop-filter: blur(2px);
+      color: rgba(255,255,255,.95);
+      text-align:left;
+    }
+    .hero-tour strong{ color:#fff; font-weight:900; }
+    .tour-grid{
+      display:grid;
+      gap:10px;
+      grid-template-columns: 1fr;
+      margin-top:10px;
+    }
+    @media (min-width:680px){
+      .tour-grid{ grid-template-columns: 1fr 1fr; }
+    }
+    .tour-pill{
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius:12px;
+      padding:10px 12px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.12);
+    }
+    .tour-pill .k{ font-size:.86rem; opacity:.92; }
+    .tour-pill .v{ font-size:1.15rem; font-weight:900; margin-top:2px; }
+
+    /* ===== Fortschritt ===== */
+    .progress{
+      margin-top:10px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius:12px;
+      padding:10px 12px;
+    }
+    .bar{
+      height:10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.20);
+      overflow:hidden;
+      margin-top:8px;
+    }
+    .bar > span{
+      display:block;
+      height:100%;
+      width: 0%;
+      background: linear-gradient(90deg, #f6b10a, #ffd84a);
+    }
+    .progress small{ opacity:.9; }
+
+    /* ===== Stripe-Block (wie gehabt) ===== */
+    .hero-under-custom{
+      width:min(92vw, 760px);
+      max-width:760px;
+      margin:12px auto 0;
+      padding:12px 14px;
+      border-radius:14px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 10px 22px rgba(0,0,0,.14);
+      backdrop-filter: blur(2px);
+      color:#fff;
+    }
+    .hero-under-custom .custom-row{
+      display:flex;
+      gap:10px;
+      align-items:stretch;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .hero-under-custom label{
+      display:block;
+      width:100%;
+      text-align:left;
+      font-weight:800;
+      margin:0 0 8px;
+      color: rgba(255,255,255,.95);
+    }
+    .custom-input{
+      flex: 1 1 220px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(255,255,255,.65);
+      border-radius:12px;
+      padding:10px 12px;
+      color:#0a7d32;
+      box-shadow: 0 8px 18px rgba(0,0,0,.12);
+    }
+    .custom-input span{
+      font-weight:900;
+      color:#0a7d32;
+      opacity:.95;
+      white-space:nowrap;
+    }
+    .custom-input input{
+      width:100%;
+      border:0;
+      outline:0;
+      font: 800 16px/1.2 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:#0a7d32;
+      background:transparent;
+      min-width:110px;
+    }
+    .custom-submit{
+      flex: 0 0 auto;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 16px;
+      border-radius:12px;
+      border:0;
+      cursor:pointer;
+      font-weight:900;
+      color:#fff;
+      background: linear-gradient(135deg, #f6b10a, #ffd84a);
+      box-shadow: 0 10px 22px rgba(0,0,0,.16);
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      min-width: 210px;
+    }
+    .custom-submit:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(0,0,0,.20);
+      filter: brightness(.98);
+    }
+    .custom-submit:disabled{
+      opacity:.7;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow: 0 8px 18px rgba(0,0,0,.14);
+    }
+    .custom-hint{
+      margin:10px 0 0;
+      font-size:.92rem;
+      line-height:1.35;
+      color: rgba(255,255,255,.90);
+      text-align:left;
+    }
+    .custom-error{
+      margin:10px 0 0;
+      font-size:.92rem;
+      line-height:1.35;
+      color: #ffe6a6;
+      text-align:left;
+      font-weight:800;
+      display:none;
+    }
+    .custom-ok{
+      margin:10px 0 0;
+      font-size:.92rem;
+      line-height:1.35;
+      color: rgba(255,255,255,.92);
+      text-align:left;
+      display:none;
+    }
+
+    .hero-under-patreon{
+      width:min(92vw, 760px);
+      max-width:760px;
+      margin:10px auto 0;
+      padding:12px 14px;
+      border-radius:14px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 10px 22px rgba(0,0,0,.12);
+      backdrop-filter: blur(2px);
+      color: rgba(255,255,255,.95);
+      text-align:left;
+    }
+    .hero-under-patreon .patreon-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .patreon-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 14px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:900;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color:#fff;
+      box-shadow:0 10px 22px rgba(0,0,0,.16);
+      border:0;
+      min-width: 260px;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .patreon-btn:hover{
+      transform: translateY(-2px);
+      box-shadow:0 14px 28px rgba(0,0,0,.20);
+      text-decoration:none;
+    }
+    .patreon-text{
+      flex: 1 1 240px;
+      font-size:.95rem;
+      line-height:1.45;
+      color: rgba(255,255,255,.92);
+    }
+    .patreon-text strong{ color:#fff; font-weight:900; }
+    @media (max-width:600px){
+      .patreon-btn{ width:100%; min-width:unset; }
+      .patreon-text{ font-size:.92rem; }
+      .custom-submit{ width:100%; min-width:unset; }
+    }
+
+    main.middle > section { margin: 32px 0; }
+    .section-title{ font-size:1.5rem; margin:0 0 14px; font-weight:700; }
+    .lead { font-size:1.05rem; }
+    .card {
+      border:1px solid rgba(0,0,0,.06);
+      border-radius: var(--radius);
+      padding:18px;
+      background:#fffdf8;
+      box-shadow: var(--shadow);
+    }
+    .callout { border-left: 4px solid var(--accent); background:#fff8e1; padding:14px 16px; border-radius: 8px; }
+
+    footer .legal { text-align:center; display:block; }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <header class="site-header middle">
+      <div class="hero-wrap">
+        <div class="hero">
+
+          <div class="hero-panel">
+            <img class="logo" src="assets/logo.png" alt="Kampagnenlogo Aktion Solarstrom">
+            <h1>5 Städte plus Berlin</h1>
+            <p class="tagline">
+              22.000 Briefe sind beauftragt. Jetzt bringen wir die Stimmen sichtbar in die Städte und zum Abschluss nach Berlin.
+            </p>
+            <div class="cta-row">
+              <a class="cta primary" href="#unterstuetzen">Jetzt Etappe mittragen</a>
+              <a class="cta secondary" href="#transparenz">Zahlen und Transparenz</a>
+            </div>
+          </div>
+
+          <!-- TOUR-CALLOUT -->
+          <div class="hero-tour" id="unterstuetzen">
+            <strong>Erste Finanzierungs-Etappe:</strong> 15.000 € für die nächste Umsetzungsschleife (Tour plus Vorbereitung Berlin)
+
+            <div class="tour-grid">
+              <div class="tour-pill">
+                <div class="k">Briefe beauftragt</div>
+                <div class="v">22.000</div>
+              </div>
+              <div class="tour-pill">
+                <div class="k">Briefe zugestellt</div>
+                <div class="v">knapp 12.000</div>
+              </div>
+              <div class="tour-pill">
+                <div class="k">Social Clips gesamt</div>
+                <div class="v">41 Clips</div>
+              </div>
+              <div class="tour-pill">
+                <div class="k">Views bis 24.02.2026</div>
+                <div class="v">Instagram 939.084 plus Facebook 669.351</div>
+              </div>
+            </div>
+
+            <div class="progress" aria-label="Fortschritt Etappe">
+              <div><strong>Fortschritt:</strong> <span id="raisedText">0 €</span> von 15.000 €</div>
+              <div class="bar" aria-hidden="true"><span id="barFill"></span></div>
+              <small>Hinweis: Der aktuelle Stand wird hier manuell wöchentlich eintragen. Wir programmieren eine Automatisierung</small>
+            </div>
+
+            <div class="callout" style="margin-top:12px;">
+              <strong>Prinzip:</strong> Kein Betteln, kein Drama. Wir setzen um. Wer trägt mit?
+            </div>
+          </div>
+
+          <!-- STRIPE: Betrag frei wählen (wie gehabt) -->
+          <div class="hero-under-custom" aria-label="Einmalig unterstützen – Betrag frei wählen">
+            <label for="donationAmount">Einmalig unterstützen – Betrag frei wählen:</label>
+
+            <div class="custom-row">
+              <div class="custom-input" role="group" aria-label="Betrag eingeben">
+                <span>EUR</span>
+                <input
+                  id="donationAmount"
+                  name="donationAmount"
+                  type="number"
+                  inputmode="decimal"
+                  min="1"
+                  max="250"
+                  step="1"
+                  placeholder="z. B. 25"
+                  aria-describedby="donationHint donationError donationOk"
+                >
+              </div>
+
+              <button class="custom-submit" id="donationSubmit" type="button">
+                Betrag senden
+              </button>
+            </div>
+
+            <div class="custom-hint" id="donationHint">
+              Sie werden zu Stripe weitergeleitet. Mindestbetrag 1 Euro, maximal 250 Euro.
+            </div>
+            <div class="custom-error" id="donationError" role="status" aria-live="polite"></div>
+            <div class="custom-ok" id="donationOk" role="status" aria-live="polite"></div>
+          </div>
+
+          <!-- PATREON -->
+          <div class="hero-under-patreon" aria-label="Monatlich unterstützen – Patreon">
+            <div class="patreon-row">
+              <a class="patreon-btn" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
+                Monatlich via Patreon unterstützen
+              </a>
+              <div class="patreon-text">
+                <strong>Für Mitglieder:</strong> 1× pro Monat exklusiver Livestream plus Newsletter.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </header>
+
+    <main class="middle">
+
+      <section id="transparenz">
+        <h2 class="section-title">Zahlen und Transparenz</h2>
+
+        <div class="card">
+          <p class="lead">
+            Das ist der Stand aus dem internen Aktionsupdate vom 24.02.2026.
+            Die Zahlen sind nicht Marketing, sondern Arbeitsrealität.
+          </p>
+
+          <div class="callout">
+            <strong>Briefe:</strong> Insgesamt 21.153 Briefe waren bis 24.02.2026 beauftragt, mittlerweile sind es 22.000.
+            Knapp 12.000 Briefe sind zugestellt, rund 10.000 müssen noch zugestellt werden.
+          </div>
+
+          <p>
+            <strong>Social Media:</strong> 41 Clips wurden auf Instagram, YouTube Shorts, TikTok, Facebook und X gepostet.
+            Bis 24.02.2026: Instagram 939.084 Views, Facebook 669.351 Aufrufe.
+          </p>
+
+          <p>
+            <strong>Finanzen:</strong> Bisherige Ausgaben: 35.135,15 €.
+            Zusagen: 27.900 €, zwei Beiträge davon waren zu diesem Stand noch nicht bezahlt.
+            Bis auf eine Rechnung über 1.000 € wurde für Leistungen im Jahr 2026 laut Update noch wenig in Rechnung gestellt.
+          </p>
+
+          <p style="margin-bottom:0;">
+            <strong>Planung:</strong> Empfohlen sind fünf Vor-Ort-Aktionen in der Branche, Kosten pro Aktion rund 3.000 €.
+            Der Energiegipfel als letzter Schritt ist mit rund 15.000 € angesetzt.
+            Restfinanzierung: ca. 30.000 € plus Administration.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Wofür die erste Etappe konkret ist</h2>
+        <div class="grid2" style="display:grid; gap:18px; grid-template-columns:1fr;">
+          <div class="card">
+            <h3 style="margin-top:0;">1. Tour-Produktion absichern</h3>
+            <p>Technik, Logistik, Teamaufwand, dokumentierte Umsetzung vor Ort.</p>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">2. Berlin vorbereiten</h3>
+            <p>Damit der Abschluss nicht improvisiert wirkt, sondern sichtbar und wirksam wird.</p>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">3. Briefe weiter zustellen</h3>
+            <p>Damit die 22.000 nicht als Zahl stehen bleiben, sondern physisch ankommen.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">Zur Hauptseite</h2>
+        <p>
+          Hier geht es zurück zur Kampagnenseite mit Mitmach-Optionen und Materialien.
+        </p>
+        <p style="margin-bottom:0;">
+          <a class="cta primary" href="index.html">Zur Kampagnenseite</a>
+        </p>
+      </section>
+
+    </main>
+
+    <footer class="site-footer middle">
+      <nav class="legal">
+        <a href="Impressum.html">Impressum</a> · <a href="Datenschutz.html">Datenschutz</a>
+      </nav>
+      <p style="text-align:center">©️ Aktion Solarstrom</p>
+    </footer>
+  </div>
+
+  <script>
+    // Smooth Scrolling
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a'); if (!a) return;
+      const href = a.getAttribute('href') || '';
+      if (!href.startsWith('#')) return;
+      const el = document.querySelector(href);
+      if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+    });
+  </script>
+
+  <script>
+    // Manuelle Fortschrittsanzeige
+    // Trage hier den aktuellen Stand ein, z.B. 3400
+    (function(){
+      const RAISED_EUR = 150; // <--- HIER EINTRAGEN
+      const GOAL_EUR = 15000;
+
+      const fmt = new Intl.NumberFormat('de-DE');
+      const raisedText = document.getElementById('raisedText');
+      const barFill = document.getElementById('barFill');
+
+      const pct = Math.max(0, Math.min(100, (RAISED_EUR / GOAL_EUR) * 100));
+      if(raisedText) raisedText.textContent = fmt.format(RAISED_EUR) + " €";
+      if(barFill) barFill.style.width = pct.toFixed(1) + "%";
+    })();
+  </script>
+
+  <script>
+    // Stripe Checkout: unverändert aus deiner Hauptseite übernommen
+    (function(){
+      const input = document.getElementById('donationAmount');
+      const btn = document.getElementById('donationSubmit');
+      const err = document.getElementById('donationError');
+      const ok = document.getElementById('donationOk');
+
+      function showError(msg){
+        if(!err) return;
+        err.textContent = msg;
+        err.style.display = 'block';
+        if(ok) ok.style.display = 'none';
+      }
+      function clearError(){
+        if(!err) return;
+        err.textContent = '';
+        err.style.display = 'none';
+      }
+      function showOk(msg){
+        if(!ok) return;
+        ok.textContent = msg;
+        ok.style.display = 'block';
+        if(err) err.style.display = 'none';
+      }
+
+      async function createCheckout(){
+        clearError();
+
+        const raw = (input?.value || '').toString().trim();
+        const amount = Number(raw);
+
+        if(!Number.isFinite(amount)) return showError('Bitte einen Betrag eingeben.');
+        if(amount < 1) return showError('Mindestbetrag ist 1 Euro.');
+        if(amount > 250) return showError('Maximalbetrag ist 250 Euro.');
+
+        btn.disabled = true;
+        btn.textContent = 'Weiter zu Stripe…';
+
+        try{
+          const res = await fetch('/api/create-checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount_eur: amount,
+              source: 'tour-landing'
+            })
+          });
+
+          const data = await res.json().catch(() => ({}));
+          if(!res.ok){
+            throw new Error(data?.error || ('HTTP ' + res.status));
+          }
+          if(!data?.url){
+            throw new Error('Keine Checkout-URL erhalten.');
+          }
+
+          showOk('Weiterleitung zu Stripe…');
+          window.location.href = data.url;
+        }catch(e){
+          console.warn(e);
+          showError('Konnte Stripe nicht starten. Bitte später nochmal versuchen.');
+          btn.disabled = false;
+          btn.textContent = 'Betrag senden';
+        }
+      }
+
+      btn?.addEventListener('click', createCheckout);
+
+      input?.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){
+          e.preventDefault();
+          createCheckout();
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>
+
