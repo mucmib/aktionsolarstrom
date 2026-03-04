@@ -790,6 +790,8 @@
       <div class="impact-value" id="impactTik">–</div>
     </div>
 
+<div>Spenden heute: <span id="donTodayCount">–</span> Zahlungen, <span id="donTodayAmount">–</span> €</div>
+
   </div>
 </div>
 
@@ -1325,6 +1327,18 @@
       });
     })();
   </script>
+
+<script>
+fetch('/api/global?nocache=' + Date.now(), { cache:'no-store' })
+  .then(r=>r.json())
+  .then(d=>{
+    const nf0 = new Intl.NumberFormat('de-DE');
+    const nf2 = new Intl.NumberFormat('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('donTodayCount').textContent = nf0.format(d.today_count || 0);
+    document.getElementById('donTodayAmount').textContent = nf2.format((d.today_cents || 0) / 100);
+  })
+  .catch(()=>{});
+</script>
 
   <script>
     // =========================
