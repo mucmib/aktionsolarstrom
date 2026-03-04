@@ -661,6 +661,26 @@
       text-shadow:0 1px 1px rgba(0,0,0,.5);
     }
     .yt-lazy .yt-play:focus-visible{ outline: var(--focus-ring); outline-offset:4px; border-radius:12px; }
+
+/* Boxen Inhalte zentrieren */
+.topstats-card,
+.impact-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* horizontal zentriert */
+  justify-content: center;  /* vertikal zentriert, falls Höhe greift */
+  text-align: center;
+}
+
+/* Falls einzelne Zeilen noch links kleben: */
+.topstats-label,
+.topstats-value,
+.topstats-sub,
+.topstats-meta,
+.impact-card *{
+  text-align: center;
+}
+
   </style>
 </head>
 
