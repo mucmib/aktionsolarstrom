@@ -8,16 +8,42 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
 
 function getBaseUrl(req) {
-  // Vercel: x-forwarded-proto + x-forwarded-host sind zuverlässig
   const proto = req.headers["x-forwarded-proto"] || "https";
   const host = req.headers["x-forwarded-host"] || req.headers.host;
   return `${proto}://${host}`;
 }
 
+/**
+ * Quelle -> Bucket (für globale Auswertung)
+ * Passe die source-Strings exakt so an, wie du sie im Frontend sendest.
+ */
+function getBucket(source) {
+  const s = String(source || "").toLowerCase().trim();
+
+  // Tour
+  if (s === "tour-landing" || s === "tour") return "tour-2026";
+
+  // Briefseite
+  if (s === "brief" || s === "index-full" || s === "briefseite") return "brief";
+
+  // Default: Hauptseite
+  return "main";
+}
+
+/**
+ * Quelle -> Return-Pfad nach Stripe
+ * Wichtig: hier deine echten Dateinamen verwenden.
+ */
 function getReturnPath(source) {
-  // Quelle entscheidet, wohin Stripe zurückleiten soll
-  // tour.html sendet z.B. source: 'tour-landing'
-  if (String(source || "") === "tour-landing") return "/tour.html";
+  const s = String(source || "").toLowerCase().trim();
+
+  // Tour
+  if (s === "tour-landing" || s === "tour") return "/tour.html";
+
+  // Briefseite: falls deine Seite anders heisst, hier anpassen
+  if (s === "brief" || s === "index-full" || s === "briefseite") return "/index-full.html";
+
+  // Hauptseite: falls bei dir indexneu.html oder index.html, hier anpassen
   return "/index.html";
 }
 
@@ -31,27 +57,21 @@ export default async function handler(req, res) {
     const { amount_eur, source } = req.body || {};
     const amount = Number(amount_eur);
 
-    if (!Number.isFinite(amount)) {
-      return res.status(400).json({ error: "Invalid amount" });
-    }
-    if (amount < 1 || amount > 250) {
-      return res.status(400).json({ error: "Amount out of range" });
-    }
+    if (!Number.isFinite(amount)) return res.status(400).json({ error: "Invalid amount" });
+    if (amount < 1 || amount > 250) return res.status(400).json({ error: "Amount out of range" });
 
-    const unitAmount = Math.round(amount * 100); // EUR cents
+    const unitAmount = Math.round(amount * 100); // cents
     const baseUrl = getBaseUrl(req);
 
+    const bucket = getBucket(source);
     const returnPath = getReturnPath(source);
-
-    // Für Tour-Zahlungen markieren wir metadata + client_reference_id
-    const isTour = String(source || "") === "tour-landing";
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      payment_method_types: ["card", "sepa_debit", "paypal"], // PayPal nur wenn in deinem Stripe-Account aktiv
+      payment_method_types: ["card", "sepa_debit", "paypal"],
 
-      // Das ist der "Beleg" / Zuordnung im Stripe-Backend
-      client_reference_id: isTour ? "tour-2026" : undefined,
+      // Zuordnung im Stripe Backend
+      client_reference_id: bucket,
 
       line_items: [
         {
@@ -59,8 +79,7 @@ export default async function handler(req, res) {
             currency: "eur",
             product_data: {
               name: "Unterstützung Aktion Solarstrom",
-              description:
-                "Freiwilliger Beitrag zur Finanzierung von Briefdruck und Postversand.",
+              description: "Freiwilliger Beitrag zur Finanzierung von Briefdruck und Postversand.",
             },
             unit_amount: unitAmount,
           },
@@ -71,17 +90,11 @@ export default async function handler(req, res) {
       success_url: `${baseUrl}${returnPath}?donation=success`,
       cancel_url: `${baseUrl}${returnPath}?donation=cancel`,
 
-      // metadata existierte schon -> wir erweitern es
+      // Immer sauber taggen
       metadata: {
-        source: String(source || "indexneu"),
-
-        // Nur für Tour-Zahlungen setzen
-        ...(isTour
-          ? {
-              campaign: "aktion-solarstrom",
-              bucket: "tour-2026",
-            }
-          : {}),
+        campaign: "aktion-solarstrom",
+        bucket,
+        source: String(source || ""),
       },
     });
 
