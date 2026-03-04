@@ -369,6 +369,70 @@
       .stats-value{ font-size:1.45rem; }
     }
 
+/* ===== Impact-Board (Live Reichweite + Briefe) ===== */
+.impact-wrap{
+  display:flex;
+  justify-content:center;
+  margin: 10px 0 6px;
+}
+.impact-board{
+  width:min(92vw, 980px);
+  max-width:980px;
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap:12px;
+}
+.impact-card{
+  background:#ffffffcc;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:14px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.08);
+  padding:12px 12px;
+  backdrop-filter: blur(6px);
+}
+.impact-top{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.impact-icon{
+  width:38px; height:38px;
+  border-radius:12px;
+  display:grid; place-items:center;
+  background: rgba(10,125,50,.10);
+  font-size: 1.1rem;
+}
+.impact-label{
+  font-weight:900;
+  font-size:.92rem;
+  line-height:1.1;
+  color:#0b3d16;
+}
+.impact-value{
+  margin-top:6px;
+  font-weight:900;
+  font-size:1.35rem;
+  color:#0b3d16;
+  font-variant-numeric: tabular-nums;
+}
+.impact-sub{
+  margin-top:2px;
+  font-size:.78rem;
+  color:#4b5563;
+}
+@media (max-width: 860px){
+  .impact-board{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 480px){
+  .impact-board{ grid-template-columns: 1fr; }
+  .impact-value{ font-size:1.25rem; }
+}
+
+/* Impact Board: etwas Abstand nach unten */
+.impact-wrap{
+  margin-top: 28px; /* probier 12–28px */
+}
+
     /* ===== Sektionen / Karten ===== */
     main.middle > section { margin: 32px 0; }
     .lead { font-size:1.05rem; }
@@ -677,6 +741,58 @@
           </div>
         </div>
       </div>
+
+<!-- Impact Board (Reichweite + Briefe) -->
+<div class="impact-wrap reveal" aria-label="Wirkung der Kampagne">
+  <div class="impact-board" role="status" aria-live="polite">
+
+    <div class="impact-card">
+      <div class="impact-top">
+        <div class="impact-icon" aria-hidden="true">📬</div>
+        <div>
+          <div class="impact-label">Briefe</div>
+          <div class="impact-sub" id="impactLettersSub">Stand: –</div>
+        </div>
+      </div>
+      <div class="impact-value" id="impactLetters">–</div>
+    </div>
+
+    <div class="impact-card">
+      <div class="impact-top">
+        <div class="impact-icon" aria-hidden="true">📣</div>
+        <div>
+          <div class="impact-label">Meta Views</div>
+          <div class="impact-sub" id="impactMetaSub">Facebook + Instagram</div>
+        </div>
+      </div>
+      <div class="impact-value" id="impactMeta">–</div>
+    </div>
+
+    <div class="impact-card">
+      <div class="impact-top">
+        <div class="impact-icon" aria-hidden="true">▶️</div>
+        <div>
+          <div class="impact-label">YouTube Views</div>
+          <div class="impact-sub" id="impactYTSub">Shorts + Sendungen</div>
+        </div>
+      </div>
+      <div class="impact-value" id="impactYT">–</div>
+    </div>
+
+    <div class="impact-card">
+      <div class="impact-top">
+        <div class="impact-icon" aria-hidden="true">🎵</div>
+        <div>
+          <div class="impact-label">TikTok Views</div>
+          <div class="impact-sub" id="impactTikSub">organisch</div>
+        </div>
+      </div>
+      <div class="impact-value" id="impactTik">–</div>
+    </div>
+
+  </div>
+</div>
+
     </header>
 
     <!-- ===== CONTENT ===== -->
@@ -693,6 +809,28 @@
           <strong>Kernaussage:</strong> Solarstrom senkt Kosten, erhöht Versorgungssicherheit und schützt Klima &amp; Gesundheit.
         </div>
       </section>
+
+
+<!-- Playlist mit aktueller Sendung am Anfang -->
+      <section id="sendung">
+        
+        <h3 style="margin-top:30px;">Playlist mit aktueller Sendung am Anfang</h3>
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/videoseries?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc"
+            title="YouTube-Playlist: Aktion Solarstrom statt Erdgas-Strom"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy"></iframe>
+        </div>
+        <p style="margin-top:10px">
+          <a class="cta secondary" href="https://www.youtube.com/playlist?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc" target="_blank" rel="noopener">
+            Ganze Playlist auf YouTube ansehen
+          </a>
+        </p>
+      </section>
+
 
       <!-- === Aktuell: Atombombe auf die Energiewende (Lazy YouTube) === -->
       <section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
@@ -777,35 +915,8 @@
         </p>
       </section>
 
-      <!-- === Rückblick: Gespräch mit Dr. Nina Scheer (Lazy YouTube) === -->
-      <section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
-        <h2 style="margin-top:0;">Jetzt ansehen: Gespräch mit Dr. Nina Scheer (SPD)</h2>
-
-        <p>
-          Nina Scheer, energiepolitische Sprecherin der SPD-Bundestagsfraktion, bezieht klar Stellung zu den fossilen
-          Rollback-Plänen von Bundeswirtschaftsministerin Reiche. Sie macht deutlich: Der Koalitionsvertrag lässt keinen
-          „Neustart der Energiewende“ im Sinne von Ministerin Reiche (CDU) zu. Die SPD hält an Ausbau der Erneuerbaren,
-          Bestandsschutz und an keiner neuen Abhängigkeit von fossilem Gas fest. Auch eine Streichung der festen
-          Einspeisevergütung findet sich nicht im Vertrag – und zusätzliche Abgaben für Bürger-Solar lehnt sie ab.
-        </p>
-
-        <div class="video-wrap yt-lazy" data-ytid="teqTU9uoRqw" aria-label="YouTube: Gespräch mit Dr. Nina Scheer">
-          <button class="yt-play" type="button" aria-label="Video abspielen">
-            <span class="yt-badge">LMdE TV</span>
-            <img src="https://i.ytimg.com/vi/teqTU9uoRqw/hqdefault.jpg" loading="lazy"
-                 alt="Vorschaubild – Gespräch mit Dr. Nina Scheer">
-            <span class="yt-icon" aria-hidden="true"></span>
-            <div class="yt-caption">🎥 Jetzt ansehen auf YouTube</div>
-          </button>
-          <noscript>
-            <p><a class="cta secondary" href="https://www.youtube.com/watch?v=teqTU9uoRqw" target="_blank" rel="noopener">
-              Video auf YouTube öffnen
-            </a></p>
-          </noscript>
-        </div>
-      </section>
-
-      <!-- Aktuelle Sendung -->
+      
+      <!-- Kampagenstart -->
       <section id="sendung">
         <h2 class="section-title">Der Kampagnenstart</h2>
         <div class="video-wrap">
@@ -821,22 +932,6 @@
         <p style="margin-top:10px">
           <a class="cta secondary" href="https://youtu.be/hrUNTbE8zKQ" target="_blank" rel="noopener">
             Auf YouTube ansehen
-          </a>
-        </p>
-
-        <h3 style="margin-top:30px;">Weitere Beiträge der Aktion</h3>
-        <div class="video-wrap">
-          <iframe
-            src="https://www.youtube-nocookie.com/embed/videoseries?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc"
-            title="YouTube-Playlist: Aktion Solarstrom statt Erdgas-Strom"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-            loading="lazy"></iframe>
-        </div>
-        <p style="margin-top:10px">
-          <a class="cta secondary" href="https://www.youtube.com/playlist?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc" target="_blank" rel="noopener">
-            Ganze Playlist auf YouTube ansehen
           </a>
         </p>
       </section>
@@ -1053,6 +1148,66 @@
 
     loadCounter();
   </script>
+
+<script>
+  // ---- Impact Board: Reichweite + Briefe ----
+  // Quelle: /api/impact.json (statisch) ODER /api/stats.json erweitern.
+  // Empfehlung: eigene Datei impact.json -> schnell, robust, keine DB nötig.
+  const IMPACT_URL = '/api/impact';
+
+  (async function loadImpact(){
+    const elLetters = document.getElementById('impactLetters');
+    const elMeta = document.getElementById('impactMeta');
+    const elYT = document.getElementById('impactYT');
+    const elTik = document.getElementById('impactTik');
+    const elLettersSub = document.getElementById('impactLettersSub');
+
+    const fmt = new Intl.NumberFormat('de-DE');
+
+    function setText(el, val){
+      if(!el) return;
+      el.textContent = val;
+    }
+
+    try{
+      const res = await fetch(IMPACT_URL + `?nocache=${Date.now()}`, { cache:'no-store' });
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+
+      // Erwartete Struktur (Beispiel):
+      // {
+      //   "letters_total": 22000,
+      //   "meta_views": 1345413,
+      //   "youtube_views": 766631,
+      //   "tiktok_views": 166000,
+      //   "last_update": "2026-03-03T10:30:00.000Z"
+      // }
+
+      const letters = Number(data.letters_total ?? 0);
+      const meta = Number(data.meta_views ?? 0);
+      const yt = Number(data.youtube_views ?? 0);
+      const tik = Number(data.tiktok_views ?? 0);
+
+      setText(elLetters, fmt.format(letters));
+      setText(elMeta, fmt.format(meta));
+      setText(elYT, fmt.format(yt));
+      setText(elTik, fmt.format(tik));
+
+      // Stand-Zeit optional
+      if(elLettersSub && data.last_update){
+        const d = new Date(data.last_update);
+        if(!isNaN(d)){
+          const dd = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
+          const tt = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
+          elLettersSub.textContent = `Stand: ${dd}, ${tt} Uhr`;
+        }
+      }
+    }catch(e){
+      console.warn('Impact konnte nicht geladen werden', e);
+      // Fallback: Werte nicht überschreiben, bleiben "–"
+    }
+  })();
+</script>
 
   <script>
     // Reveal on load / scroll
