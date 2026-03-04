@@ -117,7 +117,7 @@
       align-items:center;
       justify-content:center;
       text-align:center; color:#fff;
-      padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px);
+      padding: clamp(40px, 7vh, 72px) 16px clamp(40px, 6vh, 70px);
       position:relative;
     }
     .hero-panel{
@@ -267,7 +267,7 @@
       display:none;
     }
 
-    /* ===== Patreon Block (NEU) ===== */
+    /* ===== Patreon Block ===== */
     .hero-under-patreon{
       width:min(92vw, 760px);
       max-width:760px;
@@ -338,11 +338,14 @@
     .donation-msg.ok{ border-color: rgba(11,189,84,.55); }
     .donation-msg.err{ border-color: rgba(246,177,10,.65); }
 
-    /* ===== Zähler (angepasst) ===== */
+    /* ======================================
+       ZÄHLER + IMPACT sauber stapeln
+       ====================================== */
     .stats-wrap{
-      display:flex; justify-content:center;
-      transform: translateY(-28px);
-      margin-bottom: -14px;
+      display:flex;
+      justify-content:center;
+      margin: 14px 0 0;
+      transform:none;
     }
     .stats-banner{
       display:flex; align-items:center; gap:10px;
@@ -359,27 +362,17 @@
     .stats-meta{ font-size:.75rem; margin-top:2px; opacity:.85; }
     .stats-meta .dot{ display:inline-block; width:6px; height:6px; border-radius:50%; background:#fff; opacity:.7; margin:0 8px 1px; vertical-align:middle; }
 
-    @media (max-width: 600px){
-      .hero{ padding: 48px 12px 72px; }
-      .hero-panel{ padding:14px 16px; border-radius:16px; max-width:94vw; }
-      .hero .logo{ max-width:78%; }
-      .hero .tagline{ font-size:.98rem; }
-      .stats-wrap{ transform: translateY(-22px); margin-bottom:-12px; }
-      .stats-banner{ padding:8px 12px; min-width:200px; }
-      .stats-value{ font-size:1.45rem; }
-    }
-
-    /* ===== Impact-Board (bereinigt) ===== */
+    /* ===== Impact-Board (Reichweite + Briefe + Spenden heute) ===== */
     .impact-wrap{
       display:flex;
       justify-content:center;
-      margin: 14px 0 10px;
+      margin: 12px 0 18px;
     }
     .impact-board{
       width:min(92vw, 980px);
       max-width:980px;
       display:grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
+      grid-template-columns: repeat(5, minmax(0,1fr));
       gap:12px;
     }
     .impact-card{
@@ -389,6 +382,7 @@
       box-shadow: 0 10px 22px rgba(0,0,0,.08);
       padding:12px 12px;
       backdrop-filter: blur(6px);
+      min-width: 0;
     }
     .impact-top{
       display:flex;
@@ -401,6 +395,7 @@
       display:grid; place-items:center;
       background: rgba(10,125,50,.10);
       font-size: 1.1rem;
+      flex: 0 0 auto;
     }
     .impact-label{
       font-weight:900;
@@ -414,13 +409,37 @@
       font-size:1.35rem;
       color:#0b3d16;
       font-variant-numeric: tabular-nums;
+      word-break: break-word;
     }
     .impact-sub{
       margin-top:2px;
       font-size:.78rem;
       color:#4b5563;
     }
-    @media (max-width: 860px){
+
+    /* Spenden-Kachel: Wert zweizeilig und ruhig */
+    .donation-value{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .donation-line{
+      font-weight:900;
+      font-size:1.05rem;
+      color:#0b3d16;
+      font-variant-numeric: tabular-nums;
+    }
+    .donation-line small{
+      font-weight:800;
+      color:#4b5563;
+      font-size:.78rem;
+      margin-left:6px;
+    }
+
+    @media (max-width: 980px){
+      .impact-board{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+    @media (max-width: 700px){
       .impact-board{ grid-template-columns: repeat(2, minmax(0,1fr)); }
     }
     @media (max-width: 480px){
@@ -428,21 +447,12 @@
       .impact-value{ font-size:1.25rem; }
     }
 
-    /* ===== Spenden-heute Kachel ===== */
-    .donations-today{
-      width:min(92vw, 980px);
-      max-width:980px;
-      margin: 10px auto 0;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: #ffffffcc;
-      border: 1px solid rgba(0,0,0,.08);
-      box-shadow: 0 10px 22px rgba(0,0,0,.06);
-      font-size: .92rem;
-      color: #374151;
-    }
-    .donations-today strong{
-      color:#0b3d16;
+    @media (max-width: 600px){
+      .hero{ padding: 48px 12px 64px; }
+      .hero-panel{ padding:14px 16px; border-radius:16px; max-width:94vw; }
+      .hero .logo{ max-width:78%; }
+      .hero .tagline{ font-size:.98rem; }
+      .stats-value{ font-size:1.45rem; }
     }
 
     /* ===== Sektionen / Karten ===== */
@@ -620,35 +630,23 @@
     .logo-anim{
       will-change: filter, transform;
       transform: translateZ(0);
-      /* 2 Pulse beim Laden, dann Ruhe */
       animation: logoPulse 5.8s ease-in-out 2;
     }
     @media (hover:hover){
-      .logo-anim:hover{
-        animation: logoPulse 5.8s ease-in-out 1;
-      }
+      .logo-anim:hover{ animation: logoPulse 5.8s ease-in-out 1; }
     }
     @keyframes logoPulse{
-      0%{
-        transform: scale(1);
-        filter: drop-shadow(0 3px 8px rgba(0,0,0,.25));
-      }
+      0%{ transform: scale(1); filter: drop-shadow(0 3px 8px rgba(0,0,0,.25)); }
       45%{
         transform: scale(1.012);
         filter:
           drop-shadow(0 3px 8px rgba(0,0,0,.25))
           drop-shadow(0 0 14px rgba(255, 213, 77, .38));
       }
-      100%{
-        transform: scale(1);
-        filter: drop-shadow(0 3px 8px rgba(0,0,0,.25));
-      }
+      100%{ transform: scale(1); filter: drop-shadow(0 3px 8px rgba(0,0,0,.25)); }
     }
     @media (prefers-reduced-motion: reduce){
-      .logo-anim{
-        animation: none !important;
-        transform: none !important;
-      }
+      .logo-anim{ animation: none !important; transform: none !important; }
     }
   </style>
 </head>
@@ -667,7 +665,7 @@
         <div class="hero">
 
           <div class="hero-panel reveal">
-           <img class="logo-anim" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+            <img class="logo-anim" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
             <h1>Solarstrom statt Erdgas-Strom</h1>
             <p class="tagline">
               Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken &amp; versenden physisch.
@@ -678,9 +676,7 @@
             </div>
           </div>
 
-          <!-- =========================
-               EINMALIG: Betrag frei wählen (Stripe)
-               ========================= -->
+          <!-- EINMALIG: Betrag frei wählen (Stripe) -->
           <div class="hero-under-custom reveal" aria-label="Einmalig unterstützen – Betrag frei wählen">
             <label for="donationAmount">Einmalig unterstützen – Betrag frei wählen:</label>
 
@@ -712,12 +708,10 @@
             <div class="custom-ok" id="donationOk" role="status" aria-live="polite"></div>
           </div>
 
-          <!-- ===== Danke/Abbruch nach Stripe ===== -->
+          <!-- Danke/Abbruch nach Stripe -->
           <div id="donationMsg" class="donation-msg reveal" hidden></div>
 
-          <!-- =========================
-               MONATLICH: Patreon (NEU)
-               ========================= -->
+          <!-- MONATLICH: Patreon -->
           <div class="hero-under-patreon reveal" aria-label="Monatlich unterstützen – Patreon">
             <div class="patreon-row">
               <a class="patreon-btn" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
@@ -733,7 +727,7 @@
         </div>
       </div>
 
-      <!-- Zähler -->
+      <!-- Zähler (sauber unter dem Hero) -->
       <div class="stats-wrap reveal">
         <div class="stats-banner" role="status" aria-live="polite">
           <div class="stats-iconbox"><div class="stats-icon" aria-hidden="true">📄</div></div>
@@ -748,7 +742,7 @@
         </div>
       </div>
 
-      <!-- Impact Board (Reichweite + Briefe) -->
+      <!-- Impact Board (inkl. Spenden heute als Kachel) -->
       <div class="impact-wrap reveal" aria-label="Wirkung der Kampagne">
         <div class="impact-board" role="status" aria-live="polite">
 
@@ -796,12 +790,25 @@
             <div class="impact-value" id="impactTik">–</div>
           </div>
 
-        </div>
-      </div>
+          <div class="impact-card">
+            <div class="impact-top">
+              <div class="impact-icon" aria-hidden="true">💚</div>
+              <div>
+                <div class="impact-label">Spenden heute</div>
+                <div class="impact-sub" id="donTodaySub">gesamt (Tour + Haupt + Brief)</div>
+              </div>
+            </div>
+            <div class="impact-value donation-value" aria-label="Spenden heute">
+              <div class="donation-line">
+                <span id="donTodayCount">–</span><small>Zahlungen</small>
+              </div>
+              <div class="donation-line">
+                <span id="donTodayAmount">–</span><small>Euro</small>
+              </div>
+            </div>
+          </div>
 
-      <!-- Spenden heute Kachel -->
-      <div class="donations-today reveal" role="status" aria-live="polite">
-        <strong>Spenden heute:</strong> <span id="donTodayCount">–</span> Zahlungen, <span id="donTodayAmount">–</span> €
+        </div>
       </div>
 
     </header>
@@ -821,7 +828,7 @@
         </div>
       </section>
 
-      <!-- Playlist mit aktueller Sendung am Anfang -->
+      <!-- Playlist -->
       <section id="sendung">
         <h3 style="margin-top:30px;">Playlist mit aktueller Sendung am Anfang</h3>
         <div class="video-wrap">
@@ -840,7 +847,7 @@
         </p>
       </section>
 
-      <!-- === Aktuell: Atombombe auf die Energiewende (Lazy YouTube) === -->
+      <!-- Aktuell -->
       <section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
         <h2 style="margin-top:0;">Jetzt ansehen: Atombombe auf die Energiewende</h2>
 
@@ -923,8 +930,8 @@
         </p>
       </section>
 
-      <!-- Kampagenstart -->
-      <section id="sendung">
+      <!-- Kampagnenstart -->
+      <section id="sendung2">
         <h2 class="section-title">Der Kampagnenstart</h2>
         <div class="video-wrap">
           <iframe
@@ -1054,7 +1061,7 @@
   </div>
 
   <script>
-    // Theme Toggle (neutral ↔️ warm) mit localStorage
+    // Theme Toggle (neutral ↔ warm) mit localStorage
     (function(){
       const KEY='theme-mode';
       const body=document.body;
@@ -1241,9 +1248,7 @@
   </script>
 
   <script>
-    // =========================
     // FREI WÄHLBAR (Stripe Checkout)
-    // =========================
     (function(){
       const input = document.getElementById('donationAmount');
       const btn = document.getElementById('donationSubmit');
@@ -1321,24 +1326,27 @@
   </script>
 
   <script>
-    fetch('/api/global?nocache=' + Date.now(), { cache:'no-store' })
-      .then(r=>r.json())
-      .then(d=>{
-        const nf0 = new Intl.NumberFormat('de-DE');
-        const nf2 = new Intl.NumberFormat('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
-        const elC = document.getElementById('donTodayCount');
-        const elA = document.getElementById('donTodayAmount');
-        if(elC) elC.textContent = nf0.format(d.today_count || 0);
-        if(elA) elA.textContent = nf2.format((d.today_cents || 0) / 100);
-      })
-      .catch(()=>{});
+    // Spenden heute (global) aus KV
+    (function(){
+      fetch('/api/global?nocache=' + Date.now(), { cache:'no-store' })
+        .then(r => r.json())
+        .then(d => {
+          const nf0 = new Intl.NumberFormat('de-DE');
+          const nf2 = new Intl.NumberFormat('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
+          const c = Number(d.today_count || 0);
+          const eur = Number(d.today_cents || 0) / 100;
+
+          const elC = document.getElementById('donTodayCount');
+          const elA = document.getElementById('donTodayAmount');
+          if(elC) elC.textContent = nf0.format(c);
+          if(elA) elA.textContent = nf2.format(eur);
+        })
+        .catch(() => {});
+    })();
   </script>
 
   <script>
-    // =========================
     // STRIPE-RETURN: Danke / Abbruch anzeigen
-    // Erwartet: ?donation=success | ?donation=cancel
-    // =========================
     (function(){
       const el = document.getElementById('donationMsg');
       if(!el) return;
@@ -1358,7 +1366,6 @@
         return;
       }
 
-      // URL säubern
       p.delete('donation');
       const clean = window.location.pathname + (p.toString() ? '?' + p.toString() : '') + window.location.hash;
       window.history.replaceState({}, '', clean);
