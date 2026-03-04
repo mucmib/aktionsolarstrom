@@ -456,7 +456,7 @@
 .impact-board{
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 
@@ -763,17 +763,6 @@
         <!-- Impact Board deutlich weiter unten -->
         <div class="impact-wrap" aria-label="Wirkung der Kampagne">
           <div class="impact-board" role="status" aria-live="polite">
-
-            <div class="impact-card">
-              <div class="impact-top">
-                <div class="impact-icon" aria-hidden="true">📬</div>
-                <div>
-                  <div class="impact-label">Briefe</div>
-                  <div class="impact-sub" id="impactLettersSub">Stand: -</div>
-                </div>
-              </div>
-              <div class="impact-value" id="impactLetters">-</div>
-            </div>
 
             <div class="impact-card">
               <div class="impact-top">
@@ -1154,12 +1143,10 @@
     const IMPACT_URL = '/api/impact';
 
     (async function loadImpact(){
-      const elLetters = document.getElementById('impactLetters');
-      const elMeta = document.getElementById('impactMeta');
+       const elMeta = document.getElementById('impactMeta');
       const elYT = document.getElementById('impactYT');
       const elTik = document.getElementById('impactTik');
-      const elLettersSub = document.getElementById('impactLettersSub');
-
+      
       const fmt = new Intl.NumberFormat('de-DE');
 
       function setText(el, val){
@@ -1172,25 +1159,15 @@
         if(!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
 
-        const letters = Number(data.letters_total ?? 0);
         const meta = Number(data.meta_views ?? 0);
         const yt = Number(data.youtube_views ?? 0);
         const tik = Number(data.tiktok_views ?? 0);
 
-        setText(elLetters, fmt.format(letters));
         setText(elMeta, fmt.format(meta));
         setText(elYT, fmt.format(yt));
         setText(elTik, fmt.format(tik));
 
-        if(elLettersSub && data.last_update){
-          const d = new Date(data.last_update);
-          if(!isNaN(d)){
-            const dd = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
-            const tt = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
-            elLettersSub.textContent = `Stand: ${dd}, ${tt} Uhr`;
-          }
-        }
-      }catch(e){
+        }catch(e){
         console.warn('Impact konnte nicht geladen werden', e);
       }
     })();
