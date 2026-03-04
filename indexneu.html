@@ -448,6 +448,20 @@
       .impact-board{ grid-template-columns: 1fr; }
       .impact-value{ font-size:1.25rem; }
     }
+/* Spenden heute: volle Breite im Grid, zentriert, wie ein Banner */
+.impact-card.is-wide{
+  grid-column: 1 / -1;
+  max-width: 760px;
+  justify-self: center;
+  text-align: left;
+}
+
+@media (max-width: 860px){
+  .impact-card.is-wide{
+    max-width: 100%;
+    justify-self: stretch;
+  }
+}
 
     /* ===== Sektionen / Karten ===== */
     main.middle > section { margin: 32px 0; }
