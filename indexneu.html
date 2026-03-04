@@ -353,16 +353,40 @@
       transform:none;
     }
     .stats-banner{
-      width:100%;
-      max-width: 760px;
-      display:flex; align-items:center; gap:10px;
-      padding:10px 16px;
-      background:linear-gradient(135deg,#0a7c5b 0%,#12a37d 50%,#0a7c5b 100%);
-      color:#fff; border-radius:12px; box-shadow:0 12px 28px rgba(10,124,91,.18);
-    }
-    .stats-iconbox{ width:34px; height:34px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.15); border-radius:8px; }
-    .stats-icon{ font-size:1.1rem; }
-    .stats-text{ line-height:1.1; }
+  position: relative;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 16px;
+  min-width:230px;
+  background:linear-gradient(135deg,#0a7c5b 0%,#12a37d 50%,#0a7c5b 100%);
+  color:#fff;
+  border-radius:12px;
+  box-shadow:0 12px 28px rgba(10,124,91,.28);
+}
+
+/* Icon bleibt links, aber nimmt keine “Macht” mehr über das Layout */
+.stats-iconbox{
+  flex: 0 0 auto;
+  width:34px;
+  height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.15);
+  border-radius:8px;
+}
+
+/* Textblock wird wirklich zentriert */
+.stats-text{
+  flex: 1 1 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  line-height:1.1;
+}
     .stats-label{ font-size:.85rem; opacity:.9; }
     .stats-value{ font-size:1.6rem; font-weight:800; }
     .count{ font-variant-numeric: tabular-nums; }
