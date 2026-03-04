@@ -58,7 +58,6 @@
     a { color: var(--brand); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* Accessible Focus Ring */
     :where(a, button, input, select, textarea, [tabindex]):focus-visible {
       outline: var(--focus-ring);
       outline-offset: 2px;
@@ -68,7 +67,6 @@
     .page { display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr; min-height:100dvh; }
     .middle { grid-column:2; width:100%; padding: 0 16px; }
 
-    /* ===== Theme: neutral vs. warm ===== */
     body.theme-neutral{
       --bg: #f7faf9;
       background: var(--bg) !important;
@@ -78,7 +76,6 @@
       background: linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%) !important;
     }
 
-    /* Eco-Texture (CSS-only) */
     body::before{
       content:"";
       position:fixed; inset:0;
@@ -92,7 +89,7 @@
       mix-blend-mode:multiply;
     }
 
-    /* ===== HERO mit Hintergrundbild ===== */
+    /* ===== HERO ===== */
     .hero-wrap{
       position:relative;
       overflow:hidden;
@@ -117,7 +114,7 @@
       align-items:center;
       justify-content:center;
       text-align:center; color:#fff;
-      padding: clamp(40px, 7vh, 72px) 16px clamp(40px, 6vh, 70px);
+      padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px);
       position:relative;
     }
     .hero-panel{
@@ -158,9 +155,7 @@
       box-shadow:0 6px 22px rgba(10,125,50,.35);
     }
 
-    /* =========================
-       FREI WÄHLBAR (Stripe)
-       ========================= */
+    /* ===== Stripe frei waehlen ===== */
     .hero-under-custom{
       width:min(92vw, 760px);
       max-width:760px;
@@ -267,7 +262,7 @@
       display:none;
     }
 
-    /* ===== Patreon Block ===== */
+    /* ===== Patreon ===== */
     .hero-under-patreon{
       width:min(92vw, 760px);
       max-width:760px;
@@ -321,7 +316,7 @@
       .custom-submit{ width:100%; min-width:unset; }
     }
 
-    /* ===== Danke/Abbruch Meldung nach Stripe-Rückkehr ===== */
+    /* ===== Danke Meldung ===== */
     .donation-msg{
       width:min(92vw, 760px);
       max-width:760px;
@@ -338,20 +333,32 @@
     .donation-msg.ok{ border-color: rgba(11,189,84,.55); }
     .donation-msg.err{ border-color: rgba(246,177,10,.65); }
 
-    /* ======================================
-       ZÄHLER + IMPACT sauber stapeln
-       ====================================== */
+    /* =========================
+       NEU: Metrics Stack (Zähler + Impact)
+       alles sauber im Flow, keine "schwebenden" transforms
+       ========================= */
+    .metrics-wrap{
+      width:min(92vw, 980px);
+      max-width:980px;
+      margin: 18px auto 0;
+      display:grid;
+      gap:14px;
+    }
+
+    /* ===== Zähler ===== */
     .stats-wrap{
       display:flex;
       justify-content:center;
-      margin: 14px 0 0;
+      margin:0;
       transform:none;
     }
     .stats-banner{
+      width:100%;
+      max-width: 760px;
       display:flex; align-items:center; gap:10px;
-      padding:10px 16px; min-width:230px;
+      padding:10px 16px;
       background:linear-gradient(135deg,#0a7c5b 0%,#12a37d 50%,#0a7c5b 100%);
-      color:#fff; border-radius:12px; box-shadow:0 12px 28px rgba(10,124,91,.28);
+      color:#fff; border-radius:12px; box-shadow:0 12px 28px rgba(10,124,91,.18);
     }
     .stats-iconbox{ width:34px; height:34px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.15); border-radius:8px; }
     .stats-icon{ font-size:1.1rem; }
@@ -362,17 +369,25 @@
     .stats-meta{ font-size:.75rem; margin-top:2px; opacity:.85; }
     .stats-meta .dot{ display:inline-block; width:6px; height:6px; border-radius:50%; background:#fff; opacity:.7; margin:0 8px 1px; vertical-align:middle; }
 
-    /* ===== Impact-Board (Reichweite + Briefe + Spenden heute) ===== */
+    @media (max-width: 600px){
+      .hero{ padding: 48px 12px 72px; }
+      .hero-panel{ padding:14px 16px; border-radius:16px; max-width:94vw; }
+      .hero .logo{ max-width:78%; }
+      .hero .tagline{ font-size:.98rem; }
+      .stats-banner{ padding:8px 12px; }
+      .stats-value{ font-size:1.45rem; }
+    }
+
+    /* ===== Impact-Board ===== */
     .impact-wrap{
       display:flex;
       justify-content:center;
-      margin: 12px 0 18px;
+      margin:0;
     }
     .impact-board{
-      width:min(92vw, 980px);
-      max-width:980px;
+      width:100%;
       display:grid;
-      grid-template-columns: repeat(5, minmax(0,1fr));
+      grid-template-columns: repeat(4, minmax(0,1fr));
       gap:12px;
     }
     .impact-card{
@@ -382,7 +397,7 @@
       box-shadow: 0 10px 22px rgba(0,0,0,.08);
       padding:12px 12px;
       backdrop-filter: blur(6px);
-      min-width: 0;
+      min-height: 92px;
     }
     .impact-top{
       display:flex;
@@ -409,7 +424,6 @@
       font-size:1.35rem;
       color:#0b3d16;
       font-variant-numeric: tabular-nums;
-      word-break: break-word;
     }
     .impact-sub{
       margin-top:2px;
@@ -417,42 +431,22 @@
       color:#4b5563;
     }
 
-    /* Spenden-Kachel: Wert zweizeilig und ruhig */
-    .donation-value{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-    }
-    .donation-line{
-      font-weight:900;
-      font-size:1.05rem;
+    /* "Spenden heute" als saubere Kachel */
+    .impact-value.small{
+      font-size: 1.05rem;
+      line-height: 1.25;
       color:#0b3d16;
-      font-variant-numeric: tabular-nums;
     }
-    .donation-line small{
-      font-weight:800;
-      color:#4b5563;
-      font-size:.78rem;
-      margin-left:6px;
+    .impact-value.small strong{
+      font-weight: 900;
     }
 
-    @media (max-width: 980px){
-      .impact-board{ grid-template-columns: repeat(3, minmax(0,1fr)); }
-    }
-    @media (max-width: 700px){
+    @media (max-width: 860px){
       .impact-board{ grid-template-columns: repeat(2, minmax(0,1fr)); }
     }
     @media (max-width: 480px){
       .impact-board{ grid-template-columns: 1fr; }
       .impact-value{ font-size:1.25rem; }
-    }
-
-    @media (max-width: 600px){
-      .hero{ padding: 48px 12px 64px; }
-      .hero-panel{ padding:14px 16px; border-radius:16px; max-width:94vw; }
-      .hero .logo{ max-width:78%; }
-      .hero .tagline{ font-size:.98rem; }
-      .stats-value{ font-size:1.45rem; }
     }
 
     /* ===== Sektionen / Karten ===== */
@@ -492,7 +486,7 @@
     .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
     @media (max-width:600px){ .video-wrap{ max-width:95vw; margin-bottom:16px; } }
 
-    /* ===== Partner-Grid mit Hover-Overlay ===== */
+    /* ===== Partner-Grid ===== */
     .partnersGrid{
       display:grid; gap:18px;
       grid-template-columns: repeat(3, minmax(0,1fr));
@@ -626,14 +620,16 @@
     }
     .yt-lazy .yt-play:focus-visible{ outline: var(--focus-ring); outline-offset:4px; border-radius:12px; }
 
-    /* Logo-Animation: Impuls + Stabilität */
+    /* Logo Animation */
     .logo-anim{
       will-change: filter, transform;
       transform: translateZ(0);
       animation: logoPulse 5.8s ease-in-out 2;
     }
     @media (hover:hover){
-      .logo-anim:hover{ animation: logoPulse 5.8s ease-in-out 1; }
+      .logo-anim:hover{
+        animation: logoPulse 5.8s ease-in-out 1;
+      }
     }
     @keyframes logoPulse{
       0%{ transform: scale(1); filter: drop-shadow(0 3px 8px rgba(0,0,0,.25)); }
@@ -653,13 +649,11 @@
 
 <body class="theme-warm">
   <div class="page">
-    <!-- Theme Toggle -->
     <div class="theme-toggle" role="group" aria-label="Darstellung">
       <button id="btnNeutral" type="button" aria-pressed="false">Sachlich</button>
       <button id="btnWarm" type="button" aria-pressed="true">Solar</button>
     </div>
 
-    <!-- ===== HERO ===== -->
     <header class="site-header middle">
       <div class="hero-wrap">
         <div class="hero">
@@ -668,7 +662,7 @@
             <img class="logo-anim" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
             <h1>Solarstrom statt Erdgas-Strom</h1>
             <p class="tagline">
-              Informieren. Mitmachen. Briefe an Abgeordnete – wir drucken &amp; versenden physisch.
+              Informieren. Mitmachen. Briefe an Abgeordnete, wir drucken und versenden physisch.
             </p>
             <div class="cta-row">
               <a class="cta primary" href="#mitmachen">Jetzt mitmachen</a>
@@ -676,7 +670,6 @@
             </div>
           </div>
 
-          <!-- EINMALIG: Betrag frei wählen (Stripe) -->
           <div class="hero-under-custom reveal" aria-label="Einmalig unterstützen – Betrag frei wählen">
             <label for="donationAmount">Einmalig unterstützen – Betrag frei wählen:</label>
 
@@ -708,10 +701,8 @@
             <div class="custom-ok" id="donationOk" role="status" aria-live="polite"></div>
           </div>
 
-          <!-- Danke/Abbruch nach Stripe -->
           <div id="donationMsg" class="donation-msg reveal" hidden></div>
 
-          <!-- MONATLICH: Patreon -->
           <div class="hero-under-patreon reveal" aria-label="Monatlich unterstützen – Patreon">
             <div class="patreon-row">
               <a class="patreon-btn" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
@@ -719,7 +710,7 @@
               </a>
 
               <div class="patreon-text">
-                <strong>Für Mitglieder:</strong> 1× pro Monat ein exklusiver Livestream + Newsletter.
+                <strong>Für Mitglieder:</strong> 1 mal pro Monat ein exklusiver Livestream plus Newsletter.
               </div>
             </div>
           </div>
@@ -727,96 +718,95 @@
         </div>
       </div>
 
-      <!-- Zähler (sauber unter dem Hero) -->
-      <div class="stats-wrap reveal">
-        <div class="stats-banner" role="status" aria-live="polite">
-          <div class="stats-iconbox"><div class="stats-icon" aria-hidden="true">📄</div></div>
-          <div class="stats-text">
-            <div class="stats-label">Erzeugte PDF-Briefe</div>
-            <div class="stats-value"><span id="pdfCount" class="count">–</span></div>
-            <div class="stats-meta" id="statsMeta" hidden>
-              <span class="dot" aria-hidden="true"></span>
-              <span id="statsTime">Stand: –</span>
+      <!-- NEU: sauberer Stack direkt unter dem Hero -->
+      <div class="metrics-wrap reveal" aria-label="Zähler und Wirkung">
+
+        <!-- Zähler -->
+        <div class="stats-wrap">
+          <div class="stats-banner" role="status" aria-live="polite">
+            <div class="stats-iconbox"><div class="stats-icon" aria-hidden="true">📄</div></div>
+            <div class="stats-text">
+              <div class="stats-label">Erzeugte PDF-Briefe</div>
+              <div class="stats-value"><span id="pdfCount" class="count">–</span></div>
+              <div class="stats-meta" id="statsMeta" hidden>
+                <span class="dot" aria-hidden="true"></span>
+                <span id="statsTime">Stand: –</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Impact Board (inkl. Spenden heute als Kachel) -->
-      <div class="impact-wrap reveal" aria-label="Wirkung der Kampagne">
-        <div class="impact-board" role="status" aria-live="polite">
+        <!-- Impact Board -->
+        <div class="impact-wrap" aria-label="Wirkung der Kampagne">
+          <div class="impact-board" role="status" aria-live="polite">
 
-          <div class="impact-card">
-            <div class="impact-top">
-              <div class="impact-icon" aria-hidden="true">📬</div>
-              <div>
-                <div class="impact-label">Briefe</div>
-                <div class="impact-sub" id="impactLettersSub">Stand: –</div>
+            <div class="impact-card">
+              <div class="impact-top">
+                <div class="impact-icon" aria-hidden="true">📬</div>
+                <div>
+                  <div class="impact-label">Briefe</div>
+                  <div class="impact-sub" id="impactLettersSub">Stand: –</div>
+                </div>
+              </div>
+              <div class="impact-value" id="impactLetters">–</div>
+            </div>
+
+            <div class="impact-card">
+              <div class="impact-top">
+                <div class="impact-icon" aria-hidden="true">📣</div>
+                <div>
+                  <div class="impact-label">Meta Views</div>
+                  <div class="impact-sub" id="impactMetaSub">Facebook plus Instagram</div>
+                </div>
+              </div>
+              <div class="impact-value" id="impactMeta">–</div>
+            </div>
+
+            <div class="impact-card">
+              <div class="impact-top">
+                <div class="impact-icon" aria-hidden="true">▶️</div>
+                <div>
+                  <div class="impact-label">YouTube Views</div>
+                  <div class="impact-sub" id="impactYTSub">Shorts plus Sendungen</div>
+                </div>
+              </div>
+              <div class="impact-value" id="impactYT">–</div>
+            </div>
+
+            <div class="impact-card">
+              <div class="impact-top">
+                <div class="impact-icon" aria-hidden="true">🎵</div>
+                <div>
+                  <div class="impact-label">TikTok Views</div>
+                  <div class="impact-sub" id="impactTikSub">organisch</div>
+                </div>
+              </div>
+              <div class="impact-value" id="impactTik">–</div>
+            </div>
+
+            <!-- NEU: Spenden heute als Karte -->
+            <div class="impact-card">
+              <div class="impact-top">
+                <div class="impact-icon" aria-hidden="true">💶</div>
+                <div>
+                  <div class="impact-label">Spenden heute</div>
+                  <div class="impact-sub">Stripe Zahlungen</div>
+                </div>
+              </div>
+              <div class="impact-value small">
+                <strong><span id="donTodayCount">–</span></strong> Zahlungen<br>
+                <strong><span id="donTodayAmount">–</span></strong> Euro
               </div>
             </div>
-            <div class="impact-value" id="impactLetters">–</div>
+
           </div>
-
-          <div class="impact-card">
-            <div class="impact-top">
-              <div class="impact-icon" aria-hidden="true">📣</div>
-              <div>
-                <div class="impact-label">Meta Views</div>
-                <div class="impact-sub" id="impactMetaSub">Facebook + Instagram</div>
-              </div>
-            </div>
-            <div class="impact-value" id="impactMeta">–</div>
-          </div>
-
-          <div class="impact-card">
-            <div class="impact-top">
-              <div class="impact-icon" aria-hidden="true">▶️</div>
-              <div>
-                <div class="impact-label">YouTube Views</div>
-                <div class="impact-sub" id="impactYTSub">Shorts + Sendungen</div>
-              </div>
-            </div>
-            <div class="impact-value" id="impactYT">–</div>
-          </div>
-
-          <div class="impact-card">
-            <div class="impact-top">
-              <div class="impact-icon" aria-hidden="true">🎵</div>
-              <div>
-                <div class="impact-label">TikTok Views</div>
-                <div class="impact-sub" id="impactTikSub">organisch</div>
-              </div>
-            </div>
-            <div class="impact-value" id="impactTik">–</div>
-          </div>
-
-          <div class="impact-card">
-            <div class="impact-top">
-              <div class="impact-icon" aria-hidden="true">💚</div>
-              <div>
-                <div class="impact-label">Spenden heute</div>
-                <div class="impact-sub" id="donTodaySub">gesamt (Tour + Haupt + Brief)</div>
-              </div>
-            </div>
-            <div class="impact-value donation-value" aria-label="Spenden heute">
-              <div class="donation-line">
-                <span id="donTodayCount">–</span><small>Zahlungen</small>
-              </div>
-              <div class="donation-line">
-                <span id="donTodayAmount">–</span><small>Euro</small>
-              </div>
-            </div>
-          </div>
-
         </div>
-      </div>
 
+      </div>
     </header>
 
-    <!-- ===== CONTENT ===== -->
     <main class="middle">
 
-      <!-- Einleitung -->
       <section id="intro">
         <div class="lead">
           Wirtschaftsministerin Reiche und Bundeskanzler Friedrich Merz sprechen von Technologieoffenheit und Wirtschaftlichkeit. Mit ihren konkreten Forderungen werden aber einseitig fossile Kraftwerke begünstigt und der Ausbau günstiger Erneuerbaren gebremst.
@@ -824,11 +814,10 @@
           Weniger Ausbau steht zudem im Gegensatz zum Wahlprogramm 2025 der Union: <em>„Für uns ist klar: Energie muss bezahlbar, sicher und sauber sein“</em>.
         </div>
         <div class="callout" style="margin-top:12px;">
-          <strong>Kernaussage:</strong> Solarstrom senkt Kosten, erhöht Versorgungssicherheit und schützt Klima &amp; Gesundheit.
+          <strong>Kernaussage:</strong> Solarstrom senkt Kosten, erhöht Versorgungssicherheit und schützt Klima und Gesundheit.
         </div>
       </section>
 
-      <!-- Playlist -->
       <section id="sendung">
         <h3 style="margin-top:30px;">Playlist mit aktueller Sendung am Anfang</h3>
         <div class="video-wrap">
@@ -847,7 +836,6 @@
         </p>
       </section>
 
-      <!-- Aktuell -->
       <section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
         <h2 style="margin-top:0;">Jetzt ansehen: Atombombe auf die Energiewende</h2>
 
@@ -867,33 +855,33 @@
 
           <p style="margin:0 0 12px;">
             In dieser Sendung sprechen wir mit Hans-Josef Fell, Mitautor des Erneuerbare-Energien-Gesetzes (EEG). Seine Einschätzung ist deutlich:
-            Hier geht es um den massiven Bestandsschutz für fossile Energien – Erdgas, Erdöl, Kohle – während erneuerbare Energien ausgebremst werden.
+            Hier geht es um den massiven Bestandsschutz für fossile Energien, Erdgas, Erdoel, Kohle, waehrend erneuerbare Energien ausgebremst werden.
           </p>
 
-          <p style="margin:0 0 8px;"><strong>Was bedeutet das für:</strong></p>
+          <p style="margin:0 0 8px;"><strong>Was bedeutet das fuer:</strong></p>
           <ul style="margin:0 0 14px; padding-left:1.1rem;">
             <li>🏠 Hausbesitzer mit Photovoltaik</li>
             <li>🏢 Unternehmen mit Eigenstromnutzung</li>
             <li>🏘️ Mieterinnen und Mieter</li>
             <li>⚡ Strompreise in Deutschland</li>
-            <li>🌍 Deutschlands Wettbewerbsfähigkeit</li>
+            <li>🌍 Deutschlands Wettbewerbsfaehigkeit</li>
           </ul>
 
           <p style="margin:0 0 12px;">
-            Während China und andere Länder massiv in erneuerbare Energien investieren, droht Deutschland zurück in fossile Abhängigkeiten zu fallen –
-            mit steigenden CO₂-Kosten durch ETS2 und wachsender geopolitischer Unsicherheit.
+            Waehrend China und andere Laender massiv in erneuerbare Energien investieren, droht Deutschland zurueck in fossile Abhaengigkeiten zu fallen,
+            mit steigenden CO2 Kosten durch ETS2 und wachsender geopolitischer Unsicherheit.
           </p>
 
           <p style="margin:0 0 12px;">
             👉 Es betrifft uns alle.<br>
             👉 Es geht um Strompreise.<br>
-            👉 Es geht um Wärme.<br>
+            👉 Es geht um Waerme.<br>
             👉 Es geht um wirtschaftliche Zukunft.
           </p>
 
           <p style="margin:0;">
-            In der Aktion Solarstrom haben bereits über 22.000 Bürgerinnen und Bürger Briefe an ihre Bundestagsabgeordneten geschickt.
-            Auch Sie können dabei sein und protestieren.
+            In der Aktion Solarstrom haben bereits ueber 22.000 Buergerinnen und Buerger Briefe an ihre Bundestagsabgeordneten geschickt.
+            Auch Sie koennen dabei sein und protestieren.
           </p>
         </div>
 
@@ -915,7 +903,7 @@
               <a class="cta secondary"
                  href="https://youtu.be/yHW1pEmknsk?si=nZHnSk83hMzFXsYw"
                  target="_blank" rel="noopener">
-                Video auf YouTube öffnen
+                Video auf YouTube oeffnen
               </a>
             </p>
           </noscript>
@@ -930,7 +918,6 @@
         </p>
       </section>
 
-      <!-- Kampagnenstart -->
       <section id="sendung2">
         <h2 class="section-title">Der Kampagnenstart</h2>
         <div class="video-wrap">
@@ -950,7 +937,6 @@
         </p>
       </section>
 
-      <!-- Ziele -->
       <section id="ziele">
         <h2 class="section-title">Kernforderungen</h2>
         <div class="grid2">
@@ -963,52 +949,48 @@
             <p>und netzdienliche Erzeugung belohnen.</p>
           </div>
           <div class="card">
-            <h3>3. Feste Einspeisevergütung beibehalten</h3>
-            <p>bis Smart Meter flächendeckend eine einfache, flexible Vergütung erlauben.</p>
+            <h3>3. Feste Einspeiseverguetung beibehalten</h3>
+            <p>bis Smart Meter flaechendeckend eine einfache, flexible Vergütung erlauben.</p>
           </div>
           <div class="card">
             <h3>4. Bestandsschutz</h3>
-            <p>und keine Zusatzbelastung für erneuerbare Stromerzeugung.</p>
+            <p>und keine Zusatzbelastung fuer erneuerbare Stromerzeugung.</p>
           </div>
         </div>
       </section>
 
-      <!-- Hintergrund -->
       <section id="hintergrund">
-        <h2 class="section-title">Hintergrund &amp; Argumente</h2>
-        <h3>Kosten, Klima &amp; Sicherheit</h3>
+        <h2 class="section-title">Hintergrund und Argumente</h2>
+        <h3>Kosten, Klima und Sicherheit</h3>
         <ul>
           <li>Solarstrom senkt Stromgestehungskosten und Risiken fossiler Preise.</li>
           <li>Direktnutzung reduziert Netzbelastung und Verluste.</li>
-          <li>Dezentrale Anlagen erhöhen die Resilienz.</li>
+          <li>Dezentrale Anlagen erhoehen die Resilienz.</li>
         </ul>
       </section>
 
-      <!-- Materialien -->
       <section id="material">
         <h2 class="section-title">Materialien</h2>
-        <p>Hier finden Sie die Begründung für unsere Forderungen – zum Nachlesen und Weitergeben.</p>
+        <p>Hier finden Sie die Begruendung fuer unsere Forderungen, zum Nachlesen und Weitergeben.</p>
         <p>
           <a class="cta secondary" href="Solarstrom statt Erdgasstrom - Die Argumente.pdf" download>📄 Positionspapier</a>
         </p>
       </section>
 
-      <!-- Mitmachen -->
       <section id="mitmachen">
         <h2 class="section-title">Mitmachen</h2>
         <div class="grid2">
           <div class="card">
             <h3>Brief an Abgeordnete</h3>
-            <p>Schreiben Sie Ihren Brief – wir übernehmen Ausdruck und Postversand an die zuständige Bundestagsabgeordnete/den zuständigen Abgeordneten.</p>
+            <p>Schreiben Sie Ihren Brief, wir uebernehmen Ausdruck und Postversand an die zustaendige Bundestagsabgeordnete oder den zustaendigen Abgeordneten.</p>
             <a class="cta primary" href="index-full.html">Brief einreichen</a>
           </div>
         </div>
       </section>
 
-      <!-- Träger -->
       <section id="partner" class="partner">
-        <h2 class="section-title">Träger der Kampagne</h2>
-        <p>Die Kampagne wird von dem VEEG e.V. und der EWG durchgeführt.</p>
+        <h2 class="section-title">Traeger der Kampagne</h2>
+        <p>Die Kampagne wird von dem VEEG e.V. und der EWG durchgefuehrt.</p>
 
         <div class="partnersGrid" aria-label="Partnerorganisationen">
           <article class="partnerCard">
@@ -1017,7 +999,7 @@
             </div>
             <div class="info">
               <h3>Leben mit der Energiewende</h3>
-              <p>Plattform &amp; TV-Magazin für die Energiewende in Bürgerhand.</p>
+              <p>Plattform und TV Magazin fuer die Energiewende in Buergerhand.</p>
               <a href="https://www.lebenmitderenergiewende.de/" target="_blank" rel="noopener">lebenmitderenergiewende.de</a>
             </div>
           </article>
@@ -1027,8 +1009,8 @@
               <img src="assets/veeglogo.svg" alt="VEEG – Verein Energie Erzeugende Gebäude e. V.">
             </div>
             <div class="info">
-              <h3>VEEG e. V. – Verband EnergieErzeugende Gebäude</h3>
-              <p>Fördert Gebäude als aktive Energieproduzenten – energieautark, klimafreundlich, zukunftsweisend.</p>
+              <h3>VEEG e. V. – Verband EnergieErzeugende Gebaeude</h3>
+              <p>Foerdert Gebaeude als aktive Energieproduzenten, energieautark, klimafreundlich, zukunftsweisend.</p>
               <a href="https://ve-eg.de/" target="_blank" rel="noopener">ve-eg.de</a>
             </div>
           </article>
@@ -1039,7 +1021,7 @@
             </div>
             <div class="info">
               <h3>Energy Watch Group (EWG)</h3>
-              <p>Gemeinnütziger Think Tank für globale Energiewende und Klimastabilisierung.</p>
+              <p>Gemeinnuetziger Think Tank fuer globale Energiewende und Klimastabilisierung.</p>
               <a href="https://energywatchgroup.org/" target="_blank" rel="noopener">energywatchgroup.org</a>
             </div>
           </article>
@@ -1055,13 +1037,11 @@
     </footer>
   </div>
 
-  <!-- Sticky CTA (mobil) -->
   <div class="sticky-cta">
     <a href="#mitmachen" aria-label="Jetzt mitmachen">Jetzt mitmachen</a>
   </div>
 
   <script>
-    // Theme Toggle (neutral ↔ warm) mit localStorage
     (function(){
       const KEY='theme-mode';
       const body=document.body;
@@ -1092,7 +1072,6 @@
   </script>
 
   <script>
-    // Smooth Scrolling für In-Page-Links
     document.addEventListener('click', (e) => {
       const a = e.target.closest('a'); if (!a) return;
       const href = a.getAttribute('href') || '';
@@ -1101,8 +1080,8 @@
       if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
     });
 
-    // ---- Live-Zähler-Logik (PDFs) ----
-    const STATS_URL = '/api/stats.json';
+    // ---- Live Zaehler (PDFs) ----
+    const STATS_URL = '/api/stats';
 
     function countUp(el, to, duration = 1200) {
       const fmt = new Intl.NumberFormat('de-DE');
@@ -1154,7 +1133,7 @@
           metaWrap.hidden = true;
         }
       } catch (e) {
-        console.warn('Zähler konnte nicht geladen werden:', e);
+        console.warn('Zaehler konnte nicht geladen werden:', e);
         el.textContent = '–';
         if (metaWrap) metaWrap.hidden = true;
       }
@@ -1164,7 +1143,7 @@
   </script>
 
   <script>
-    // ---- Impact Board: Reichweite + Briefe ----
+    // ---- Impact Board ----
     const IMPACT_URL = '/api/impact';
 
     (async function loadImpact(){
@@ -1211,7 +1190,6 @@
   </script>
 
   <script>
-    // Reveal on load / scroll
     (function(){
       const els = document.querySelectorAll('.reveal');
       if(!('IntersectionObserver' in window)){ els.forEach(e=>e.classList.add('is-visible')); return; }
@@ -1225,7 +1203,6 @@
   </script>
 
   <script>
-    // Lazy-YouTube: ersetzt Platzhalter beim Klick durch nocookie-iframe mit Autoplay
     document.addEventListener('click', function(e){
       const btn = e.target.closest('.yt-lazy .yt-play'); if(!btn) return;
       const wrap = btn.closest('.yt-lazy'); if(!wrap) return;
@@ -1248,7 +1225,6 @@
   </script>
 
   <script>
-    // FREI WÄHLBAR (Stripe Checkout)
     (function(){
       const input = document.getElementById('donationAmount');
       const btn = document.getElementById('donationSubmit');
@@ -1284,7 +1260,7 @@
         if(amount > 250) return showError('Maximalbetrag ist 250 Euro.');
 
         btn.disabled = true;
-        btn.textContent = 'Weiter zu Stripe…';
+        btn.textContent = 'Weiter zu Stripe...';
 
         try{
           const res = await fetch('/api/create-checkout-session', {
@@ -1301,14 +1277,14 @@
             throw new Error(data?.error || ('HTTP ' + res.status));
           }
           if(!data?.url){
-            throw new Error('Keine Checkout-URL erhalten.');
+            throw new Error('Keine Checkout URL erhalten.');
           }
 
-          showOk('Weiterleitung zu Stripe…');
+          showOk('Weiterleitung zu Stripe...');
           window.location.href = data.url;
         }catch(e){
           console.warn(e);
-          showError('Konnte Stripe nicht starten. Bitte später nochmal versuchen.');
+          showError('Konnte Stripe nicht starten. Bitte spaeter nochmal versuchen.');
           btn.disabled = false;
           btn.textContent = 'Betrag senden';
         }
@@ -1326,27 +1302,18 @@
   </script>
 
   <script>
-    // Spenden heute (global) aus KV
-    (function(){
-      fetch('/api/global?nocache=' + Date.now(), { cache:'no-store' })
-        .then(r => r.json())
-        .then(d => {
-          const nf0 = new Intl.NumberFormat('de-DE');
-          const nf2 = new Intl.NumberFormat('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
-          const c = Number(d.today_count || 0);
-          const eur = Number(d.today_cents || 0) / 100;
-
-          const elC = document.getElementById('donTodayCount');
-          const elA = document.getElementById('donTodayAmount');
-          if(elC) elC.textContent = nf0.format(c);
-          if(elA) elA.textContent = nf2.format(eur);
-        })
-        .catch(() => {});
-    })();
+    fetch('/api/global?nocache=' + Date.now(), { cache:'no-store' })
+      .then(r=>r.json())
+      .then(d=>{
+        const nf0 = new Intl.NumberFormat('de-DE');
+        const nf2 = new Intl.NumberFormat('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
+        document.getElementById('donTodayCount').textContent = nf0.format(d.today_count || 0);
+        document.getElementById('donTodayAmount').textContent = nf2.format((d.today_cents || 0) / 100);
+      })
+      .catch(()=>{});
   </script>
 
   <script>
-    // STRIPE-RETURN: Danke / Abbruch anzeigen
     (function(){
       const el = document.getElementById('donationMsg');
       if(!el) return;
@@ -1355,11 +1322,11 @@
       const status = p.get('donation');
 
       if(status === 'success'){
-        el.textContent = 'Danke! Ihre Unterstützung ist angekommen.';
+        el.textContent = 'Danke! Ihre Unterstuetzung ist angekommen.';
         el.classList.add('ok');
         el.hidden = false;
       } else if(status === 'cancel'){
-        el.textContent = 'Zahlung abgebrochen – kein Problem. Sie können es jederzeit erneut versuchen.';
+        el.textContent = 'Zahlung abgebrochen, kein Problem. Sie koennen es jederzeit erneut versuchen.';
         el.classList.add('err');
         el.hidden = false;
       } else {
@@ -1374,4 +1341,3 @@
 
 </body>
 </html>
-
