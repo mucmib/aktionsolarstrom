@@ -736,6 +736,7 @@
           </div>
         </div>
       </div>
+
 <!-- Impact Board (Reichweite + Briefe) -->
 <div class="impact-wrap reveal" aria-label="Wirkung der Kampagne">
   <div class="impact-board" role="status" aria-live="polite">
@@ -1168,7 +1169,7 @@
   // ---- Impact Board: Reichweite + Briefe ----
   // Quelle: /api/impact.json (statisch) ODER /api/stats.json erweitern.
   // Empfehlung: eigene Datei impact.json -> schnell, robust, keine DB nötig.
-  const IMPACT_URL = '/api/impact.json';
+  const IMPACT_URL = '/api/impact';
 
   (async function loadImpact(){
     const elLetters = document.getElementById('impactLetters');
