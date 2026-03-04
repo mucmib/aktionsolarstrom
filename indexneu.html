@@ -680,6 +680,40 @@
 .impact-card *{
   text-align: center;
 }
+/* Mobile Center Fix: Cards wirklich mittig */
+.topstats-card,
+.impact-card{
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.topstats-card > *,
+.impact-card > *{
+  width: 100%;
+  text-align: center;
+}
+
+/* Falls irgendwo KPI-Zeilen als Flex gebaut sind: */
+.topstats-kpi,
+.impact-kpi,
+.kpi-row,
+.stat-row{
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 6px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Sicherheitsnetz: auch Inline-Kram sauber zentrieren */
+.topstats-card span,
+.topstats-card strong,
+.impact-card span,
+.impact-card strong{
+  text-align: center;
+}
 
   </style>
 </head>
