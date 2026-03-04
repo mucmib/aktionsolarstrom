@@ -361,143 +361,167 @@
     }
 
     /* ===== Dashboard: ruhiger, wie ein Block ===== */
-.metrics-wrap{
-  width: min(92vw, 760px);   /* gleiche Breite wie Hero */
-  max-width: 760px;
-  margin: 18px auto 0;
-  display: grid;
-  gap: 12px;
-}
+    .metrics-wrap{
+      width: min(92vw, 760px);
+      max-width: 760px;
+      margin: 18px auto 0;
+      display: grid;
+      gap: 12px;
+    }
 
-/* Top row: nicht mehr hochgezogen, einfach sauber darunter */
-.topstats-wrap{
-  display: block;
-  transform: none;
-  margin: 0;
-}
+    /* Top row: nicht mehr hochgezogen, einfach sauber darunter */
+    .topstats-wrap{
+      display: block;
+      transform: none;
+      margin: 0;
+    }
 
-.topstats-grid{
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
+    .topstats-grid{
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
 
-/* Boxen: neutraler Grund, Farbe nur als Akzentstreifen */
-.topstats-card{
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 14px;
-  border-radius: 14px;
-  background: rgba(255,255,255,.92);
-  border: 1px solid rgba(0,0,0,.08);
-  box-shadow: 0 10px 24px rgba(0,0,0,.08);
-  min-height: 80px;
-  backdrop-filter: none;
-}
+    /* Boxen: neutraler Grund, Farbe nur als Akzentstreifen */
+    .topstats-card{
+      position: relative;
+      padding: 14px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.08);
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+      min-height: 80px;
+      backdrop-filter: none;
 
-.topstats-card::before{
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  height: 6px;
-  border-radius: 14px 14px 0 0;
-  background: #0a7d32; /* default */
-  opacity: .95;
-}
+      /* WICHTIG: Card-Inhalt sauber mittig */
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
 
-.topstats-don::before{ background: #f6b10a; }
+    .topstats-card::before{
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      height: 6px;
+      border-radius: 14px 14px 0 0;
+      background: #0a7d32;
+      opacity: .95;
+    }
 
-.topstats-pdf,
-.topstats-don{
-  background: rgba(255,255,255,.92);
-  color: var(--text);
-  border-color: rgba(0,0,0,.08);
-}
+    .topstats-don::before{ background: #f6b10a; }
 
-.topstats-iconbox{
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-  background: rgba(0,0,0,.04);
-}
+    .topstats-pdf,
+    .topstats-don{
+      background: rgba(255,255,255,.92);
+      color: var(--text);
+      border-color: rgba(0,0,0,.08);
+    }
 
-/* Texte ruhiger */
-.topstats-label{
-  font-size: .9rem;
-  font-weight: 800;
-  color: #111827;
-  opacity: .9;
-}
-.topstats-value{
-  margin-top: 2px;
-  font-size: 1.8rem;
-  font-weight: 900;
-  color: #111827;
-}
-.topstats-sub, .topstats-meta{
-  color: #6b7280;
-  opacity: 1;
-}
-.topstats-meta .dot{ display:none; } /* weg mit dem Punkt, reduziert Unruhe */
+    .topstats-iconbox{
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(0,0,0,.04);
 
-/* Spenden heute: Zahlen größer */
-#donTodayCount,
-#donTodayAmount{
-  font-size: 1.25rem;
-  font-weight: 900;
-}
+      /* Icon wirklich zentriert */
+      margin: 0 auto;
+      justify-self: center;
+      align-self: center;
+      text-align: center;
+    }
 
-/* ===== Impact row: einheitlich, wenig Effekt ===== */
-.impact-wrap{
-  display: block;
-  margin: 0;
-}
+    /* Texte ruhiger */
+    .topstats-label{
+      font-size: .9rem;
+      font-weight: 800;
+      color: #111827;
+      opacity: .9;
+      text-align: center;
+    }
+    .topstats-value{
+      margin-top: 2px;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #111827;
+      text-align: center;
+    }
+    .topstats-sub, .topstats-meta{
+      color: #6b7280;
+      opacity: 1;
+      text-align: center;
+    }
+    .topstats-meta .dot{ display:none; }
 
-.impact-board{
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
+    /* Spenden heute: Zahlen größer */
+    #donTodayCount,
+    #donTodayAmount{
+      font-size: 1.25rem;
+      font-weight: 900;
+    }
 
-.impact-card{
-  background: rgba(255,255,255,.92);
-  border: 1px solid rgba(0,0,0,.08);
-  border-radius: 14px;
-  box-shadow: 0 6px 14px rgba(0,0,0,.06);
-  padding: 10px 12px;
-  min-height: 92px;
-  backdrop-filter: none;
-}
+    /* ===== Impact row: einheitlich, wenig Effekt ===== */
+    .impact-wrap{
+      display: block;
+      margin: 0;
+    }
 
-.impact-icon{
-  width: 34px;
-  height: 34px;
-  border-radius: 12px;
-  background: rgba(0,0,0,.04);
-}
+    .impact-board{
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
 
-.impact-label{ color:#111827; opacity:.9; }
-.impact-sub{ color:#6b7280; }
-.impact-value{ color:#111827; font-size:1.25rem; }
+    .impact-card{
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.06);
+      padding: 10px 12px;
+      min-height: 92px;
+      backdrop-filter: none;
 
-/* Responsive */
-@media (max-width: 860px){
-  .impact-board{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 720px){
-  .topstats-grid{ grid-template-columns: 1fr; }
-}
-@media (max-width: 480px){
-  .impact-board{ grid-template-columns: 1fr; }
-}
+      /* WICHTIG: Card-Inhalt sauber mittig */
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .impact-icon{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: rgba(0,0,0,.04);
+
+      /* Icon wirklich zentriert */
+      display: grid;
+      place-items: center;
+      margin: 0 auto;
+      justify-self: center;
+      align-self: center;
+      text-align: center;
+    }
+
+    .impact-label{ color:#111827; opacity:.9; text-align:center; }
+    .impact-sub{ color:#6b7280; text-align:center; }
+    .impact-value{ color:#111827; font-size:1.25rem; text-align:center; }
+
+    /* Responsive */
+    @media (max-width: 860px){
+      .impact-board{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 720px){
+      .topstats-grid{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px){
+      .impact-board{ grid-template-columns: 1fr; }
+    }
 
     /* ===== Sektionen / Karten ===== */
     main.middle > section { margin: 32px 0; }
@@ -661,60 +685,6 @@
       text-shadow:0 1px 1px rgba(0,0,0,.5);
     }
     .yt-lazy .yt-play:focus-visible{ outline: var(--focus-ring); outline-offset:4px; border-radius:12px; }
-
-/* Boxen Inhalte zentrieren */
-.topstats-card,
-.impact-card{
-  display: flex;
-  flex-direction: column;
-  align-items: center;      /* horizontal zentriert */
-  justify-content: center;  /* vertikal zentriert, falls Höhe greift */
-  text-align: center;
-}
-
-/* Falls einzelne Zeilen noch links kleben: */
-.topstats-label,
-.topstats-value,
-.topstats-sub,
-.topstats-meta,
-.impact-card *{
-  text-align: center;
-}
-/* Mobile Center Fix: Cards wirklich mittig */
-.topstats-card,
-.impact-card{
-  display: grid;
-  place-items: center;
-  text-align: center;
-}
-
-.topstats-card > *,
-.impact-card > *{
-  width: 100%;
-  text-align: center;
-}
-
-/* Falls irgendwo KPI-Zeilen als Flex gebaut sind: */
-.topstats-kpi,
-.impact-kpi,
-.kpi-row,
-.stat-row{
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
-  gap: 6px;
-  width: 100%;
-  text-align: center;
-}
-
-/* Sicherheitsnetz: auch Inline-Kram sauber zentrieren */
-.topstats-card span,
-.topstats-card strong,
-.impact-card span,
-.impact-card strong{
-  text-align: center;
-}
-
   </style>
 </head>
 
@@ -810,579 +780,4 @@
           <div class="topstats-card topstats-don">
             <div class="topstats-iconbox" aria-hidden="true">💛</div>
             <div class="topstats-text">
-              <div class="topstats-label">Unterstützungen heute seit 18:22 Uhr</div>
-              <div class="topstats-sub">Stripe Zahlungen</div>
-              <div class="topstats-split">
-                <div class="topstats-big"><span id="donTodayCount">-</span> Zahlungen</div>
-                <div class="topstats-big"><span id="donTodayAmount">-</span> €</div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Impact Board deutlich weiter unten -->
-        <div class="impact-wrap" aria-label="Wirkung der Kampagne">
-          <div class="impact-board" role="status" aria-live="polite">
-
-            <div class="impact-card">
-              <div class="impact-top">
-                <div class="impact-icon" aria-hidden="true">📣</div>
-                <div>
-                  <div class="impact-label">Meta Views</div>
-                  <div class="impact-sub" id="impactMetaSub">Facebook plus Instagram</div>
-                </div>
-              </div>
-              <div class="impact-value" id="impactMeta">-</div>
-            </div>
-
-            <div class="impact-card">
-              <div class="impact-top">
-                <div class="impact-icon" aria-hidden="true">▶️</div>
-                <div>
-                  <div class="impact-label">YouTube Views</div>
-                  <div class="impact-sub" id="impactYTSub">Shorts plus Sendungen</div>
-                </div>
-              </div>
-              <div class="impact-value" id="impactYT">-</div>
-            </div>
-
-            <div class="impact-card">
-              <div class="impact-top">
-                <div class="impact-icon" aria-hidden="true">🎵</div>
-                <div>
-                  <div class="impact-label">TikTok Views</div>
-                  <div class="impact-sub" id="impactTikSub">organisch</div>
-                </div>
-              </div>
-              <div class="impact-value" id="impactTik">-</div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </header>
-
-    <main class="middle">
-
-      <section id="intro">
-        <div class="lead">
-          Wirtschaftsministerin Reiche und Bundeskanzler Friedrich Merz sprechen von Technologieoffenheit und Wirtschaftlichkeit. Mit ihren konkreten Forderungen werden aber einseitig fossile Kraftwerke begünstigt und der Ausbau günstiger Erneuerbaren gebremst.
-          Weniger Ausbau bedeutet: Bürger und Unternehmen mit höheren Stromkosten belasten, den Wirtschaftsstandort Deutschland schwächen, die Abhängigkeit von fossilen Importen aus unzuverlässigen Staaten verlängern und das Klimaziel gefährden.
-          Weniger Ausbau steht zudem im Gegensatz zum Wahlprogramm 2025 der Union: <em>„Für uns ist klar: Energie muss bezahlbar, sicher und sauber sein“</em>.
-        </div>
-        <div class="callout" style="margin-top:12px;">
-          <strong>Kernaussage:</strong> Solarstrom senkt Kosten, erhöht Versorgungssicherheit und schützt Klima und Gesundheit.
-        </div>
-      </section>
-
-      <section id="sendung">
-        <h3 style="margin-top:30px;">Playlist mit aktueller Sendung am Anfang</h3>
-        <div class="video-wrap">
-          <iframe
-            src="https://www.youtube-nocookie.com/embed/videoseries?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc"
-            title="YouTube-Playlist: Aktion Solarstrom statt Erdgas-Strom"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-            loading="lazy"></iframe>
-        </div>
-        <p style="margin-top:10px">
-          <a class="cta secondary" href="https://www.youtube.com/playlist?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc" target="_blank" rel="noopener">
-            Ganze Playlist auf YouTube ansehen
-          </a>
-        </p>
-      </section>
-
-      <section class="card" style="border-left:6px solid #0a7d32; padding:22px 22px; background:#f9fafb; border-radius:16px; box-shadow:0 3px 12px rgba(0,0,0,.06);">
-        <h2 style="margin-top:0;">Jetzt ansehen: Atombombe auf die Energiewende</h2>
-
-        <div style="font-size:1rem; line-height:1.75;">
-          <p style="margin:0 0 12px;">
-            Bundeswirtschaftsministerin Katherina Reiche plant ein Maßnahmenpaket, das die Grundpfeiler der Bürger-Energiewende erschüttert:
-          </p>
-
-          <ul style="margin:0 0 14px; padding-left:1.1rem;">
-            <li>🔴 Abschaffung der festen Einspeisevergütung für kleine PV-Anlagen</li>
-            <li>🔴 Netzpaket mit massiven Risiken für große Solar- und Windprojekte</li>
-            <li>🔴 Wegfall von Marktprämien und Entschädigungen</li>
-            <li>🔴 Bau neuer fossiler Gaskraftwerke</li>
-            <li>🔴 Belastungen für Eigenverbraucher durch Pläne der Bundesnetzagentur</li>
-            <li>🔴 Rückbau zentraler Elemente des Gebäudeenergiegesetzes</li>
-          </ul>
-
-          <p style="margin:0 0 12px;">
-            In dieser Sendung sprechen wir mit Hans-Josef Fell, Mitautor des Erneuerbare-Energien-Gesetzes (EEG). Seine Einschätzung ist deutlich:
-            Hier geht es um den massiven Bestandsschutz für fossile Energien, Erdgas, Erdoel, Kohle, waehrend erneuerbare Energien ausgebremst werden.
-          </p>
-
-          <p style="margin:0 0 8px;"><strong>Was bedeutet das fuer:</strong></p>
-          <ul style="margin:0 0 14px; padding-left:1.1rem;">
-            <li>🏠 Hausbesitzer mit Photovoltaik</li>
-            <li>🏢 Unternehmen mit Eigenstromnutzung</li>
-            <li>🏘️ Mieterinnen und Mieter</li>
-            <li>⚡ Strompreise in Deutschland</li>
-            <li>🌍 Deutschlands Wettbewerbsfaehigkeit</li>
-          </ul>
-
-          <p style="margin:0 0 12px;">
-            Waehrend China und andere Laender massiv in erneuerbare Energien investieren, droht Deutschland zurueck in fossile Abhaengigkeiten zu fallen,
-            mit steigenden CO2 Kosten durch ETS2 und wachsender geopolitischer Unsicherheit.
-          </p>
-
-          <p style="margin:0 0 12px;">
-            👉 Es betrifft uns alle.<br>
-            👉 Es geht um Strompreise.<br>
-            👉 Es geht um Waerme.<br>
-            👉 Es geht um wirtschaftliche Zukunft.
-          </p>
-
-          <p style="margin:0;">
-            In der Aktion Solarstrom haben bereits ueber 22.000 Buergerinnen und Buerger Briefe an ihre Bundestagsabgeordneten geschickt.
-            Auch Sie koennen dabei sein und protestieren.
-          </p>
-        </div>
-
-        <div class="video-wrap yt-lazy"
-             data-ytid="yHW1pEmknsk"
-             aria-label="YouTube: Atombombe auf die Energiewende - Klick zum Abspielen">
-          <button class="yt-play" type="button" aria-label="Video abspielen">
-            <span class="yt-badge">LMdE TV</span>
-            <img src="https://i.ytimg.com/vi/yHW1pEmknsk/hqdefault.jpg"
-                 loading="lazy"
-                 decoding="async"
-                 alt="Vorschaubild - Atombombe auf die Energiewende">
-            <span class="yt-icon" aria-hidden="true"></span>
-            <div class="yt-caption">🎥 Jetzt ansehen auf YouTube</div>
-          </button>
-
-          <noscript>
-            <p style="margin:10px 0 0;">
-              <a class="cta secondary"
-                 href="https://youtu.be/yHW1pEmknsk?si=nZHnSk83hMzFXsYw"
-                 target="_blank" rel="noopener">
-                Video auf YouTube oeffnen
-              </a>
-            </p>
-          </noscript>
-        </div>
-
-        <p style="margin-top:10px">
-          <a class="cta secondary"
-             href="https://youtu.be/yHW1pEmknsk?si=nZHnSk83hMzFXsYw"
-             target="_blank" rel="noopener">
-            Auf YouTube ansehen
-          </a>
-        </p>
-      </section>
-
-      <section id="sendung2">
-        <h2 class="section-title">Der Kampagnenstart</h2>
-        <div class="video-wrap">
-          <iframe
-            src="https://www.youtube-nocookie.com/embed/lzq9l2sW6Lo"
-            title="Solarstrom statt Erdgas-Strom - Der Kampagnenstart"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-            loading="lazy"></iframe>
-        </div>
-
-        <p style="margin-top:10px">
-          <a class="cta secondary" href="https://youtu.be/hrUNTbE8zKQ" target="_blank" rel="noopener">
-            Auf YouTube ansehen
-          </a>
-        </p>
-      </section>
-
-      <section id="ziele">
-        <h2 class="section-title">Kernforderungen</h2>
-        <div class="grid2">
-          <div class="card">
-            <h3>1. Keine neuen Erdgaskraftwerke</h3>
-            <p>Spitzenlast mit Bioenergie, Wasserkraft und Speichern abdecken.</p>
-          </div>
-          <div class="card">
-            <h3>2. Ausbau Erneuerbarer beschleunigen</h3>
-            <p>und netzdienliche Erzeugung belohnen.</p>
-          </div>
-          <div class="card">
-            <h3>3. Feste Einspeiseverguetung beibehalten</h3>
-            <p>bis Smart Meter flaechendeckend eine einfache, flexible Vergütung erlauben.</p>
-          </div>
-          <div class="card">
-            <h3>4. Bestandsschutz</h3>
-            <p>und keine Zusatzbelastung fuer erneuerbare Stromerzeugung.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="hintergrund">
-        <h2 class="section-title">Hintergrund und Argumente</h2>
-        <h3>Kosten, Klima und Sicherheit</h3>
-        <ul>
-          <li>Solarstrom senkt Stromgestehungskosten und Risiken fossiler Preise.</li>
-          <li>Direktnutzung reduziert Netzbelastung und Verluste.</li>
-          <li>Dezentrale Anlagen erhoehen die Resilienz.</li>
-        </ul>
-      </section>
-
-      <section id="material">
-        <h2 class="section-title">Materialien</h2>
-        <p>Hier finden Sie die Begruendung fuer unsere Forderungen, zum Nachlesen und Weitergeben.</p>
-        <p>
-          <a class="cta secondary" href="Solarstrom statt Erdgasstrom - Die Argumente.pdf" download>📄 Positionspapier</a>
-        </p>
-      </section>
-
-      <section id="mitmachen">
-        <h2 class="section-title">Mitmachen</h2>
-        <div class="grid2">
-          <div class="card">
-            <h3>Brief an Abgeordnete</h3>
-            <p>Schreiben Sie Ihren Brief, wir uebernehmen Ausdruck und Postversand an die zustaendige Bundestagsabgeordnete oder den zustaendigen Abgeordneten.</p>
-            <a class="cta primary" href="index-full.html">Brief einreichen</a>
-          </div>
-        </div>
-      </section>
-
-      <section id="partner" class="partner">
-        <h2 class="section-title">Traeger der Kampagne</h2>
-        <p>Die Kampagne wird von dem VEEG e.V. und der EWG durchgefuehrt.</p>
-
-        <div class="partnersGrid" aria-label="Partnerorganisationen">
-          <article class="partnerCard">
-            <div class="logoBox">
-              <img src="assets/LEWLOGOKLEIN.png" alt="Leben mit der Energiewende">
-            </div>
-            <div class="info">
-              <h3>Leben mit der Energiewende</h3>
-              <p>Plattform und TV Magazin fuer die Energiewende in Buergerhand.</p>
-              <a href="https://www.lebenmitderenergiewende.de/" target="_blank" rel="noopener">lebenmitderenergiewende.de</a>
-            </div>
-          </article>
-
-          <article class="partnerCard">
-            <div class="logoBox">
-              <img src="assets/veeglogo.svg" alt="VEEG - Verein Energie Erzeugende Gebäude e. V.">
-            </div>
-            <div class="info">
-              <h3>VEEG e. V. - Verband EnergieErzeugende Gebaeude</h3>
-              <p>Foerdert Gebaeude als aktive Energieproduzenten, energieautark, klimafreundlich, zukunftsweisend.</p>
-              <a href="https://ve-eg.de/" target="_blank" rel="noopener">ve-eg.de</a>
-            </div>
-          </article>
-
-          <article class="partnerCard">
-            <div class="logoBox">
-              <img src="assets/energywatchgroup.png" alt="Energy Watch Group">
-            </div>
-            <div class="info">
-              <h3>Energy Watch Group (EWG)</h3>
-              <p>Gemeinnuetziger Think Tank fuer globale Energiewende und Klimastabilisierung.</p>
-              <a href="https://energywatchgroup.org/" target="_blank" rel="noopener">energywatchgroup.org</a>
-            </div>
-          </article>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer middle">
-      <nav class="legal" style="text-align:center;">
-        <a href="Impressum.html">Impressum</a> · <a href="Datenschutz.html">Datenschutz</a>
-      </nav>
-      <p style="text-align:center">©️ Kampagne „Solarstrom statt Erdgas-Strom”</p>
-    </footer>
-  </div>
-
-  <div class="sticky-cta">
-    <a href="#mitmachen" aria-label="Jetzt mitmachen">Jetzt mitmachen</a>
-  </div>
-
-  <script>
-    (function(){
-      const KEY='theme-mode';
-      const body=document.body;
-      const btnNeutral=document.getElementById('btnNeutral');
-      const btnWarm=document.getElementById('btnWarm');
-      function apply(mode){
-        if(mode==='neutral'){
-          body.classList.remove('theme-warm');
-          body.classList.add('theme-neutral');
-          btnNeutral.setAttribute('aria-pressed','true');
-          btnWarm.setAttribute('aria-pressed','false');
-        }else{
-          body.classList.remove('theme-neutral');
-          body.classList.add('theme-warm');
-          btnNeutral.setAttribute('aria-pressed','false');
-          btnWarm.setAttribute('aria-pressed','true');
-        }
-        try{ localStorage.setItem(KEY, mode); }catch(e){}
-      }
-      try{
-        const saved=localStorage.getItem(KEY);
-        if(saved==='neutral') apply('neutral'); else apply('warm');
-      }catch(e){ apply('warm'); }
-
-      btnNeutral?.addEventListener('click', ()=>apply('neutral'));
-      btnWarm?.addEventListener('click', ()=>apply('warm'));
-    })();
-  </script>
-
-  <script>
-    document.addEventListener('click', (e) => {
-      const a = e.target.closest('a'); if (!a) return;
-      const href = a.getAttribute('href') || '';
-      if (!href.startsWith('#')) return;
-      const el = document.querySelector(href);
-      if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
-    });
-
-    const STATS_URL = '/api/stats.json';
-
-    function countUp(el, to, duration = 1200) {
-      const fmt = new Intl.NumberFormat('de-DE');
-      if (!('requestAnimationFrame' in window) || duration <= 0) {
-        el.textContent = fmt.format(Math.max(0, Number(to)||0));
-        return;
-      }
-      const start = performance.now();
-      const from = 0;
-      function frame(now) {
-        const t = Math.min(1, (now - start) / duration);
-        const eased = 1 - Math.pow(1 - t, 3);
-        const val = Math.round(from + (to - from) * eased);
-        el.textContent = fmt.format(val);
-        if (t < 1) requestAnimationFrame(frame);
-      }
-      requestAnimationFrame(frame);
-    }
-
-    function formatStandText(isoString) {
-      if (!isoString) return null;
-      const d = new Date(isoString);
-      if (isNaN(d)) return null;
-      const fmtDate = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
-      const fmtTime = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
-      return `Stand: ${fmtDate}, ${fmtTime} Uhr`;
-    }
-
-    async function loadCounter() {
-      const el = document.getElementById('pdfCount');
-      const metaWrap = document.getElementById('statsMeta');
-      const metaText = document.getElementById('statsTime');
-      if (!el) return;
-
-      try {
-        const res = await fetch(STATS_URL + `?nocache=${Date.now()}`, { cache: 'no-store' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
-
-        const raw = Number(data.pdfs_generated ?? data.count ?? data.sent_emails ?? 0);
-        const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
-        countUp(el, value);
-
-        const stand = formatStandText(data.last_update || data.stats_updated_at || data.sent_emails_last_update);
-        if (stand && metaWrap && metaText) {
-          metaText.textContent = stand;
-          metaWrap.hidden = false;
-        } else if (metaWrap) {
-          metaWrap.hidden = true;
-        }
-      } catch (e) {
-        console.warn('Zaehler konnte nicht geladen werden:', e);
-        el.textContent = '-';
-        if (metaWrap) metaWrap.hidden = true;
-      }
-    }
-
-    loadCounter();
-  </script>
-
-  <script>
-    const IMPACT_URL = '/api/impact';
-
-    (async function loadImpact(){
-       const elMeta = document.getElementById('impactMeta');
-      const elYT = document.getElementById('impactYT');
-      const elTik = document.getElementById('impactTik');
-      
-      const fmt = new Intl.NumberFormat('de-DE');
-
-      function setText(el, val){
-        if(!el) return;
-        el.textContent = val;
-      }
-
-      try{
-        const res = await fetch(IMPACT_URL + `?nocache=${Date.now()}`, { cache:'no-store' });
-        if(!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
-
-        const meta = Number(data.meta_views ?? 0);
-        const yt = Number(data.youtube_views ?? 0);
-        const tik = Number(data.tiktok_views ?? 0);
-
-        setText(elMeta, fmt.format(meta));
-        setText(elYT, fmt.format(yt));
-        setText(elTik, fmt.format(tik));
-
-        }catch(e){
-        console.warn('Impact konnte nicht geladen werden', e);
-      }
-    })();
-  </script>
-
-  <script>
-    (function(){
-      const els = document.querySelectorAll('.reveal');
-      if(!('IntersectionObserver' in window)){ els.forEach(e=>e.classList.add('is-visible')); return; }
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(ent=>{
-          if(ent.isIntersecting){ ent.target.classList.add('is-visible'); io.unobserve(ent.target); }
-        });
-      }, {rootMargin: '0px 0px -10% 0px', threshold: .12});
-      els.forEach(e=>io.observe(e));
-    })();
-  </script>
-
-  <script>
-    document.addEventListener('click', function(e){
-      const btn = e.target.closest('.yt-lazy .yt-play'); if(!btn) return;
-      const wrap = btn.closest('.yt-lazy'); if(!wrap) return;
-
-      const id = wrap.dataset.ytid || wrap.dataset.youtubeId;
-      if(!id) return;
-
-      const title = wrap.dataset.youtubeTitle || 'YouTube Video Player';
-
-      const iframe = document.createElement('iframe');
-      iframe.setAttribute('title', title);
-      iframe.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-      iframe.setAttribute('allowfullscreen','');
-      iframe.setAttribute('loading','lazy');
-      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
-
-      wrap.replaceChildren(iframe);
-    }, {passive:true});
-  </script>
-
-  <script>
-    (function(){
-      const input = document.getElementById('donationAmount');
-      const btn = document.getElementById('donationSubmit');
-      const err = document.getElementById('donationError');
-      const ok = document.getElementById('donationOk');
-
-      function showError(msg){
-        if(!err) return;
-        err.textContent = msg;
-        err.style.display = 'block';
-        if(ok) ok.style.display = 'none';
-      }
-      function clearError(){
-        if(!err) return;
-        err.textContent = '';
-        err.style.display = 'none';
-      }
-      function showOk(msg){
-        if(!ok) return;
-        ok.textContent = msg;
-        ok.style.display = 'block';
-        if(err) err.style.display = 'none';
-      }
-
-      async function createCheckout(){
-        clearError();
-
-        const raw = (input?.value || '').toString().trim();
-        const amount = Number(raw);
-
-        if(!Number.isFinite(amount)) return showError('Bitte einen Betrag eingeben.');
-        if(amount < 1) return showError('Mindestbetrag ist 1 Euro.');
-        if(amount > 250) return showError('Maximalbetrag ist 250 Euro.');
-
-        btn.disabled = true;
-        btn.textContent = 'Weiter zu Stripe...';
-
-        try{
-          const res = await fetch('/api/create-checkout-session', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              amount_eur: amount,
-              source: 'indexneu-hero-custom'
-            })
-          });
-
-          const data = await res.json().catch(() => ({}));
-          if(!res.ok){
-            throw new Error(data?.error || ('HTTP ' + res.status));
-          }
-          if(!data?.url){
-            throw new Error('Keine Checkout URL erhalten.');
-          }
-
-          showOk('Weiterleitung zu Stripe...');
-          window.location.href = data.url;
-        }catch(e){
-          console.warn(e);
-          showError('Konnte Stripe nicht starten. Bitte spaeter nochmal versuchen.');
-          btn.disabled = false;
-          btn.textContent = 'Betrag senden';
-        }
-      }
-
-      btn?.addEventListener('click', createCheckout);
-
-      input?.addEventListener('keydown', (e)=>{
-        if(e.key === 'Enter'){
-          e.preventDefault();
-          createCheckout();
-        }
-      });
-    })();
-  </script>
-
-  <script>
-    fetch('/api/global?nocache=' + Date.now(), { cache:'no-store' })
-      .then(r=>r.json())
-      .then(d=>{
-        const nf0 = new Intl.NumberFormat('de-DE');
-        const nf2 = new Intl.NumberFormat('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2});
-        document.getElementById('donTodayCount').textContent = nf0.format(d.today_count || 0);
-        document.getElementById('donTodayAmount').textContent = nf2.format((d.today_cents || 0) / 100);
-      })
-      .catch(()=>{});
-  </script>
-
-  <script>
-    (function(){
-      const el = document.getElementById('donationMsg');
-      if(!el) return;
-
-      const p = new URLSearchParams(window.location.search);
-      const status = p.get('donation');
-
-      if(status === 'success'){
-        el.textContent = 'Danke! Ihre Unterstuetzung ist angekommen.';
-        el.classList.add('ok');
-        el.hidden = false;
-      } else if(status === 'cancel'){
-        el.textContent = 'Zahlung abgebrochen, kein Problem. Sie koennen es jederzeit erneut versuchen.';
-        el.classList.add('err');
-        el.hidden = false;
-      } else {
-        return;
-      }
-
-      p.delete('donation');
-      const clean = window.location.pathname + (p.toString() ? '?' + p.toString() : '') + window.location.hash;
-      window.history.replaceState({}, '', clean);
-    })();
-  </script>
-
-</body>
-</html>
+              <div class="top
