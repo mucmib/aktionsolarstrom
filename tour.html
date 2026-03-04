@@ -403,6 +403,34 @@
   line-height:1.25;
 }
 
+.dashboard{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+gap:16px;
+margin:20px 0;
+}
+
+.metric{
+background:#f6f6f6;
+padding:18px;
+border-radius:10px;
+text-align:center;
+}
+
+.metric h3{
+font-size:28px;
+margin:0;
+}
+
+.metric p{
+margin:5px 0 0;
+font-size:14px;
+}
+
+.metric.highlight{
+background:#fff3d0;
+}
+
   </style>
 </head>
 
@@ -516,40 +544,91 @@
     <main class="middle">
 
       <section id="transparenz">
-  <h2 class="section-title">Zahlen und Transparenz</h2>
+  <h2 class="section-title">Impact-Dashboard</h2>
 
   <div class="card">
     <p class="lead">
-      Das ist der Stand aus dem internen Aktionsupdate vom 03.03.2026.
-      Die Zahlen zeigen den realen Projektfortschritt der Initiative.
+      Stand: 03.03.2026 – interner Projektstatus der Aktion Solarstrom.
+      Die Zahlen zeigen den aktuellen Fortschritt der Initiative.
     </p>
 
-    <div class="callout">
-      <strong>Briefe:</strong> Insgesamt 21.153 Briefe waren bis 24.02.2026 beauftragt,
-      mittlerweile sind es 22.000. Knapp 12.000 Briefe sind bereits zugestellt,
-      rund 10.000 befinden sich aktuell noch in der Zustellung.
+    <div class="dashboard">
+
+      <div class="metric">
+        <h3>22.000</h3>
+        <p>Briefe beauftragt</p>
+      </div>
+
+      <div class="metric">
+        <h3>≈12.000</h3>
+        <p>Briefe zugestellt</p>
+      </div>
+
+      <div class="metric">
+        <h3>≈10.000</h3>
+        <p>Briefe noch in Zustellung</p>
+      </div>
+
+      <div class="metric">
+        <h3>66</h3>
+        <p>Social-Media-Clips veröffentlicht</p>
+      </div>
+
     </div>
 
-    <p>
-      <strong>Social Media:</strong> 66 Clips wurden auf Instagram, YouTube, Facebook und TikTok veröffentlicht.
-      Bis 03.03.2026 wurden erreicht:
-      Instagram 447.793 Views, Facebook 897.620, YouTube 766.631 Aufrufe und TikTok 166.000 Aufrufe.
-    </p>
+    <hr>
+
+    <h3>Digitale Reichweite</h3>
+
+    <div class="dashboard">
+
+      <div class="metric">
+        <h3>447.793</h3>
+        <p>Instagram Views</p>
+      </div>
+
+      <div class="metric">
+        <h3>897.620</h3>
+        <p>Facebook Views</p>
+      </div>
+
+      <div class="metric">
+        <h3>766.631</h3>
+        <p>YouTube Views</p>
+      </div>
+
+      <div class="metric">
+        <h3>166.000</h3>
+        <p>TikTok Views</p>
+      </div>
+
+      <div class="metric highlight">
+        <h3>2.278.044</h3>
+        <p>Gesamtreichweite</p>
+      </div>
+
+    </div>
+
+    <hr>
+
+    <h3>Projektfinanzierung</h3>
 
     <p>
-      <strong>Finanzen:</strong> Die bisherigen Projektaufwendungen belaufen sich auf 35.135,15 €.
-      Partnerzusagen in Höhe von 27.900 € liegen vor.
-      Ein Teil dieser Beiträge befindet sich noch in der administrativen Abwicklung.
-      Gleichzeitig werden Leistungen aus dem Jahr 2026 derzeit schrittweise abgerechnet.
+      Die bisherigen Projektaufwendungen belaufen sich auf <strong>35.135,15 €</strong>.
+      Partnerzusagen in Höhe von <strong>27.900 €</strong> liegen vor.
+      Ein Teil dieser Beiträge befindet sich derzeit noch in der administrativen Abwicklung.
+      Leistungen aus dem Jahr 2026 werden aktuell schrittweise abgerechnet.
     </p>
+
+    <h3>Nächste Projektphase</h3>
 
     <p style="margin-bottom:0;">
-      <strong>Planung:</strong> Vorgesehen sind fünf Vor-Ort-Veranstaltungen in der Branche
-      mit Kosten von rund 3.000 € pro Termin.
-      Der abschließende Energiegipfel ist mit etwa 15.000 € kalkuliert.
-      Für die nächste Projektphase wird eine zusätzliche Finanzierung
-      von rund 30.000 € zuzüglich organisatorischer Kosten angestrebt.
+      Vorgesehen sind fünf Branchenveranstaltungen mit Kosten von rund <strong>3.000 €</strong> pro Termin.
+      Der abschließende Energiegipfel ist mit etwa <strong>15.000 €</strong> kalkuliert.
+      Für die nächste Projektphase wird eine zusätzliche Finanzierung von rund
+      <strong>30.000 €</strong> zuzüglich organisatorischer Kosten angestrebt.
     </p>
+
   </div>
 </section>
 
