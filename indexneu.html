@@ -662,57 +662,51 @@
     }
     .yt-lazy .yt-play:focus-visible{ outline: var(--focus-ring); outline-offset:4px; border-radius:12px; }
 
-/* Boxen Inhalte zentrieren */
-.topstats-card,
-.impact-card{
-  display: flex;
-  flex-direction: column;
-  align-items: center;      /* horizontal zentriert */
-  justify-content: center;  /* vertikal zentriert, falls Höhe greift */
-  text-align: center;
-}
-
-/* Falls einzelne Zeilen noch links kleben: */
-.topstats-label,
-.topstats-value,
-.topstats-sub,
-.topstats-meta,
-.impact-card *{
-  text-align: center;
-}
-/* Mobile Center Fix: Cards wirklich mittig */
+/* Cards: Inhalte und Icons wirklich mittig, ohne Seiteneffekte */
 .topstats-card,
 .impact-card{
   display: grid;
-  place-items: center;
+  grid-template-rows: auto 1fr;
+  justify-items: center;
+  align-items: center;
   text-align: center;
 }
 
-.topstats-card > *,
-.impact-card > *{
+/* Topstats: Icon und Textblock mittig */
+.topstats-iconbox{
+  margin: 0 auto;
+}
+
+.topstats-text{
   width: 100%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
   text-align: center;
 }
 
-/* Falls irgendwo KPI-Zeilen als Flex gebaut sind: */
-.topstats-kpi,
-.impact-kpi,
-.kpi-row,
-.stat-row{
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
+.topstats-split{
+  width: 100%;
+  display: grid;
   gap: 6px;
-  width: 100%;
+  justify-items: center;
   text-align: center;
 }
 
-/* Sicherheitsnetz: auch Inline-Kram sauber zentrieren */
-.topstats-card span,
-.topstats-card strong,
-.impact-card span,
-.impact-card strong{
+/* Impact: der obere Block war vorher "links", jetzt mittig */
+.impact-top{
+  width: 100%;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  align-items: center;
   text-align: center;
+}
+
+.impact-icon{
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
 }
 
   </style>
