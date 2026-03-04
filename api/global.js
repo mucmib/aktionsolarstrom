@@ -1,17 +1,24 @@
 // /api/global.js
 import { kv } from "@vercel/kv";
 
-function todayKey() {
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${y}${m}${day}`;
+function todayKeyBerlin() {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Berlin",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+
+  const y = parts.find(p => p.type === "year").value;
+  const m = parts.find(p => p.type === "month").value;
+  const d = parts.find(p => p.type === "day").value;
+
+  return `${y}${m}${d}`; // 20260304
 }
 
 export default async function handler(req, res) {
   try {
-    const day = todayKey();
+    const day = todayKeyBerlin();
 
     const [
       total_cents,
