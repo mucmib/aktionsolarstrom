@@ -487,6 +487,125 @@
   }
 }
 
+/* ===== Top Stats Row (PDFs + Spenden heute) ===== */
+.topstats-wrap{
+  display:flex;
+  justify-content:center;
+  transform: translateY(-44px);
+  margin-bottom: -28px;
+}
+
+.topstats-grid{
+  width:min(92vw, 980px);
+  max-width:980px;
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap:12px;
+}
+
+.topstats-card{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  border-radius:12px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.12);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.18);
+  min-height:74px;
+}
+
+/* Linke Kachel: grün */
+.topstats-pdf{
+  background: linear-gradient(135deg,#0a7c5b 0%,#12a37d 50%,#0a7c5b 100%);
+  color:#fff;
+}
+
+/* Rechte Kachel: warm/gold, aber seriös */
+.topstats-don{
+  background: linear-gradient(135deg, rgba(246,177,10,.92), rgba(255,216,74,.92));
+  color:#17320f;
+  border-color: rgba(0,0,0,.06);
+}
+
+.topstats-iconbox{
+  flex:0 0 auto;
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background: rgba(255,255,255,.18);
+}
+
+.topstats-don .topstats-iconbox{
+  background: rgba(255,255,255,.40);
+}
+
+.topstats-text{
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  line-height:1.1;
+}
+
+.topstats-label{
+  font-size:.9rem;
+  font-weight:900;
+  opacity:.95;
+}
+
+.topstats-value{
+  margin-top:2px;
+  font-size:1.6rem;
+  font-weight:900;
+  font-variant-numeric: tabular-nums;
+}
+
+.topstats-meta{
+  margin-top:4px;
+  font-size:.78rem;
+  opacity:.9;
+}
+
+.topstats-meta .dot{
+  display:inline-block;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background: currentColor;
+  opacity:.7;
+  margin:0 8px 1px 0;
+  vertical-align:middle;
+}
+
+.topstats-sub{
+  margin-top:3px;
+  font-size:.78rem;
+  opacity:.85;
+}
+
+.topstats-split{
+  margin-top:6px;
+  display:flex;
+  gap:14px;
+  justify-content:flex-start;
+  flex-wrap:wrap;
+}
+
+.topstats-big{
+  font-weight:900;
+  font-size:1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Mobile: untereinander */
+@media (max-width: 720px){
+  .topstats-grid{ grid-template-columns: 1fr; }
+  .topstats-wrap{ transform: translateY(-30px); margin-bottom:-20px; }
+}
+
     /* ===== Sektionen / Karten ===== */
     main.middle > section { margin: 32px 0; }
     .lead { font-size:1.05rem; }
@@ -759,20 +878,45 @@
       <!-- NEU: sauberer Stack direkt unter dem Hero -->
       <div class="metrics-wrap reveal" aria-label="Zähler und Wirkung">
 
-        <!-- Zähler -->
-        <div class="stats-wrap">
-          <div class="stats-banner" role="status" aria-live="polite">
-            <div class="stats-iconbox"><div class="stats-icon" aria-hidden="true">📄</div></div>
-            <div class="stats-text">
-              <div class="stats-label">Erzeugte PDF-Briefe</div>
-              <div class="stats-value"><span id="pdfCount" class="count">–</span></div>
-              <div class="stats-meta" id="statsMeta" hidden>
-                <span class="dot" aria-hidden="true"></span>
-                <span id="statsTime">Stand: –</span>
-              </div>
-            </div>
-          </div>
+        <!-- Top Stats Row: PDFs + Spenden heute -->
+<div class="topstats-wrap reveal" aria-label="Aktueller Stand">
+  <div class="topstats-grid" role="status" aria-live="polite">
+
+    <!-- Kachel: PDF Briefe -->
+    <div class="topstats-card topstats-pdf">
+      <div class="topstats-iconbox" aria-hidden="true">📄</div>
+      <div class="topstats-text">
+        <div class="topstats-label">Erzeugte PDF-Briefe</div>
+        <div class="topstats-value"><span id="pdfCount" class="count">–</span></div>
+        <div class="topstats-meta" id="statsMeta" hidden>
+          <span class="dot" aria-hidden="true"></span>
+          <span id="statsTime">Stand: –</span>
         </div>
+      </div>
+    </div>
+
+    <!-- Kachel: Spenden heute -->
+    <div class="topstats-card topstats-don">
+      <div class="topstats-iconbox" aria-hidden="true">💛</div>
+      <div class="topstats-text">
+        <div class="topstats-label">Spenden heute</div>
+        <div class="topstats-sub">Stripe Zahlungen</div>
+        <div class="topstats-split">
+          <div class="topstats-big"><span id="donTodayCount">–</span> Zahlungen</div>
+          <div class="topstats-big"><span id="donTodayAmount">–</span> €</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
 
         <!-- Impact Board -->
         <div class="impact-wrap" aria-label="Wirkung der Kampagne">
@@ -821,22 +965,6 @@
               </div>
               <div class="impact-value" id="impactTik">–</div>
             </div>
-
-            <!-- NEU: Spenden heute als Karte -->
-            <div class="impact-card is-wide">
-  <div class="impact-top">
-    <div class="impact-icon" aria-hidden="true">💶</div>
-    <div>
-      <div class="impact-label">Spenden heute</div>
-      <div class="impact-sub">Stripe Zahlungen</div>
-    </div>
-  </div>
-  <div class="impact-value small">
-    <strong><span id="donTodayCount">–</span></strong> Zahlungen<br>
-    <strong><span id="donTodayAmount">–</span></strong> Euro
-  </div>
-</div>
-
           </div>
         </div>
 
