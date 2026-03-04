@@ -360,158 +360,137 @@
       gap: 18px;
     }
 
-    /* ===== Top Stats Row: PDFs + Spenden heute ===== */
-    .topstats-grid{
-      width: 100%;
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap:12px;
-    }
-    .topstats-card{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:12px 14px;
-      border-radius:12px;
-      box-shadow: 0 12px 28px rgba(0,0,0,.12);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,.18);
-      min-height: 82px;
-    }
-    .topstats-pdf{
-      background: linear-gradient(135deg,#0a7c5b 0%,#12a37d 50%,#0a7c5b 100%);
-      color:#fff;
-    }
-    .topstats-don{
-      background: linear-gradient(135deg, rgba(246,177,10,.92), rgba(255,216,74,.92));
-      color:#17320f;
-      border-color: rgba(0,0,0,.06);
-    }
-    .topstats-iconbox{
-      flex:0 0 auto;
-      width:38px;
-      height:38px;
-      display:grid;
-      place-items:center;
-      border-radius:10px;
-      background: rgba(255,255,255,.18);
-    }
-    .topstats-don .topstats-iconbox{ background: rgba(255,255,255,.40); }
+    /* ===== Dashboard: ruhiger, wie ein Block ===== */
+.metrics-wrap{
+  width: min(92vw, 760px);   /* gleiche Breite wie Hero */
+  max-width: 760px;
+  margin: 18px auto 0;
+  display: grid;
+  gap: 12px;
+}
 
-    .topstats-text{
-      flex:1 1 auto;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      line-height:1.1;
-    }
-    .topstats-label{
-      font-size:.9rem;
-      font-weight:900;
-      opacity:.95;
-    }
-    .topstats-value{
-      margin-top:2px;
-      font-size:1.65rem;
-      font-weight:900;
-      font-variant-numeric: tabular-nums;
-    }
-    .topstats-meta{
-      margin-top:6px;
-      font-size:.78rem;
-      opacity:.9;
-    }
-    .topstats-meta .dot{
-      display:inline-block;
-      width:6px;
-      height:6px;
-      border-radius:50%;
-      background: currentColor;
-      opacity:.7;
-      margin:0 8px 1px 0;
-      vertical-align:middle;
-    }
-    .topstats-sub{
-      margin-top:3px;
-      font-size:.78rem;
-      opacity:.85;
-    }
-    .topstats-split{
-      margin-top:8px;
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-    .topstats-big{
-      font-weight:900;
-      font-size:1.05rem;
-      font-variant-numeric: tabular-nums;
-    }
+/* Top row: nicht mehr hochgezogen, einfach sauber darunter */
+.topstats-wrap{
+  display: block;
+  transform: none;
+  margin: 0;
+}
 
-    /* Mobile: untereinander */
-    @media (max-width: 720px){
-      .topstats-grid{ grid-template-columns: 1fr; }
-    }
+.topstats-grid{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
 
-    /* ===== Impact Board ===== */
-    .impact-wrap{
-      width: 100%;
-      margin-top: 10px; /* extra Luft nach Topstats */
-    }
-    .impact-board{
-      width:100%;
-      display:grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap:12px;
-    }
-    .impact-card{
-      background:#ffffffcc;
-      border:1px solid rgba(0,0,0,.08);
-      border-radius:14px;
-      box-shadow: 0 10px 22px rgba(0,0,0,.08);
-      padding:12px 12px;
-      backdrop-filter: blur(6px);
-      min-height: 92px;
-    }
-    .impact-top{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .impact-icon{
-      width:38px; height:38px;
-      border-radius:12px;
-      display:grid; place-items:center;
-      background: rgba(10,125,50,.10);
-      font-size: 1.1rem;
-      flex: 0 0 auto;
-    }
-    .impact-label{
-      font-weight:900;
-      font-size:.92rem;
-      line-height:1.1;
-      color:#0b3d16;
-    }
-    .impact-value{
-      margin-top:6px;
-      font-weight:900;
-      font-size:1.35rem;
-      color:#0b3d16;
-      font-variant-numeric: tabular-nums;
-    }
-    .impact-sub{
-      margin-top:2px;
-      font-size:.78rem;
-      color:#4b5563;
-    }
+/* Boxen: neutraler Grund, Farbe nur als Akzentstreifen */
+.topstats-card{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 8px 18px rgba(0,0,0,.08);
+  min-height: 80px;
+  backdrop-filter: none;
+}
 
-    @media (max-width: 860px){
-      .impact-board{ grid-template-columns: repeat(2, minmax(0,1fr)); }
-    }
-    @media (max-width: 480px){
-      .impact-board{ grid-template-columns: 1fr; }
-      .impact-value{ font-size:1.25rem; }
-    }
+.topstats-card::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 6px;
+  border-radius: 14px 14px 0 0;
+  background: #0a7d32; /* default */
+  opacity: .95;
+}
+
+.topstats-don::before{ background: #f6b10a; }
+
+.topstats-pdf,
+.topstats-don{
+  background: rgba(255,255,255,.92);
+  color: var(--text);
+  border-color: rgba(0,0,0,.08);
+}
+
+.topstats-iconbox{
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(0,0,0,.04);
+}
+
+/* Texte ruhiger */
+.topstats-label{
+  font-size: .9rem;
+  font-weight: 800;
+  color: #111827;
+  opacity: .9;
+}
+.topstats-value{
+  margin-top: 2px;
+  font-size: 1.65rem;
+  font-weight: 900;
+  color: #111827;
+}
+.topstats-sub, .topstats-meta{
+  color: #6b7280;
+  opacity: 1;
+}
+.topstats-meta .dot{ display:none; } /* weg mit dem Punkt, reduziert Unruhe */
+
+/* ===== Impact row: einheitlich, wenig Effekt ===== */
+.impact-wrap{
+  display: block;
+  margin: 0;
+}
+
+.impact-board{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.impact-card{
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 14px;
+  box-shadow: 0 6px 14px rgba(0,0,0,.06);
+  padding: 12px 12px;
+  min-height: 92px;
+  backdrop-filter: none;
+}
+
+.impact-icon{
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: rgba(0,0,0,.04);
+}
+
+.impact-label{ color:#111827; opacity:.9; }
+.impact-sub{ color:#6b7280; }
+.impact-value{ color:#111827; font-size:1.25rem; }
+
+/* Responsive */
+@media (max-width: 860px){
+  .impact-board{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px){
+  .topstats-grid{ grid-template-columns: 1fr; }
+}
+@media (max-width: 480px){
+  .impact-board{ grid-template-columns: 1fr; }
+}
 
     /* ===== Sektionen / Karten ===== */
     main.middle > section { margin: 32px 0; }
