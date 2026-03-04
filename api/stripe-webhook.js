@@ -6,7 +6,7 @@ export const config = { api: { bodyParser: false } };
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// Berlin-Tag im Format YYYY-MM-DD (damit "heute" wirklich deutsch passt)
+// Berlin-Tag im Format YYYYMMDD (passt zu /api/global)
 function berlinDayKey(date = new Date()) {
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Europe/Berlin",
@@ -18,7 +18,8 @@ function berlinDayKey(date = new Date()) {
   const y = parts.find((p) => p.type === "year")?.value;
   const m = parts.find((p) => p.type === "month")?.value;
   const d = parts.find((p) => p.type === "day")?.value;
-  return `${y}-${m}-${d}`; // en-CA liefert genau YYYY-MM-DD
+
+  return `${y}${m}${d}`; // YYYYMMDD
 }
 
 async function buffer(readable) {
@@ -37,17 +38,42 @@ export default async function handler(req, res) {
 
   let event;
   try {
-    event = stripe.webhooks.constructEvent(buf, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    event = stripe.webhooks.constructEvent(
+      buf,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
   } catch (err) {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
   // Wir zählen nur, wenn die Zahlung wirklich bezahlt ist
-  if (event.type === "checkout.session.completed") {
+  const isCountableEvent =
+    event.type === "checkout.session.completed" ||
+    event.type === "checkout.session.async_payment_succeeded";
+
+  if (isCountableEvent) {
     const session = event.data.object;
 
     const paid = session?.payment_status === "paid";
-    if (!paid) return res.status(200).json({ received: true, ignored: "not_paid" });
+
+    // Debug: was kam wirklich an?
+    await kv.set(
+      "global_last_webhook_debug",
+      JSON.stringify({
+        at: new Date().toISOString(),
+        type: event.type,
+        payment_status: session?.payment_status,
+        amount_total: session?.amount_total,
+        session_id: session?.id,
+        event_id: event.id,
+      }),
+      { ex: 60 * 60 }
+    );
+
+    if (!paid) {
+      return res.status(200).json({ received: true, ignored: "not_paid" });
+    }
 
     const amount = Number(session?.amount_total || 0); // cents
     if (!Number.isFinite(amount) || amount <= 0) {
@@ -55,7 +81,6 @@ export default async function handler(req, res) {
     }
 
     // Dedup: event.id + session.id, jeweils mit Ablaufzeit
-    // (global dedup, nicht nur Tour)
     const eventKey = `glob_evt_${event.id}`;
     const sessionKey = `glob_sess_${session.id}`;
 
@@ -75,7 +100,7 @@ export default async function handler(req, res) {
     const bucket = String(session?.metadata?.bucket || "unknown");
 
     // --------
-    // GLOBAL: Gesamt + Heute (Berlin)
+    // GLOBAL: Gesamt + Heute (Berlin, YYYYMMDD)
     // --------
     const day = berlinDayKey(new Date());
     const dayRaisedKey = `global_day_${day}_raised_cents`;
