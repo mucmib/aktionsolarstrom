@@ -710,6 +710,13 @@
 }
 
   </style>
+
+.impact-date{
+  font-size: .8rem;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
 </head>
 
 <body class="theme-warm">
@@ -828,6 +835,7 @@
                 </div>
               </div>
               <div class="impact-value" id="impactMeta">-</div>
+<div class="impact-date">Stand: <span id="impactMetaDate">-</span></div>
             </div>
 
             <div class="impact-card">
@@ -839,6 +847,7 @@
                 </div>
               </div>
               <div class="impact-value" id="impactYT">-</div>
+<div class="impact-date">Stand: <span id="impactYTDate">-</span></div>
             </div>
 
             <div class="impact-card">
@@ -850,6 +859,7 @@
                 </div>
               </div>
               <div class="impact-value" id="impactTik">-</div>
+<div class="impact-date">Stand: <span id="impactTikDate">-</span></div>
             </div>
 
           </div>
@@ -1221,7 +1231,11 @@
         setText(elMeta, fmt.format(meta));
         setText(elYT, fmt.format(yt));
         setText(elTik, fmt.format(tik));
+const today = new Date().toLocaleDateString('de-DE');
 
+document.getElementById('impactMetaDate').textContent = today;
+document.getElementById('impactYTDate').textContent = today;
+document.getElementById('impactTikDate').textContent = today;
         }catch(e){
         console.warn('Impact konnte nicht geladen werden', e);
       }
