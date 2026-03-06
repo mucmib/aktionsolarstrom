@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Transparenz und Kosten – Aktion Solarstrom</title>
+  <title>Transparenz und Aufwand – Aktion Solarstrom</title>
 
-  <meta name="description" content="Transparente Übersicht über die realistischen externen Marktwerte der Kampagne Solarstrom statt Erdgas-Strom: Plattform, Technik, Medienproduktion und laufender Betrieb.">
+  <meta name="description" content="Transparente Übersicht über den realistischen Aufwand und den typischen externen Marktwert der Kampagne Solarstrom statt Erdgas-Strom: Plattform, Medienproduktion, Shorts, Social Media und laufender Betrieb.">
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Transparenz und Kosten – Aktion Solarstrom">
-  <meta property="og:description" content="Was eine Kampagne wie Solarstrom statt Erdgas-Strom mit Plattform, Sendungen, Shorts und Social Media bei externer Beauftragung typischerweise kosten würde.">
+  <meta property="og:title" content="Transparenz und Aufwand – Aktion Solarstrom">
+  <meta property="og:description" content="Was hinter der Kampagne Solarstrom statt Erdgas-Strom an Plattform, Sendungen, Shorts und täglicher Medienarbeit tatsächlich steckt.">
   <meta property="og:url" content="https://www.aktionsolarstrom.de/kosten.html">
   <meta property="og:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Transparenz und Kosten – Aktion Solarstrom">
-  <meta name="twitter:description" content="Was eine Kampagne wie Solarstrom statt Erdgas-Strom mit Plattform, Sendungen, Shorts und Social Media bei externer Beauftragung typischerweise kosten würde.">
+  <meta name="twitter:title" content="Transparenz und Aufwand – Aktion Solarstrom">
+  <meta name="twitter:description" content="Was hinter der Kampagne Solarstrom statt Erdgas-Strom an Plattform, Sendungen, Shorts und täglicher Medienarbeit tatsächlich steckt.">
   <meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,66 +24,52 @@
 
   <style>
     :root{
-      --brand: #0a7d32;
-      --brand-2: #0bbd54;
-      --bg: #f6f1e8;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --accent: #f6b10a;
-      --radius: 14px;
-      --shadow: 0 6px 28px rgba(0,0,0,.08);
-      --shadow-lg: 0 18px 48px rgba(0,0,0,.12);
-      --maxw: 960px;
-      --focus-ring: 2px solid #f6b10a;
-      --hero-w: 760px;
-      --hero-w-fluid: min(92vw, var(--hero-w));
+      --brand:#0a7d32;
+      --brand-2:#0bbd54;
+      --bg:#f6f1e8;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --accent:#f6b10a;
+      --radius:14px;
+      --shadow:0 6px 28px rgba(0,0,0,.08);
+      --maxw:960px;
+      --focus-ring:2px solid #f6b10a;
+      --hero-w:760px;
+      --hero-w-fluid:min(92vw, var(--hero-w));
     }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font: 16px/1.7 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text);
-      background: linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%);
-      text-rendering: optimizeLegibility;
-      font-synthesis-weight: none;
+    *{box-sizing:border-box;}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font:16px/1.7 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%);
+      text-rendering:optimizeLegibility;
+      font-synthesis-weight:none;
     }
 
-    body::before{
-      content:"";
-      position:fixed; inset:0;
-      pointer-events:none; z-index:-1;
-      background:
-        radial-gradient(1px 1px at 25% 15%, rgba(0,0,0,.04) 0, rgba(0,0,0,0) 60%),
-        radial-gradient(1px 1px at 60% 40%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
-        radial-gradient(1px 1px at 80% 70%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
-        radial-gradient(1px 1px at 40% 85%, rgba(0,0,0,.02) 0, rgba(0,0,0,0) 60%);
-      opacity:.28;
-      mix-blend-mode:multiply;
+    img{max-width:100%;display:block;}
+    a{color:var(--brand);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    :where(a, button, input, select, textarea, [tabindex]):focus-visible{
+      outline:var(--focus-ring);
+      outline-offset:2px;
+      border-radius:6px;
     }
 
-    img { max-width: 100%; display: block; }
-    a { color: var(--brand); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-      outline: var(--focus-ring);
-      outline-offset: 2px;
-      border-radius: 6px;
-    }
-
-    .page {
+    .page{
       display:grid;
-      grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr;
+      grid-template-columns:1fr minmax(0, var(--maxw)) 1fr;
       min-height:100dvh;
     }
 
-    .middle {
+    .middle{
       grid-column:2;
       width:100%;
-      padding: 0 16px;
+      padding:0 16px;
     }
 
     .hero-wrap{
@@ -91,25 +77,8 @@
       overflow:hidden;
       border-radius:0 0 16px 16px;
       background:
-        linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)),
+        linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.56)),
         url('assets/Bundestag.jpg') center 45%/cover no-repeat;
-    }
-
-    .hero-wrap::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background: linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02));
-      mix-blend-mode: soft-light;
-    }
-
-    .hero-wrap::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background: radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%);
     }
 
     .hero{
@@ -119,18 +88,17 @@
       justify-content:center;
       text-align:center;
       color:#fff;
-      padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px);
+      padding:clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px);
       position:relative;
     }
 
     .hero-panel{
-      background: rgba(10,125,50,.78);
+      background:rgba(10,125,50,.80);
       border-radius:22px;
       padding:20px 24px;
-      width: var(--hero-w-fluid);
-      max-width: var(--hero-w);
+      width:var(--hero-w-fluid);
+      max-width:var(--hero-w);
       box-shadow:0 18px 48px rgba(0,0,0,.28);
-      backdrop-filter: blur(2px);
       position:relative;
       overflow:hidden;
     }
@@ -140,20 +108,19 @@
       position:absolute;
       left:0; right:0; bottom:0;
       height:6px;
-      background: linear-gradient(90deg, #f6b10a, #ffd84a);
+      background:linear-gradient(90deg, #f6b10a, #ffd84a);
     }
 
     .hero .logo-anim{
-      width: clamp(170px, 36vw, 340px);
+      width:clamp(170px, 36vw, 340px);
       height:auto;
-      display:block;
       margin:0 auto 8px;
-      filter: drop-shadow(0 3px 8px rgba(0,0,0,.35));
+      filter:drop-shadow(0 3px 8px rgba(0,0,0,.35));
     }
 
     .hero h1{
       margin:8px 0 8px;
-      font-size: clamp(1.6rem, 2.2vw + 1rem, 2.2rem);
+      font-size:clamp(1.6rem, 2.2vw + 1rem, 2.2rem);
       font-weight:800;
       color:#fff;
       line-height:1.2;
@@ -162,7 +129,7 @@
     .hero .tagline{
       margin:6px 0 0;
       font-size:1.04rem;
-      opacity:.96;
+      opacity:.97;
     }
 
     .cta-row{
@@ -200,25 +167,20 @@
     }
 
     .hero-note{
-      width: var(--hero-w-fluid);
-      max-width: var(--hero-w);
+      width:var(--hero-w-fluid);
+      max-width:var(--hero-w);
       margin:14px auto 0;
       padding:14px 16px;
       border-radius:14px;
-      background: rgba(255,255,255,.14);
-      border: 1px solid rgba(255,255,255,.22);
-      box-shadow: 0 10px 22px rgba(0,0,0,.12);
-      backdrop-filter: blur(2px);
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow:0 10px 22px rgba(0,0,0,.12);
       color:#fff;
       text-align:left;
     }
 
-    .hero-note strong{
-      color:#fff;
-    }
-
     main.middle > section{
-      margin: 32px 0;
+      margin:32px 0;
     }
 
     .section-title{
@@ -232,32 +194,32 @@
     }
 
     .callout{
-      border-left: 4px solid var(--accent);
+      border-left:4px solid var(--accent);
       background:#fff8e1;
       padding:14px 16px;
-      border-radius: 8px;
+      border-radius:8px;
     }
 
     .card{
       border:1px solid rgba(0,0,0,.06);
-      border-radius: var(--radius);
+      border-radius:var(--radius);
       padding:22px;
       background:#fffdf8;
-      box-shadow: var(--shadow);
+      box-shadow:var(--shadow);
     }
 
     .stats-grid{
       display:grid;
       gap:18px;
-      grid-template-columns: repeat(3, minmax(0,1fr));
+      grid-template-columns:repeat(3, minmax(0,1fr));
     }
 
     .stat-card{
       position:relative;
-      background: rgba(255,255,255,.92);
-      border: 1px solid rgba(0,0,0,.08);
-      border-radius: 14px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:14px;
+      box-shadow:0 10px 24px rgba(0,0,0,.08);
       padding:18px 16px;
       text-align:center;
     }
@@ -295,6 +257,31 @@
       color:var(--muted);
     }
 
+    .work-grid{
+      display:grid;
+      gap:18px;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      margin-top:14px;
+    }
+
+    .work-box{
+      background:#fff;
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:14px;
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+
+    .work-box h3{
+      margin:0 0 8px;
+      font-size:1.05rem;
+    }
+
+    .work-box p{
+      margin:0;
+      color:#4b5563;
+    }
+
     .cost-table{
       width:100%;
       border-collapse:collapse;
@@ -302,7 +289,7 @@
       background:#fff;
       border-radius:14px;
       overflow:hidden;
-      box-shadow: var(--shadow);
+      box-shadow:var(--shadow);
     }
 
     .cost-table th,
@@ -336,7 +323,7 @@
       border:1px solid #cfe7d8;
       border-radius:12px;
       font-weight:700;
-      box-shadow: var(--shadow);
+      box-shadow:var(--shadow);
     }
 
     .total strong{
@@ -349,13 +336,28 @@
       color:#4b5563;
     }
 
+    .support-box{
+      margin-top:18px;
+      padding:18px;
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      box-shadow:var(--shadow);
+    }
+
+    .support-box strong{
+      display:block;
+      margin-bottom:8px;
+      font-size:1.02rem;
+    }
+
     .footer-note{
       margin-top:24px;
       padding:16px 18px;
       border-radius:12px;
       background:#ffffff;
       border:1px solid rgba(0,0,0,.08);
-      box-shadow: var(--shadow);
+      box-shadow:var(--shadow);
       font-size:.95rem;
       color:#374151;
     }
@@ -380,7 +382,8 @@
     }
 
     @media (max-width: 860px){
-      .stats-grid{
+      .stats-grid,
+      .work-grid{
         grid-template-columns:1fr;
       }
 
@@ -401,12 +404,12 @@
 
           <div class="hero-panel">
             <img class="logo-anim" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
-            <h1>Transparenz und Kosten</h1>
+            <h1>Transparenz und Aufwand</h1>
             <p class="tagline">
-              Was eine Kampagne wie „Solarstrom statt Erdgas-Strom“ mit Plattform, Sendungen, Shorts und täglicher Medienarbeit bei externer Beauftragung typischerweise kosten würde.
+              Viele sehen die Ergebnisse dieser Kampagne. Weniger sichtbar ist der laufende Arbeitsaufwand dahinter. Hier wird offengelegt, welcher professionelle Umfang in Plattform, Medienproduktion und täglicher Kommunikationsarbeit tatsächlich steckt.
             </p>
             <div class="cta-row">
-              <a class="cta primary" href="#kosten">Zu den Kosten</a>
+              <a class="cta primary" href="#kosten">Zu den Marktwerten</a>
               <a class="cta secondary" href="index.html">Zur Hauptseite</a>
             </div>
           </div>
@@ -415,7 +418,7 @@
             <strong>Hinweis zur Produktionsmenge:</strong><br>
             Unsere Kampagne veröffentlicht derzeit rund <strong>70 Videos pro Monat</strong> – konkret
             <strong>2 Sendungen pro Woche</strong> und zuletzt <strong>66 Clips / Shorts pro Monat</strong>.
-            Das entspricht vom Aufwand her nicht mehr einer kleinen Website, sondern einer kleinen Medienredaktion.
+            Das ist keine kleine Nebenbei-Webseite, sondern laufende Medien- und Infrastrukturarbeit.
           </div>
 
         </div>
@@ -426,12 +429,10 @@
 
       <section id="intro">
         <div class="lead">
-          Viele Menschen unterstützen unsere Kampagne. Deshalb legen wir offen, welcher Aufwand hinter dieser Arbeit steckt.
-          Entscheidend ist dabei: Die Zahlen unten beschreiben keine exakten Rechnungen, sondern typische externe Marktwerte,
-          wie sie bei professioneller Beauftragung je nach Anbieter, Umfang und Qualität anfallen würden.
+          Diese Übersicht dient nicht der Selbstdarstellung, sondern der Einordnung. Wer Website, Sendungen, Clips und laufende Kommunikation sieht, sieht meist nur das Ergebnis. Weniger sichtbar ist die Arbeit dahinter: Planung, Produktion, Schnitt, Aufbereitung, Veröffentlichung, technische Pflege und die gesamte Struktur im Hintergrund.
         </div>
         <div class="callout" style="margin-top:12px;">
-          <strong>Kernaussage:</strong> Ein großer Teil dieser Arbeit wird derzeit persönlich, mit Eigenleistung und teils ehrenamtlich getragen. Gerade deshalb ist Transparenz sinnvoll.
+          <strong>Kernaussage:</strong> Ein großer Teil dieser Leistungen wird derzeit persönlich, mit Eigenleistung und teils ehrenamtlich getragen. Gerade deshalb ist es sinnvoll, den tatsächlichen professionellen Gegenwert offen zu benennen.
         </div>
       </section>
 
@@ -459,13 +460,49 @@
         </div>
       </section>
 
+      <section id="arbeit">
+        <h2 class="section-title">Was hinter dieser Kampagne tatsächlich steckt</h2>
+
+        <div class="card">
+          <p>
+            Nach außen sichtbar sind vor allem die Website, die Sendungen und die Clips. Weniger sichtbar ist der laufende Arbeitsaufwand dahinter: Themenplanung, Redaktion, Aufnahme, Schnitt, Untertitel, Titelbilder, Social-Media-Aufbereitung, technische Pflege, Formularsysteme, Versandlogik und kontinuierliche Weiterentwicklung.
+          </p>
+
+          <div class="work-grid">
+            <div class="work-box">
+              <h3>Redaktion und Aufbereitung</h3>
+              <p>Themen finden, einordnen, strukturieren, formulieren, Sendungen vorbereiten, Titel und Texte entwickeln, Inhalte für verschiedene Plattformen zuspitzen.</p>
+            </div>
+
+            <div class="work-box">
+              <h3>Produktion und Schnitt</h3>
+              <p>Aufnahme, Bild- und Tonbearbeitung, Sendungsschnitt, Shorts schneiden, Untertitel prüfen, Formate anpassen, Exporte erstellen und veröffentlichungsfähig machen.</p>
+            </div>
+
+            <div class="work-box">
+              <h3>Technische Infrastruktur</h3>
+              <p>Website, Formulare, Kampagnenlogik, laufende Pflege, Versand- und Mitmach-Funktionen, technische Fehlerbehebung und Anpassungen im Hintergrund.</p>
+            </div>
+
+            <div class="work-box">
+              <h3>Tägliche Kommunikationsarbeit</h3>
+              <p>Uploads, Social-Media-Aufbereitung, Plattformpflege, Kommentare, Rückmeldungen, Korrekturen, Nachsteuerung und Sichtbarkeit im laufenden Betrieb.</p>
+            </div>
+          </div>
+
+          <div class="support-box">
+            <strong>Warum das relevant ist</strong>
+            Diese Kampagne funktioniert nicht wie eine einfache Webseite, sondern eher wie eine kleine Medienredaktion mit technischer Infrastruktur. Genau dieser tatsächliche Aufwand wird oft unterschätzt.
+          </div>
+        </div>
+      </section>
+
       <section id="kosten">
         <h2 class="section-title">1. Aufbau der Plattform und Webseite</h2>
 
         <div class="card">
           <p>
-            Die Kampagne besteht nicht nur aus einer sichtbaren Website. Dahinter stehen Struktur, Gestaltung, Frontend, Formularlogik,
-            technische Anbindung und Systemlogik für die Mitmach-Funktionen.
+            Die Kampagne besteht nicht nur aus einer sichtbaren Website. Dahinter stehen Struktur, Gestaltung, Frontend, Formularlogik, technische Anbindung und Systemlogik für die Mitmach-Funktionen.
           </p>
 
           <table class="cost-table">
@@ -501,8 +538,7 @@
           </div>
 
           <div class="small-note">
-            Je nach Anbieter, Qualitätsanspruch und Abstimmungsschleifen kann der Wert auch darunter oder darüber liegen.
-            Die genannte Spanne beschreibt eine solide professionelle Umsetzung mit dem tatsächlichen Funktionsumfang dieser Kampagne.
+            Die genannte Spanne beschreibt eine solide professionelle Umsetzung mit dem tatsächlichen Funktionsumfang dieser Kampagne. Sie ist keine Fantasiezahl, sondern eine realistische Markteinordnung.
           </div>
         </div>
       </section>
@@ -546,9 +582,7 @@
 
         <div class="card">
           <p>
-            Der größte laufende Kostenblock ist die Medienarbeit. Zwei große Sendungen pro Woche, 66 Clips im Monat,
-            Schnitt, Untertitel, Titelbilder, Social-Media-Aufbereitung und Veröffentlichung jeden Tag – das ist normale Produktionsarbeit,
-            nur eben in hoher Frequenz.
+            Der größte laufende Kostenblock ist die Medienarbeit. Zwei große Sendungen pro Woche, 66 Clips im Monat, Schnitt, Untertitel, Titelbilder, Social-Media-Aufbereitung und Veröffentlichung jeden Tag sind keine Nebensache, sondern kontinuierliche Produktionsarbeit.
           </p>
 
           <table class="cost-table">
@@ -592,14 +626,13 @@
           </div>
 
           <div class="small-note">
-            Bei Agentur-Komplettbetreuung oder zusätzlicher Vor-Ort-Produktion können die Werte höher ausfallen.
-            Die genannte Spanne beschreibt eine realistische professionelle Einordnung für unseren aktuellen Output.
+            Bei Agentur-Komplettbetreuung oder zusätzlicher Vor-Ort-Produktion können die Werte höher ausfallen. Die genannte Spanne ist bewusst realistisch und nicht künstlich aufgeblasen.
           </div>
         </div>
       </section>
 
       <section id="gesamt">
-        <h2 class="section-title">4. Gesamtkosten der Kampagne</h2>
+        <h2 class="section-title">4. Gesamtwert der laufenden Arbeit</h2>
 
         <div class="card">
           <table class="cost-table">
@@ -627,7 +660,7 @@
           </div>
 
           <div class="small-note">
-            Rechnung: einmaliger Plattform-Aufbau plus 12 Monate technischer Betrieb und 12 Monate Medienproduktion.
+            Dieser Wert zeigt, welcher professionelle Gegenwert in einer Kampagne mit unserem tatsächlichen Umfang steckt. Er ist nicht identisch mit den real ausgegebenen Mitteln, weil ein erheblicher Teil durch Eigenleistung getragen wird.
           </div>
         </div>
       </section>
@@ -637,23 +670,20 @@
 
         <div class="card">
           <p>
-            Transparenz schafft Vertrauen. Wer regelmäßig informiert, Sendungen produziert, Clips aufbereitet, Materialien bereitstellt
-            und eine Kampagnenplattform betreibt, verursacht reale Arbeit und reale Kosten.
+            Wer diese Kampagne unterstützt, unterstützt nicht bloß eine Website oder ein einzelnes Video. Unterstützt werden konkrete Arbeit, verlässliche Medienproduktion, technische Infrastruktur und kontinuierliche öffentliche Aufklärung.
           </p>
 
           <p>
-            Unsere Kampagne läuft trotzdem mit deutlich geringeren finanziellen Mitteln, weil ein großer Teil dieser Leistungen persönlich,
-            mit Eigenleistung und teils ehrenamtlich erbracht wird.
+            Gerade weil ein großer Teil dieser Leistungen derzeit persönlich, mit Eigenleistung und teils ehrenamtlich erbracht wird, ist es wichtig, den tatsächlichen Umfang sichtbar zu machen. Das schafft Transparenz nach außen und macht den Wert dieser Arbeit auch für Partner nachvollziehbar.
           </p>
 
           <p>
-            Unterstützung hilft deshalb nicht irgendeinem diffusen Apparat, sondern ganz konkret dabei, Infrastruktur, Medienproduktion
-            und kontinuierliche Kommunikationsarbeit aufrechtzuerhalten.
+            Unterstützung hilft deshalb ganz konkret dabei, diese Medien- und Kommunikationsarbeit stabil weiterzuführen, die technische Infrastruktur zu sichern und den professionellen Standard der Kampagne zu halten.
           </p>
         </div>
 
         <div class="footer-note">
-          Diese Übersicht zeigt keine Luxusrechnung, sondern eine realistische Einordnung typischer externer Marktwerte für eine professionell betriebene Kampagne mit unserem tatsächlichen Output.
+          Diese Übersicht ist keine Luxusrechnung. Sie zeigt, welcher reale professionelle Aufwand hinter einer Kampagne mit unserem tatsächlichen Output steckt.
         </div>
       </section>
 
