@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Transparenz und Kosten – Aktion Solarstrom</title>
+
+  <meta name="description" content="Transparente Übersicht über die realistischen Kosten der Kampagne Solarstrom statt Erdgas-Strom: Plattform, Technik, Medienproduktion und laufender Betrieb.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Transparenz und Kosten – Aktion Solarstrom">
+  <meta property="og:description" content="Was unsere Kampagne mit Website, Medienproduktion, Shorts und Social Media normalerweise kosten würde.">
+  <meta property="og:url" content="https://www.aktionsolarstrom.de/kosten.html">
+  <meta property="og:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Transparenz und Kosten – Aktion Solarstrom">
+  <meta name="twitter:description" content="Was unsere Kampagne mit Website, Medienproduktion, Shorts und Social Media normalerweise kosten würde.">
+  <meta name="twitter:image" content="https://www.aktionsolarstrom.de/assets/SocialCard.jpg">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+
+  <style>
+    :root{
+      --brand: #0a7d32;
+      --brand-2: #0bbd54;
+      --bg: #f6f1e8;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #f6b10a;
+      --radius: 14px;
+      --shadow: 0 6px 28px rgba(0,0,0,.08);
+      --shadow-lg: 0 18px 48px rgba(0,0,0,.12);
+      --maxw: 960px;
+      --focus-ring: 2px solid #f6b10a;
+      --hero-w: 760px;
+      --hero-w-fluid: min(92vw, var(--hero-w));
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font: 16px/1.7 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg,#f9f6ef 0%, #ffffff 50%, #f4ebdc 100%);
+      text-rendering: optimizeLegibility;
+      font-synthesis-weight: none;
+    }
+
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none; z-index:-1;
+      background:
+        radial-gradient(1px 1px at 25% 15%, rgba(0,0,0,.04) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 60% 40%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 80% 70%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
+        radial-gradient(1px 1px at 40% 85%, rgba(0,0,0,.02) 0, rgba(0,0,0,0) 60%);
+      opacity:.28;
+      mix-blend-mode:multiply;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    .page {
+      display:grid;
+      grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr;
+      min-height:100dvh;
+    }
+
+    .middle {
+      grid-column:2;
+      width:100%;
+      padding: 0 16px;
+    }
+
+    .hero-wrap{
+      position:relative;
+      overflow:hidden;
+      border-radius:0 0 16px 16px;
+      background:
+        linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)),
+        url('assets/Bundestag.jpg') center 45%/cover no-repeat;
+    }
+
+    .hero-wrap::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background: linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02));
+      mix-blend-mode: soft-light;
+    }
+
+    .hero-wrap::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background: radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%);
+    }
+
+    .hero{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:#fff;
+      padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px);
+      position:relative;
+    }
+
+    .hero-panel{
+      background: rgba(10,125,50,.78);
+      border-radius:22px;
+      padding:20px 24px;
+      width: var(--hero-w-fluid);
+      max-width: var(--hero-w);
+      box-shadow:0 18px 48px rgba(0,0,0,.28);
+      backdrop-filter: blur(2px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-panel::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:6px;
+      background: linear-gradient(90deg, #f6b10a, #ffd84a);
+    }
+
+    .hero .logo-anim{
+      width: clamp(170px, 36vw, 340px);
+      height:auto;
+      display:block;
+      margin:0 auto 8px;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,.35));
+    }
+
+    .hero h1{
+      margin:8px 0 8px;
+      font-size: clamp(1.6rem, 2.2vw + 1rem, 2.2rem);
+      font-weight:800;
+      color:#fff;
+      line-height:1.2;
+    }
+
+    .hero .tagline{
+      margin:6px 0 0;
+      font-size:1.04rem;
+      opacity:.96;
+    }
+
+    .cta-row{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .cta{
+      display:inline-block;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:700;
+      text-decoration:none;
+      transition:transform .15s ease;
+    }
+
+    .cta.primary{
+      background:linear-gradient(135deg,#0a7d32,#0bbd54);
+      color:#fff;
+      box-shadow:0 4px 15px rgba(10,125,50,.25);
+    }
+
+    .cta.secondary{
+      background:#fff;
+      color:#0a7d32;
+      border:1px solid #cfe7d8;
+    }
+
+    .cta:hover{
+      transform:translateY(-1px);
+      text-decoration:none;
+    }
+
+    .hero-note{
+      width: var(--hero-w-fluid);
+      max-width: var(--hero-w);
+      margin:14px auto 0;
+      padding:14px 16px;
+      border-radius:14px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 10px 22px rgba(0,0,0,.12);
+      backdrop-filter: blur(2px);
+      color:#fff;
+      text-align:left;
+    }
+
+    .hero-note strong{
+      color:#fff;
+    }
+
+    main.middle > section{
+      margin: 32px 0;
+    }
+
+    .section-title{
+      font-size:1.5rem;
+      margin:0 0 14px;
+      font-weight:700;
+    }
+
+    .lead{
+      font-size:1.05rem;
+    }
+
+    .callout{
+      border-left: 4px solid var(--accent);
+      background:#fff8e1;
+      padding:14px 16px;
+      border-radius: 8px;
+    }
+
+    .card{
+      border:1px solid rgba(0,0,0,.06);
+      border-radius: var(--radius);
+      padding:22px;
+      background:#fffdf8;
+      box-shadow: var(--shadow);
+    }
+
+    .stats-grid{
+      display:grid;
+      gap:18px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+    }
+
+    .stat-card{
+      position:relative;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+      padding:18px 16px;
+      text-align:center;
+    }
+
+    .stat-card::before{
+      content:"";
+      position:absolute;
+      left:0; top:0; right:0;
+      height:6px;
+      border-radius:14px 14px 0 0;
+      background:#0a7d32;
+    }
+
+    .stat-card.gold::before{
+      background:#f6b10a;
+    }
+
+    .stat-label{
+      font-size:.96rem;
+      font-weight:800;
+      color:#111827;
+      margin-bottom:6px;
+    }
+
+    .stat-value{
+      font-size:2rem;
+      font-weight:900;
+      color:#111827;
+      line-height:1.15;
+    }
+
+    .stat-sub{
+      margin-top:8px;
+      font-size:.92rem;
+      color:var(--muted);
+    }
+
+    .cost-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:14px;
+      background:#fff;
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .cost-table th,
+    .cost-table td{
+      padding:12px 14px;
+      border-bottom:1px solid #e5e7eb;
+      text-align:left;
+      vertical-align:top;
+    }
+
+    .cost-table th{
+      background:#f3f4f6;
+      font-weight:800;
+      color:#111827;
+    }
+
+    .cost-table tr:last-child td{
+      border-bottom:none;
+    }
+
+    .cost-table td:last-child,
+    .cost-table th:last-child{
+      white-space:nowrap;
+      font-weight:700;
+    }
+
+    .total{
+      margin-top:16px;
+      padding:18px;
+      background:#eaf6ee;
+      border:1px solid #cfe7d8;
+      border-radius:12px;
+      font-weight:700;
+      box-shadow: var(--shadow);
+    }
+
+    .total strong{
+      font-size:1.15rem;
+    }
+
+    .small-note{
+      margin-top:16px;
+      font-size:.96rem;
+      color:#4b5563;
+    }
+
+    .footer-note{
+      margin-top:24px;
+      padding:16px 18px;
+      border-radius:12px;
+      background:#ffffff;
+      border:1px solid rgba(0,0,0,.08);
+      box-shadow: var(--shadow);
+      font-size:.95rem;
+      color:#374151;
+    }
+
+    .site-footer{
+      padding-bottom:40px;
+    }
+
+    .legal{
+      text-align:center;
+      margin-top:26px;
+    }
+
+    .legal a{
+      font-weight:600;
+    }
+
+    .copyright{
+      text-align:center;
+      color:#6b7280;
+      margin-top:10px;
+    }
+
+    @media (max-width: 860px){
+      .stats-grid{
+        grid-template-columns:1fr;
+      }
+
+      .cost-table td:last-child,
+      .cost-table th:last-child{
+        white-space:normal;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <header class="site-header middle">
+      <div class="hero-wrap">
+        <div class="hero">
+
+          <div class="hero-panel">
+            <img class="logo-anim" src="assets/logo.png" alt="Kampagnenlogo Solarstrom statt Erdgas-Strom">
+            <h1>Transparenz und Kosten</h1>
+            <p class="tagline">
+              Was eine Kampagne wie „Solarstrom statt Erdgas-Strom“ mit Plattform, Sendungen, Shorts und täglicher Medienarbeit normalerweise kostet.
+            </p>
+            <div class="cta-row">
+              <a class="cta primary" href="#kosten">Zu den Kosten</a>
+              <a class="cta secondary" href="index.html">Zur Hauptseite</a>
+            </div>
+          </div>
+
+          <div class="hero-note">
+            <strong>Hinweis zur Produktionsmenge:</strong><br>
+            Unsere Kampagne veröffentlicht derzeit rund <strong>70 Videos pro Monat</strong> – konkret
+            <strong>2 Sendungen pro Woche</strong> und zuletzt <strong>66 Clips / Shorts pro Monat</strong>.
+            Das entspricht vom Aufwand her nicht mehr einer kleinen Website, sondern einer kleinen Medienredaktion.
+          </div>
+
+        </div>
+      </div>
+    </header>
+
+    <main class="middle">
+
+      <section id="intro">
+        <div class="lead">
+          Viele Menschen unterstützen unsere Kampagne. Deshalb legen wir offen, welcher Aufwand hinter dieser Arbeit steckt.
+          Entscheidend ist dabei: Die Zahlen unten sind keine Fantasiewerte und auch keine Billigrechnung, sondern eine realistische Einordnung dessen,
+          was unsere aktuelle Struktur bei professioneller Umsetzung kosten würde.
+        </div>
+        <div class="callout" style="margin-top:12px;">
+          <strong>Kernaussage:</strong> Ein großer Teil dieser Arbeit wird derzeit persönlich, mit Eigenleistung und teils ehrenamtlich getragen. Gerade deshalb ist Transparenz sinnvoll.
+        </div>
+      </section>
+
+      <section id="kennzahlen">
+        <h2 class="section-title">Produktionsumfang aktuell</h2>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Sendungen pro Monat</div>
+            <div class="stat-value">8</div>
+            <div class="stat-sub">2 große Sendungen pro Woche</div>
+          </div>
+
+          <div class="stat-card gold">
+            <div class="stat-label">Clips / Shorts pro Monat</div>
+            <div class="stat-value">66</div>
+            <div class="stat-sub">Kurzformate für Reichweite und Verdichtung</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Gesamtoutput pro Monat</div>
+            <div class="stat-value">ca. 70</div>
+            <div class="stat-sub">inklusive laufender Social-Media-Aufbereitung</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="kosten">
+        <h2 class="section-title">1. Aufbau der Plattform und Webseite</h2>
+
+        <div class="card">
+          <p>
+            Die Kampagne besteht nicht nur aus einer sichtbaren Website. Dahinter stehen Struktur, Gestaltung, Frontend, Formularlogik,
+            technische Anbindung und Systemlogik für die Mitmach-Funktionen.
+          </p>
+
+          <table class="cost-table">
+            <tr>
+              <th>Baustein</th>
+              <th>Kosten</th>
+            </tr>
+            <tr>
+              <td>Konzeption der Kampagnenplattform und Struktur</td>
+              <td>3.000&nbsp;€</td>
+            </tr>
+            <tr>
+              <td>Design und grafische Gestaltung der Webseite</td>
+              <td>6.000&nbsp;€</td>
+            </tr>
+            <tr>
+              <td>Frontend-Programmierung der Webseite und Formulare</td>
+              <td>9.000&nbsp;€</td>
+            </tr>
+            <tr>
+              <td>Backend-System, Datenverarbeitung und Versandlogik</td>
+              <td>18.000&nbsp;€</td>
+            </tr>
+            <tr>
+              <td>Tests, Fehlerbehebung und Start der Plattform</td>
+              <td>4.000&nbsp;€</td>
+            </tr>
+          </table>
+
+          <div class="total">
+            Gesamtkosten Aufbau Plattform und Website:<br>
+            <strong>40.000&nbsp;€ einmalig</strong>
+          </div>
+        </div>
+      </section>
+
+      <section id="technik">
+        <h2 class="section-title">2. Laufende technische Betriebskosten</h2>
+
+        <div class="card">
+          <p>
+            Auch wenn vieles nach außen unsichtbar bleibt: Hosting, Infrastruktur, Pflege und technische Weiterentwicklung laufen dauerhaft mit.
+          </p>
+
+          <table class="cost-table">
+            <tr>
+              <th>Baustein</th>
+              <th>Kosten pro Monat</th>
+            </tr>
+            <tr>
+              <td>Hosting, Serverbetrieb und Domains</td>
+              <td>250&nbsp;€</td>
+            </tr>
+            <tr>
+              <td>E-Mail-Versanddienste und technische Infrastruktur</td>
+              <td>150&nbsp;€</td>
+            </tr>
+            <tr>
+              <td>Technische Wartung, Updates und kleinere Weiterentwicklungen</td>
+              <td>2.500&nbsp;€</td>
+            </tr>
+          </table>
+
+          <div class="total">
+            Laufende Technik-Kosten:<br>
+            <strong>2.900&nbsp;€ pro Monat</strong>
+          </div>
+        </div>
+      </section>
+
+      <section id="medien">
+        <h2 class="section-title">3. Medienproduktion und Social-Media-Arbeit</h2>
+
+        <div class="card">
+          <p>
+            Der größte laufende Kostenblock ist die Medienarbeit. Zwei große Sendungen pro Woche, 66 Clips im Monat,
+            Schnitt, Untertitel, Titelbilder, Social-Media-Aufbereitung und Veröffentlichung jeden Tag – das ist normale Produktionsarbeit,
+            nur eben in hoher Frequenz.
+          </p>
+
+          <table class="cost-table">
+            <tr>
+              <th>Baustein</th>
+              <th>Kosten pro Monat</th>
+            </tr>
+            <tr>
+              <td>Redaktion und Vorbereitung der Sendungen</td>
+              <td>1.200&nbsp;€</td>
+            </tr>
+            <tr>
+              <td>Produktion und Aufnahme der Sendungen</td>
+              <td>3.200&nbsp;€</td>
+            </tr>
+            <tr>
+              <td>Schnitt der Sendungen</td>
+              <td>4.800&nbsp;€</td>
+            </tr>
+            <tr>
+              <td>Schnitt der Shorts und Clips (66 pro Monat)</td>
+              <td>3.300&nbsp;€</td>
+            </tr>
+            <tr>
+              <td>Untertitel, Titelbilder und Grafiken</td>
+              <td>1.500&nbsp;€</td>
+            </tr>
+            <tr>
+              <td>Social-Media-Aufbereitung und Veröffentlichung</td>
+              <td>1.800&nbsp;€</td>
+            </tr>
+            <tr>
+              <td>Community-Management</td>
+              <td>900&nbsp;€</td>
+            </tr>
+          </table>
+
+          <div class="total">
+            Gesamtkosten Medienproduktion:<br>
+            <strong>16.700&nbsp;€ pro Monat</strong>
+          </div>
+        </div>
+      </section>
+
+      <section id="gesamt">
+        <h2 class="section-title">4. Gesamtkosten der Kampagne</h2>
+
+        <div class="card">
+          <table class="cost-table">
+            <tr>
+              <th>Bereich</th>
+              <th>Kosten</th>
+            </tr>
+            <tr>
+              <td>Plattform-Aufbau</td>
+              <td>40.000&nbsp;€ einmalig</td>
+            </tr>
+            <tr>
+              <td>Technischer Betrieb</td>
+              <td>2.900&nbsp;€ pro Monat</td>
+            </tr>
+            <tr>
+              <td>Medienproduktion</td>
+              <td>16.700&nbsp;€ pro Monat</td>
+            </tr>
+          </table>
+
+          <div class="total">
+            Gesamtkosten pro Jahr inklusive Medienproduktion:<br>
+            <strong>ca. 275.200&nbsp;€ im ersten Jahr</strong>
+          </div>
+
+          <p class="small-note">
+            Die vorher genannte Zahl von rund 235.000 € war zu niedrig gerechnet, wenn man die 40.000 € Plattform-Aufbau wirklich sauber dazunimmt.
+            Realistisch liegt das erste Jahr also eher bei rund 275.000 €.
+          </p>
+        </div>
+      </section>
+
+      <section id="warum">
+        <h2 class="section-title">Warum wir das offenlegen</h2>
+
+        <div class="card">
+          <p>
+            Transparenz schafft Vertrauen. Wer regelmäßig informiert, Sendungen produziert, Clips aufbereitet, Materialien bereitstellt
+            und eine Kampagnenplattform betreibt, verursacht reale Arbeit und reale Kosten.
+          </p>
+
+          <p>
+            Unsere Kampagne läuft trotzdem mit deutlich geringeren finanziellen Mitteln, weil ein großer Teil dieser Leistungen persönlich,
+            mit Eigenleistung und teils ehrenamtlich erbracht wird.
+          </p>
+
+          <p>
+            Unterstützung hilft deshalb nicht irgendeinem diffusen Apparat, sondern ganz konkret dabei, Infrastruktur, Medienproduktion
+            und kontinuierliche Kommunikationsarbeit aufrechtzuerhalten.
+          </p>
+        </div>
+
+        <div class="footer-note">
+          Diese Übersicht zeigt keine Luxusrechnung, sondern den realistischen Aufwand einer professionell betriebenen Kampagne mit unserem tatsächlichen Output.
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer middle">
+      <nav class="legal">
+        <a href="Impressum.html">Impressum</a> · <a href="Datenschutz.html">Datenschutz</a>
+      </nav>
+      <p class="copyright">© Kampagne „Solarstrom statt Erdgas-Strom”</p>
+
+      <div class="footer-note" style="margin-top:26px;">
+        <strong>Lizenzhinweis (deutsch):</strong><br>
+        Dieser Beitrag einschließlich des begleitenden KI-generierten Bildes steht unter der Lizenz Creative Commons Namensnennung – Nicht kommerziell 4.0 International (CC BY-NC 4.0).<br><br>
+
+        Bitte wie folgt zitieren bei Verwendung:<br><br>
+
+        Struktur und Teile der Formulierung dieses Textes wurden mithilfe von KI (GPT, OpenAI) entwickelt.<br>
+        Inhaltliche Verantwortung: Hans Leo Bader. (CC BY-NC 4.0)<br><br>
+
+        Bild (sofern enthalten): In Kooperation mit KI-generiert mit DALL·E (OpenAI) – Lizenz: CC BY-NC 4.0
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>
+
+
