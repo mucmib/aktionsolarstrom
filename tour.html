@@ -119,10 +119,13 @@
     }
 
     .hero .logo{
-      width: clamp(170px, 36vw, 380px);
-      height:auto; display:block; margin:0 auto 8px;
-      filter: drop-shadow(0 3px 8px rgba(0,0,0,.35));
-    }
+  width: calc(100% + 44px);
+  max-width: none;
+  height: auto;
+  display: block;
+  margin: -18px -22px 12px;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,.35));
+}
     .hero h1{
       margin:8px 0 4px;
       font-size: clamp(1.6rem, 2.2vw + 1rem, 2.2rem);
@@ -442,11 +445,14 @@ background:#fff3d0;
         <div class="hero">
 
           <div class="hero-panel">
-            <img class="logo" src="assets/logo.png" alt="Kampagnenlogo Aktion Solarstrom">
-            <h1>5 Städte plus Berlin</h1>
+            <img class="logo" src="assets/logo_tour.png" alt="Kampagnenlogo Aktion Solarstrom">
             <p class="tagline">
-              22.000 Briefe sind beauftragt. Jetzt bringen wir die Stimmen sichtbar in die Städte und zum Abschluss nach Berlin.
+              Mehr als 22.000 Briefe sind bis dato beauftragt.
             </p>
+<p class="tagline">
+              Jetzt bringen wir die Stimmen sichtbar in die Städte und zum Abschluss nach Berlin.
+            </p>
+
             <div class="cta-row">
               <a class="cta primary" href="#unterstuetzen">Jetzt Etappe mittragen</a>
               <a class="cta secondary" href="#transparenz">Zahlen und Transparenz</a>
