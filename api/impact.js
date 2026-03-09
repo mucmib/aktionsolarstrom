@@ -6,9 +6,9 @@ export default function handler(req, res) {
 
   res.status(200).json({
     letters_total: 22420,
-    meta_views: 1805062,
-    youtube_views: 827279,
-    tiktok_views: 166000,
+    meta_views: 1799171,
+    youtube_views: 581861,
+    tiktok_views: 173000,
     last_update: "2026-03-03T10:30:00.000Z"
   });
 
