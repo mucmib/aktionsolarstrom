@@ -6,10 +6,11 @@ export default function handler(req, res) {
 
   res.status(200).json({
     letters_total: 22420,
-    meta_views: 1799171,
-    youtube_views: 581861,
+    meta_views: 1937886,
+    youtube_views: 609966,
     tiktok_views: 173000,
-    last_update: "2026-03-03T10:30:00.000Z"
+    hours_views: 43687,
+    last_update: "2026-03-11T14:08:00.000Z"
   });
 
 }
