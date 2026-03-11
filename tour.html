@@ -25,7 +25,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
-<link rel="canonical" href="https://www.aktionsolarstrom.de/tour.html">
+  <link rel="canonical" href="https://www.aktionsolarstrom.de/tour.html">
+
   <style>
     :root{
       --brand: #0a7d32;
@@ -44,6 +45,7 @@
 
     * { box-sizing: border-box; }
     html, body { height: 100%; }
+
     body {
       margin: 0;
       font: 16px/1.7 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -52,6 +54,7 @@
       text-rendering: optimizeLegibility;
       font-synthesis-weight: none;
     }
+
     img { max-width: 100%; display: block; }
     a { color: var(--brand); text-decoration: none; }
     a:hover { text-decoration: underline; }
@@ -62,13 +65,24 @@
       border-radius: 6px;
     }
 
-    .page { display:grid; grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr; min-height:100dvh; }
-    .middle { grid-column:2; width:100%; padding: 0 16px; }
+    .page {
+      display:grid;
+      grid-template-columns: 1fr minmax(0, var(--maxw)) 1fr;
+      min-height:100dvh;
+    }
+
+    .middle {
+      grid-column:2;
+      width:100%;
+      padding: 0 16px;
+    }
 
     body::before{
       content:"";
-      position:fixed; inset:0;
-      pointer-events:none; z-index:-1;
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
       background:
         radial-gradient(1px 1px at 25% 15%, rgba(0,0,0,.04) 0, rgba(0,0,0,0) 60%),
         radial-gradient(1px 1px at 60% 40%, rgba(0,0,0,.03) 0, rgba(0,0,0,0) 60%),
@@ -86,13 +100,21 @@
         linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.55)),
         url('assets/Bundestag.jpg') center 45%/cover no-repeat;
     }
+
     .hero-wrap::before{
-      content:""; position:absolute; inset:0; pointer-events:none;
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
       background: linear-gradient(0deg, rgba(246,177,10,.08), rgba(246,177,10,.02));
       mix-blend-mode: soft-light;
     }
+
     .hero-wrap::after{
-      content:""; position:absolute; inset:0; pointer-events:none;
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
       background: radial-gradient(ellipse at 50% 120%, rgba(246,177,10,.28) 0%, rgba(246,177,10,0) 70%);
     }
 
@@ -101,52 +123,94 @@
       flex-direction: column;
       align-items:center;
       justify-content:center;
-      text-align:center; color:#fff;
+      text-align:center;
+      color:#fff;
       padding: clamp(40px, 7vh, 72px) 16px clamp(56px, 9vh, 90px);
       position:relative;
     }
+
     .hero-panel{
       background: rgba(10,125,50,.78);
-      border-radius:22px; padding:18px 22px;
-      width:min(92vw, 760px); max-width:760px;
+      border-radius:22px;
+      padding:18px 22px;
+      width:min(92vw, 760px);
+      max-width:760px;
       box-shadow:0 18px 48px rgba(0,0,0,.28);
       backdrop-filter: blur(2px);
-      position:relative; overflow:hidden;
+      position:relative;
+      overflow:hidden;
     }
+
     .hero-panel::after{
-      content:""; position:absolute; left:0; right:0; bottom:0; height:6px;
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:6px;
       background: linear-gradient(90deg, #f6b10a, #ffd84a);
     }
 
     .hero .logo{
-  width: calc(100% + 44px);
-  max-width: none;
-  height: auto;
-  display: block;
-  margin: -18px -22px 12px;
-  filter: drop-shadow(0 3px 8px rgba(0,0,0,.35));
-}
+      width: calc(100% + 44px);
+      max-width: none;
+      height: auto;
+      display: block;
+      margin: -18px -22px 12px;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,.35));
+    }
+
     .hero h1{
       margin:8px 0 4px;
       font-size: clamp(1.6rem, 2.2vw + 1rem, 2.2rem);
-      font-weight:800; color:#fff;
+      font-weight:800;
+      color:#fff;
     }
-    .hero .tagline{ margin:6px 0 0; font-size:1.04rem; opacity:.96; }
-    .cta-row{ margin-top:14px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-    .cta{ display:inline-block; padding:12px 18px; border-radius:12px; font-weight:700; text-decoration:none; transition:transform .15s ease; }
-    .cta.primary{ background:linear-gradient(135deg,#0a7d32,#0bbd54); color:#fff; }
-    .cta.secondary{ background:#fff; color:#0a7d32; border:1px solid #cfe7d8; }
-    .cta:hover{ transform:translateY(-1px); }
+
+    .hero .tagline{
+      margin:6px 0 0;
+      font-size:1.04rem;
+      opacity:.96;
+    }
+
+    .cta-row{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .cta{
+      display:inline-block;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:700;
+      text-decoration:none;
+      transition:transform .15s ease;
+    }
+
     .cta.primary{
+      background:linear-gradient(135deg,#0a7d32,#0bbd54);
+      color:#fff;
       box-shadow:0 4px 15px rgba(10,125,50,.25);
       transition: transform .25s ease, box-shadow .25s ease;
     }
+
+    .cta.secondary{
+      background:#fff;
+      color:#0a7d32;
+      border:1px solid #cfe7d8;
+    }
+
+    .cta:hover{ transform:translateY(-1px); }
+
     .cta.primary:hover{
       transform: translateY(-2px);
       box-shadow:0 6px 22px rgba(10,125,50,.35);
     }
 
-    /* ===== TOUR-CALLOUT (neu) ===== */
+    /* ===== TOUR-CALLOUT ===== */
     .hero-tour{
       width:min(92vw, 760px);
       max-width:760px;
@@ -160,16 +224,20 @@
       color: rgba(255,255,255,.95);
       text-align:left;
     }
+
     .hero-tour strong{ color:#fff; font-weight:900; }
+
     .tour-grid{
       display:grid;
       gap:10px;
       grid-template-columns: 1fr;
       margin-top:10px;
     }
+
     @media (min-width:680px){
       .tour-grid{ grid-template-columns: 1fr 1fr; }
     }
+
     .tour-pill{
       background: rgba(0,0,0,.18);
       border: 1px solid rgba(255,255,255,.18);
@@ -177,6 +245,7 @@
       padding:10px 12px;
       box-shadow: 0 8px 18px rgba(0,0,0,.12);
     }
+
     .tour-pill .k{ font-size:.86rem; opacity:.92; }
     .tour-pill .v{ font-size:1.15rem; font-weight:900; margin-top:2px; }
 
@@ -188,6 +257,7 @@
       border-radius:12px;
       padding:10px 12px;
     }
+
     .bar{
       height:10px;
       border-radius:999px;
@@ -195,15 +265,17 @@
       overflow:hidden;
       margin-top:8px;
     }
+
     .bar > span{
       display:block;
       height:100%;
       width: 0%;
       background: linear-gradient(90deg, #f6b10a, #ffd84a);
     }
+
     .progress small{ opacity:.9; }
 
-    /* ===== Stripe-Block (wie gehabt) ===== */
+    /* ===== Stripe-Block ===== */
     .hero-under-custom{
       width:min(92vw, 760px);
       max-width:760px;
@@ -216,6 +288,7 @@
       backdrop-filter: blur(2px);
       color:#fff;
     }
+
     .hero-under-custom .custom-row{
       display:flex;
       gap:10px;
@@ -223,6 +296,7 @@
       justify-content:center;
       flex-wrap:wrap;
     }
+
     .hero-under-custom label{
       display:block;
       width:100%;
@@ -231,6 +305,7 @@
       margin:0 0 8px;
       color: rgba(255,255,255,.95);
     }
+
     .custom-input{
       flex: 1 1 220px;
       display:flex;
@@ -243,12 +318,14 @@
       color:#0a7d32;
       box-shadow: 0 8px 18px rgba(0,0,0,.12);
     }
+
     .custom-input span{
       font-weight:900;
       color:#0a7d32;
       opacity:.95;
       white-space:nowrap;
     }
+
     .custom-input input{
       width:100%;
       border:0;
@@ -258,6 +335,7 @@
       background:transparent;
       min-width:110px;
     }
+
     .custom-submit{
       flex: 0 0 auto;
       display:inline-flex;
@@ -274,17 +352,20 @@
       transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
       min-width: 210px;
     }
+
     .custom-submit:hover{
       transform: translateY(-2px);
       box-shadow: 0 14px 28px rgba(0,0,0,.20);
       filter: brightness(.98);
     }
+
     .custom-submit:disabled{
       opacity:.7;
       cursor:not-allowed;
       transform:none;
       box-shadow: 0 8px 18px rgba(0,0,0,.14);
     }
+
     .custom-hint{
       margin:10px 0 0;
       font-size:.92rem;
@@ -292,6 +373,7 @@
       color: rgba(255,255,255,.90);
       text-align:left;
     }
+
     .custom-error{
       margin:10px 0 0;
       font-size:.92rem;
@@ -301,6 +383,7 @@
       font-weight:800;
       display:none;
     }
+
     .custom-ok{
       margin:10px 0 0;
       font-size:.92rem;
@@ -323,6 +406,7 @@
       color: rgba(255,255,255,.95);
       text-align:left;
     }
+
     .hero-under-patreon .patreon-row{
       display:flex;
       gap:10px;
@@ -330,6 +414,7 @@
       justify-content:space-between;
       flex-wrap:wrap;
     }
+
     .patreon-btn{
       display:inline-flex;
       align-items:center;
@@ -345,18 +430,22 @@
       min-width: 260px;
       transition: transform .25s ease, box-shadow .25s ease;
     }
+
     .patreon-btn:hover{
       transform: translateY(-2px);
       box-shadow:0 14px 28px rgba(0,0,0,.20);
       text-decoration:none;
     }
+
     .patreon-text{
       flex: 1 1 240px;
       font-size:.95rem;
       line-height:1.45;
       color: rgba(255,255,255,.92);
     }
+
     .patreon-text strong{ color:#fff; font-weight:900; }
+
     @media (max-width:600px){
       .patreon-btn{ width:100%; min-width:unset; }
       .patreon-text{ font-size:.92rem; }
@@ -364,8 +453,15 @@
     }
 
     main.middle > section { margin: 32px 0; }
-    .section-title{ font-size:1.5rem; margin:0 0 14px; font-weight:700; }
+
+    .section-title{
+      font-size:1.5rem;
+      margin:0 0 14px;
+      font-weight:700;
+    }
+
     .lead { font-size:1.05rem; }
+
     .card {
       border:1px solid rgba(0,0,0,.06);
       border-radius: var(--radius);
@@ -373,67 +469,217 @@
       background:#fffdf8;
       box-shadow: var(--shadow);
     }
-    .callout { border-left: 4px solid var(--accent); background:#fff8e1; padding:14px 16px; border-radius: 8px; }
+
+    .callout{
+      border-left: 4px solid var(--accent);
+      background:#fff8e1;
+      padding:14px 16px;
+      border-radius: 8px;
+    }
 
     footer .legal { text-align:center; display:block; }
 
-/* ===== Proof Banner (Zahlenbild) ===== */
-.proof-banner{
-  width:min(92vw, 760px);
-  max-width:760px;
-  margin:12px auto 0;
-  border-radius:14px;
-  overflow:hidden;
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.22);
-  box-shadow: 0 12px 26px rgba(0,0,0,.18);
-  backdrop-filter: blur(2px);
-}
+    /* ===== Proof Banner ===== */
+    .proof-banner{
+      width:min(92vw, 760px);
+      max-width:760px;
+      margin:12px auto 0;
+      border-radius:14px;
+      overflow:hidden;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 12px 26px rgba(0,0,0,.18);
+      backdrop-filter: blur(2px);
+    }
 
-.proof-banner img{
-  width:100%;
-  height:auto;
-  display:block;
-}
+    .proof-banner img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
 
-/* optional: kleiner Label-Streifen */
-.proof-caption{
-  padding:10px 12px;
-  background: rgba(0,0,0,.18);
-  color: rgba(255,255,255,.92);
-  font-weight:800;
-  font-size:.92rem;
-  line-height:1.25;
-}
+    .proof-caption{
+      padding:10px 12px;
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.92);
+      font-weight:800;
+      font-size:.92rem;
+      line-height:1.25;
+    }
 
-.dashboard{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-gap:16px;
-margin:20px 0;
-}
+    /* ===== 5 BOXEN wie Hauptseite ===== */
+    .metrics-wrap{
+      width: min(92vw, 760px);
+      max-width: 760px;
+      margin: 18px auto 0;
+      display: grid;
+      gap: 12px;
+    }
 
-.metric{
-background:#f6f6f6;
-padding:18px;
-border-radius:10px;
-text-align:center;
-}
+    .topstats-grid{
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
 
-.metric h3{
-font-size:28px;
-margin:0;
-}
+    .topstats-card{
+      position: relative;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      justify-items: center;
+      align-items: center;
+      text-align: center;
+      padding: 14px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.08);
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+      min-height: 80px;
+    }
 
-.metric p{
-margin:5px 0 0;
-font-size:14px;
-}
+    .topstats-card::before{
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      height: 6px;
+      border-radius: 14px 14px 0 0;
+      background: #0a7d32;
+      opacity: .95;
+    }
 
-.metric.highlight{
-background:#fff3d0;
-}
+    .topstats-don::before{ background: #f6b10a; }
 
+    .topstats-iconbox{
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(0,0,0,.04);
+      margin: 0 auto;
+    }
+
+    .topstats-text{
+      width: 100%;
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .topstats-split{
+      width: 100%;
+      display: grid;
+      gap: 6px;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .topstats-label{
+      font-size: .9rem;
+      font-weight: 800;
+      color: #111827;
+      opacity: .9;
+    }
+
+    .topstats-value{
+      margin-top: 2px;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #111827;
+    }
+
+    .topstats-sub,
+    .topstats-meta{
+      color: #6b7280;
+      opacity: 1;
+    }
+
+    .topstats-meta .dot{ display:none; }
+
+    #donTodayCount,
+    #donTodayAmount{
+      font-size: 1.25rem;
+      font-weight: 900;
+    }
+
+    .impact-board{
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .impact-card{
+      display: grid;
+      grid-template-rows: auto 1fr;
+      justify-items: center;
+      align-items: center;
+      text-align: center;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.06);
+      padding: 10px 12px;
+      min-height: 92px;
+    }
+
+    .impact-top{
+      width: 100%;
+      display: grid;
+      gap: 6px;
+      justify-items: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .impact-icon{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: rgba(0,0,0,.04);
+      margin: 0 auto;
+      display: grid;
+      place-items: center;
+    }
+
+    .impact-label{
+      color:#111827;
+      opacity:.9;
+      font-weight:800;
+    }
+
+    .impact-sub{
+      color:#6b7280;
+      font-size:.95rem;
+    }
+
+    .impact-value{
+      color:#111827;
+      font-size:1.25rem;
+      font-weight:900;
+    }
+
+    .impact-date{
+      font-size: .8rem;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 860px){
+      .impact-board{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px){
+      .topstats-grid{ grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px){
+      .impact-board{ grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 
@@ -446,12 +692,8 @@ background:#fff3d0;
 
           <div class="hero-panel">
             <img class="logo" src="assets/logo_tour.png" alt="Kampagnenlogo Aktion Solarstrom">
-            <p class="tagline">
-              Mehr als 22.000 Briefe sind bis dato beauftragt.
-            </p>
-<p class="tagline">
-              Jetzt bringen wir die Stimmen sichtbar in die Städte und zum Abschluss nach Berlin.
-            </p>
+            <p class="tagline">Mehr als 22.000 Briefe sind bis dato beauftragt.</p>
+            <p class="tagline">Jetzt bringen wir die Stimmen sichtbar in die Städte und zum Abschluss nach Berlin.</p>
 
             <div class="cta-row">
               <a class="cta primary" href="#unterstuetzen">Jetzt Etappe mittragen</a>
@@ -459,13 +701,11 @@ background:#fff3d0;
             </div>
           </div>
 
-<!-- PROOF: Reichweite & Wirkung -->
-<div class="proof-banner" aria-label="Wirkungszahlen der Aktion">
-  <img src="assets/Aufrufe.png" alt="2,71 Mio Videoabrufe, 5 Städte plus Berlin Tour" loading="lazy" decoding="async">
-  <div class="proof-caption">Wirkung in Zahlen, Stand Anfang März 2026</div>
-</div>
+          <div class="proof-banner" aria-label="Wirkungszahlen der Aktion">
+            <img src="assets/Aufrufe.png" alt="2,71 Mio Videoabrufe, 5 Städte plus Berlin Tour" loading="lazy" decoding="async">
+            <div class="proof-caption">Wirkung in Zahlen, Stand Anfang März 2026</div>
+          </div>
 
-          <!-- TOUR-CALLOUT -->
           <div class="hero-tour" id="unterstuetzen">
             <strong>Erste Finanzierungs-Etappe:</strong> 15.000 € für die nächste Umsetzungsschleife (Tour plus Vorbereitung Berlin)
 
@@ -478,13 +718,12 @@ background:#fff3d0;
                 <div class="k">Briefe zugestellt</div>
                 <div class="v">knapp 12.000</div>
               </div>
-              
             </div>
 
             <div class="progress" aria-label="Fortschritt Etappe">
               <div><strong>Fortschritt Stand:</strong> <span id="raisedText">0 €</span> von 15.000 €</div>
               <div class="bar" aria-hidden="true"><span id="barFill"></span></div>
-              <small>Hinweis: Der aktuelle Stand wir hier automatisiert dargestellt</small>
+              <small>Hinweis: Der aktuelle Stand wird hier automatisiert dargestellt.</small>
             </div>
 
             <div class="callout" style="margin-top:12px;">
@@ -492,7 +731,6 @@ background:#fff3d0;
             </div>
           </div>
 
-          <!-- STRIPE: Betrag frei wählen (wie gehabt) -->
           <div class="hero-under-custom" aria-label="Einmalig unterstützen – Betrag frei wählen">
             <label for="donationAmount">Einmalig unterstützen – Betrag frei wählen:</label>
 
@@ -524,7 +762,6 @@ background:#fff3d0;
             <div class="custom-ok" id="donationOk" role="status" aria-live="polite"></div>
           </div>
 
-          <!-- PATREON -->
           <div class="hero-under-patreon" aria-label="Monatlich unterstützen – Patreon">
             <div class="patreon-row">
               <a class="patreon-btn" href="https://www.patreon.com/c/AktionSolarstrom" target="_blank" rel="noopener">
@@ -543,95 +780,106 @@ background:#fff3d0;
     <main class="middle">
 
       <section id="transparenz">
-  <h2 class="section-title">Impact-Dashboard</h2>
+        <h2 class="section-title">Zahlen und Transparenz</h2>
 
-  <div class="card">
-    <p class="lead">
-      Stand: 09.03.2026 – interner Projektstatus der Aktion Solarstrom.
-      Die Zahlen zeigen den aktuellen Fortschritt der Initiative.
-    </p>
+        <div class="card">
+           <div class="metrics-wrap" aria-label="Zähler und Wirkung">
 
-    <div class="dashboard">
+            <div class="topstats-grid" role="status" aria-live="polite" aria-label="Aktueller Stand">
 
-      <div class="metric">
-        <h3>23.000</h3>
-        <p>Briefe beauftragt</p>
-      </div>
+              <div class="topstats-card topstats-pdf">
+                <div class="topstats-iconbox" aria-hidden="true">📄</div>
+                <div class="topstats-text">
+                  <div class="topstats-label">Erzeugte PDF-Briefe</div>
+                  <div class="topstats-value"><span id="pdfCount" class="count">-</span></div>
+                  <div class="topstats-meta" id="statsMeta" hidden>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span id="statsTime">Stand: -</span>
+                  </div>
+                </div>
+              </div>
 
-      <div class="metric">
-        <h3>≈12.000</h3>
-        <p>Briefe zugestellt</p>
-      </div>
+              <div class="topstats-card topstats-don">
+                <div class="topstats-iconbox" aria-hidden="true">💛</div>
+                <div class="topstats-text">
+                  <div class="topstats-label">Unterstützungen heute</div>
+                  <div class="topstats-sub">Stripe Zahlungen</div>
+                  <div class="topstats-split">
+                    <div class="topstats-big"><span id="donTodayCount">-</span> Zahlungen</div>
+                    <div class="topstats-big"><span id="donTodayAmount">-</span> €</div>
+                  </div>
+                </div>
+              </div>
 
-      <div class="metric">
-        <h3>≈11.000</h3>
-        <p>Briefe noch in Zustellung</p>
-      </div>
+            </div>
 
-      <div class="metric">
-        <h3>70</h3>
-        <p>Social-Media-Clips veröffentlicht</p>
-      </div>
+            <div aria-label="Wirkung der Kampagne">
+              <div class="impact-board" role="status" aria-live="polite">
 
-    </div>
+                <div class="impact-card">
+                  <div class="impact-top">
+                    <div class="impact-icon" aria-hidden="true">📣</div>
+                    <div>
+                      <div class="impact-label">Meta Views</div>
+                      <div class="impact-sub" id="impactMetaSub">Facebook plus Instagram</div>
+                    </div>
+                  </div>
+                  <div class="impact-value" id="impactMeta">-</div>
+                  <div class="impact-date">Stand: <span id="impactMetaDate">-</span></div>
+                </div>
 
-    <hr>
+                <div class="impact-card">
+                  <div class="impact-top">
+                    <div class="impact-icon" aria-hidden="true">▶</div>
+                    <div>
+                      <div class="impact-label">YouTube Views</div>
+                      <div class="impact-sub" id="impactYTSub">Shorts plus Sendungen</div>
+                    </div>
+                  </div>
+                  <div class="impact-value" id="impactYT">-</div>
+                  <div class="impact-date">Stand: <span id="impactYTDate">-</span></div>
+                </div>
 
-    <h3>Digitale Reichweite</h3>
+                <div class="impact-card">
+                  <div class="impact-top">
+                    <div class="impact-icon" aria-hidden="true">🎵</div>
+                    <div>
+                      <div class="impact-label">TikTok Views</div>
+                      <div class="impact-sub" id="impactTikSub">organisch</div>
+                    </div>
+                  </div>
+                  <div class="impact-value" id="impactTik">-</div>
+                  <div class="impact-date">Stand: <span id="impactTikDate">-</span></div>
+                </div>
 
-    <div class="dashboard">
+              </div>
+            </div>
 
-      <div class="metric">
-        <h3>627.248</h3>
-        <p>Instagram Views</p>
-      </div>
+          </div>
 
-      <div class="metric">
-        <h3>1.171.923</h3>
-        <p>Facebook Views</p>
-      </div>
+          <hr>
 
-      <div class="metric">
-        <h3>581.861</h3>
-        <p>YouTube Views</p>
-      </div>
+          <h3>Projektfinanzierung</h3>
 
-      <div class="metric">
-        <h3>173.000</h3>
-        <p>TikTok Views</p>
-      </div>
+          <p>
+            Die bisherigen Projektaufwendungen belaufen sich auf <strong>35.135,15 €</strong>.
+            Partnerzusagen in Höhe von <strong>27.900 €</strong> liegen vor.
+            Ein Teil dieser Beiträge befindet sich derzeit noch in der administrativen Abwicklung.
+            Leistungen aus dem Jahr 2026 werden aktuell schrittweise abgerechnet.
+            Eine Übersicht zu den Gesamtkosten einer solchen Kampagne findet sich auf unserer
+            <a href="https://aktionsolarstrom.de/transparenz_kosten_total.html">Transparenzseite zu den Gesamtkosten</a>.
+          </p>
 
-      <div class="metric highlight">
-        <h3>2.554.032</h3>
-        <p>Gesamtreichweite</p>
-      </div>
+          <h3>Nächste Projektphase</h3>
 
-    </div>
-
-    <hr>
-
-    <h3>Projektfinanzierung</h3>
-
-    <p>
-      Die bisherigen Projektaufwendungen belaufen sich auf <strong>35.135,15 €</strong>.
-      Partnerzusagen in Höhe von <strong>27.900 €</strong> liegen vor.
-      Ein Teil dieser Beiträge befindet sich derzeit noch in der administrativen Abwicklung.
-      Leistungen aus dem Jahr 2026 werden aktuell schrittweise abgerechnet.
-      Eine Übersicht zu den Gesamtkosten einer solchen Kampagne findet sich auf unserer
-<a href="https://aktionsolarstrom.de/transparenz_kosten_total.html">Transparenzseite zu den Gesamtkosten</a>.
-    </p>
-
-    <h3>Nächste Projektphase</h3>
-
-    <p style="margin-bottom:0;">
-      Vorgesehen sind fünf Branchenveranstaltungen mit Kosten von rund <strong>3.000 €</strong> pro Termin.
-      Der abschließende Energiegipfel in Berlin ist mit etwa <strong>15.000 €</strong> kalkuliert.
-      Für die nächste Projektphase wird eine zusätzliche Finanzierung von rund
-      <strong>30.000 €</strong> zuzüglich organisatorischer Kosten angestrebt.
-    </p>
-
-  </div>
-</section>
+          <p style="margin-bottom:0;">
+            Vorgesehen sind fünf Branchenveranstaltungen mit Kosten von rund <strong>3.000 €</strong> pro Termin.
+            Der abschließende Energiegipfel in Berlin ist mit etwa <strong>15.000 €</strong> kalkuliert.
+            Für die nächste Projektphase wird eine zusätzliche Finanzierung von rund
+            <strong>30.000 €</strong> zuzüglich organisatorischer Kosten angestrebt.
+          </p>
+        </div>
+      </section>
 
       <section>
         <h2 class="section-title">Wofür die erste Etappe konkret ist</h2>
@@ -672,41 +920,156 @@ background:#fff3d0;
   </div>
 
   <script>
-    // Smooth Scrolling
     document.addEventListener('click', (e) => {
-      const a = e.target.closest('a'); if (!a) return;
+      const a = e.target.closest('a');
+      if (!a) return;
       const href = a.getAttribute('href') || '';
       if (!href.startsWith('#')) return;
       const el = document.querySelector(href);
-      if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({behavior:'smooth'});
+      }
     });
   </script>
 
   <script>
-(async function(){
-  const raisedText = document.getElementById('raisedText');
-  const barFill = document.getElementById('barFill');
+    const STATS_URL = '/api/stats.json';
 
-  try{
-    const res = await fetch('/api/raised', { cache: 'no-store' });
-    const data = await res.json();
+    function countUp(el, to, duration = 1200) {
+      const fmt = new Intl.NumberFormat('de-DE');
+      if (!('requestAnimationFrame' in window) || duration <= 0) {
+        el.textContent = fmt.format(Math.max(0, Number(to) || 0));
+        return;
+      }
+      const start = performance.now();
+      const from = 0;
 
-    const raised = (data.raised_cents || 0) / 100;
-    const goal = (data.goal_cents || 1500000) / 100;
+      function frame(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const val = Math.round(from + (to - from) * eased);
+        el.textContent = fmt.format(val);
+        if (t < 1) requestAnimationFrame(frame);
+      }
 
-    const fmt = new Intl.NumberFormat('de-DE');
-    if(raisedText) raisedText.textContent = fmt.format(Math.round(raised)) + " €";
+      requestAnimationFrame(frame);
+    }
 
-    const pct = Math.max(0, Math.min(100, (raised / goal) * 100));
-    if(barFill) barFill.style.width = pct.toFixed(1) + "%";
-  }catch(e){
-    console.warn("Raised konnte nicht geladen werden", e);
-  }
-})();
-</script>
+    function formatStandText(isoString) {
+      if (!isoString) return null;
+      const d = new Date(isoString);
+      if (isNaN(d)) return null;
+      const fmtDate = new Intl.DateTimeFormat('de-DE', { day:'2-digit', month:'2-digit' }).format(d);
+      const fmtTime = new Intl.DateTimeFormat('de-DE', { hour:'2-digit', minute:'2-digit' }).format(d);
+      return `Stand: ${fmtDate}, ${fmtTime} Uhr`;
+    }
+
+    async function loadCounter() {
+      const el = document.getElementById('pdfCount');
+      const metaWrap = document.getElementById('statsMeta');
+      const metaText = document.getElementById('statsTime');
+      if (!el) return;
+
+      try {
+        const res = await fetch(STATS_URL + `?nocache=${Date.now()}`, { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        const raw = Number(data.pdfs_generated ?? data.count ?? data.sent_emails ?? 0);
+        const value = Number.isFinite(raw) && raw >= 0 ? raw : 0;
+        countUp(el, value);
+
+        const stand = formatStandText(data.last_update || data.stats_updated_at || data.sent_emails_last_update);
+        if (stand && metaWrap && metaText) {
+          metaText.textContent = stand;
+          metaWrap.hidden = false;
+        } else if (metaWrap) {
+          metaWrap.hidden = true;
+        }
+      } catch (e) {
+        console.warn('Zähler konnte nicht geladen werden:', e);
+        el.textContent = '-';
+        if (metaWrap) metaWrap.hidden = true;
+      }
+    }
+
+    loadCounter();
+  </script>
 
   <script>
-    // Stripe Checkout: unverändert aus deiner Hauptseite übernommen
+    const IMPACT_URL = '/api/impact';
+
+    (async function loadImpact(){
+      const elMeta = document.getElementById('impactMeta');
+      const elYT = document.getElementById('impactYT');
+      const elTik = document.getElementById('impactTik');
+      const fmt = new Intl.NumberFormat('de-DE');
+
+      function setText(el, val){
+        if(!el) return;
+        el.textContent = val;
+      }
+
+      try{
+        const res = await fetch(IMPACT_URL + `?nocache=${Date.now()}`, { cache:'no-store' });
+        if(!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        const meta = Number(data.meta_views ?? 0);
+        const yt = Number(data.youtube_views ?? 0);
+        const tik = Number(data.tiktok_views ?? 0);
+
+        setText(elMeta, fmt.format(meta));
+        setText(elYT, fmt.format(yt));
+        setText(elTik, fmt.format(tik));
+
+        const today = new Date().toLocaleDateString('de-DE');
+        document.getElementById('impactMetaDate').textContent = today;
+        document.getElementById('impactYTDate').textContent = today;
+        document.getElementById('impactTikDate').textContent = today;
+      }catch(e){
+        console.warn('Impact konnte nicht geladen werden', e);
+      }
+    })();
+  </script>
+
+  <script>
+    fetch('/api/global?nocache=' + Date.now(), { cache:'no-store' })
+      .then(r => r.json())
+      .then(d => {
+        const nf0 = new Intl.NumberFormat('de-DE');
+        const nf2 = new Intl.NumberFormat('de-DE', { minimumFractionDigits:2, maximumFractionDigits:2 });
+        document.getElementById('donTodayCount').textContent = nf0.format(d.today_count || 0);
+        document.getElementById('donTodayAmount').textContent = nf2.format((d.today_cents || 0) / 100);
+      })
+      .catch(() => {});
+  </script>
+
+  <script>
+    (async function(){
+      const raisedText = document.getElementById('raisedText');
+      const barFill = document.getElementById('barFill');
+
+      try{
+        const res = await fetch('/api/raised', { cache: 'no-store' });
+        const data = await res.json();
+
+        const raised = (data.raised_cents || 0) / 100;
+        const goal = (data.goal_cents || 1500000) / 100;
+
+        const fmt = new Intl.NumberFormat('de-DE');
+        if(raisedText) raisedText.textContent = fmt.format(Math.round(raised)) + " €";
+
+        const pct = Math.max(0, Math.min(100, (raised / goal) * 100));
+        if(barFill) barFill.style.width = pct.toFixed(1) + "%";
+      }catch(e){
+        console.warn("Raised konnte nicht geladen werden", e);
+      }
+    })();
+  </script>
+
+  <script>
     (function(){
       const input = document.getElementById('donationAmount');
       const btn = document.getElementById('donationSubmit');
@@ -719,11 +1082,13 @@ background:#fff3d0;
         err.style.display = 'block';
         if(ok) ok.style.display = 'none';
       }
+
       function clearError(){
         if(!err) return;
         err.textContent = '';
         err.style.display = 'none';
       }
+
       function showOk(msg){
         if(!ok) return;
         ok.textContent = msg;
@@ -785,4 +1150,3 @@ background:#fff3d0;
 
 </body>
 </html>
-
