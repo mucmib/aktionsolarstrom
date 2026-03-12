@@ -41,124 +41,267 @@
       --maxw:960px;
       --focus-ring:2px solid #f6b10a;
     }
+
     *{box-sizing:border-box;}
-    body{margin:0;font:16px/1.7 "Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);}
-    a{color:var(--brand);text-decoration:none;} a:hover{text-decoration:underline;}
-    :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:var(--focus-ring);outline-offset:2px;border-radius:6px;}
-    .page{display:grid;grid-template-columns:1fr minmax(0,var(--maxw)) 1fr;min-height:100dvh;}
-    .middle{grid-column:2;padding:0 16px;}
+
+    body{
+      margin:0;
+      font:16px/1.7 "Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    a{color:var(--brand);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    :where(a,button,input,select,textarea,[tabindex]):focus-visible{
+      outline:var(--focus-ring);
+      outline-offset:2px;
+      border-radius:6px;
+    }
+
+    .page{
+      display:grid;
+      grid-template-columns:1fr minmax(0,var(--maxw)) 1fr;
+      min-height:100dvh;
+    }
+
+    .middle{
+      grid-column:2;
+      padding:0 16px;
+    }
 
     /* ===== HERO ===== */
-    .hero-wrap{position:relative;overflow:hidden;border-radius:0 0 var(--radius) var(--radius);
-      background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.55)),url('assets/Bundestag.jpg') center 45%/cover no-repeat;}
-    .hero{display:flex;align-items:center;justify-content:center;padding:68px 16px 54px;color:#fff;text-align:center;}
-    .hero-panel{background:rgba(10,125,50,.78);border-radius:22px;padding:22px 24px;max-width:min(92vw,820px);
-      box-shadow:0 18px 48px rgba(0,0,0,.18);}
-    .hero-panel::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;
-      background:linear-gradient(90deg,#f6b10a,#ffd84a);}
-    .hero .logo img{width:clamp(220px,48vw,520px);margin:0 auto 6px;display:block;filter:drop-shadow(0 3px 8px rgba(0,0,0,.25));}
-    .hero h1{margin:8px 0 0;font-size:2rem;color:#fff;}
+    .hero-wrap{
+      position:relative;
+      overflow:hidden;
+      border-radius:0 0 var(--radius) var(--radius);
+      background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.55)),url('assets/Bundestag.jpg') center 45%/cover no-repeat;
+    }
+
+    .hero{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:68px 16px 54px;
+      color:#fff;
+      text-align:center;
+    }
+
+    .hero-panel{
+      position:relative;
+      background:rgba(10,125,50,.78);
+      border-radius:22px;
+      padding:22px 24px;
+      max-width:min(92vw,820px);
+      box-shadow:0 18px 48px rgba(0,0,0,.18);
+    }
+
+    .hero-panel::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:6px;
+      background:linear-gradient(90deg,#f6b10a,#ffd84a);
+    }
+
+    .hero .logo img{
+      width:clamp(220px,48vw,520px);
+      margin:0 auto 6px;
+      display:block;
+      filter:drop-shadow(0 3px 8px rgba(0,0,0,.25));
+    }
+
+    .hero h1{
+      margin:8px 0 0;
+      font-size:2rem;
+      color:#fff;
+    }
 
     /* ===== Inhalt ===== */
     main.middle>section{margin:32px 0;}
-    .card{border:1px solid #e5e7eb;border-radius:14px;padding:22px;background:var(--card);box-shadow:var(--shadow);}
-    h2{margin-top:1.6em;font-size:1.18rem;}
-    .muted{color:var(--muted);font-size:.95em;}
+
+    .card{
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      padding:22px;
+      background:var(--card);
+      box-shadow:var(--shadow);
+    }
+
+    h2{
+      margin-top:1.6em;
+      font-size:1.18rem;
+    }
+
+    .muted{
+      color:var(--muted);
+      font-size:.95em;
+    }
 
     /* ===== Partner-Hover-Grid ===== */
     .partnersGrid{
-      display:grid;gap:18px;grid-template-columns:repeat(3,minmax(0,1fr));
+      display:grid;
+      gap:18px;
+      grid-template-columns:repeat(3,minmax(0,1fr));
     }
-    @media(max-width:900px){.partnersGrid{grid-template-columns:repeat(2,1fr);}}
-    @media(max-width:560px){.partnersGrid{grid-template-columns:1fr;}}
-    .partnerCard{position:relative;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:12px;overflow:hidden;text-align:center;
-      box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease;}
-    .partnerCard:hover{transform:translateY(-3px);box-shadow:0 8px 26px rgba(0,0,0,.12);}
-    .partnerCard .logoBox{height:120px;display:flex;align-items:center;justify-content:center;background:#f9fafb;border-bottom:1px solid #e5e7eb;}
-    .partnerCard img{max-height:72px;width:auto;object-fit:contain;filter:grayscale(100%);transition:filter .3s ease;}
-    .partnerCard:hover img{filter:none;}
-    .partnerCard .info{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
-      background:linear-gradient(to top,rgba(10,125,50,.9)0%,rgba(10,125,50,.2)60%,transparent 100%);
-      color:#fff;padding:16px;opacity:0;transition:opacity .35s ease;backdrop-filter:blur(4px);}
-    .partnerCard:hover .info{opacity:1;}
-    .partnerCard .info h3{margin:0 0 4px;font-size:1rem;font-weight:700;}
-    .partnerCard .info p{margin:0;font-size:.9rem;line-height:1.4;opacity:.95;}
-    .partnerCard .info a{color:#ffd84a;font-weight:600;text-decoration:none;}
-    .partnerCard .info a:hover{text-decoration:underline;}
+
+    @media(max-width:900px){
+      .partnersGrid{grid-template-columns:repeat(2,1fr);}
+    }
+
+    @media(max-width:560px){
+      .partnersGrid{grid-template-columns:1fr;}
+    }
+
+    .partnerCard{
+      position:relative;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:12px;
+      overflow:hidden;
+      text-align:center;
+      box-shadow:var(--shadow);
+      transition:transform .2s ease,box-shadow .2s ease;
+    }
+
+    .partnerCard:hover{
+      transform:translateY(-3px);
+      box-shadow:0 8px 26px rgba(0,0,0,.12);
+    }
+
+    .partnerCard .logoBox{
+      height:250px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#f4f6f5;
+      border-bottom:1px solid #e5e7eb;
+    }
+
+    .partnerCard img{
+      max-height:110px;
+      width:auto;
+      object-fit:contain;
+      filter:grayscale(100%);
+      transition:filter .3s ease;
+    }
+
+    .partnerCard:hover img{
+      filter:none;
+    }
+
+    .partnerCard .info{
+      position:absolute;
+      inset:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      background:linear-gradient(
+        to top,
+        rgba(7, 34, 18, .90) 0%,
+        rgba(7, 34, 18, .82) 60%,
+        rgba(7, 34, 18, .50) 100%
+      );
+      color:#fff;
+      text-shadow:0 1px 1px rgba(0,0,0,.45);
+      padding:20px 18px;
+      opacity:0;
+      transition:opacity .35s ease;
+      backdrop-filter:blur(4px);
+      font-size:1rem;
+    }
+
+    .partnerCard:hover .info{
+      opacity:1;
+    }
+
+    .partnerCard .info h3{
+      margin:0 0 8px;
+      font-size:1.15rem;
+      font-weight:700;
+    }
+
+    .partnerCard .info p{
+      margin:0;
+      font-size:0.95rem;
+      line-height:1.5;
+      opacity:.98;
+    }
+
+    .partnerCard .info a{
+      display:inline-block;
+      margin-top:8px;
+      padding:6px 12px;
+      border-radius:999px;
+      background:#ffd84a;
+      color:#0b3d16;
+      font-weight:800;
+      text-decoration:none;
+      box-shadow:0 2px 6px rgba(0,0,0,.22);
+    }
+
+    .partnerCard .info a:hover{
+      filter:brightness(.95);
+      text-decoration:none;
+    }
+
+    /* ===== MIB-Block ===== */
+    .footer-divider{
+      margin:30px 0;
+      border:none;
+      border-top:1px solid #e5e7eb;
+    }
+
+    .mib-footer-grid{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:32px;
+      flex-wrap:wrap;
+    }
+
+    .mib-footer-text{
+      flex:1 1 520px;
+      min-width:280px;
+    }
+
+    .mib-footer-logo{
+      flex:0 0 220px;
+      min-width:180px;
+      text-align:right;
+    }
+
+    .mib-footer-logo img{
+      max-width:220px;
+      width:100%;
+      height:auto;
+      display:inline-block;
+      border:0;
+    }
+
+    @media (max-width:700px){
+      .mib-footer-grid{
+        flex-direction:column;
+      }
+
+      .mib-footer-logo{
+        text-align:left;
+      }
+    }
 
     /* Footer */
-    footer .legal{text-align:center;display:block;margin:24px 0 10px;}
-    footer a{color:#333;}
-    /* === Partner-Overlay: Kontrast-Fix === */
-.partnerCard .info{
-  /* dunkler, homogener Hintergrund statt sehr transparenter Verlauf */
-  background: linear-gradient(
-    to top,
-    rgba(7, 34, 18, .90) 0%,
-    rgba(7, 34, 18, .82) 60%,
-    rgba(7, 34, 18, .50) 100%
-  );
-  color:#fff;
-  text-shadow: 0 1px 1px rgba(0,0,0,.45);  /* hebt Weiß deutlich ab */
-  padding: 16px 16px 14px;
-}
-.partnerCard .info h3{
-  font-size: 1.05rem;
-  margin-bottom: 6px;
-}
-.partnerCard .info p{
-  font-size: .92rem;
-  line-height: 1.45;
-  opacity: .98;               /* mehr Lesbarkeit als .95 */
-}
+    footer .legal{
+      text-align:center;
+      display:block;
+      margin:24px 0 10px;
+    }
 
-/* Link gut sichtbar als „Pill“ */
-.partnerCard .info a{
-  display:inline-block;
-  margin-top: 8px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: #ffd84a;        /* Solar-Gelb */
-  color: #0b3d16;             /* sehr dunkles Grün für 7:1 Kontrast */
-  font-weight: 800;
-  text-decoration: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,.22);
-}
-.partnerCard .info a:hover{
-  filter: brightness(.95);
-}
-
-/* etwas dunkleres Logo-Panel, damit der Übergang stimmig wirkt */
-.partnerCard .logoBox{
-  background:#eef3ef;
-}
-/* === Partner-Logos größer + Overlay luftig === */
-.partnerCard .logoBox {
-  height: 250px;                /* vorher 120px */
-  background: #f4f6f5;
-}
-
-.partnerCard img {
-  max-height: 110px;            /* Logos dürfen größer werden */
-}
-
-/* Overlay anpassen */
-.partnerCard .info {
-  justify-content: center;      /* Text in der Mitte statt unten */
-  padding: 20px 18px;
-  font-size: 1rem;
-}
-
-.partnerCard .info h3 {
-  font-size: 1.15rem;
-  margin-bottom: 8px;
-}
-
-.partnerCard .info p {
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
+    footer a{
+      color:#333;
+    }
   </style>
 </head>
 <body>
@@ -179,25 +322,34 @@
     <main class="middle">
       <section class="card">
         <h2>Diese Kampagne wird getragen von</h2>
+
         <div class="partnersGrid" aria-label="Partnerorganisationen">
           <article class="partnerCard">
-            <div class="logoBox"><img src="assets/LEWLOGOKLEIN.png" alt="Leben mit der Energiewende"></div>
+            <div class="logoBox">
+              <img src="assets/LEWLOGOKLEIN.png" alt="Leben mit der Energiewende">
+            </div>
             <div class="info">
               <h3>Leben mit der Energiewende</h3>
               <p>Plattform &amp; TV-Magazin für die Energiewende in Bürgerhand.</p>
               <a href="https://www.lebenmitderenergiewende.de/" target="_blank" rel="noopener">lebenmitderenergiewende.de</a>
             </div>
           </article>
+
           <article class="partnerCard">
-            <div class="logoBox"><img src="assets/veeglogo.svg" alt="VEEG – Verein EnergieErzeugende Gebäude e. V."></div>
+            <div class="logoBox">
+              <img src="assets/veeglogo.svg" alt="VEEG – Verein EnergieErzeugende Gebäude e. V.">
+            </div>
             <div class="info">
               <h3>VEEG e. V. – Verband EnergieErzeugende Gebäude</h3>
               <p>Fördert Gebäude als aktive Energieproduzenten – energieautark, klimafreundlich, zukunftsweisend.</p>
               <a href="https://ve-eg.de/" target="_blank" rel="noopener">ve-eg.de</a>
             </div>
           </article>
+
           <article class="partnerCard">
-            <div class="logoBox"><img src="assets/energywatchgroup.png" alt="Energy Watch Group (EWG)"></div>
+            <div class="logoBox">
+              <img src="assets/energywatchgroup.png" alt="Energy Watch Group (EWG)">
+            </div>
             <div class="info">
               <h3>Energy Watch Group (EWG)</h3>
               <p>Gemeinnütziger Think Tank für globale Energiewende und Klimastabilisierung.</p>
@@ -206,39 +358,47 @@
           </article>
         </div>
 
-        <hr style="margin:30px 0;border:none;border-top:1px solid #e5e7eb;">
+        <hr class="footer-divider">
 
-<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:32px;flex-wrap:wrap;">
+        <div class="mib-footer-grid">
+          <div class="mib-footer-text">
+            <h2>Diensteanbieter gemäß § 5 DDG / Verantwortlicher gemäß § 18 Abs. 2 MStV</h2>
+<p>
+  <strong>Media International Bader (M.I.B.) – Hans Leo Bader</strong><br>
+  Heisenbergstr. 2b · 80937 München<br>
+  Telefon +49 (89) 33 04 05 06 · Mobil +49 (177) 76 06 66 0<br>
+  E-Mail webmaster(at)muc-mib.de<br>
+  Vertretungsberechtigt: Hans Leo Bader
+</p>
 
-  <div style="flex:1 1 520px;min-width:280px;">
-    <h2>Diensteanbieter gemäß § 5 TMG / Verantwortlich i. S. d. § 18 Abs. 2 MStV</h2>
-    <p>
-      <strong>Media International Bader (M.I.B.) – Hans Leo Bader</strong><br>
-      Heisenbergstr. 2b · 80937 München<br>
-      Telefon +49 (89) 33 04 05 06 · Mobil +49 (177) 76 06 66 0<br>
-      E-Mail webmaster(at)muc-mib.de<br>
-      Vertretungsberechtigt: Hans Leo Bader
-    </p>
+            <h2>Gestaltung &amp; Umsetzung</h2>
+            <p>
+              <strong>Konzeption &amp; Design:</strong> Frank Farenski, Hans Leo Bader<br>
+              <strong>Technische Infrastruktur &amp; Betrieb:</strong> Media International Bader (M.I.B.)
+            </p>
+          </div>
 
-    <h2>Gestaltung &amp; Umsetzung</h2>
-    <p>
-      <strong>Konzeption &amp; Design:</strong> Frank Farenski, Hans Leo Bader<br>
-      <strong>Technische Infrastruktur &amp; Betrieb:</strong> Media International Bader (M.I.B.)
-    </p>
-  </div>
+          <div class="mib-footer-logo">
+            <a href="https://www.muc-mib.de" target="_blank" rel="noopener noreferrer">
+              <img
+                src="https://aktionsolarstrom.de/assets/MIB_Logo.png"
+                alt="Media International Bader">
+            </a>
+          </div>
+        </div>
 
-  <div style="flex:0 0 220px;min-width:180px;text-align:right;">
-    <a href="https://www.muc-mib.de" target="_blank" rel="noopener noreferrer">
-      <img
-        src="https://aktionsolarstrom.de/assets/MIB_Logo.png"
-        alt="Media International Bader"
-        style="max-width:220px;width:100%;height:auto;display:inline-block;border:0;">
-    </a>
-  </div>
-
-</div>
-        <h2>Haftung für Inhalte &amp; Links</h2>
-        <p>Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für Richtigkeit, Vollständigkeit und Aktualität übernehmen wir keine Gewähr. Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für diese fremden Inhalte ist stets der jeweilige Anbieter verantwortlich. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.</p>
+        <h2>Haftung für Inhalte &amp; externe Links</h2>
+<p>
+  Als Diensteanbieter sind wir für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
+  Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Gewähr für die laufende Aktualität, Richtigkeit
+  und Vollständigkeit der bereitgestellten Inhalte.
+</p>
+<p>
+  Diese Website enthält Links zu externen Websites Dritter. Auf deren Inhalte haben wir keinen Einfluss;
+  verantwortlich ist jeweils der jeweilige Anbieter oder Betreiber der verlinkten Seiten.
+  Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.
+  Bei Bekanntwerden konkreter Rechtsverletzungen werden entsprechende Links unverzüglich entfernt.
+</p>
       </section>
     </main>
 
@@ -254,11 +414,6 @@
   </div>
 </body>
 </html>
-
-
-
-
-
 
 
 
