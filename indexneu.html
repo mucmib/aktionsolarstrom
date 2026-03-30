@@ -646,6 +646,91 @@
       .impact-board{ grid-template-columns: 1fr; }
     }
 
+    /* ===== Kampagnen-Aufruf ===== */
+    .campaign-alert{
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:18px;
+      padding:22px;
+      background:linear-gradient(180deg,#fffdf7 0%, #fff7df 100%);
+      box-shadow:0 10px 28px rgba(0,0,0,.08);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .campaign-alert::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:7px;
+      background:linear-gradient(180deg,#f6b10a,#0a7d32);
+    }
+
+    .campaign-alert h2{
+      margin:0 0 10px;
+      font-size:clamp(1.45rem, 1.2rem + 1vw, 2rem);
+      line-height:1.15;
+    }
+
+    .campaign-alert .alert-sub{
+      margin:0 0 16px;
+      font-size:1.02rem;
+      color:#374151;
+    }
+
+    .alert-grid{
+      display:grid;
+      gap:18px;
+      grid-template-columns:1.15fr .85fr;
+      align-items:start;
+    }
+
+    @media (max-width:780px){
+      .alert-grid{ grid-template-columns:1fr; }
+    }
+
+    .alert-list{
+      margin:0;
+      padding-left:1.15rem;
+    }
+
+    .alert-list li{
+      margin:0 0 10px;
+      line-height:1.5;
+    }
+
+    .alert-box{
+      background:#ffffffcc;
+      border:1px solid rgba(10,125,50,.12);
+      border-radius:14px;
+      padding:16px;
+      box-shadow:0 6px 18px rgba(0,0,0,.05);
+    }
+
+    .alert-box h3{
+      margin:0 0 8px;
+      font-size:1.02rem;
+    }
+
+    .alert-box p{
+      margin:0 0 12px;
+      color:#374151;
+    }
+
+    .alert-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+
+    .alert-note{
+      margin-top:14px;
+      font-size:.95rem;
+      color:#4b5563;
+    }
+
     /* ===== Sektionen / Karten ===== */
     main.middle > section{
       width: var(--hero-w-fluid);
@@ -1157,6 +1242,52 @@
 
         <div class="callout" style="margin-top:12px;">
           <strong>Kernaussage:</strong> Solarstrom senkt Kosten, erhöht Versorgungssicherheit und schützt Klima und Gesundheit.
+        </div>
+      </section>
+
+      <section id="aufruf" class="reveal">
+        <div class="campaign-alert">
+          <h2>Generalangriff auf die Bürgerenergiewende</h2>
+          <p class="alert-sub">
+            Mehrere politische Vorhaben greifen gleichzeitig zentrale Grundlagen des Solarmarktes an.
+            Das betrifft nicht nur die Energiewende, sondern auch Aufträge, Arbeitsplätze, Investitionen und bezahlbaren Strom.
+          </p>
+
+          <div class="alert-grid">
+            <div>
+              <ul class="alert-list">
+                <li><strong>Mögliche Streichung der festen Einspeisevergütung</strong> für kleine PV-Anlagen</li>
+                <li><strong>Netzpaket</strong>, das neue Solar- und Windprojekte massiv erschweren kann</li>
+                <li><strong>Neue Netzkostenmodelle</strong>, die Eigenverbrauch und dezentrale Energie belasten</li>
+                <li><strong>Bau neuer fossiler Gaskraftwerke</strong> statt Priorität für Erneuerbare</li>
+                <li><strong>Rückbau zentraler Elemente der Wärmewende</strong></li>
+              </ul>
+
+              <div class="alert-actions">
+                <a class="cta primary" href="index-full.html">Jetzt Brief einreichen</a>
+                <a class="cta secondary" href="https://www.youtube.com/playlist?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc" target="_blank" rel="noopener">
+                  Playlist ansehen
+                </a>
+              </div>
+
+              <p class="alert-note">
+                Nutzen Sie Ihren Einfluss. Sie haben ihn wirklich.
+              </p>
+            </div>
+
+            <aside class="alert-box" aria-label="Warum das wichtig ist">
+              <h3>Worum es konkret geht</h3>
+              <p>
+                Weniger Ausbau heißt: höhere Stromkosten, mehr fossile Abhängigkeit, mehr Unsicherheit für Bürger,
+                Betriebe und die Solarbranche.
+              </p>
+              <p>
+                Die Kampagne macht sichtbar, welche Folgen diese Politik für Bürger, Wirtschaft und Energiewende hat,
+                und ermöglicht physische Briefe an Bundestagsabgeordnete.
+              </p>
+              <a class="cta secondary" href="#mitmachen">Zum Mitmachen</a>
+            </aside>
+          </div>
         </div>
       </section>
 
