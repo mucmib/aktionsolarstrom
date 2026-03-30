@@ -646,6 +646,217 @@
       .impact-board{ grid-template-columns: 1fr; }
     }
 
+/* ===== Kampagnen-Aufruf – veredelte Version ===== */
+.campaign-alert{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(15, 23, 42, .08);
+  border-radius:22px;
+  padding:26px 24px 22px;
+  background:
+    radial-gradient(1200px 420px at 105% -10%, rgba(246,177,10,.12) 0%, rgba(246,177,10,0) 52%),
+    linear-gradient(180deg, #fffef9 0%, #f8f3e7 100%);
+  box-shadow:
+    0 16px 42px rgba(15, 23, 42, .07),
+    0 2px 8px rgba(15, 23, 42, .04);
+}
+
+.campaign-alert::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:8px;
+  background:linear-gradient(180deg, #f6b10a 0%, #90b11f 42%, #0a7d32 100%);
+}
+
+.campaign-alert::after{
+  content:"";
+  position:absolute;
+  inset:auto -90px -110px auto;
+  width:260px;
+  height:260px;
+  border-radius:999px;
+  background:radial-gradient(circle, rgba(10,125,50,.08) 0%, rgba(10,125,50,0) 70%);
+  pointer-events:none;
+}
+
+.campaign-head{
+  max-width:780px;
+  margin-bottom:20px;
+}
+
+.campaign-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin:0 0 10px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(10,125,50,.12);
+  box-shadow:0 2px 8px rgba(15,23,42,.04);
+  font-size:.85rem;
+  font-weight:800;
+  color:#0a7d32;
+  letter-spacing:.01em;
+}
+
+.campaign-kicker::before{
+  content:"";
+  width:8px;
+  height:8px;
+  border-radius:999px;
+  background:#f6b10a;
+  box-shadow:0 0 0 4px rgba(246,177,10,.16);
+}
+
+.campaign-alert h2{
+  margin:0 0 10px;
+  font-size:clamp(1.75rem, 2vw + 1rem, 2.35rem);
+  line-height:1.08;
+  letter-spacing:-.02em;
+  color:#243144;
+}
+
+.campaign-intro{
+  margin:0;
+  max-width:760px;
+  font-size:1.08rem;
+  line-height:1.62;
+  color:#445064;
+}
+
+.campaign-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);
+  gap:22px;
+  align-items:start;
+}
+
+@media (max-width:820px){
+  .campaign-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+.campaign-main{
+  min-width:0;
+}
+
+.campaign-points{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:grid;
+  gap:12px;
+}
+
+.campaign-points li{
+  position:relative;
+  padding:14px 16px 14px 46px;
+  border-radius:16px;
+  background:rgba(255,255,255,.58);
+  border:1px solid rgba(15,23,42,.06);
+  box-shadow:0 4px 14px rgba(15,23,42,.04);
+  line-height:1.5;
+  color:#334155;
+}
+
+.campaign-points li::before{
+  content:"";
+  position:absolute;
+  left:16px;
+  top:17px;
+  width:16px;
+  height:16px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#f6b10a,#0a7d32);
+  box-shadow:0 0 0 4px rgba(10,125,50,.08);
+}
+
+.campaign-points strong{
+  color:#1f2d3d;
+  font-weight:800;
+}
+
+.campaign-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.campaign-actions .cta{
+  min-width:220px;
+  text-align:center;
+}
+
+.campaign-note{
+  margin:14px 0 0;
+  font-size:.98rem;
+  color:#566173;
+}
+
+.campaign-note strong{
+  color:#0a7d32;
+}
+
+.campaign-side{
+  position:relative;
+  border-radius:18px;
+  padding:20px 18px 18px;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(10,125,50,.12);
+  box-shadow:0 10px 26px rgba(15,23,42,.05);
+  backdrop-filter:blur(3px);
+}
+
+.campaign-side h3{
+  margin:0 0 10px;
+  font-size:1.15rem;
+  line-height:1.25;
+  color:#243144;
+}
+
+.campaign-side p{
+  margin:0 0 14px;
+  line-height:1.62;
+  color:#465367;
+}
+
+.campaign-side p:last-child{
+  margin-bottom:0;
+}
+
+.campaign-side .side-highlight{
+  display:block;
+  margin:0 0 12px;
+  padding:10px 12px;
+  border-radius:12px;
+  background:linear-gradient(135deg, rgba(10,125,50,.08), rgba(246,177,10,.10));
+  border:1px solid rgba(10,125,50,.10);
+  font-weight:800;
+  color:#1f2d3d;
+}
+
+@media (max-width:600px){
+  .campaign-alert{
+    padding:22px 18px 18px;
+    border-radius:18px;
+  }
+
+  .campaign-points li{
+    padding:13px 14px 13px 42px;
+  }
+
+  .campaign-actions .cta{
+    width:100%;
+    min-width:unset;
+  }
+}
+
     /* ===== Sektionen / Karten ===== */
     main.middle > section{
       width: var(--hero-w-fluid);
@@ -1159,6 +1370,56 @@
           <strong>Kernaussage:</strong> Solarstrom senkt Kosten, erhöht Versorgungssicherheit und schützt Klima und Gesundheit.
         </div>
       </section>
+
+      <section id="aufruf" class="reveal">
+  <div class="campaign-alert">
+    <div class="campaign-head">
+      <div class="campaign-kicker">Kampagnenaufruf</div>
+      <h2>Generalangriff auf die Bürgerenergiewende</h2>
+      <p class="campaign-intro">
+        Mehrere politische Vorhaben greifen gleichzeitig zentrale Grundlagen des Solarmarktes an.
+        Das betrifft nicht nur die Energiewende, sondern auch Aufträge, Arbeitsplätze, Investitionen
+        und bezahlbaren Strom.
+      </p>
+    </div>
+
+    <div class="campaign-grid">
+      <div class="campaign-main">
+        <ul class="campaign-points">
+          <li><strong>Mögliche Streichung der festen Einspeisevergütung</strong> für kleine PV-Anlagen</li>
+          <li><strong>Netzpaket</strong>, das neue Solar- und Windprojekte massiv erschweren kann</li>
+          <li><strong>Neue Netzkostenmodelle</strong>, die Eigenverbrauch und dezentrale Energie belasten</li>
+          <li><strong>Bau neuer fossiler Gaskraftwerke</strong> statt Priorität für Erneuerbare</li>
+          <li><strong>Rückbau zentraler Elemente der Wärmewende</strong></li>
+        </ul>
+
+        <div class="campaign-actions">
+          <a class="cta primary" href="index-full.html">Jetzt Brief einreichen</a>
+          <a class="cta secondary" href="https://www.youtube.com/playlist?list=PLu9ITSfqUeKtQ50y9FI0tNJ2moLuKDDAc" target="_blank" rel="noopener">
+            Sendung ansehen
+          </a>
+        </div>
+
+        <p class="campaign-note">
+          <strong>Nutzen Sie Ihren Einfluss.</strong> Sie haben ihn wirklich.
+        </p>
+      </div>
+
+      <aside class="campaign-side" aria-label="Einordnung">
+        <h3>Worum es konkret geht</h3>
+        <span class="side-highlight">Weniger Ausbau heißt: höhere Stromkosten, mehr fossile Abhängigkeit, mehr Unsicherheit.</span>
+        <p>
+          Die Kampagne macht sichtbar, welche Folgen diese Politik für Bürger, Betriebe,
+          Investitionen und die Solarbranche hat.
+        </p>
+        <p>
+          Gleichzeitig ermöglicht sie physische Briefe an Bundestagsabgeordnete –
+          direkt, konkret und öffentlich wirksam.
+        </p>
+      </aside>
+    </div>
+  </div>
+</section>
 
       <section id="tour" class="reveal">
         <h2 class="section-title">Nächste Projektphase: Die Tour</h2>
