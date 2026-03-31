@@ -511,12 +511,13 @@ export default allowCors(async function handler(req, res) {
     message:        raw.message ?? "",
     consent_print:  toBool(raw.consent_print ?? raw.postversand ?? false),
     copy_to_self:   toBool(raw.copy_to_self  ?? raw.copy       ?? false),
+    mp_name:        raw.mp_name ?? "",
   };
 
   body.sender_zip  = body.sender_zip  || body.zip;
   body.sender_city = body.sender_city || body.city;
 
-  const required = ["first_name","last_name","email","street","sender_zip","sender_city","subject","message"];
+  const required = ["first_name","last_name","email","street","sender_zip","subject","message"];
   const missing = required.filter(k => !must(body[k]));
   if (missing.length) {
     return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
@@ -549,33 +550,58 @@ export default allowCors(async function handler(req, res) {
   const zipKey = String(body.sender_zip || "").trim();
   const cityKey = normalizeCityKey(body.sender_city || "");
 
-  let wkCandidates = [];
-  if (canonicalData.plzToWk?.[zipKey]) {
-    wkCandidates = wkCandidates.concat([].concat(canonicalData.plzToWk[zipKey]));
-  }
-  if (!wkCandidates.length && cityKey) {
+  const wkFromZip = canonicalData.plzToWk?.[zipKey]
+    ? [].concat(canonicalData.plzToWk[zipKey])
+    : [];
+
+  let wkFromCity = [];
+  if (cityKey) {
     if (canonicalData.ortToWk?.[cityKey]) {
-      wkCandidates = wkCandidates.concat([].concat(canonicalData.ortToWk[cityKey]));
+      wkFromCity = wkFromCity.concat([].concat(canonicalData.ortToWk[cityKey]));
     } else {
       for (const [ortName, wkList] of Object.entries(canonicalData.ortToWk || {})) {
         if (normalizeCityKey(ortName).startsWith(cityKey)) {
-          wkCandidates = wkCandidates.concat([].concat(wkList));
+          wkFromCity = wkFromCity.concat([].concat(wkList));
         }
       }
     }
   }
 
-  wkCandidates = Array.from(new Set(wkCandidates.map((wk) => String(wk).trim()).filter(Boolean)));
+  const normWk = (list) => Array.from(new Set([].concat(list).map((wk) => String(wk).trim()).filter(Boolean)));
+  const wkZip = normWk(wkFromZip);
+  const wkCity = normWk(wkFromCity);
+  let wkCandidates = [];
+
+  if (wkZip.length && wkCity.length) {
+    const citySet = new Set(wkCity);
+    wkCandidates = wkZip.filter((wk) => citySet.has(wk));
+  } else if (wkZip.length) {
+    wkCandidates = wkZip;
+  } else if (wkCity.length) {
+    wkCandidates = wkCity;
+  }
+
   const primaryCandidates = uniqueByName(
     wkCandidates
       .map((wk) => toResolvedRecipient(canonicalData.wkToMdb?.[wk]))
       .filter(Boolean)
   );
-  if (primaryCandidates.length !== 1) {
-    return res.status(400).json({ ok: false, error: "invalid_recipient" });
+  let primaryResolved = null;
+  if (primaryCandidates.length === 1) {
+    primaryResolved = primaryCandidates[0];
+  } else if (primaryCandidates.length > 1) {
+    const mpNameHint = String(body.mp_name || "").trim();
+    if (mpNameHint) {
+      const hintMatches = primaryCandidates.filter((r) => String(r.name || "").trim() === mpNameHint);
+      if (hintMatches.length === 1) {
+        primaryResolved = hintMatches[0];
+      }
+    }
   }
 
-  const primaryResolved = primaryCandidates[0];
+  if (!primaryResolved) {
+    return res.status(400).json({ ok: false, error: "invalid_recipient" });
+  }
 
   // Zusatzempfänger nur aus serverseitig erlaubten Quellen/Regeln (aktuell keine Default-Zusätze)
   const serverExtraRecipients = [];
