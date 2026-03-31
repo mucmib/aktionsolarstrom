@@ -5,6 +5,8 @@ import { kv } from "@vercel/kv";
 import archiver from "archiver";
 import { PassThrough } from "stream";
 import crypto from "crypto";
+import { readFile } from "fs/promises";
+import path from "path";
 
 /** --- CORS --- */
 const allowCors = (fn) => async (req, res) => {
@@ -242,6 +244,52 @@ function buildFingerprint({ email, subject, message, recipients }) {
   return crypto.createHash("sha256").update(payload).digest("hex");
 }
 
+let canonicalRecipientDataPromise = null;
+async function loadCanonicalRecipientData() {
+  if (!canonicalRecipientDataPromise) {
+    canonicalRecipientDataPromise = (async () => {
+      const base = path.join(process.cwd(), "assets", "data");
+      const [plzRaw, ortRaw, wkRaw] = await Promise.all([
+        readFile(path.join(base, "plz_to_wk.json"), "utf8"),
+        readFile(path.join(base, "ort_to_wk.json"), "utf8"),
+        readFile(path.join(base, "wk_to_mdb.json"), "utf8"),
+      ]);
+      return {
+        plzToWk: JSON.parse(plzRaw),
+        ortToWk: JSON.parse(ortRaw),
+        wkToMdb: JSON.parse(wkRaw),
+      };
+    })().catch((err) => {
+      canonicalRecipientDataPromise = null;
+      throw err;
+    });
+  }
+  return canonicalRecipientDataPromise;
+}
+
+function normalizeCityKey(city = "") {
+  return String(city)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/ß/g, "ss")
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function uniqueByName(recipients = []) {
+  const out = [];
+  const seen = new Set();
+  recipients.forEach((r) => {
+    const key = String(r?.name || "").trim().toLowerCase();
+    if (!key || seen.has(key)) return;
+    seen.add(key);
+    out.push(r);
+  });
+  return out;
+}
+
 /** >>> pureSwitch: eigener Handler-Zweig, KEIN Einfluss auf Briefformulare */
 async function handlePureSwitch(raw, res) {
   const data = {
@@ -453,7 +501,6 @@ export default allowCors(async function handler(req, res) {
   const body = {
     zip:            raw.zip ?? raw.plz ?? "",
     city:           raw.city ?? raw.ort ?? "",
-    mp_name:        raw.mp_name ?? raw.abgeordneter ?? "",
     first_name:     raw.first_name ?? raw.vorname ?? "",
     last_name:      raw.last_name  ?? raw.nachname ?? "",
     email:          raw.email ?? "",
@@ -464,8 +511,6 @@ export default allowCors(async function handler(req, res) {
     message:        raw.message ?? "",
     consent_print:  toBool(raw.consent_print ?? raw.postversand ?? false),
     copy_to_self:   toBool(raw.copy_to_self  ?? raw.copy       ?? false),
-    primary_recipient: raw.primary_recipient || null,
-    extra_recipients: Array.isArray(raw.extra_recipients) ? raw.extra_recipients : [],
   };
 
   body.sender_zip  = body.sender_zip  || body.zip;
@@ -478,31 +523,63 @@ export default allowCors(async function handler(req, res) {
   }
 
   // Empfängerliste: nur serverseitig kanonisch aufgelöste Empfänger zulassen
-  const resolvedRecipients = [];
-  const isExcludedParty = (p="") => /^(afd|werteunion)$/i.test(String(p).trim());
-  function resolveRecipient(r) {
+  const isExcludedParty = (p = "") => /^(afd|werteunion)$/i.test(String(p).trim());
+  const toResolvedRecipient = (r) => {
     if (!r || typeof r !== "object") return null;
-    const name = (r.mdb_name || r.name || "").trim();
-    const addr = (r.bundestag_address || r.address || "").trim();
-    const frak = r.fraktion || r.party || "";
-    if (isExcludedParty(frak)) return null;
-    if (!name || !addr) return null;
+    const name = String(r.mdb_name || "").trim();
+    const address = String(r.bundestag_address || "").trim();
+    if (!name || !address || isExcludedParty(r.fraktion || r.party || "")) return null;
     return {
       name,
-      address: addr,
-      anrede: r.anrede || "",
-      fraktion: frak || "",
-      bundesland: r.bundesland || "",
+      address,
+      anrede: String(r.anrede || "").trim(),
+      fraktion: String(r.fraktion || r.party || "").trim(),
+      bundesland: String(r.bundesland || "").trim(),
     };
+  };
+
+  let canonicalData;
+  try {
+    canonicalData = await loadCanonicalRecipientData();
+  } catch (e) {
+    console.error("Canonical recipient data unavailable:", e?.message || e);
+    return res.status(503).json({ ok: false, error: "recipient_resolution_unavailable" });
   }
 
-  const primaryResolved = resolveRecipient(body.primary_recipient);
-  if (primaryResolved) resolvedRecipients.push(primaryResolved);
+  const zipKey = String(body.sender_zip || "").trim();
+  const cityKey = normalizeCityKey(body.sender_city || "");
 
-  (body.extra_recipients || []).forEach((r) => {
-    const resolved = resolveRecipient(r);
-    if (resolved) resolvedRecipients.push(resolved);
-  });
+  let wkCandidates = [];
+  if (canonicalData.plzToWk?.[zipKey]) {
+    wkCandidates = wkCandidates.concat([].concat(canonicalData.plzToWk[zipKey]));
+  }
+  if (!wkCandidates.length && cityKey) {
+    if (canonicalData.ortToWk?.[cityKey]) {
+      wkCandidates = wkCandidates.concat([].concat(canonicalData.ortToWk[cityKey]));
+    } else {
+      for (const [ortName, wkList] of Object.entries(canonicalData.ortToWk || {})) {
+        if (normalizeCityKey(ortName).startsWith(cityKey)) {
+          wkCandidates = wkCandidates.concat([].concat(wkList));
+        }
+      }
+    }
+  }
+
+  wkCandidates = Array.from(new Set(wkCandidates.map((wk) => String(wk).trim()).filter(Boolean)));
+  const primaryCandidates = uniqueByName(
+    wkCandidates
+      .map((wk) => toResolvedRecipient(canonicalData.wkToMdb?.[wk]))
+      .filter(Boolean)
+  );
+  if (primaryCandidates.length !== 1) {
+    return res.status(400).json({ ok: false, error: "invalid_recipient" });
+  }
+
+  const primaryResolved = primaryCandidates[0];
+
+  // Zusatzempfänger nur aus serverseitig erlaubten Quellen/Regeln (aktuell keine Default-Zusätze)
+  const serverExtraRecipients = [];
+  const resolvedRecipients = uniqueByName([primaryResolved, ...serverExtraRecipients]);
 
   if (resolvedRecipients.length === 0) {
     return res.status(400).json({ ok:false, error:"invalid_recipient" });
@@ -679,4 +756,3 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
-
