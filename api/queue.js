@@ -250,16 +250,12 @@ function isPlausibleNamePart(value = "") {
   const v = normalizeField(value);
   if (v.length < 2 || v.length > 80) return false;
   if (!NAME_ALLOWED_RE.test(v)) return false;
-  if (!hasMinLetters(v, 2)) return false;
-  if (hasExtremeRepeats(v) || looksLikeKeyboardMash(v)) return false;
   return true;
 }
 function isPlausiblePlace(value = "", minLen = 3) {
   const v = normalizeField(value);
   if (v.length < minLen || v.length > 120) return false;
   if (!PLACE_ALLOWED_RE.test(v)) return false;
-  if (!LETTER_RE.test(v)) return false;
-  if (hasExtremeRepeats(v) || looksLikeKeyboardMash(v) || looksLikeRandomAlphaNumChain(v)) return false;
   return true;
 }
 function recipientsSignature(list = []) {
@@ -556,6 +552,10 @@ export default allowCors(async function handler(req, res) {
 
   body.sender_zip  = body.sender_zip  || body.zip;
   body.sender_city = body.sender_city || body.city;
+  body.first_name = normalizeField(body.first_name);
+  body.last_name = normalizeField(body.last_name);
+  body.street = normalizeField(body.street);
+  body.sender_city = normalizeField(body.sender_city);
 
   const required = ["first_name","last_name","email","street","sender_zip","subject","message"];
   const missing = required.filter(k => !must(body[k]));
@@ -579,7 +579,7 @@ export default allowCors(async function handler(req, res) {
   if (!isPlausibleNamePart(body.first_name)) invalidSenderFields.push("first_name");
   if (!isPlausibleNamePart(body.last_name)) invalidSenderFields.push("last_name");
   if (!isPlausiblePlace(body.street, 5)) invalidSenderFields.push("street");
-  if (!isPlausiblePlace(body.sender_city, 2)) invalidSenderFields.push("sender_city");
+  if (must(body.sender_city) && !isPlausiblePlace(body.sender_city, 2)) invalidSenderFields.push("sender_city");
   if (invalidSenderFields.length) {
     return res.status(400).json({ ok: false, error: "invalid_sender_data", fields: invalidSenderFields });
   }
