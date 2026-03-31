@@ -400,6 +400,16 @@
         <h2>Brief einreichen</h2>
 
         <form id="letterForm" method="post" action="/api/queue" novalidate>
+          <input
+            type="text"
+            name="website"
+            id="website_hp"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+            style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;"
+          >
+          <input type="hidden" name="submit_ts" id="submit_ts">
           <fieldset>
             <legend>Ziel-Abgeordnete:r</legend>
             <div class="grid">
@@ -850,6 +860,7 @@ Mit freundlichen Grüßen
     const $=(s)=>document.querySelector(s);
     const form=$('#letterForm');
     const msg=$('#message');
+    const submitTsField=$('#submit_ts');
     const F={'{Vorname}':'#first_name','{Nachname}':'#last_name','{Straße}':'#street','{PLZ}':'#sender_zip','{Ort}':'#sender_city'};
     const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
     const cleanStreet=v=>String(v||'').replace(/\s*,\s*(?=\d)/g,' ').replace(/\s{2,}/g,' ').trim();
@@ -892,6 +903,9 @@ Mit freundlichen Grüßen
     }
     ['#first_name','#last_name','#street','#sender_zip','#sender_city','#plz','#city'].forEach(sel=>$(sel)?.addEventListener('blur',renderSenderPreview));
     document.addEventListener('DOMContentLoaded',renderSenderPreview);
+    if (submitTsField && !submitTsField.value) {
+      submitTsField.value = String(Date.now());
+    }
 
     form?.addEventListener('submit', async (e)=>{
       e.preventDefault();
@@ -913,6 +927,9 @@ Mit freundlichen Grüßen
 
       const btn=form.querySelector('button[type="submit"]');
       btn?.setAttribute('disabled','');
+      if (submitTsField && !submitTsField.value) {
+        submitTsField.value = String(Date.now());
+      }
 
       const fd=new FormData(form);
       const payload={};
