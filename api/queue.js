@@ -34,6 +34,10 @@ function readBody(req) {
   return req.body;
 }
 const toBool = (v) => ["true", "on", "1", "yes"].includes(String(v).toLowerCase());
+const LETTER_RE = /[A-Za-zÀ-ÖØ-öø-ÿÄÖÜäöüßẞ]/u;
+const NAME_ALLOWED_RE = /^[A-Za-zÀ-ÖØ-öø-ÿÄÖÜäöüßẞ][A-Za-zÀ-ÖØ-öø-ÿÄÖÜäöüßẞ'’.\- ]*[A-Za-zÀ-ÖØ-öø-ÿÄÖÜäöüßẞ.]$/u;
+const PLACE_ALLOWED_RE = /^[A-Za-zÀ-ÖØ-öø-ÿÄÖÜäöüßẞ0-9'’.\-,/ ]+$/u;
+const MIN_FORM_FILL_MS = 1500;
 
 /** --- Layout-Konstanten --- */
 const WINDOW = { left: mm(20), topFromTop: mm(45), width: mm(90), height: mm(45) };
@@ -223,6 +227,40 @@ function normalizeText(s = "") {
     .replace(/\s+/g, " ")
     .trim()
     .toLowerCase();
+}
+
+function hasExtremeRepeats(s = "") {
+  return /(.)\1{3,}/u.test(String(s));
+}
+function looksLikeKeyboardMash(s = "") {
+  return /(qwertz?|asdf|yxcv|12345|abcde)/i.test(String(s));
+}
+function looksLikeRandomAlphaNumChain(s = "") {
+  const compact = String(s).replace(/[\s'’.\-,/]/g, "");
+  return /(?=.*[A-Za-zÀ-ÖØ-öø-ÿÄÖÜäöüßẞ])(?=.*\d)[A-Za-zÀ-ÖØ-öø-ÿÄÖÜäöüßẞ\d]{10,}/u.test(compact);
+}
+function normalizeField(s = "") {
+  return String(s).replace(/\s+/g, " ").trim();
+}
+function hasMinLetters(s = "", min = 2) {
+  const letters = String(s).match(/[A-Za-zÀ-ÖØ-öø-ÿÄÖÜäöüßẞ]/gu) || [];
+  return letters.length >= min;
+}
+function isPlausibleNamePart(value = "") {
+  const v = normalizeField(value);
+  if (v.length < 2 || v.length > 80) return false;
+  if (!NAME_ALLOWED_RE.test(v)) return false;
+  if (!hasMinLetters(v, 2)) return false;
+  if (hasExtremeRepeats(v) || looksLikeKeyboardMash(v)) return false;
+  return true;
+}
+function isPlausiblePlace(value = "", minLen = 3) {
+  const v = normalizeField(value);
+  if (v.length < minLen || v.length > 120) return false;
+  if (!PLACE_ALLOWED_RE.test(v)) return false;
+  if (!LETTER_RE.test(v)) return false;
+  if (hasExtremeRepeats(v) || looksLikeKeyboardMash(v) || looksLikeRandomAlphaNumChain(v)) return false;
+  return true;
 }
 function recipientsSignature(list = []) {
   const items = (Array.isArray(list) ? list : [])
@@ -512,6 +550,8 @@ export default allowCors(async function handler(req, res) {
     consent_print:  toBool(raw.consent_print ?? raw.postversand ?? false),
     copy_to_self:   toBool(raw.copy_to_self  ?? raw.copy       ?? false),
     mp_name:        raw.mp_name ?? "",
+    honeypot:       raw.website ?? raw.company ?? raw.hp ?? "",
+    submit_ts:      raw.submit_ts ?? raw.form_loaded_at ?? "",
   };
 
   body.sender_zip  = body.sender_zip  || body.zip;
@@ -521,6 +561,27 @@ export default allowCors(async function handler(req, res) {
   const missing = required.filter(k => !must(body[k]));
   if (missing.length) {
     return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
+  }
+
+  if (must(body.honeypot)) {
+    return res.status(400).json({ ok: false, error: "spam_detected" });
+  }
+
+  const submitTs = Number(body.submit_ts);
+  if (Number.isFinite(submitTs) && submitTs > 0) {
+    const elapsed = Date.now() - submitTs;
+    if (elapsed >= 0 && elapsed < MIN_FORM_FILL_MS) {
+      return res.status(400).json({ ok: false, error: "spam_too_fast" });
+    }
+  }
+
+  const invalidSenderFields = [];
+  if (!isPlausibleNamePart(body.first_name)) invalidSenderFields.push("first_name");
+  if (!isPlausibleNamePart(body.last_name)) invalidSenderFields.push("last_name");
+  if (!isPlausiblePlace(body.street, 5)) invalidSenderFields.push("street");
+  if (!isPlausiblePlace(body.sender_city, 2)) invalidSenderFields.push("sender_city");
+  if (invalidSenderFields.length) {
+    return res.status(400).json({ ok: false, error: "invalid_sender_data", fields: invalidSenderFields });
   }
 
   // Empfängerliste: nur serverseitig kanonisch aufgelöste Empfänger zulassen
