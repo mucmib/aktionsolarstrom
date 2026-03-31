@@ -477,27 +477,35 @@ export default allowCors(async function handler(req, res) {
     return res.status(400).json({ ok:false, error:"missing_fields", fields: missing });
   }
 
-  // Empfängerliste
-  const recipients = [];
+  // Empfängerliste: nur serverseitig kanonisch aufgelöste Empfänger zulassen
+  const resolvedRecipients = [];
   const isExcludedParty = (p="") => /^(afd|werteunion)$/i.test(String(p).trim());
-  function pushRecipient(r) {
-    if (!r) return;
+  function resolveRecipient(r) {
+    if (!r || typeof r !== "object") return null;
     const name = (r.mdb_name || r.name || "").trim();
-    const addr = (r.bundestag_address || r.address || "").trim() || "Platz der Republik 1\n11011 Berlin";
+    const addr = (r.bundestag_address || r.address || "").trim();
     const frak = r.fraktion || r.party || "";
-    if (isExcludedParty(frak)) return;
-    recipients.push({
-      name: name || "Mitglied des Deutschen Bundestages",
+    if (isExcludedParty(frak)) return null;
+    if (!name || !addr) return null;
+    return {
+      name,
       address: addr,
       anrede: r.anrede || "",
       fraktion: frak || "",
       bundesland: r.bundesland || "",
-    });
+    };
   }
-  if (body.primary_recipient) pushRecipient(body.primary_recipient);
-  (body.extra_recipients || []).forEach(pushRecipient);
-  if (recipients.length === 0) {
-    pushRecipient({ mdb_name: body.mp_name, bundestag_address: "Platz der Republik 1\n11011 Berlin" });
+
+  const primaryResolved = resolveRecipient(body.primary_recipient);
+  if (primaryResolved) resolvedRecipients.push(primaryResolved);
+
+  (body.extra_recipients || []).forEach((r) => {
+    const resolved = resolveRecipient(r);
+    if (resolved) resolvedRecipients.push(resolved);
+  });
+
+  if (resolvedRecipients.length === 0) {
+    return res.status(400).json({ ok:false, error:"invalid_recipient" });
   }
 
   // ---------- Dedupe + Rate Limits ----------
@@ -530,7 +538,7 @@ export default allowCors(async function handler(req, res) {
       email: body.email,
       subject: body.subject,
       message: body.message,
-      recipients,
+      recipients: resolvedRecipients,
     });
     const dupeKey = `dupe:${fingerprint}`;
     const created = await kv.set(dupeKey, "1", { nx: true, ex: 10 * 60 });
@@ -556,8 +564,8 @@ export default allowCors(async function handler(req, res) {
 
   // PDFs erzeugen
   const pdfFiles = [];
-  for (let i = 0; i < recipients.length; i++) {
-    const r = recipients[i];
+  for (let i = 0; i < resolvedRecipients.length; i++) {
+    const r = resolvedRecipients[i];
     const salForThis = (r.anrede && r.anrede.trim())
       ? r.anrede
       : buildPoliteSalutation(r.name, "Sehr geehrte Damen und Herren,");
@@ -586,7 +594,7 @@ export default allowCors(async function handler(req, res) {
       salutation: salForThis,
     });
 
-    const filename = recipients.length === 1
+    const filename = resolvedRecipients.length === 1
       ? `Brief_${queueId}.pdf`
       : `Brief_${queueId}_${String(i+1).padStart(2,"0")}.pdf`;
 
@@ -603,8 +611,8 @@ export default allowCors(async function handler(req, res) {
       ${esc(body.sender_zip)} ${esc(body.sender_city)}<br>
       E-Mail: ${esc(body.email)}
     </p>
-    <p><b>Empfänger (${recipients.length}):</b><br>
-      ${recipients.map(r => esc(r.name + (r.fraktion ? ` – ${r.fraktion}` : ""))).join("<br>")}
+    <p><b>Empfänger (${resolvedRecipients.length}):</b><br>
+      ${resolvedRecipients.map(r => esc(r.name + (r.fraktion ? ` – ${r.fraktion}` : ""))).join("<br>")}
     </p>
     <p><b>Betreff:</b> ${esc(body.subject)}</p>
   `;
@@ -641,7 +649,7 @@ export default allowCors(async function handler(req, res) {
 
     // Statistik nur nach erfolgreicher TEAM-Mail
     try {
-      const added = recipients.length;
+      const added = resolvedRecipients.length;
       await kv.incrby("pdfs_generated", added);
       const nowISO = new Date().toISOString();
       await kv.set("stats_updated_at", nowISO);
@@ -662,7 +670,7 @@ export default allowCors(async function handler(req, res) {
     }
 
     res.setHeader("Cache-Control", "no-store");
-    return res.status(200).json({ ok:true, queueId, recipients: recipients.length, copySent: !!body.copy_to_self });
+    return res.status(200).json({ ok:true, queueId, recipients: resolvedRecipients.length, copySent: !!body.copy_to_self });
   } catch (err) {
     const status = err?.response?.status;
     let detail   = err?.response?.text || err?.message || String(err);
@@ -671,5 +679,4 @@ export default allowCors(async function handler(req, res) {
     return res.status(502).json({ ok:false, error:"brevo_send_failed", status, detail });
   }
 });
-
 
